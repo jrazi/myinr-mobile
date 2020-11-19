@@ -7,11 +7,11 @@ export default class MockServerGateway {
     }
 
     fetchUserDataWithLogin(username, password) {
-        return new Patient({fullName: 'Javad'});
+        return new Patient({fullName: 'Javadd', username: '5040'});
     }
 
     login(username, password) {
-        return new Patient({fullName: 'Javad'});
+        return;
     }
 
 
