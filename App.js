@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import MockServerGateway from "./src/service/server/MockServerGateway";
-import UserDao from "./src/service/data/UserDao";
+import MockServerGateway from "./src/root/data/server/MockServerGateway";
+import UserRepository from "./src/root/data/repository/UserRepository";
 
 let server = new MockServerGateway();
-let userDao = new UserDao();
+let userRepository = new UserRepository();
 
 export default class App extends React.Component {
     constructor(props) {
@@ -16,8 +16,8 @@ export default class App extends React.Component {
 
     componentDidMount = async () => {
         let patient = server.fetchUserDataWithLogin(null, null);
-        await userDao.saveUser(patient);
-        this.user = await userDao.getUser();
+        await userRepository.saveUser(patient);
+        this.user = await userRepository.getUser();
         this.setState(this.state)
     }
 

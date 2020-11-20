@@ -1,9 +1,9 @@
 import {AsyncStorage} from "react-native";
-import UserFactory from "../../domain/user/UserFactory";
+import UserFactory from "../../domain/UserFactory";
 
 const USER_META_KEY = 'USER';
 
-export default class UserDao {
+export default class UserRepository {
 
     constructor() {
     }

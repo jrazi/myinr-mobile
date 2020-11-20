@@ -1,12 +1,12 @@
-import {UserRole} from "../Role";
+import {UserRole} from "../../root/domain/Role";
 
 
-export default class Doctor {
+export default class Patient {
 
     constructor(info) {
         this.fullName = info.fullName;
         this.username = info.username;
-        this.role = UserRole.DOCTOR;
+        this.role = UserRole.PATIENT;
     }
 
     serialize() {

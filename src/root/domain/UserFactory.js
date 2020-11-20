@@ -1,6 +1,6 @@
 import {UserRole} from "./Role";
-import Patient from "./patient/Patient";
-import Doctor from "./doctor/Doctor";
+import Patient from "../../patient/domain/Patient";
+import Doctor from "../../doctor/domain/Doctor";
 
 
 export default class UserFactory {

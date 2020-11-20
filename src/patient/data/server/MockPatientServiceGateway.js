@@ -1,4 +1,4 @@
-import Patient from "../../domain/user/patient/Patient";
+import Patient from "../../domain/Patient";
 
 
 export default class MockPatientServiceGateway {
