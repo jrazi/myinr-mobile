@@ -6,15 +6,15 @@ export default class MockServerGateway {
     constructor() {
     }
 
-    fetchUserDataWithLogin(username, password) {
+    async fetchUserDataWithLogin(username, password) {
         return new Patient({fullName: 'Javadd', username: '5040'});
     }
 
-    login(username, password) {
+    async login(username, password) {
         return;
     }
 
-    fetchUserData(username) {
+    async fetchUserData(username) {
         return new Patient({fullName: 'Javadd', username: '5040'});
     }
 }

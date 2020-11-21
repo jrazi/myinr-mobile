@@ -16,8 +16,8 @@ export default class RootEntry extends React.Component {
     componentDidMount = () => {
         this.rootDao.getUser().then(user => {
             if (user == null) this.props.navigation.navigate(Screen.LOGIN);
-            else if (user.role == UserRole.PATIENT) this.props.navigation.navigate(Screen.PATIENT);
-            else if (user.role == UserRole.DOCTOR) this.props.navigation.navigate(Screen.DOCTOR);
+            else if (user.role === UserRole.PATIENT) this.props.navigation.navigate(Screen.PATIENT);
+            else if (user.role === UserRole.DOCTOR) this.props.navigation.navigate(Screen.DOCTOR);
         })
     }
 

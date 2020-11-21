@@ -6,7 +6,7 @@ import RootEntry from "./RootEntry";
 import PatientApp from "../../patient/view/PatientApp";
 import DoctorApp from "../../doctor/view/DoctorApp";
 import {Screen} from "./Screen";
-import LoginApp from "../../login/view/LoginApp";
+import LoginScreen from "../../login/view/LoginScreen";
 
 const Stack = createStackNavigator();
 
@@ -27,7 +27,7 @@ export default class Navigator extends React.Component {
                     />
                     <Stack.Screen
                         name={Screen.LOGIN}
-                        component={LoginApp}
+                        component={LoginScreen}
                         options={{ headerShown: false , headerTitle: props => null }}
                     />
                     <Stack.Screen
