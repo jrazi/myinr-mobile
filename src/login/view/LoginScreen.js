@@ -4,7 +4,6 @@ import {StyleSheet, Text, View} from "react-native";
 export default class LoginApp extends React.Component {
     constructor(props) {
         super(props);
-        this.user = {};
         this.state = {}
     }
 
