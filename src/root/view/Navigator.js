@@ -20,18 +20,25 @@ export default class Navigator extends React.Component {
         return (
             <NavigationContainer>
                 <Stack.Navigator>
-                    <Stack.Screen name="ROOT" component={RootEntry} />
+                    <Stack.Screen
+                        name="ROOT"
+                        component={RootEntry}
+                        options={{ headerShown: false , headerTitle: props => null }}
+                    />
                     <Stack.Screen
                         name={Screen.LOGIN}
                         component={LoginApp}
+                        options={{ headerShown: false , headerTitle: props => null }}
                     />
                     <Stack.Screen
                         name={Screen.PATIENT}
                         component={PatientApp}
+                        options={{ headerShown: false , headerTitle: props => null }}
                     />
                     <Stack.Screen
                         name={Screen.DOCTOR}
                         component={DoctorApp}
+                        options={{ headerShown: false , headerTitle: props => null }}
                     />
                 </Stack.Navigator>
             </NavigationContainer>

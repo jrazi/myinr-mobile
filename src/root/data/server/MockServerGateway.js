@@ -14,5 +14,7 @@ export default class MockServerGateway {
         return;
     }
 
-
+    fetchUserData(username) {
+        return new Patient({fullName: 'Javadd', username: '5040'});
+    }
 }
