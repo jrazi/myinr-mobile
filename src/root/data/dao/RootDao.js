@@ -1,5 +1,6 @@
 import RootRepository from "../repository/RootRepository";
 import MockServerGateway from "../server/MockServerGateway";
+import {Locale} from "../../domain/Locale";
 
 export class RootDao {
 
@@ -25,6 +26,10 @@ export class RootDao {
 
     async saveUser(user) {
         return await this.rootRepository.saveUser(user);
+    }
+
+    getLocale() {
+        return Locale.FA;
     }
 }
 
