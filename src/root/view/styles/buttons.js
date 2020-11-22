@@ -1,4 +1,6 @@
-import {Borders, Spacing, Theme} from "./index";
+import * as Spacing from "./spacing";
+import * as Borders from "./borders";
+import * as Theme from "./theme";
 
 export const buttonDefaultBoxShadow = {
 
