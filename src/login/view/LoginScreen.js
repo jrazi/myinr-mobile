@@ -43,8 +43,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     bodyContainer: {
-        ...Theme.bgDanger,
-
         flexGrow: 1,
     },
     buttonContainer: {

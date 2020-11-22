@@ -8,7 +8,7 @@ export const buttonDefaultBoxShadow = {
 
 export const defaultButton = {
     ...Spacing.py2,
-    ...Borders.borderRadius(2),
+    ...Borders.borderRadius.xs,
     ...buttonDefaultBoxShadow,
     backgroundColor: Theme.themeColors.buttons.primary,
     justifyContent: 'center',

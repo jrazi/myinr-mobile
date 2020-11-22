@@ -1,3 +1,12 @@
+import Constants from 'expo-constants'
+
+export const statusBarMargin = {
+    marginTop: Constants.statusBarHeight,
+}
+
+export const statusBarPadding = {
+    paddingTop: Constants.statusBarHeight,
+}
 
 // Paddings
 
