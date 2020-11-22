@@ -5,6 +5,7 @@ import {Layout} from "../../root/view/layout/Layout";
 import {DefaultButton} from "../../root/view/button/Buttons";
 import {rootDao} from "../../root/data/dao/RootDao";
 import * as Locale from "./Locale";
+import LoginForm from "./LoginForm";
 
 export default class LoginScreen extends React.Component {
     constructor(props) {
@@ -22,7 +23,9 @@ export default class LoginScreen extends React.Component {
             <Layout>
                 <View style={styles.container}>
                     <View style={styles.bodyContainer}>
-                        <Text>LOGIN APP</Text>
+                        <LoginForm
+                            navigation={this.props.navigation}
+                        />
                     </View>
                     <View style={styles.buttonContainer}>
                         <DefaultButton style={styles.loginButton}
