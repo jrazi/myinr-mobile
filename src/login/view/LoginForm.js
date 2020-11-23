@@ -3,9 +3,12 @@ import {StyleSheet, Text, View, Button, TextInput} from "react-native";
 import {Spacing, Theme} from "../../root/view/styles";
 import {debugBorderBlue, debugBorderRed} from "../../root/view/styles/borders";
 import {Formik} from "formik";
-import {DefaultTextInput} from "../../root/view/form/Form";
+import * as Yup from 'yup';
+import * as Validators from '../../root/view/form/Validators';
+import {DefaultErrorField, DefaultTextInput} from "../../root/view/form/Form";
 import * as Locale from './Locale';
 import {rootDao} from "../../root/data/dao/RootDao";
+import {DefaultText} from "../../root/view/basic/Text";
 
 export default class LoginForm extends React.Component {
 
@@ -28,14 +31,20 @@ export default class LoginForm extends React.Component {
                         username: '',
                         password: '',
                     }}
+                    validationSchema={Yup.object({
+                        username: Validators.USERNAME[rootDao.getLocale()],
+                        password: Validators.PASSWORD[rootDao.getLocale()],
+                    })}
                     innerRef={this.props.containerRef}
+                    validateOnChange={false}
+                    validateOnBlur={true}
                     onSubmit={values => this.submitForm(values)}
                 >
                     {
                         ({ handleChange, handleBlur, values, touched, errors }) => {return (
                             <View style={styles.formContainer}>
                                 <View style={styles.formTitle}>
-                                    <Text style={styles.titleText} minimumFontScale={3}>{Locale[rootDao.getLocale()].text.title.LOGIN_FORM}</Text>
+                                    <DefaultText style={styles.titleText} minimumFontScale={3}>{Locale[rootDao.getLocale()].text.title.LOGIN_FORM}</DefaultText>
                                 </View>
                                 <View style={styles.formRow}>
                                     <DefaultTextInput
@@ -44,7 +53,9 @@ export default class LoginForm extends React.Component {
                                         autoCorrect={false}
                                         value={values.username}
                                         onChangeText={handleChange('username')}
+                                        onBlur={handleBlur('username')}
                                     />
+                                    <DefaultErrorField error={errors.username}/>
                                 </View>
                                 <View style={styles.formRow}>
                                     <DefaultTextInput
@@ -54,7 +65,9 @@ export default class LoginForm extends React.Component {
                                         secureTextEntry={true}
                                         value={values.password}
                                         onChangeText={handleChange('password')}
+                                        onBlur={handleBlur('password')}
                                     />
+                                    <DefaultErrorField error={errors.password}/>
                                 </View>
                             </View>
                         )}
