@@ -16,33 +16,49 @@ export default class LoginForm extends React.Component {
         }
     }
 
+    submitForm = (credentials) => {
+        console.log('form is submitted login form', credentials);
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <Formik
-                    initialValues={{ email: '' }}
-                    onSubmit={values => console.log(values)}
+                    initialValues={{
+                        username: '',
+                        password: '',
+                    }}
+                    innerRef={this.props.containerRef}
+                    onSubmit={values => this.submitForm(values)}
                 >
-                    <View style={styles.formContainer}>
-                        <View style={styles.formTitle}>
-                            <Text style={styles.titleText} minimumFontScale={3}>{Locale[rootDao.getLocale()].text.title.LOGIN_FORM}</Text>
-                        </View>
-                        <View style={styles.formRow}>
-                            <DefaultTextInput
-                                placeholder={"Username"}
-                                autoCompleteType={'username'}
-                                autoCorrect={false}
-                            />
-                        </View>
-                        <View style={styles.formRow}>
-                            <DefaultTextInput
-                                placeholder={"Password"}
-                                autoCorrect={false}
-                                autoCompleteType={'password'}
-                                secureTextEntry={true}
-                            />
-                        </View>
-                    </View>
+                    {
+                        ({ handleChange, handleBlur, values, touched, errors }) => {return (
+                            <View style={styles.formContainer}>
+                                <View style={styles.formTitle}>
+                                    <Text style={styles.titleText} minimumFontScale={3}>{Locale[rootDao.getLocale()].text.title.LOGIN_FORM}</Text>
+                                </View>
+                                <View style={styles.formRow}>
+                                    <DefaultTextInput
+                                        placeholder={"Username"}
+                                        autoCompleteType={'username'}
+                                        autoCorrect={false}
+                                        value={values.username}
+                                        onChangeText={handleChange('username')}
+                                    />
+                                </View>
+                                <View style={styles.formRow}>
+                                    <DefaultTextInput
+                                        placeholder={"Password"}
+                                        autoCorrect={false}
+                                        autoCompleteType={'password'}
+                                        secureTextEntry={true}
+                                        value={values.password}
+                                        onChangeText={handleChange('password')}
+                                    />
+                                </View>
+                            </View>
+                        )}
+                    }
                 </Formik>
             </View>
         )

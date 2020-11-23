@@ -7,15 +7,23 @@ import {rootDao} from "../../root/data/dao/RootDao";
 import * as Locale from "./Locale";
 import LoginForm from "./LoginForm";
 
+
 export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
         this.locale = rootDao.getLocale();
+        this.containerRef = React.createRef();
     }
 
     componentDidMount = () => {
 
+    }
+
+    onFormSubmit = (credentials) => {
+        console.log('should be a here');
+        this.containerRef.current.handleSubmit();
+        console.log('form submit login scree');
     }
 
     render() {
@@ -25,11 +33,14 @@ export default class LoginScreen extends React.Component {
                     <View style={styles.bodyContainer}>
                         <LoginForm
                             navigation={this.props.navigation}
+                            containerRef={this.containerRef}
                         />
                     </View>
                     <View style={styles.buttonContainer}>
-                        <DefaultButton style={styles.loginButton}
+                        <DefaultButton
+                            style={styles.loginButton}
                             title={Locale[this.locale].text.button.LOGIN}
+                            onPress={() => {this.onFormSubmit()}}
                         />
                     </View>
                 </View>
