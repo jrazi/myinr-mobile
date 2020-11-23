@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, Button} from "react-native";
-import {Buttons, Theme, Containers, Spacing} from '../../root/view/styles';
+import {Buttons, Theme, Containers, Spacing, Borders} from '../../root/view/styles';
 import {Layout} from "../../root/view/layout/Layout";
 import {DefaultButton} from "../../root/view/button/Buttons";
 import {rootDao} from "../../root/data/dao/RootDao";
@@ -21,9 +21,7 @@ export default class LoginScreen extends React.Component {
     }
 
     onFormSubmit = (credentials) => {
-        console.log('should be a here');
         this.containerRef.current.handleSubmit();
-        console.log('form submit login scree');
     }
 
     render() {
@@ -57,10 +55,12 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     buttonContainer: {
-        ...Spacing.px3,
-        ...Spacing.py2,
+        // ...Spacing.px3P,
+        // ...Spacing.py2,
     },
     loginButton: {
         backgroundColor: Theme.themeColors.background.primaryBlack,
+        ...Spacing.py1P,
+        ...Borders.borderRadius.none,
     }
 });

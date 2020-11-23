@@ -7,6 +7,7 @@ export function customBorderRadius(level) {
 }
 
 export const borderRadius = {
+    none: customBorderRadius(0),
     xs: customBorderRadius(2),
     sm: customBorderRadius(5),
     md: customBorderRadius(8),

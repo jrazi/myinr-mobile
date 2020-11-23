@@ -6,7 +6,7 @@ import {DefaultText} from "../basic/Text";
 export const DefaultButton = (props) => {
     return (
         <TouchableOpacity
-            style={{...styles.button, ...props.style}}
+            style={[styles.button, props.style]}
             onPress = {props.onPress}
         >
             <DefaultText style={{color:'white'}}>{props.title}</DefaultText>
