@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, Button, TextInput} from "react-native";
+import {StyleSheet, Text, View, Button, TextInput, Alert} from "react-native";
 import {Spacing, Theme} from "../../root/view/styles";
 import {debugBorderBlue, debugBorderRed} from "../../root/view/styles/borders";
 import {Formik} from "formik";
@@ -9,6 +9,9 @@ import {DefaultErrorField, DefaultTextInput} from "../../root/view/form/Form";
 import * as Locale from './Locale';
 import {rootDao} from "../../root/data/dao/RootDao";
 import {DefaultText} from "../../root/view/basic/Text";
+import {serverGateway} from "../../root/data/server/ServerGateway";
+import {UserRole} from "../../root/domain/Role";
+import {Screen} from "../../root/view/Screen";
 
 export default class LoginForm extends React.Component {
 
@@ -20,7 +23,14 @@ export default class LoginForm extends React.Component {
     }
 
     submitForm = (credentials) => {
-        console.log('form is submitted login form', credentials);
+        serverGateway.fetchUserDataWithLogin(credentials.username, credentials.password).then(user => {
+            rootDao.saveUser(user).then(() => {
+                if (user.role === UserRole.PATIENT) this.props.navigation.navigate(Screen.PATIENT);
+                else if (user.role === UserRole.DOCTOR) this.props.navigation.navigate(Screen.DOCTOR);
+            });
+        }).catch(error => {
+            // TODO Print Error
+        });
     }
 
     render() {
