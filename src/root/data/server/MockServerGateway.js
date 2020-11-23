@@ -11,7 +11,7 @@ export default class MockServerGateway {
     }
 
     async fetchUserDataWithLogin(username, password) {
-        await sleep(2);
+        await sleep(3);
         return new Patient({fullName: 'Javadd', username: '5040'});
     }
 

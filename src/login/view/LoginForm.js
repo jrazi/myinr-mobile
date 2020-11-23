@@ -12,25 +12,33 @@ import {DefaultText} from "../../root/view/basic/Text";
 import {serverGateway} from "../../root/data/server/ServerGateway";
 import {UserRole} from "../../root/domain/Role";
 import {Screen} from "../../root/view/Screen";
+import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
 
 export default class LoginForm extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-
+            submissionStatus: FormSubmissionStatus.NOT_SUBMITTING,
         }
     }
 
+
     submitForm = (credentials) => {
-        serverGateway.fetchUserDataWithLogin(credentials.username, credentials.password).then(user => {
-            rootDao.saveUser(user).then(() => {
-                if (user.role === UserRole.PATIENT) this.props.navigation.navigate(Screen.PATIENT);
-                else if (user.role === UserRole.DOCTOR) this.props.navigation.navigate(Screen.DOCTOR);
+        this.props.onSubmissionUpdate(FormSubmissionStatus.SUBMITTING, () => {
+            serverGateway.fetchUserDataWithLogin(credentials.username, credentials.password).then(user => {
+                rootDao.saveUser(user).then(() => {
+                    this.props.onSubmissionUpdate(FormSubmissionStatus.NOT_SUBMITTING, () => {
+                        if (user.role === UserRole.PATIENT) this.props.navigation.navigate(Screen.PATIENT);
+                        else if (user.role === UserRole.DOCTOR) this.props.navigation.navigate(Screen.DOCTOR);
+                    });
+                });
+            }).catch(error => {
+                this.props.onSubmissionUpdate(FormSubmissionStatus.NOT_SUBMITTING, () => {
+                    // TODO handle error
+                });
             });
-        }).catch(error => {
-            // TODO Print Error
-        });
+        })
     }
 
     render() {
@@ -64,6 +72,7 @@ export default class LoginForm extends React.Component {
                                         value={values.username}
                                         onChangeText={handleChange('username')}
                                         onBlur={handleBlur('username')}
+                                        disabled={true}
                                     />
                                     <DefaultErrorField error={errors.username}/>
                                 </View>

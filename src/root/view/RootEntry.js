@@ -24,36 +24,6 @@ export default class RootEntry extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.container}>
-                    <Text>ROOT ENTRY</Text>
-                </View>
-                <View style={styles.container}>
-                    <Button
-                        title="Go to Login"
-                        onPress={() =>
-                            this.props.navigation.navigate(Screen.LOGIN)
-                        }
-                    />
-                </View>
-                <View style={styles.container}>
-                    <Button
-                        title="Go to Patient"
-                        onPress={() =>
-                            this.props.navigation.navigate(Screen.PATIENT)
-                        }
-                    />
-                </View>
-                <View style={styles.container}>
-                    <Button
-                        title="Go to Doctor"
-                        onPress={() =>
-                            this.props.navigation.navigate(Screen.DOCTOR)
-                        }
-                    />
-                </View>
-                <View style={styles.container}>
-                    <StatusBar style="auto" />
-                </View>
             </View>
         );
     }

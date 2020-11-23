@@ -10,6 +10,7 @@ export class RootDao {
     }
 
     async getUser() {
+        return null;
         let user = await this.rootRepository.getUser();
         if (user != null) return user;
 

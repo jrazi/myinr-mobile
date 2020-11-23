@@ -1,17 +1,34 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import  {StyleSheet, Text, TouchableOpacity, View, TouchableHighlight, TouchableWithoutFeedback, Pressable, Keyboard} from "react-native";
 import {Theme, Spacing, Borders, Buttons} from "../styles";
 import {DefaultText} from "../basic/Text";
+import {FormSubmissionStatus} from "../FormSubmissionStatus";
 
-export const DefaultButton = (props) => {
+export const DefaultButton = ({style, ...props}) => {
     return (
-        <TouchableOpacity
-            style={[styles.button, props.style]}
-            onPress = {props.onPress}
+        <Pressable
+            {...props}
+            style={[styles.button, style]}
+            // activeOpacity={0.3}
+            underlayColor={'gray'}
         >
             <DefaultText style={{color:'white'}}>{props.title}</DefaultText>
-        </TouchableOpacity>
+        </Pressable>
     );
+}
+
+export const DefaultSubmitButton = ({style, submissionStatus, onPress, disabled, ...props}) => {
+    const isSubmitting = submissionStatus == FormSubmissionStatus.SUBMITTING;
+    const styleForActiveStatus = isSubmitting ? styles.activeButton : styles.inactiveButton;
+
+    return (
+        <DefaultButton
+            {...props}
+            style={[style, styleForActiveStatus]}
+            onPress={() => {Keyboard.dismiss(); onPress()}}
+            disabled={disabled || isSubmitting}
+        />
+    )
 }
 
 const styles = StyleSheet.create({
@@ -22,5 +39,11 @@ const styles = StyleSheet.create({
     },
     button: {
         ...Buttons.defaultButton,
+    },
+    activeButton: {
+        opacity: 0.5,
+    },
+    inactiveButton: {
+        opacity: 1.0,
     }
 });
