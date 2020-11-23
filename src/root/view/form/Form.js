@@ -1,13 +1,15 @@
-import {Button, TextInput, View, StyleSheet} from "react-native";
+import {Button, TextInput, View, StyleSheet, I18nManager} from "react-native";
 import React from "react";
-import {Spacing, Borders} from "../styles";
+import {Spacing, Borders, Locale} from "../styles";
 import {DefaultText} from "../basic/Text";
+import {rootDao} from "../../data/dao/RootDao";
 
 
-export const DefaultTextInput = (props) => {
+export const DefaultTextInput = ({style, ...props}) => {
     return (
         <View style={styles.container}>
             <TextInput
+                style={[styles.textInput, style]}
                 {...props}
             >
                 {props.children}
@@ -34,5 +36,8 @@ const styles = StyleSheet.create({
     defaultErrorField: {
         color: 'red',
         fontSize: 12,
+    },
+    textInput: {
+        textAlign: I18nManager.isRTL ? 'right': 'left',
     }
 });

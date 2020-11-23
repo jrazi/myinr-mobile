@@ -66,7 +66,7 @@ export default class LoginForm extends React.Component {
                                 </View>
                                 <View style={styles.formRow}>
                                     <DefaultTextInput
-                                        placeholder={"Username"}
+                                        placeholder={Locale[rootDao.getLocale()].text.form.USERNAME_PLACEHOLDER}
                                         autoCompleteType={'username'}
                                         autoCorrect={false}
                                         value={values.username}
@@ -78,7 +78,7 @@ export default class LoginForm extends React.Component {
                                 </View>
                                 <View style={styles.formRow}>
                                     <DefaultTextInput
-                                        placeholder={"Password"}
+                                        placeholder={Locale[rootDao.getLocale()].text.form.PASSWORD_PLACEHOLDER}
                                         autoCorrect={false}
                                         autoCompleteType={'password'}
                                         secureTextEntry={true}
