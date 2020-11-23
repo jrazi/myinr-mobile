@@ -6,7 +6,7 @@ export const EN = {
             LOGIN: 'Login',
         },
         title: {
-
+            LOGIN_FORM: 'Welcome!',
         },
         message: {
 
@@ -20,7 +20,7 @@ export const FA = {
             LOGIN: 'ورود',
         },
         title: {
-
+            LOGIN_FORM: 'خوش آمدید!',
         },
         message: {
 

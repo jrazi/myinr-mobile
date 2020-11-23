@@ -7,10 +7,7 @@ export const DefaultTextInput = (props) => {
     return (
         <View style={styles.container}>
             <TextInput
-                onChangeText={props.onChangeText}
-                onBlur={props.onBlur}
-                value={props.value}
-                placeholder={props.placeholder}
+                {...props}
             >
                 {props.children}
             </TextInput>
