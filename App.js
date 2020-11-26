@@ -3,6 +3,7 @@ import React from 'react';
 import Navigator from "./src/root/view/Navigator";
 import * as Font from "expo-font";
 import AppLoading from "expo/build/launch/AppLoading";
+import { Provider as PaperProvider } from 'react-native-paper';
 
 
 export default class App extends React.Component {
@@ -28,7 +29,11 @@ export default class App extends React.Component {
 
     render() {
         if (!this.state.loaded) return <AppLoading/>
-        else return (<Navigator/>);
+        else return (
+            <PaperProvider>
+                <Navigator/>
+            </PaperProvider>
+        );
     }
 }
 
