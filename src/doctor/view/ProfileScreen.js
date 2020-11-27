@@ -1,11 +1,7 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import UnderConstruction from "../../root/view/screen/UnderConstruction";
-import {Appbar, Avatar, Button, Text, Modal, Surface, Title, Headline, Subheading, Caption, List} from 'react-native-paper';
-import {debugBorderBlue, debugBorderRed} from "../../root/view/styles/borders";
+import {Appbar, Surface, Title, Caption, List, TouchableRipple} from 'react-native-paper';
 import {fullSize} from "../../root/view/styles/containers";
-import {py3} from "../../root/view/styles/spacing";
-import {AppbarHeader} from "react-native-paper/src/components/Appbar/AppbarHeader";
 import Icons from 'react-native-vector-icons/EvilIcons';
 import {useNavigation} from '@react-navigation/native';
 
@@ -43,30 +39,18 @@ class ProfileScreen extends React.Component {
                 </Surface>
                 <View style={styles.containerBody}>
                     <List.Section>
-                        <Surface style={styles.profileMenuItemContainer}>
-                            <List.Item
-                                style={styles.profileMenuItem}
-                                title={"مشخصات کاربر"}
-                                right={props => <List.Icon icon="arrow-left"/>}
-                                left={props => <List.Icon icon="circle-edit-outline"/>}
-                            />
-                        </Surface>
-                        <Surface style={styles.profileMenuItemContainer}>
-                            <List.Item
-                                style={styles.profileMenuItem}
-                                title={"تنظیمات"}
-                                right={props => <List.Icon icon="arrow-left"/>}
-                                left={props => <List.Icon icon="tune"/>}
-                            />
-                        </Surface>
-                        <Surface style={styles.profileMenuItemContainer}>
-                            <List.Item
-                                style={styles.profileMenuItem}
-                                title={"خروج"}
-                                right={props => <List.Icon icon="arrow-left"/>}
-                                left={props => <List.Icon icon="logout-variant"/>}
-                            />
-                        </Surface>
+                        <MenuItem
+                            title={'مشخصات کاربر'}
+                            left={(props) => <List.Icon icon={'circle-edit-outline'}/>}
+                        />
+                        <MenuItem
+                            title={'تنظیمات'}
+                            left={(props) => <List.Icon icon={'tune'}/>}
+                        />
+                        <MenuItem
+                            title={'خروج'}
+                            left={(props) => <List.Icon icon={'logout-variant'}/>}
+                        />
                     </List.Section>
                 </View>
             </View>
@@ -80,32 +64,39 @@ export default function(props) {
     return <ProfileScreen {...props} navigation={navigation} />;
 }
 
+const MenuItem = (props) => {
+    return (
+        <Surface style={styles.profileMenuItemContainer}>
+            <TouchableRipple
+                onPress={() => {}}
+                rippleColor="rgba(0, 0, 0, .2)"
+            >
+                <List.Item
+                    style={styles.profileMenuItem}
+                    title={props.title}
+                    right={props => <List.Icon icon="arrow-left"/>}
+                    left={props.left}
+                />
+            </TouchableRipple>
+        </Surface>
+    );
+}
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: '',
         justifyContent: 'flex-start',
         alignItems: 'stretch',
-
-        // backgroundColor: '#fff',
         ...fullSize,
     },
     appBarHeader: {
         elevation: 4,
         padding: 20,
         paddingTop: 40,
-        // ...debugBorderRed,
     },
     appBarHeaderWrapper: {
-        // flex: 1,
         flexGrow: 1,
-        // ...debugBorderRed,
-        // flexWrap: 'nowrap',
-        // flexBasis: 0,
     },
     headerOfHeader: {
-        // alignSelf: 'flex-start',
-        // ...debugBorderRed,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -115,16 +106,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center',
         paddingTop: 20,
-        // ...debugBorderRed,
     },
     avatar: {
-        // borderRadius: 100,
-        // borderWidth: 4,
-        // borderColor: 'red',
-        // padding: 20,
     },
     containerBody: {
-        // flexGrow: 100,
         padding: 20,
     },
     profileMenuItemContainer: {
