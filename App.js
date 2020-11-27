@@ -3,8 +3,18 @@ import React from 'react';
 import Navigator from "./src/root/view/Navigator";
 import * as Font from "expo-font";
 import AppLoading from "expo/build/launch/AppLoading";
-import { Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
+const theme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        primary: '#fff',
+        accent: '#fff',
+        background: '#fff',
+        surface: '#fff',
+    },
+};
 
 export default class App extends React.Component {
 
@@ -30,7 +40,7 @@ export default class App extends React.Component {
     render() {
         if (!this.state.loaded) return <AppLoading/>
         else return (
-            <PaperProvider>
+            <PaperProvider theme={theme}>
                 <Navigator/>
             </PaperProvider>
         );

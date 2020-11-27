@@ -36,7 +36,7 @@ class DoctorApp extends React.Component {
                 onIndexChange={(index) => {this.setState({index: index})}}
                 renderScene={renderScene}
                 shifting={false}
-                theme={{ colors: {primary: '#FFFFFF', background: '#E744AB'} }}
+                // theme={{ colors: {primary: '#FFFFFF', background: '#E744AB'} }}
             />
         );
     }
