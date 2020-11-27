@@ -1,11 +1,16 @@
 import React from 'react';
 import {StyleSheet, Text, View} from "react-native";
 import {StatusBar} from "expo-status-bar";
-import {BottomNavigation} from "react-native-paper";
+import {BottomNavigation, useTheme} from "react-native-paper";
 import HomeScreen from "./HomeScreen";
 import PatientsScreen from "./PatientsScreen";
 import VisitsScreen from "./VisitsScreen";
 import ProfileScreen from "./ProfileScreen";
+import {useNavigation} from "@react-navigation/native";
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+const Tab = createMaterialBottomTabNavigator();
 
 class DoctorApp extends React.Component {
     constructor(props) {
@@ -21,6 +26,9 @@ class DoctorApp extends React.Component {
         }
     }
 
+    pushScreen = (index) => {
+    }
+
     render() {
         const renderScene = BottomNavigation.SceneMap({
             home: HomeScreen,
@@ -29,19 +37,71 @@ class DoctorApp extends React.Component {
             profile: ProfileScreen,
         });
 
-        // const colors = DefaultTheme.colors;
+        const colors = this.props.defaultTheme.colors;
         return (
-            <BottomNavigation
-                navigationState={{index: this.state.index, routes: this.state.routes}}
-                onIndexChange={(index) => {this.setState({index: index})}}
-                renderScene={renderScene}
+            <Tab.Navigator
+                initialRouteName={"Home"}
+                barStyle={{ backgroundColor: colors.background }}
                 shifting={false}
-                // theme={{ colors: {primary: '#FFFFFF', background: '#E744AB'} }}
-            />
+                backBehavior={'history'}
+            >
+                <Tab.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    options={{
+                        tabBarLabel: 'خانه',
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons name="home-outline" color={color} size={26} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="PatientsScreen"
+                    component={PatientsScreen}
+                    options={{
+                        tabBarLabel: 'بیماران',
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons name="clipboard-pulse-outline" color={color} size={26} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="VisitsScreen"
+                    component={VisitsScreen}
+                    options={{
+                        tabBarLabel: 'ویزیت‌ها',
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons name="clock-outline" color={color} size={26} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="ProfileScreen"
+                    component={ProfileScreen}
+                    options={{
+                        tabBarLabel: 'پروفایل من',
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons name="account-outline" color={color} size={26} />
+                        ),
+                    }}
+                />
+            </Tab.Navigator>
+            // <BottomNavigation
+            //     navigationState={{index: this.state.index, routes: this.state.routes}}
+            //     onIndexChange={(index) => {this.pushScreen(index); this.setState({index: index})}}
+            //     renderScene={renderScene}
+            //     shifting={false}
+            //     // theme={{ colors: {primary: '#FFFFFF', background: '#E744AB'} }}
+            // />
         );
     }
 };
 
+export default function(props) {
+    // const navigation = useNavigation();
+    const defaultTheme = useTheme();
+
+    return <DoctorApp {...props} defaultTheme={defaultTheme}/>;
+}
 
 
-export default DoctorApp;

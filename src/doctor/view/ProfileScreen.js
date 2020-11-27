@@ -7,12 +7,13 @@ import {fullSize} from "../../root/view/styles/containers";
 import {py3} from "../../root/view/styles/spacing";
 import {AppbarHeader} from "react-native-paper/src/components/Appbar/AppbarHeader";
 import Icons from 'react-native-vector-icons/EvilIcons';
+import {useNavigation} from '@react-navigation/native';
 
 const _goBack = () => console.log('Went back');
 
 
 
-export default class ProfileScreen extends React.Component {
+class ProfileScreen extends React.Component {
     constructor(props) {
         super(props);
         this.user = {};
@@ -29,7 +30,7 @@ export default class ProfileScreen extends React.Component {
                     <View style={styles.appBarHeaderWrapper}>
                         <View style={styles.headerOfHeader}>
                             <Title>پروفایل کاربری</Title>
-                            <Appbar.Action icon="arrow-left" onPress={_goBack} />
+                            <Appbar.Action icon="arrow-left" onPress={() => this.props.navigation.goBack()} />
                         </View>
                         <View style={styles.bodyOfHeader}>
                             <Icons style={styles.avatar} name={'user'} size={150}/>
@@ -71,6 +72,12 @@ export default class ProfileScreen extends React.Component {
             </View>
         );
     }
+}
+
+export default function(props) {
+    const navigation = useNavigation();
+
+    return <ProfileScreen {...props} navigation={navigation} />;
 }
 
 const styles = StyleSheet.create({
@@ -127,3 +134,4 @@ const styles = StyleSheet.create({
     profileMenuItem: {
     }
 });
+
