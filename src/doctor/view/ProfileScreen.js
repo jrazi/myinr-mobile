@@ -1,7 +1,7 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
 import UnderConstruction from "../../root/view/screen/UnderConstruction";
-import {Appbar, Avatar, Button, Text, Modal, Surface, Title, Headline, Subheading, Caption} from 'react-native-paper';
+import {Appbar, Avatar, Button, Text, Modal, Surface, Title, Headline, Subheading, Caption, List} from 'react-native-paper';
 import {debugBorderBlue, debugBorderRed} from "../../root/view/styles/borders";
 import {fullSize} from "../../root/view/styles/containers";
 import {py3} from "../../root/view/styles/spacing";
@@ -33,12 +33,40 @@ export default class ProfileScreen extends React.Component {
                         </View>
                         <View style={styles.bodyOfHeader}>
                             <Icons style={styles.avatar} name={'user'} size={150}/>
-                            <Title>جواد راضی</Title>
+                            <View>
+                                <Title>جواد راضی</Title>
+                                <Caption>بیمارستان شریعتی</Caption>
+                            </View>
                         </View>
                     </View>
                 </Surface>
                 <View style={styles.containerBody}>
-                    <Text>BODY</Text>
+                    <List.Section>
+                        <Surface style={styles.profileMenuItemContainer}>
+                            <List.Item
+                                style={styles.profileMenuItem}
+                                title={"مشخصات کاربر"}
+                                right={props => <List.Icon icon="arrow-left"/>}
+                                left={props => <List.Icon icon="circle-edit-outline"/>}
+                            />
+                        </Surface>
+                        <Surface style={styles.profileMenuItemContainer}>
+                            <List.Item
+                                style={styles.profileMenuItem}
+                                title={"تنظیمات"}
+                                right={props => <List.Icon icon="arrow-left"/>}
+                                left={props => <List.Icon icon="tune"/>}
+                            />
+                        </Surface>
+                        <Surface style={styles.profileMenuItemContainer}>
+                            <List.Item
+                                style={styles.profileMenuItem}
+                                title={"خروج"}
+                                right={props => <List.Icon icon="arrow-left"/>}
+                                left={props => <List.Icon icon="logout-variant"/>}
+                            />
+                        </Surface>
+                    </List.Section>
                 </View>
             </View>
         );
@@ -92,4 +120,10 @@ const styles = StyleSheet.create({
         // flexGrow: 100,
         padding: 20,
     },
+    profileMenuItemContainer: {
+        elevation: 4,
+        marginVertical: 10,
+    },
+    profileMenuItem: {
+    }
 });
