@@ -5,7 +5,7 @@ import { BottomNavigation, Text as PaperText } from 'react-native-paper';
 import { withTheme } from 'react-native-paper';
 import DefaultTheme from "react-native-paper";
 
-const MusicRoute = () => <PaperText>Music</PaperText>;
+const MusicRoute = (props) => <Text>Music</Text>;
 
 const AlbumsRoute = () => <PaperText>Albums</PaperText>;
 
@@ -29,7 +29,7 @@ class PatientApp extends React.Component {
 
     render() {
         const renderScene = BottomNavigation.SceneMap({
-            home: MusicRoute,
+            home: _PatientApp,
             patients: AlbumsRoute,
             visits: RecentsRoute,
             profile: RecentsRoute,

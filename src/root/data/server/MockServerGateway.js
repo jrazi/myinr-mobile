@@ -1,5 +1,6 @@
 
 import Patient from "../../../patient/domain/Patient";
+import Doctor from "../../../doctor/domain/Doctor";
 
 function sleep(seconds) {
     return new Promise(resolve => setTimeout(resolve, seconds*1000));
@@ -12,7 +13,7 @@ export default class MockServerGateway {
 
     async fetchUserDataWithLogin(username, password) {
         await sleep(3);
-        return new Patient({fullName: 'Javadd', username: '5040'});
+        return new Doctor({fullName: 'Javadd', username: '5040'});
     }
 
     async login(username, password) {
@@ -20,6 +21,6 @@ export default class MockServerGateway {
     }
 
     async fetchUserData(username) {
-        return new Patient({fullName: 'Javadd', username: '5040'});
+        return new Doctor({fullName: 'Javadd', username: '5040'});
     }
 }
