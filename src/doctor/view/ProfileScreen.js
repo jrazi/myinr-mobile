@@ -21,7 +21,7 @@ class ProfileScreen extends React.Component {
             .then(res => {
                 rootDao.deleteUser()
                     .then(user => {
-                        this.props.navigation.navigate('ROOT');
+                        this.props.navigation.navigate('LOGIN');
                     })
             });
     }

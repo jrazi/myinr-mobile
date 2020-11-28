@@ -19,12 +19,9 @@ export default class Navigator extends React.Component {
     render() {
         return (
             <NavigationContainer>
-                <Stack.Navigator>
-                    <Stack.Screen
-                        name="ROOT"
-                        component={RootEntry}
-                        options={{ headerShown: false , headerTitle: props => null }}
-                    />
+                <Stack.Navigator
+                    initialRoute={Screen.LOGIN}
+                >
                     <Stack.Screen
                         name={Screen.LOGIN}
                         component={LoginScreen}

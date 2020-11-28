@@ -9,6 +9,8 @@ import ProfileScreen from "./ProfileScreen";
 import {useNavigation} from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {rootDao} from "../../root/data/dao/RootDao";
+import {UserRole} from "../../root/domain/Role";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -24,9 +26,15 @@ class DoctorApp extends React.Component {
                 { key: 'profile', title: 'پروفایل من', icon: 'account-outline' },
             ]
         }
+        this.user = {};
     }
 
-    pushScreen = (index) => {
+    componentDidMount() {
+        rootDao.getUser().then(user => {
+            if (user == null) this.props.navigation.navigate('LOGIN');
+            else if (this.user.role = UserRole.PATIENT) this.props.navigation.navigate('LOGIN');
+            else this.user = user;
+        });
     }
 
     render() {

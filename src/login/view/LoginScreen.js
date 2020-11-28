@@ -7,6 +7,7 @@ import {rootDao} from "../../root/data/dao/RootDao";
 import * as Locale from "./Locale";
 import LoginForm from "./LoginForm";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
+import {UserRole} from "../../root/domain/Role";
 
 
 export default class LoginScreen extends React.Component {
@@ -19,8 +20,12 @@ export default class LoginScreen extends React.Component {
         this.containerRef = React.createRef();
     }
 
-    componentDidMount = () => {
-
+    componentDidMount() {
+        rootDao.getUser().then(user => {
+            if (user == null) return;
+            if (this.user.role = UserRole.PATIENT) this.props.navigation.navigate('LOGIN');
+            else this.props.navigation.navigate('DOCTOR');;
+        });
     }
 
     changeSubmissionStatus = (newStatus, callback) => {
