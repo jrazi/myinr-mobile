@@ -21,6 +21,12 @@ export default class MockServerGateway {
     }
 
     async fetchUserData(username) {
+        await sleep(3);
         return new Doctor({fullName: 'Javadd', username: '5040'});
+    }
+
+    async logout(username) {
+        await sleep(2);
+        return {};
     }
 }

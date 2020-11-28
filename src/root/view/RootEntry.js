@@ -15,6 +15,14 @@ export default class RootEntry extends React.Component {
     }
 
     componentDidMount = () => {
+        this.refresh();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        this.refresh();
+    }
+
+    refresh = () => {
         this.rootDao.getUser().then(user => {
             if (user == null) this.props.navigation.navigate(Screen.LOGIN);
             else if (user.role === UserRole.PATIENT) this.props.navigation.navigate(Screen.PATIENT);
@@ -26,6 +34,7 @@ export default class RootEntry extends React.Component {
     }
 
     render() {
+        this.refresh();
         return (
             <View style={styles.container}>
             </View>

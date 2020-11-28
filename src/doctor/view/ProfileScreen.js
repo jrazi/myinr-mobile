@@ -4,19 +4,26 @@ import {Appbar, Surface, Title, Caption, List, TouchableRipple} from 'react-nati
 import {fullSize} from "../../root/view/styles/containers";
 import Icons from 'react-native-vector-icons/EvilIcons';
 import {useNavigation} from '@react-navigation/native';
-
-const _goBack = () => console.log('Went back');
-
-
+import {serverGateway} from "../../root/data/server/ServerGateway";
+import {rootDao} from "../../root/data/dao/RootDao";
 
 class ProfileScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.user = {};
         this.state = {}
     }
 
     componentDidMount = async () => {
+    }
+
+    logout = () => {
+        serverGateway.logout('')
+            .then(res => {
+                rootDao.deleteUser()
+                    .then(user => {
+                        this.props.navigation.navigate('ROOT');
+                    })
+            });
     }
 
     render() {
@@ -50,6 +57,7 @@ class ProfileScreen extends React.Component {
                         <MenuItem
                             title={'خروج'}
                             left={(props) => <List.Icon icon={'logout-variant'}/>}
+                            onPress={this.logout}
                         />
                     </List.Section>
                 </View>
@@ -68,7 +76,7 @@ const MenuItem = (props) => {
     return (
         <Surface style={styles.profileMenuItemContainer}>
             <TouchableRipple
-                onPress={() => {}}
+                onPress={props.onPress != undefined ? props.onPress : (() => {})}
                 rippleColor="rgba(0, 0, 0, .2)"
             >
                 <List.Item

@@ -28,9 +28,15 @@ export class RootDao {
         return await this.rootRepository.saveUser(user);
     }
 
+    async deleteUser() {
+        let user = await this.rootRepository.deleteUser();
+        return user;
+    }
+
     getLocale() {
         return Locale.FA;
     }
+
 }
 
 export const rootDao = new RootDao();

@@ -42,4 +42,15 @@ export default class RootRepository {
             return null;
         }
     }
+
+    async deleteUser() {
+        try {
+            let user = await this.getUser();
+            if (user != null) await AsyncStorage.removeItem(user.username);
+            await AsyncStorage.removeItem(USER_META_KEY);
+            return user;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
