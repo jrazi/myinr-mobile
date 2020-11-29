@@ -1,17 +1,71 @@
 import React from "react";
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, View, ScrollView} from "react-native";
 import UnderConstruction from "../../root/view/screen/UnderConstruction";
 import {useNavigation} from "@react-navigation/native";
-import {List} from "react-native-paper";
+import {List, Surface, Card, Title, Paragraph, Headline, Text, Caption, Subheading, DataTable, Menu, Avatar} from "react-native-paper";
+import Icons from "react-native-vector-icons/EvilIcons";
+import {debugBorderRed} from "../../root/view/styles/borders";
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const patientsInfo = [
+const patientList = [
     {
+        username: 'rtark',
         fullName: 'رامتین ترکاشوند',
-        age: 65,
+        age: '۶۵',
         sex: 'M',
         illness: 'آریتمی قلب',
         lastVisit: '۹۹/۰۸/۲۷',
-    }
+    },
+    {
+        username: 'armin_raisi',
+        fullName: 'آرمان رئیسی',
+        age: '۵۸',
+        sex: 'M',
+        illness: ' نارسایی دریچه قلب',
+        lastVisit: '۹۹/۰۶/۱۱',
+    },
+    {
+        username: 'maetav',
+        fullName: 'مائده توکلی',
+        age: '۴۲',
+        sex: 'F',
+        illness: 'ترومبوز سیاهرگی',
+        lastVisit: '۹۹/۰۵/۱۱',
+    },
+    {
+        username: 'fargo',
+        fullName: 'فرشید قربانی',
+        age: '۶۰',
+        sex: 'M',
+        illness: 'نارسایی دریچه قلب',
+        lastVisit: '۹۹/۰۸/۰۱',
+    },
+    {
+        username: 'alidav',
+        fullName: 'علی داوودنژاد',
+        age: '۸۳',
+        sex: 'M',
+        illness: 'نامشخص',
+        lastVisit: '۹۹/۰۳/۰۵',
+    },
+    {
+        username: 'fatemenas',
+        fullName: 'فاطمه نصیری',
+        age: '۵۱',
+        sex: 'F',
+        illness: 'آریتمی قلب',
+        lastVisit: '۹۹/۰۷/۲۹',
+    },
+    {
+        username: 'mahnazhagh',
+        fullName: 'مهناز حقیقت‌‌نژاد',
+        age: '۷۷',
+        sex: 'F',
+        illness: 'نامشخص',
+        lastVisit: '۹۹/۰۵/۱۱',
+    },
 ];
 
 class PatientsScreen extends React.Component {
@@ -26,47 +80,138 @@ class PatientsScreen extends React.Component {
 
 
     render() {
+        const patientInfoCards = [];
+        for (const patient of patientList) {
+            patientInfoCards.push(
+                <PatientInfoCard
+                    key={patient.username}
+                    patientInfo={patient}
+                />
+            );
+        }
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <View style={styles.patientsListContainer}>
                     <List.Section>
-                        <PatientInfoCard
-                            title={'مشخصات کاربر'}
-                            left={(props) => <List.Icon icon={'circle-edit-outline'}/>}
-                        />
+                        {patientInfoCards}
                     </List.Section>
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 }
 
 export default PatientsScreen;
 
-const PatientInfoCard = (props) => {
+const AlternatePatientInfoCard = (props) => {
+    // TODO Refactor
+    const nameSplitted = props.patientInfo.fullName.split(/\s+/);
+    const nameChunks = [nameSplitted.shift(), nameSplitted.join(' ')];
     return (
-        <List.Item
-            style={styles.patientInfoCard}
-            title="First Item"
-            description="Item description"
-            left={() => <List.Icon icon="folder"/>}
-        />
+        <Surface style={styles.patientInfoCardContainer}>
+            <Card>
+                <Card.Title
+                    title={props.patientInfo.fullName}
+                    subtitle="بیمارستان رازی"
+                    left={() => <Avatar.Text size={32} label={nameChunks[0][0] + '.' + nameChunks[1][0]} />}
+                />
+                <Card.Content>
+                    <View >
+                        <PatientCardDetails patientInfo={props.patientInfo}/>
+                    </View>
+                </Card.Content>
+            </Card>
+        </Surface>
     );
 }
 
+const PatientInfoCard = (props) => {
+    return (<AlternatePatientInfoCard {...props}/>);
+    return (
+        <Surface style={styles.patientInfoCardContainer}>
+            <List.Item
+                style={styles.patientInfoCard}
+                title={props.patientInfo.fullName}
+                // description={() => <PatientCardDetails patientInfo={props.patientInfo}/>}
+                left={() => <Icons style={styles.avatar} name={'user'} size={64}/>}
+                titleStyle={{paddingHorizontal: 10, paddingBottom: 10}}
+                descriptionStyle={{paddingHorizontal: 10, paddingBottom: 10}}
+            />
+        </Surface>
+    );
+}
+
+const PatientCardDetails = (props) => {
+    return (
+        <Row>
+            <InfoItem
+                title={props.patientInfo.illness}
+                customIcon={<MaterialCommunityIcons name="stethoscope" size={20}/>}
+            />
+            <InfoItem
+                title={`${props.patientInfo.age} سال `}
+                customIcon={<MaterialCommunityIcons name={'calendar-account'} size={20}/>}
+            />
+        </Row>
+    );
+}
+
+const InfoItem = (props) => {
+    return (
+        <View
+            style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+            }}
+        >
+            <View
+                style={{
+                    paddingHorizontal: 4,
+                }}
+            >
+                {props.customIcon}
+            </View>
+            <View
+                style={{
+                    paddingHorizontal: 4,
+                }}
+            >
+                <Text>{props.title}</Text>
+            </View>
+        </View>
+    )
+}
+const Row = (props) => {return (
+    <View
+        style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+        }}
+    >
+        {props.children}
+    </View>
+)}
+
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 200,
+        paddingVertical: 10,
         paddingHorizontal: 40,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
         flex: 1,
     },
 
     patientsListContainer: {
-
+        paddingVertical: 10,
     },
     patientInfoCardContainer: {
+        elevation: 4,
+        marginVertical: 15,
     },
     patientInfoCard: {
+    },
+    patientCardDetails: {
     }
 });
