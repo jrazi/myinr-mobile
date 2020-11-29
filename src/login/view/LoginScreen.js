@@ -8,7 +8,8 @@ import * as Locale from "./Locale";
 import LoginForm from "./LoginForm";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
 import {UserRole} from "../../root/domain/Role";
-import {Button} from 'react-native-paper';
+import {Button, Subheading, Title} from 'react-native-paper';
+import {currentTheme} from "../../../App";
 
 export default class LoginScreen extends React.Component {
     constructor(props) {
@@ -69,7 +70,7 @@ export default class LoginScreen extends React.Component {
                             onPress={() => {this.onFormSubmit()}}
                             // submissionStatus={this.state.submissionStatus}
                         >
-                            {Locale[this.locale].text.button.LOGIN}
+                            <Subheading style={{color: currentTheme.colors.background}}>{Locale[this.locale].text.button.LOGIN}</Subheading>
                         </Button>
                     </View>
                 </View>

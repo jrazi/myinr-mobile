@@ -108,10 +108,10 @@ const LogoutDialog = (props) => {
     return (
         <Portal>
             <Dialog visible={props.visible} onDismiss={props.onDismiss} style={{paddingBottom: 10}} dismissable={false}>
-                <Dialog.Title>آیا می‌خواهید خارج شوید؟</Dialog.Title>
-                <Dialog.Actions style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                    <Button style={{width: 50}} mode="outlined" loading={props.logoutButtonLoading} onPress={props.onLogout} color={DefaultTheme.colors.text}>بله</Button>
-                    <Button disabled={!props.dismissable} style={{width: 50}} mode="outlined" onPress={props.onDismiss} color={DefaultTheme.colors.text}>خیر</Button>
+                <Dialog.Title color={currentTheme.colors.placeholder}>آیا می‌خواهید خارج شوید؟</Dialog.Title>
+                <Dialog.Actions >
+                    <Button style={{width: 70, }} mode="text" loading={props.logoutButtonLoading} onPress={props.onLogout} >بله</Button>
+                    <Button disabled={!props.dismissable} style={{width: 50, }} mode="text" onPress={props.onDismiss} >خیر</Button>
                 </Dialog.Actions>
             </Dialog>
         </Portal>
