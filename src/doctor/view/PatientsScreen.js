@@ -2,12 +2,13 @@ import React from "react";
 import {StyleSheet, View, ScrollView} from "react-native";
 import UnderConstruction from "../../root/view/screen/UnderConstruction";
 import {useNavigation} from "@react-navigation/native";
-import {List, Surface, Card, Title, Paragraph, Headline, Text, Caption, Subheading, DataTable, Menu, Avatar} from "react-native-paper";
+import {List, Surface, Card, Title, Paragraph, Headline, Text, Caption, Subheading, DataTable, Menu, Avatar, Appbar} from "react-native-paper";
 import Icons from "react-native-vector-icons/EvilIcons";
 import {debugBorderRed} from "../../root/view/styles/borders";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {fullSize} from "../../root/view/styles/containers";
 
 const patientList = [
     {
@@ -90,13 +91,24 @@ class PatientsScreen extends React.Component {
             );
         }
         return (
-            <ScrollView style={styles.container}>
-                <View style={styles.patientsListContainer}>
-                    <List.Section>
-                        {patientInfoCards}
-                    </List.Section>
-                </View>
-            </ScrollView>
+            <View style={styles.componentWrapper}>
+                <Appbar.Header
+                    style={{
+                        paddingVertical: 40,
+                        paddingHorizontal: 10,
+                    }}
+                >
+                    <Appbar.Content title="فهرست بیماران" subtitle="بیمارستان شریعتی" />
+                    <Appbar.Action icon="arrow-left" onPress={() => this.props.navigation.goBack()} />
+                </Appbar.Header>
+                <ScrollView style={styles.container}>
+                    <View style={styles.patientsListContainer}>
+                        <List.Section>
+                            {patientInfoCards}
+                        </List.Section>
+                    </View>
+                </ScrollView>
+            </View>
         );
     }
 }
@@ -112,7 +124,7 @@ const AlternatePatientInfoCard = (props) => {
             <Card>
                 <Card.Title
                     title={props.patientInfo.fullName}
-                    subtitle="بیمارستان رازی"
+                    subtitle="تحت نظر از ‌فروردین ۹۸"
                     left={() => <Avatar.Text size={32} label={nameChunks[0][0] + '.' + nameChunks[1][0]} />}
                 />
                 <Card.Content>
@@ -196,9 +208,12 @@ const Row = (props) => {return (
 )}
 
 const styles = StyleSheet.create({
+    componentWrapper: {
+        ...fullSize,
+    },
     container: {
         paddingVertical: 10,
-        paddingHorizontal: 40,
+        paddingHorizontal: 30,
         // backgroundColor: '#fff',
         flex: 1,
     },
@@ -208,7 +223,7 @@ const styles = StyleSheet.create({
     },
     patientInfoCardContainer: {
         elevation: 4,
-        marginVertical: 15,
+        marginVertical: 10,
     },
     patientInfoCard: {
     },

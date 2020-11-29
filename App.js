@@ -12,7 +12,7 @@ const theme = {
     ...DefaultTheme,
     colors: {
         ...DefaultTheme.colors,
-        // primary: '#fff',
+        primary: '#fff',
         accent: '#fff',
         background: '#fff',
         surface: '#fff',
