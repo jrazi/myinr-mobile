@@ -47,9 +47,13 @@ class ProfileScreen extends React.Component {
                         </View>
                         <View style={styles.bodyOfHeader}>
                             <Icons style={styles.avatar} name={'user'} size={150}/>
-                            <View>
-                                <Title>جواد راضی</Title>
-                                <Caption>بیمارستان شریعتی</Caption>
+                            <View
+                                style={{
+                                    // alignItems: 'center',
+                                }}
+                            >
+                                <Title>علی داوودنژاد</Title>
+                                {/*<Caption>مرکز درمانی لقمان</Caption>*/}
                             </View>
                         </View>
                     </View>

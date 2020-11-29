@@ -29,7 +29,7 @@ const patientList = [
     },
     {
         username: 'maetav',
-        fullName: 'مائده توکلی',
+        fullName: 'مائده زارع',
         age: '۴۲',
         sex: 'F',
         illness: 'ترومبوز سیاهرگی',

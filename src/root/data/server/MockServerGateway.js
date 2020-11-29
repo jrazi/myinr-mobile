@@ -13,6 +13,7 @@ export default class MockServerGateway {
 
     async fetchUserDataWithLogin(username, password) {
         await sleep(3);
+        return new Patient({fullName: 'Javadd', username: '5040'});
         return new Doctor({fullName: 'Javadd', username: '5040'});
     }
 
@@ -22,6 +23,7 @@ export default class MockServerGateway {
 
     async fetchUserData(username) {
         await sleep(3);
+        return new Patient({fullName: 'Javadd', username: '5040'});
         return new Doctor({fullName: 'Javadd', username: '5040'});
     }
 

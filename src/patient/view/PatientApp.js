@@ -1,79 +1,92 @@
 import React from 'react';
-import {StyleSheet, Text, View} from "react-native";
-import FeatherIcon from 'react-native-vector-icons/Feather';
-import { BottomNavigation, Text as PaperText } from 'react-native-paper';
-import { withTheme } from 'react-native-paper';
-import DefaultTheme from "react-native-paper";
+import {BottomNavigation, useTheme} from "react-native-paper";
+import HomeScreen from "./HomeScreen";
+import ReportsScreen from "./ReportsScreen";
+import MyDoctorScreen from "./MyDoctorScreen";
+import ProfileScreen from "./ProfileScreen";
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {rootDao} from "../../root/data/dao/RootDao";
+import {UserRole} from "../../root/domain/Role";
 
-const MusicRoute = (props) => <Text>Music</Text>;
+const Tab = createMaterialBottomTabNavigator();
 
-const AlbumsRoute = () => <PaperText>Albums</PaperText>;
-
-const RecentsRoute = () => <PaperText>Recents</PaperText>;
-
-
-
-class PatientApp extends React.Component {
+class DoctorApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             index: 0,
-            routes: [
-                { key: 'home', title: 'خانه', icon: 'home-outline' },
-                { key: 'patients', title: 'بیماران', icon: 'clipboard-pulse-outline' },
-                { key: 'visits', title: 'ویزیت‌ها', icon: 'clock-outline' },
-                { key: 'profile', title: 'پروفایل من', icon: 'account-outline' },
-            ]
         }
+        this.user = {};
+    }
+
+    componentDidMount() {
+        rootDao.getUser().then(user => {
+            if (user == null) this.props.navigation.navigate('LOGIN');
+            else if (this.user.role = UserRole.PATIENT) this.props.navigation.navigate('LOGIN');
+            else this.user = user;
+        });
     }
 
     render() {
-        const renderScene = BottomNavigation.SceneMap({
-            home: _PatientApp,
-            patients: AlbumsRoute,
-            visits: RecentsRoute,
-            profile: RecentsRoute,
-        });
-
-        // const colors = DefaultTheme.colors;
+        const colors = this.props.defaultTheme.colors;
         return (
-            <BottomNavigation
-                navigationState={{index: this.state.index, routes: this.state.routes}}
-                onIndexChange={(index) => {this.setState({index: index})}}
-                renderScene={renderScene}
+            <Tab.Navigator
+                initialRouteName={"patient/home"}
+                barStyle={{ backgroundColor: colors.background }}
                 shifting={false}
-                theme={{ colors: {primary: '#FFFFFF', background: '#E744AB'} }}
-            />
+                backBehavior={'history'}
+            >
+                <Tab.Screen
+                    name="patient/home"
+                    component={HomeScreen}
+                    options={{
+                        tabBarLabel: 'خانه',
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons name="home-outline" color={color} size={26} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="patient/reports"
+                    component={ReportsScreen}
+                    options={{
+                        tabBarLabel: 'گزارشات',
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons name="clipboard-pulse-outline" color={color} size={26} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="patient/doctor"
+                    component={MyDoctorScreen}
+                    options={{
+                        tabBarLabel: 'پزشک من',
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons name="stethoscope" color={color} size={26} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="patient/profile"
+                    component={ProfileScreen}
+                    options={{
+                        tabBarLabel: 'پروفایل من',
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons name="account-outline" color={color} size={26} />
+                        ),
+                    }}
+                />
+            </Tab.Navigator>
         );
     }
 };
 
-class _PatientApp extends React.Component {
-    constructor(props) {
-        super(props);
-        this.user = {};
-        this.state = {}
-    }
+export default function(props) {
+    // const navigation = useNavigation();
+    const defaultTheme = useTheme();
 
-    componentDidMount = async () => {
-    }
-
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text>PATIENT APP</Text>
-            </View>
-        );
-    }
+    return <DoctorApp {...props} defaultTheme={defaultTheme}/>;
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
 
-export default PatientApp;
