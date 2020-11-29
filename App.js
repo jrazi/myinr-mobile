@@ -3,7 +3,10 @@ import React from 'react';
 import Navigator from "./src/root/view/Navigator";
 import * as Font from "expo-font";
 import AppLoading from "expo/build/launch/AppLoading";
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import {DefaultTheme, Portal, Provider as PaperProvider} from 'react-native-paper';
+import {Locale} from "./src/root/domain/Locale";
+import {I18nManager} from "react-native";
+import {rootDao} from "./src/root/data/dao/RootDao";
 
 const theme = {
     ...DefaultTheme,
@@ -27,6 +30,9 @@ export default class App extends React.Component {
 
     componentDidMount() {
         this.loadFontsAsync();
+        const locale = rootDao.getLocale();
+        if (locale == Locale.FA) I18nManager.forceRTL(true);
+        else I18nManager.forceRTL(true);
     }
 
     loadFontsAsync = async () => {
@@ -41,7 +47,9 @@ export default class App extends React.Component {
         if (!this.state.loaded) return <AppLoading/>
         else return (
             <PaperProvider theme={theme}>
-                <Navigator/>
+                <Portal.Host>
+                    <Navigator/>
+                </Portal.Host>
             </PaperProvider>
         );
     }

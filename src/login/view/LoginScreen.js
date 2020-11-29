@@ -9,7 +9,6 @@ import LoginForm from "./LoginForm";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
 import {UserRole} from "../../root/domain/Role";
 
-
 export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -23,8 +22,18 @@ export default class LoginScreen extends React.Component {
     componentDidMount() {
         rootDao.getUser().then(user => {
             if (user == null) return;
-            if (this.user.role = UserRole.PATIENT) this.props.navigation.navigate('LOGIN');
-            else this.props.navigation.navigate('DOCTOR');;
+            if (user.role == UserRole.PATIENT) {
+                this.props.navigation.reset({
+                    index: 0,
+                    routes: [{name: 'PATIENT'}],
+                });
+            }
+            else if (user.role == UserRole.DOCTOR) {
+                this.props.navigation.reset({
+                    index: 0,
+                    routes: [{name: 'DOCTOR'}],
+                });
+            }
         });
     }
 

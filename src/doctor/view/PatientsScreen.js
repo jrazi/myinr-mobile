@@ -2,6 +2,17 @@ import React from "react";
 import {StyleSheet, Text, View} from "react-native";
 import UnderConstruction from "../../root/view/screen/UnderConstruction";
 import {useNavigation} from "@react-navigation/native";
+import {List} from "react-native-paper";
+
+const patientsInfo = [
+    {
+        fullName: 'رامتین ترکاشوند',
+        age: 65,
+        sex: 'M',
+        illness: 'آریتمی قلب',
+        lastVisit: '۹۹/۰۸/۲۷',
+    }
+];
 
 class PatientsScreen extends React.Component {
     constructor(props) {
@@ -11,34 +22,51 @@ class PatientsScreen extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("nav history", this.props.navigation);
-        this.props.navigation.push('Doctor_PatientScreen');
     }
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        console.log("nav history", this.props.navigation);
-        this.props.navigation.push('Doctor_PatientScreen');
-        return true;
-    }
 
     render() {
         return (
-            <UnderConstruction/>
+            <View style={styles.container}>
+                <View style={styles.patientsListContainer}>
+                    <List.Section>
+                        <PatientInfoCard
+                            title={'مشخصات کاربر'}
+                            left={(props) => <List.Icon icon={'circle-edit-outline'}/>}
+                        />
+                    </List.Section>
+                </View>
+            </View>
         );
     }
 }
 
-export default function(props) {
-    const navigation = useNavigation();
+export default PatientsScreen;
 
-    return <PatientsScreen {...props} navigation={navigation} />;
+const PatientInfoCard = (props) => {
+    return (
+        <List.Item
+            style={styles.patientInfoCard}
+            title="First Item"
+            description="Item description"
+            left={() => <List.Icon icon="folder"/>}
+        />
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        paddingVertical: 200,
+        paddingHorizontal: 40,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex: 1,
     },
+
+    patientsListContainer: {
+
+    },
+    patientInfoCardContainer: {
+    },
+    patientInfoCard: {
+    }
 });

@@ -28,13 +28,9 @@ export default class RootEntry extends React.Component {
             else if (user.role === UserRole.PATIENT) this.props.navigation.navigate(Screen.PATIENT);
             else if (user.role === UserRole.DOCTOR) this.props.navigation.navigate(Screen.DOCTOR);
         });
-        const locale = this.rootDao.getLocale();
-        if (locale == Locale.FA) I18nManager.forceRTL(true);
-        else I18nManager.forceRTL(true);
     }
 
     render() {
-        this.refresh();
         return (
             <View style={styles.container}>
             </View>

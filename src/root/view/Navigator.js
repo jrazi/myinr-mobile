@@ -20,8 +20,13 @@ export default class Navigator extends React.Component {
         return (
             <NavigationContainer>
                 <Stack.Navigator
-                    initialRoute={Screen.LOGIN}
+                    initialRoute={'ROOT'}
                 >
+                    <Stack.Screen
+                        name={'ROOT'}
+                        component={RootEntry}
+                        options={{ headerShown: false , headerTitle: props => null }}
+                    />
                     <Stack.Screen
                         name={Screen.LOGIN}
                         component={LoginScreen}

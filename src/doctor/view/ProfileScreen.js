@@ -1,6 +1,6 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import {Appbar, Surface, Title, Caption, List, TouchableRipple} from 'react-native-paper';
+import {DefaultTheme, Appbar, Surface, Title, Caption, List, TouchableRipple, Portal, Dialog, Paragraph, Button} from 'react-native-paper';
 import {fullSize} from "../../root/view/styles/containers";
 import Icons from 'react-native-vector-icons/EvilIcons';
 import {useNavigation} from '@react-navigation/native';
@@ -10,20 +10,30 @@ import {rootDao} from "../../root/data/dao/RootDao";
 class ProfileScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            logoutDialogVisible: false,
+            isLoggingOut: false,
+        }
     }
 
-    componentDidMount = async () => {
+    componentDidMount = () => {
     }
 
     logout = () => {
-        serverGateway.logout('')
-            .then(res => {
-                rootDao.deleteUser()
-                    .then(user => {
-                        this.props.navigation.navigate('LOGIN');
-                    })
-            });
+        this.setState({isLoggingOut: true}, () => {
+            serverGateway.logout('')
+                .then(res => {
+                    rootDao.deleteUser()
+                        .then(user => {
+                            this.setState({isLoggingOut: true}, () => {
+                                this.props.navigation.reset({
+                                    index: 0,
+                                    routes: [{name: 'LOGIN'}],
+                                });
+                            })
+                        })
+                });
+        });
     }
 
     render() {
@@ -57,20 +67,23 @@ class ProfileScreen extends React.Component {
                         <MenuItem
                             title={'خروج'}
                             left={(props) => <List.Icon icon={'logout-variant'}/>}
-                            onPress={this.logout}
+                            onPress={() => this.setState({logoutDialogVisible: true})}
                         />
                     </List.Section>
                 </View>
+                <LogoutDialog
+                    visible={this.state.logoutDialogVisible}
+                    onDismiss={() => {this.setState({logoutDialogVisible: false})}}
+                    onLogout = {this.logout}
+                    logoutButtonLoading={this.state.isLoggingOut}
+                    dismissable={true}
+                />
             </View>
         );
     }
 }
 
-export default function(props) {
-    const navigation = useNavigation();
-
-    return <ProfileScreen {...props} navigation={navigation} />;
-}
+export default ProfileScreen;
 
 const MenuItem = (props) => {
     return (
@@ -89,6 +102,22 @@ const MenuItem = (props) => {
         </Surface>
     );
 }
+
+const LogoutDialog = (props) => {
+    return (
+        <Portal>
+            <Dialog visible={props.visible} onDismiss={props.onDismiss} style={{paddingBottom: 10}} dismissable={false}>
+                <Dialog.Title>آیا می‌خواهید خارج شوید؟</Dialog.Title>
+                <Dialog.Actions style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                    <Button style={{width: 50}} mode="outlined" loading={props.logoutButtonLoading} onPress={props.onLogout} color={DefaultTheme.colors.text}>بله</Button>
+                    <Button disabled={!props.dismissable} style={{width: 50}} mode="outlined" onPress={props.onDismiss} color={DefaultTheme.colors.text}>خیر</Button>
+                </Dialog.Actions>
+            </Dialog>
+        </Portal>
+    );
+}
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

@@ -48,7 +48,7 @@ class DoctorApp extends React.Component {
         const colors = this.props.defaultTheme.colors;
         return (
             <Tab.Navigator
-                initialRouteName={"Home"}
+                initialRouteName={"PatientsScreen"}
                 barStyle={{ backgroundColor: colors.background }}
                 shifting={false}
                 backBehavior={'history'}
