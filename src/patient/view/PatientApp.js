@@ -11,7 +11,7 @@ import {UserRole} from "../../root/domain/Role";
 
 const Tab = createMaterialBottomTabNavigator();
 
-class DoctorApp extends React.Component {
+class PatientApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -86,7 +86,7 @@ export default function(props) {
     // const navigation = useNavigation();
     const defaultTheme = useTheme();
 
-    return <DoctorApp {...props} defaultTheme={defaultTheme}/>;
+    return <PatientApp {...props} defaultTheme={defaultTheme}/>;
 }
 
 

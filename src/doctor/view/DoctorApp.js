@@ -17,15 +17,6 @@ const Tab = createMaterialBottomTabNavigator();
 class DoctorApp extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            index: 0,
-            routes: [
-                { key: 'home', title: 'خانه', icon: 'home-outline' },
-                { key: 'patients', title: 'بیماران', icon: 'clipboard-pulse-outline' },
-                { key: 'visits', title: 'ویزیت‌ها', icon: 'clock-outline' },
-                { key: 'profile', title: 'پروفایل من', icon: 'account-outline' },
-            ]
-        }
         this.user = {};
     }
 
@@ -38,17 +29,10 @@ class DoctorApp extends React.Component {
     }
 
     render() {
-        const renderScene = BottomNavigation.SceneMap({
-            home: HomeScreen,
-            patients: PatientsScreen,
-            visits: VisitsScreen,
-            profile: ProfileScreen,
-        });
-
         const colors = this.props.defaultTheme.colors;
         return (
             <Tab.Navigator
-                initialRouteName={"PatientsScreen"}
+                initialRouteName={"Home"}
                 barStyle={{ backgroundColor: colors.background }}
                 shifting={false}
                 backBehavior={'history'}

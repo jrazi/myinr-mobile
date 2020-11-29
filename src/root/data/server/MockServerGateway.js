@@ -12,9 +12,12 @@ export default class MockServerGateway {
     }
 
     async fetchUserDataWithLogin(username, password) {
-        await sleep(3);
-        return new Patient({fullName: 'Javadd', username: '5040'});
-        return new Doctor({fullName: 'Javadd', username: '5040'});
+        if (password == 'password') {
+            let user = await this.fetchUserData(username);
+            return user;
+        } else {
+            return null;
+        }
     }
 
     async login(username, password) {
@@ -23,8 +26,12 @@ export default class MockServerGateway {
 
     async fetchUserData(username) {
         await sleep(3);
-        return new Patient({fullName: 'Javadd', username: '5040'});
-        return new Doctor({fullName: 'Javadd', username: '5040'});
+        if (username == 'doctor') {
+            return new Doctor({fullName: 'حبیب سربلند', username: 'doctor'});
+        }
+        else if (username == 'patient') {
+            return new Patient({fullName: 'علی داوودنژاد', username: 'patient'});
+        }
     }
 
     async logout(username) {
