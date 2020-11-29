@@ -6,6 +6,7 @@ import Icons from 'react-native-vector-icons/EvilIcons';
 import {useNavigation} from '@react-navigation/native';
 import {serverGateway} from "../../root/data/server/ServerGateway";
 import {rootDao} from "../../root/data/dao/RootDao";
+import {currentTheme} from "../../../App";
 
 class ProfileScreen extends React.Component {
     constructor(props) {
@@ -42,11 +43,11 @@ class ProfileScreen extends React.Component {
                 <Surface style={styles.appBarHeader}>
                     <View style={styles.appBarHeaderWrapper}>
                         <View style={styles.headerOfHeader}>
-                            <Title>پروفایل کاربری</Title>
-                            <Appbar.Action icon="arrow-left" onPress={() => this.props.navigation.goBack()} />
+                            <Title style={{color: currentTheme.colors.primary}}>پروفایل کاربری</Title>
+                            <Appbar.Action icon="arrow-left" onPress={() => this.props.navigation.goBack()} color={currentTheme.colors.placeholder}/>
                         </View>
                         <View style={styles.bodyOfHeader}>
-                            <Icons style={styles.avatar} name={'user'} size={150}/>
+                            <Icons style={styles.avatar} name={'user'} size={150} color={currentTheme.colors.placeholder}/>
                             <View>
                                 <Title>حبیب سربلند</Title>
                                 <Caption>بیمارستان شریعتی</Caption>
@@ -58,15 +59,15 @@ class ProfileScreen extends React.Component {
                     <List.Section>
                         <MenuItem
                             title={'مشخصات من'}
-                            left={(props) => <List.Icon icon={'circle-edit-outline'}/>}
+                            left={(props) => <List.Icon icon={'circle-edit-outline'} color={currentTheme.colors.primary}/>}
                         />
                         <MenuItem
                             title={'تنظیمات'}
-                            left={(props) => <List.Icon icon={'tune'}/>}
+                            left={(props) => <List.Icon icon={'tune'} color={currentTheme.colors.primary}/>}
                         />
                         <MenuItem
                             title={'خروج'}
-                            left={(props) => <List.Icon icon={'logout-variant'}/>}
+                            left={(props) => <List.Icon icon={'logout-variant'} color={currentTheme.colors.primary}/>}
                             onPress={() => this.setState({logoutDialogVisible: true})}
                         />
                     </List.Section>
@@ -125,10 +126,14 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         // backgroundColor: '#fff',
         ...fullSize,
+        // paddingVertical: 10,
+        // paddingHorizontal: 30,
+
     },
     appBarHeader: {
         elevation: 4,
-        padding: 20,
+        paddingLeft: 15,
+        paddingRight: 10,
         paddingTop: 40,
     },
     appBarHeaderWrapper: {

@@ -11,6 +11,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {rootDao} from "../../root/data/dao/RootDao";
 import {UserRole} from "../../root/domain/Role";
+import {currentTheme, theme} from "../../../App";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -36,6 +37,8 @@ class DoctorApp extends React.Component {
                 barStyle={{ backgroundColor: colors.background }}
                 shifting={false}
                 backBehavior={'history'}
+                activeColor={currentTheme.colors.primary}
+                inactiveColor={currentTheme.colors.placeholder}
             >
                 <Tab.Screen
                     name="Home"

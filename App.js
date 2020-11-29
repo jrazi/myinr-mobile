@@ -13,11 +13,22 @@ export const theme = {
     colors: {
         ...DefaultTheme.colors,
         // primary: '#fff',
-        accent: '#fff',
+        // accent: '#fff',
         background: '#fff',
         surface: '#fff',
     },
 };
+
+export const currentTheme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        primary: '#03045e',
+        accent: '#0077b6',
+        background: '#fff',
+        surface: '#fff',
+    },
+}
 
 export const mostlyWhiteTheme = {
     ...DefaultTheme,
@@ -57,7 +68,7 @@ export default class App extends React.Component {
     render() {
         if (!this.state.loaded) return <AppLoading/>
         else return (
-            <PaperProvider theme={theme}>
+            <PaperProvider theme={currentTheme}>
                 <Portal.Host>
                     <Navigator/>
                 </Portal.Host>

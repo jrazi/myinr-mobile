@@ -9,6 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {fullSize} from "../../root/view/styles/containers";
+import {currentTheme, mostlyWhiteTheme} from "../../../App";
 
 const patientList = [
     {
@@ -97,9 +98,10 @@ class PatientsScreen extends React.Component {
                         paddingVertical: 40,
                         paddingHorizontal: 10,
                     }}
+                    theme={mostlyWhiteTheme}
                 >
-                    <Appbar.Content title="فهرست بیماران" subtitle="بیمارستان شریعتی" />
-                    <Appbar.Action icon="arrow-left" onPress={() => this.props.navigation.goBack()} />
+                    <Appbar.Content color={currentTheme.colors.primary} title="فهرست بیماران"  />
+                    <Appbar.Action icon="arrow-left" onPress={() => this.props.navigation.goBack()} color={currentTheme.colors.placeholder}/>
                 </Appbar.Header>
                 <ScrollView style={styles.container}>
                     <View style={styles.patientsListContainer}>
@@ -158,11 +160,11 @@ const PatientCardDetails = (props) => {
         <Row>
             <InfoItem
                 title={props.patientInfo.illness}
-                customIcon={<MaterialCommunityIcons name="stethoscope" size={20}/>}
+                customIcon={<MaterialCommunityIcons name="stethoscope" size={20} color={currentTheme.colors.placeholder}/>}
             />
             <InfoItem
                 title={`${props.patientInfo.age} سال `}
-                customIcon={<MaterialCommunityIcons name={'calendar-account'} size={20}/>}
+                customIcon={<MaterialCommunityIcons name={'calendar-account'} size={20} color={currentTheme.colors.placeholder}/>}
             />
         </Row>
     );
