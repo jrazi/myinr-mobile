@@ -8,7 +8,18 @@ import {Locale} from "./src/root/domain/Locale";
 import {I18nManager} from "react-native";
 import {rootDao} from "./src/root/data/dao/RootDao";
 
-const theme = {
+export const theme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        // primary: '#fff',
+        accent: '#fff',
+        background: '#fff',
+        surface: '#fff',
+    },
+};
+
+export const mostlyWhiteTheme = {
     ...DefaultTheme,
     colors: {
         ...DefaultTheme.colors,

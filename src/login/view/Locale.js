@@ -6,7 +6,7 @@ export const EN = {
             LOGIN: 'Login',
         },
         title: {
-            LOGIN_FORM: 'Welcome!',
+            LOGIN_FORM: 'Please enter your username and password',
         },
         form: {
             USERNAME_PLACEHOLDER: 'Username',
@@ -24,7 +24,7 @@ export const FA = {
             LOGIN: 'ورود',
         },
         title: {
-            LOGIN_FORM: 'خوش آمدید!',
+            LOGIN_FORM: 'لطفا نام کاربری و رمز عبور خود را وارد کنید',
         },
         form: {
             USERNAME_PLACEHOLDER: 'نام کاربری',

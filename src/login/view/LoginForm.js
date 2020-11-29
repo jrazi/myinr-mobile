@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, Button, TextInput, Alert} from "react-native";
+import {StyleSheet, View, Alert} from "react-native";
 import {Spacing, Theme} from "../../root/view/styles";
 import {debugBorderBlue, debugBorderRed} from "../../root/view/styles/borders";
 import {Formik} from "formik";
@@ -13,6 +13,7 @@ import {serverGateway} from "../../root/data/server/ServerGateway";
 import {UserRole} from "../../root/domain/Role";
 import {Screen} from "../../root/view/Screen";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
+import {TextInput, Button, Text, Title, Headline, HelperText} from 'react-native-paper';
 
 export default class LoginForm extends React.Component {
 
@@ -62,31 +63,54 @@ export default class LoginForm extends React.Component {
                         ({ handleChange, handleBlur, values, touched, errors }) => {return (
                             <View style={styles.formContainer}>
                                 <View style={styles.formTitle}>
-                                    <DefaultText style={styles.titleText} minimumFontScale={3}>{Locale[rootDao.getLocale()].text.title.LOGIN_FORM}</DefaultText>
+                                    <Title>{Locale[rootDao.getLocale()].text.title.LOGIN_FORM}</Title>
+                                    {/*<DefaultText style={styles.titleText} minimumFontScale={3}>{Locale[rootDao.getLocale()].text.title.LOGIN_FORM}</DefaultText>*/}
                                 </View>
                                 <View style={styles.formRow}>
-                                    <DefaultTextInput
-                                        placeholder={Locale[rootDao.getLocale()].text.form.USERNAME_PLACEHOLDER}
-                                        autoCompleteType={'username'}
-                                        autoCorrect={false}
+                                    <TextInput
+                                        label="نام کاربری"
                                         value={values.username}
                                         onChangeText={handleChange('username')}
+                                        autoCompleteType={'username'}
+                                        autoCorrect={false}
                                         onBlur={handleBlur('username')}
-                                        disabled={true}
                                     />
-                                    <DefaultErrorField error={errors.username}/>
+                                    <HelperText type="error" visible={true}>
+                                        {errors.username}
+                                    </HelperText>
+                                    {/*<DefaultTextInput*/}
+                                    {/*    placeholder={Locale[rootDao.getLocale()].text.form.USERNAME_PLACEHOLDER}*/}
+                                    {/*    autoCompleteType={'username'}*/}
+                                    {/*    autoCorrect={false}*/}
+                                    {/*    value={values.username}*/}
+                                    {/*    onChangeText={handleChange('username')}*/}
+                                    {/*    onBlur={handleBlur('username')}*/}
+                                    {/*    disabled={true}*/}
+                                    {/*/>*/}
+                                    {/*<DefaultErrorField error={errors.username}/>*/}
                                 </View>
                                 <View style={styles.formRow}>
-                                    <DefaultTextInput
-                                        placeholder={Locale[rootDao.getLocale()].text.form.PASSWORD_PLACEHOLDER}
-                                        autoCorrect={false}
-                                        autoCompleteType={'password'}
-                                        secureTextEntry={true}
+                                    <TextInput
+                                        label="رمز عبور"
                                         value={values.password}
                                         onChangeText={handleChange('password')}
+                                        autoCorrect={false}
+                                        secureTextEntry={true}
+                                        autoCompleteType={'password'}
                                         onBlur={handleBlur('password')}
                                     />
-                                    <DefaultErrorField error={errors.password}/>
+                                    {/*<DefaultTextInput*/}
+                                    {/*    placeholder={Locale[rootDao.getLocale()].text.form.PASSWORD_PLACEHOLDER}*/}
+                                    {/*    autoCorrect={false}*/}
+                                    {/*    autoCompleteType={'password'}*/}
+                                    {/*    secureTextEntry={true}*/}
+                                    {/*    value={values.password}*/}
+                                    {/*    onChangeText={handleChange('password')}*/}
+                                    {/*    onBlur={handleBlur('password')}*/}
+                                    {/*/>*/}
+                                    <HelperText type="error" visible={true}>
+                                        {errors.password}
+                                    </HelperText>
                                 </View>
                             </View>
                         )}
@@ -101,7 +125,8 @@ export default class LoginForm extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        // justifyContent: 'center',
+        paddingVertical: 40,
     },
     formContainer: {
         ...Spacing.px3P,
@@ -113,8 +138,8 @@ const styles = StyleSheet.create({
     },
     titleText: {
         fontWeight: 'bold',
-        fontSize: 20,
-
+        fontSize: 15,
+        textAlign: 'right',
     },
     formRow: {
         ...Spacing.py2F,

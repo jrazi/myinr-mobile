@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, Button} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {Buttons, Theme, Containers, Spacing, Borders} from '../../root/view/styles';
 import {Layout} from "../../root/view/layout/Layout";
 import {DefaultButton, DefaultSubmitButton} from "../../root/view/button/Buttons";
@@ -8,6 +8,7 @@ import * as Locale from "./Locale";
 import LoginForm from "./LoginForm";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
 import {UserRole} from "../../root/domain/Role";
+import {Button} from 'react-native-paper';
 
 export default class LoginScreen extends React.Component {
     constructor(props) {
@@ -56,12 +57,20 @@ export default class LoginScreen extends React.Component {
                         />
                     </View>
                     <View style={styles.buttonContainer}>
-                        <DefaultSubmitButton
+                        <Button
                             style={styles.loginButton}
-                            title={Locale[this.locale].text.button.LOGIN}
+                            contentStyle={styles.loginButtonContent}
+                            // mode={'outlined'}
+                            mode={'contained'}
+                            // dark={true}
+                            // style={styles.loginButton}
+                            loading={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
+                            disabled={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
                             onPress={() => {this.onFormSubmit()}}
-                            submissionStatus={this.state.submissionStatus}
-                        />
+                            // submissionStatus={this.state.submissionStatus}
+                        >
+                            {Locale[this.locale].text.button.LOGIN}
+                        </Button>
                     </View>
                 </View>
             </Layout>
@@ -81,8 +90,9 @@ const styles = StyleSheet.create({
         // ...Spacing.py2,
     },
     loginButton: {
-        backgroundColor: Theme.themeColors.background.primaryBlack,
-        ...Spacing.py1P,
-        ...Borders.borderRadius.none,
-    }
+        borderRadius: 0,
+    },
+    loginButtonContent: {
+        paddingVertical: 10,
+    },
 });

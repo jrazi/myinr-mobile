@@ -16,7 +16,7 @@ export default class MockServerGateway {
             let user = await this.fetchUserData(username);
             return user;
         } else {
-            return null;
+            throw {message: 'کاربری با این مشخصات یافت نشد'};
         }
     }
 
