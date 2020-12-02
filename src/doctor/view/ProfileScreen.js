@@ -6,7 +6,7 @@ import Icons from 'react-native-vector-icons/EvilIcons';
 import {useNavigation} from '@react-navigation/native';
 import {serverGateway} from "../../root/data/server/ServerGateway";
 import {rootDao} from "../../root/data/dao/RootDao";
-import {currentTheme} from "../../../App";
+import {currentTheme} from "../../../theme";
 
 class ProfileScreen extends React.Component {
     constructor(props) {
@@ -17,7 +17,8 @@ class ProfileScreen extends React.Component {
         }
     }
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
+
     }
 
     logout = () => {

@@ -9,7 +9,7 @@ import LoginForm from "./LoginForm";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
 import {UserRole} from "../../root/domain/Role";
 import {Button, Subheading, Title} from 'react-native-paper';
-import {currentTheme} from "../../../App";
+import {currentTheme} from "../../../theme";
 
 export default class LoginScreen extends React.Component {
     constructor(props) {

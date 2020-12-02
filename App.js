@@ -3,43 +3,11 @@ import React from 'react';
 import Navigator from "./src/root/view/Navigator";
 import * as Font from "expo-font";
 import AppLoading from "expo/build/launch/AppLoading";
-import {DefaultTheme, Portal, Provider as PaperProvider} from 'react-native-paper';
+import {Portal, Provider as PaperProvider} from 'react-native-paper';
 import {Locale} from "./src/root/domain/Locale";
 import {I18nManager} from "react-native";
 import {rootDao} from "./src/root/data/dao/RootDao";
-
-export const theme = {
-    ...DefaultTheme,
-    colors: {
-        ...DefaultTheme.colors,
-        // primary: '#fff',
-        // accent: '#fff',
-        background: '#fff',
-        surface: '#fff',
-    },
-};
-
-export const currentTheme = {
-    ...DefaultTheme,
-    colors: {
-        ...DefaultTheme.colors,
-        primary: '#03045e',
-        accent: '#0077b6',
-        background: '#fff',
-        surface: '#fff',
-    },
-}
-
-export const mostlyWhiteTheme = {
-    ...DefaultTheme,
-    colors: {
-        ...DefaultTheme.colors,
-        primary: '#fff',
-        accent: '#fff',
-        background: '#fff',
-        surface: '#fff',
-    },
-};
+import {currentTheme} from "./theme";
 
 export default class App extends React.Component {
 

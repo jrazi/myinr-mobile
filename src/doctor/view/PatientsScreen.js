@@ -9,7 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {fullSize} from "../../root/view/styles/containers";
-import {currentTheme, mostlyWhiteTheme} from "../../../App";
+import {currentTheme, mostlyWhiteTheme} from "../../../theme";
 
 const patientList = [
     {

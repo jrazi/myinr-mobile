@@ -8,7 +8,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {rootDao} from "../../root/data/dao/RootDao";
 import {UserRole} from "../../root/domain/Role";
-import {currentTheme} from "../../../App";
+import {currentTheme} from "../../../theme";
 
 const Tab = createMaterialBottomTabNavigator();
 
