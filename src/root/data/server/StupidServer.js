@@ -49,14 +49,21 @@ export default class StupidButRealServerGateway {
     }
 
     fetchUserDataWithLogin(username, password) {
-        return timeout(DEFAULT_TIMEOUT,fetchUniqueRecord(fetchUserWithPasswordQuery(username, password)))
+        return this.fetchUserDataWithQuery(fetchUserWithPasswordQuery(username, password));
+    }
+
+    fetchUserDataWithUsername(username) {
+        return this.fetchUserDataWithQuery(fetchUserQuery(username));
+    }
+
+    fetchUserDataWithQuery(fetchQuery) {
+        return timeout(DEFAULT_TIMEOUT,fetchUniqueRecord(fetchQuery))
             .then(async user => {
                 if (user['RoleUser'] == 1) {
                     user= {...user, ...await this.fetchDoctorData(user['IDUser'])};
                     let doctor = Doctor.ofDao(user);
                     let patients = await this.fetchPatientsOfDoctor(user['IDUser']);
                     doctor.patients = patients.map(patient => Patient.ofDao(patient));
-                    console.log("SAVED DOCTOR", doctor);
                     return doctor;
                 }
                 else if (user['RoleUser'] == 3) {
@@ -66,14 +73,6 @@ export default class StupidButRealServerGateway {
                     return patient;
                 }
             });
-    }
-
-    async login(username, password) {
-        return;
-    }
-
-    async fetchUserData(username) {
-        return null;
     }
 
     fetchDoctorData(userId) {
@@ -156,6 +155,14 @@ const fetchUserWithPasswordQuery = (username, password) => {
         SELECT * 
         FROM myinrir_test.dbo.UserTbl ut
         WHERE ut.UsernameUser='${username}' AND ut.PasswordUser='${password}'
+    `;
+}
+
+const fetchUserQuery = (username) => {
+    return `
+        SELECT * 
+        FROM myinrir_test.dbo.UserTbl ut
+        WHERE ut.UsernameUser='${username}'
     `;
 }
 
