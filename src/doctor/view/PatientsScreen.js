@@ -1,5 +1,5 @@
 import React from "react";
-import {StyleSheet, View, ScrollView} from "react-native";
+import {StyleSheet, View, ScrollView, RefreshControl} from "react-native";
 import UnderConstruction from "../../root/view/screen/UnderConstruction";
 import {useNavigation} from "@react-navigation/native";
 import {List, Surface, Card, Title, Paragraph, Headline, Text, Caption, Subheading, DataTable, Menu, Avatar, Appbar} from "react-native-paper";
@@ -82,10 +82,23 @@ class PatientsScreen extends React.Component {
     }
 
     async componentDidMount() {
-        this.user = await rootDao.getUser();
+        let user = await rootDao.getUser();
         this.setState({
-            patients: this.user.patients,
+            patients: user.patients,
         })
+    }
+
+    refresh = () => {
+        rootDao.withRefresh()
+            .getUser()
+            .then(user => {
+                this.setState({
+                    patients: user.patients,
+                })
+            })
+            .catch(err => {
+
+            });
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -116,7 +129,12 @@ class PatientsScreen extends React.Component {
                     <Appbar.Content color={currentTheme.colors.primary} title="فهرست بیماران"  />
                     <Appbar.Action icon="arrow-left" onPress={() => this.props.navigation.goBack()} color={currentTheme.colors.placeholder}/>
                 </Appbar.Header>
-                <ScrollView style={styles.container}>
+                <ScrollView
+                    style={styles.container}
+                    refreshControl={
+                        <RefreshControl refreshing={false} onRefresh={this.refresh} colors={[currentTheme.colors.placeholder]} />
+                    }
+                >
                     <View style={styles.patientsListContainer}>
                         <List.Section>
                             {patientInfoCards}

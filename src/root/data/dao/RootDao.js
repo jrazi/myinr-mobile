@@ -9,6 +9,10 @@ export class RootDao {
         this.tempLastUpdate = new Date('2018-01-01').getTime()/1000;
     }
 
+    withRefresh = () => {
+        return new RootDao();
+    }
+
     async getUser() {
         let user = await this.rootRepository.getUser();
         if (!this.tempTimeToUpdate() && user != null) return user;
@@ -42,6 +46,10 @@ export class RootDao {
 
     tempNewDate() {
         this.tempLastUpdate = new Date().getTime()/1000;
+    }
+
+    tempBackwardClock() {
+        this.tempLastUpdate = new Date('2018-01-01').getTime()/1000;
     }
 
     tempTimeToUpdate() {
