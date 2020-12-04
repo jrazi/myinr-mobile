@@ -1,6 +1,10 @@
 
 import * as jd from 'jalali-date';
 
+export function sleep(seconds) {
+    return new Promise(resolve => setTimeout(resolve, seconds*1000));
+}
+
 export function removeWhiteSpace(str) {
     if (!(typeof str == 'string')) return str;
     return str.replace(/\s/g,'');

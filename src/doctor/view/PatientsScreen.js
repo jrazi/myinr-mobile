@@ -13,92 +13,36 @@ import {currentTheme, mostlyWhiteTheme} from "../../../theme";
 import {rootDao} from "../../root/data/dao/RootDao";
 import {calcAge, e2p, normalizeDictForDisplay} from "../../root/domain/Util";
 
-const patientList = [
-    {
-        username: 'rtark',
-        fullName: 'رامتین ترکاشوند',
-        age: '۶۵',
-        sex: 'M',
-        illness: 'آریتمی قلب',
-        lastVisit: '۹۹/۰۸/۲۷',
-    },
-    {
-        username: 'armin_raisi',
-        fullName: 'آرمان رئیسی',
-        age: '۵۸',
-        sex: 'M',
-        illness: ' نارسایی دریچه قلب',
-        lastVisit: '۹۹/۰۶/۱۱',
-    },
-    {
-        username: 'maetav',
-        fullName: 'مائده زارع',
-        age: '۴۲',
-        sex: 'F',
-        illness: 'ترومبوز سیاهرگی',
-        lastVisit: '۹۹/۰۵/۱۱',
-    },
-    {
-        username: 'fargo',
-        fullName: 'فرشید قربانی',
-        age: '۶۰',
-        sex: 'M',
-        illness: 'نارسایی دریچه قلب',
-        lastVisit: '۹۹/۰۸/۰۱',
-    },
-    {
-        username: 'alidav',
-        fullName: 'علی داوودنژاد',
-        age: '۸۳',
-        sex: 'M',
-        illness: 'نامشخص',
-        lastVisit: '۹۹/۰۳/۰۵',
-    },
-    {
-        username: 'fatemenas',
-        fullName: 'فاطمه نصیری',
-        age: '۵۱',
-        sex: 'F',
-        illness: 'آریتمی قلب',
-        lastVisit: '۹۹/۰۷/۲۹',
-    },
-    {
-        username: 'mahnazhagh',
-        fullName: 'مهناز حقیقت‌‌نژاد',
-        age: '۷۷',
-        sex: 'F',
-        illness: 'نامشخص',
-        lastVisit: '۹۹/۰۵/۱۱',
-    },
-];
-
 class PatientsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.user = {};
         this.state = {
             patients: [],
+            loading: true,
         }
     }
 
     async componentDidMount() {
-        let user = await rootDao.getUser();
-        this.setState({
-            patients: user.patients,
-        })
+        this.refresh();
     }
 
     refresh = () => {
-        rootDao.withRefresh()
-            .getUser()
-            .then(user => {
-                this.setState({
-                    patients: user.patients,
+        this.setState({loading: true}, () => {
+            rootDao.withRefresh()
+                .getUser()
+                .then(user => {
+                    this.setState({
+                        patients: user.patients,
+                        loading: false,
+                    })
                 })
-            })
-            .catch(err => {
-
-            });
+                .catch(err => {
+                    this.setState({
+                        loading: false,
+                    })
+                });
+        })
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -132,7 +76,7 @@ class PatientsScreen extends React.Component {
                 <ScrollView
                     style={styles.container}
                     refreshControl={
-                        <RefreshControl refreshing={false} onRefresh={this.refresh} colors={[currentTheme.colors.placeholder]} />
+                        <RefreshControl refreshing={this.state.loading} onRefresh={this.refresh} colors={[currentTheme.colors.placeholder]} />
                     }
                 >
                     <View style={styles.patientsListContainer}>
