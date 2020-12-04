@@ -82,11 +82,9 @@ class PatientsScreen extends React.Component {
 
     async componentDidMount() {
         this.user = await rootDao.getUser();
-        // console.log('userrrr is', this.user);
         this.setState({
-            patients: this.user.patients.map(patient => patient.serialize('FA')),
+            patients: this.user.patients,
         })
-        // console.log('list of patients', this.state.patients);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {

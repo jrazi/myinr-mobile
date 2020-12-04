@@ -61,6 +61,7 @@ export default class StupidButRealServerGateway {
                 else if (user['RoleUser'] == 3) {
                     user= {...user, ...await this.fetchPatientData(user['IDUser'])};
                     let patient = Patient.ofDao(user);
+                    patient.doctorInfo = Doctor.ofDao(user);
                     return patient;
                 }
             });

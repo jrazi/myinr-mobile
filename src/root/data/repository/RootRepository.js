@@ -9,7 +9,6 @@ export default class RootRepository {
     }
 
     async saveUser(user) {
-        user = user.serialize();
         try {
             await AsyncStorage.setItem(
                 user.username,
@@ -28,7 +27,8 @@ export default class RootRepository {
         try {
             let userMetaData = await this.getUserMetaData();
             let userInfo = await AsyncStorage.getItem(userMetaData.username);
-            return UserFactory.createUser(JSON.parse(userInfo));
+            // return UserFactory.createUser(JSON.parse(userInfo));
+            return JSON.parse(userInfo);
         } catch (error) {
             return null;
         }
