@@ -13,7 +13,9 @@ import {serverGateway} from "../../root/data/server/ServerGateway";
 import {UserRole} from "../../root/domain/Role";
 import {Screen} from "../../root/view/Screen";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
-import {TextInput, Button, Text, Title, Headline, HelperText} from 'react-native-paper';
+import {TextInput, Button, Text, Title, Headline, HelperText, Snackbar, Portal} from 'react-native-paper';
+import {fullSize} from "../../root/view/styles/containers";
+import {ErrorType, getErrorType} from "../../root/data/server/StupidServer";
 
 export default class LoginForm extends React.Component {
 
@@ -21,6 +23,8 @@ export default class LoginForm extends React.Component {
         super(props);
         this.state = {
             submissionStatus: FormSubmissionStatus.NOT_SUBMITTING,
+            errorMessage: '',
+            errorDialogOpen: false,
         }
     }
 
@@ -36,7 +40,20 @@ export default class LoginForm extends React.Component {
                 });
             }).catch(error => {
                 this.props.onSubmissionUpdate(FormSubmissionStatus.NOT_SUBMITTING, () => {
-                    // TODO handle error
+                    const serverErrorType = getErrorType(error);
+                    let message = '';
+                    switch (serverErrorType) {
+                        case ErrorType.RECORD_NOT_FOUND:
+                            message = 'نام کاربری یا رمز عبور اشتباه است';
+                            break;
+                        default:
+                            message = 'خطایی در ارتباط با سرور رخ داده است';
+                            break;
+                    }
+                    this.setState({
+                        errorDialogOpen: true,
+                        errorMessage: message,
+                    });
                 });
             });
         })
@@ -56,8 +73,11 @@ export default class LoginForm extends React.Component {
                     })}
                     innerRef={this.props.containerRef}
                     validateOnChange={false}
-                    validateOnBlur={true}
-                    onSubmit={values => this.submitForm(values)}
+                    validateOnBlur={false}
+                    validateOn
+                    onSubmit={(values, { validate }) => {
+                        this.submitForm(values);
+                    }}
                 >
                     {
                         ({ handleChange, handleBlur, values, touched, errors }) => {return (
@@ -78,16 +98,6 @@ export default class LoginForm extends React.Component {
                                     <HelperText type="error" visible={true}>
                                         {errors.username}
                                     </HelperText>
-                                    {/*<DefaultTextInput*/}
-                                    {/*    placeholder={Locale[rootDao.getLocale()].text.form.USERNAME_PLACEHOLDER}*/}
-                                    {/*    autoCompleteType={'username'}*/}
-                                    {/*    autoCorrect={false}*/}
-                                    {/*    value={values.username}*/}
-                                    {/*    onChangeText={handleChange('username')}*/}
-                                    {/*    onBlur={handleBlur('username')}*/}
-                                    {/*    disabled={true}*/}
-                                    {/*/>*/}
-                                    {/*<DefaultErrorField error={errors.username}/>*/}
                                 </View>
                                 <View style={styles.formRow}>
                                     <TextInput
@@ -99,18 +109,30 @@ export default class LoginForm extends React.Component {
                                         autoCompleteType={'password'}
                                         onBlur={handleBlur('password')}
                                     />
-                                    {/*<DefaultTextInput*/}
-                                    {/*    placeholder={Locale[rootDao.getLocale()].text.form.PASSWORD_PLACEHOLDER}*/}
-                                    {/*    autoCorrect={false}*/}
-                                    {/*    autoCompleteType={'password'}*/}
-                                    {/*    secureTextEntry={true}*/}
-                                    {/*    value={values.password}*/}
-                                    {/*    onChangeText={handleChange('password')}*/}
-                                    {/*    onBlur={handleBlur('password')}*/}
-                                    {/*/>*/}
                                     <HelperText type="error" visible={true}>
                                         {errors.password}
                                     </HelperText>
+                                    <Portal>
+                                        <View
+                                            style={{
+                                                marginBottom: 80,
+                                                flex: 1,
+                                                paddingHorizontal: 20,
+                                            }}
+                                        >
+                                            <Snackbar
+                                                style={{
+                                                }}
+                                                visible={this.state.errorDialogOpen}
+                                                onDismiss={() => {this.setState({errorDialogOpen: false})}}
+                                                action={{
+                                                    label: 'بستن',
+                                                    onPress: () => {this.setState({errorDialogOpen: false})},
+                                                }}>
+                                                {this.state.errorMessage}
+                                            </Snackbar>
+                                        </View>
+                                    </Portal>
                                 </View>
                             </View>
                         )}

@@ -61,14 +61,10 @@ export default class LoginScreen extends React.Component {
                         <Button
                             style={styles.loginButton}
                             contentStyle={styles.loginButtonContent}
-                            // mode={'outlined'}
                             mode={'contained'}
-                            // dark={true}
-                            // style={styles.loginButton}
                             loading={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
                             disabled={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
                             onPress={() => {this.onFormSubmit()}}
-                            // submissionStatus={this.state.submissionStatus}
                         >
                             <Subheading style={{color: currentTheme.colors.background}}>{Locale[this.locale].text.button.LOGIN}</Subheading>
                         </Button>

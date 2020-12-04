@@ -3,23 +3,65 @@ import Patient from "../../../patient/domain/Patient";
 import Doctor from "../../../doctor/domain/Doctor";
 import {SERVER_ADDRESS} from "../../../../ServerConfig";
 
+
+export const ErrorType = {
+    RECORD_NOT_UNIQUE: 'RECORD_NOT_UNIQUE',
+    UNABLE_TO_PARSE: 'UNABLE_TO_PARSE',
+    RECORD_NOT_FOUND: 'RECORD_NOT_FOUND',
+    TIMEOUT: 'TIMEOUT',
+    CONNECTION_FAILED: 'CONNECTION_FAILED',
+    UNKNOWN: 'UNKNOWN',
+}
+
+export function getErrorType(error) {
+    if (error == null || error == undefined || error['errorType'] == undefined || error['errorType'] == null)
+        return ErrorType.UNKNOWN;
+    if (error.errorType in ErrorType)
+        return ErrorType[error.errorType];
+    else return ErrorType.UNKNOWN;
+}
+
+function timeout(ms, promise) {
+    return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+            reject({
+                errorType: ErrorType.TIMEOUT,
+            })
+        }, ms)
+
+        promise
+            .then(value => {
+                clearTimeout(timer)
+                resolve(value)
+            })
+            .catch(reason => {
+                clearTimeout(timer)
+                reject(reason)
+            })
+    })
+}
+
+const DEFAULT_TIMEOUT = 8000;
+
 export default class StupidButRealServerGateway {
 
     constructor() {
     }
 
     fetchUserDataWithLogin(username, password) {
-        return fetchUniqueRecord(fetchUserWithPasswordQuery(username, password))
+        return timeout(DEFAULT_TIMEOUT,fetchUniqueRecord(fetchUserWithPasswordQuery(username, password)))
             .then(async user => {
                 if (user['RoleUser'] == 1) {
                     user= {...user, ...await this.fetchDoctorData(user['IDUser'])};
                     let doctor = Doctor.ofDao(user);
+                    return doctor;
                 }
                 else if (user['RoleUser'] == 3) {
                     user= {...user, ...await this.fetchPatientData(user['IDUser'])};
                     let patient = Patient.ofDao(user);
+                    return patient;
                 }
-            })
+            });
     }
 
     async login(username, password) {
@@ -48,11 +90,32 @@ const fetchUniqueRecord =  async (query) => {
     return fetch(url)
         .then((response) => response.json())
         .then((response) => {
-            // TODO Verification Filter
-            return response;
+            if ('recordset' in response) {
+                if (response.recordset.length === 1) return response;
+                else if (response.recordset.length > 1) {
+                    throw {
+                        errorType: 'RECORD_NOT_UNIQUE',
+                    }
+                }
+                else if (response.recordset.length === 0) {
+                    throw {
+                        errorType: 'RECORD_NOT_FOUND',
+                    }
+                }
+                else throw {
+                    errorType: 'UNABLE_TO_PARSE',
+                }
+            }
+            else throw {
+                errorType: 'UNABLE_TO_PARSE',
+            }
         })
-        .then((jsonResponse) => jsonResponse.recordset[0]);
-
+        .then((jsonResponse) => jsonResponse.recordset[0])
+        .catch(error => {
+            throw {
+                errorType: getErrorType(error),
+            }
+        })
 }
 
 const fetchUserWithPasswordQuery = (username, password) => {
