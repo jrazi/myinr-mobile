@@ -19,6 +19,7 @@ export const currentTheme = {
         background: '#fff',
         surface: '#fff',
     },
+    // roundness: 16,
 }
 export const mostlyWhiteTheme = {
     ...DefaultTheme,

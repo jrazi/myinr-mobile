@@ -8,22 +8,35 @@ export class RootDao {
     constructor() {
         this.rootRepository = new RootRepository();
         this.tempLastUpdate = new Date('2018-01-01').getTime()/1000;
+        this.user = null;
     }
 
     withRefresh = () => {
-        return new RootDao();
+        this.tempLastUpdate = new Date('2018-01-01').getTime()/1000;
+        return this;
     }
 
     async getUser() {
+        if (!this.tempTimeToUpdate() && this.user != null) return this.user;
         let user = await this.rootRepository.getUser();
         if (!this.tempTimeToUpdate() && user != null) return user;
 
         let userMeta = await this.getUserMetaData();
         if (userMeta == null) return null;
 
-        user = await serverGateway.fetchUserDataWithUsername(userMeta.username);
-        await this.saveUser(user);
+        try {
+            user = await serverGateway.fetchUserDataWithUsername(userMeta.username);
+            await this.saveUser(user);
+        } catch (err) {
+            user = await this.getOfflineUser();
+        }
         return user;
+    }
+
+    async getOfflineUser() {
+        let user = await this.rootRepository.getUser();
+        if (user != null) return user;
+        else throw {error: 'user not found.'};
     }
 
     async getUserMetaData() {
@@ -33,6 +46,7 @@ export class RootDao {
     async saveUser(user) {
         let savedUser = await this.rootRepository.saveUser(user);
         this.tempNewDate();
+        this.user = savedUser;
         return savedUser;
     }
 
