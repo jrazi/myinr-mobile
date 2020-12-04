@@ -1,11 +1,18 @@
 
+import * as jd from 'jalali-date';
 
 export function removeWhiteSpace(str) {
     if (!(typeof str == 'string')) return str;
     return str.replace(/\s/g,'');
 }
 export function calcAge(birthDate) {
-    return 10;
+    return calculateAge(jalaliToGeorgian(birthDate));
+}
+
+function calculateAge(birthday) {
+    let ageDifMs = Date.now() - birthday.getTime();
+    let ageDate = new Date(ageDifMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
 export function translateGender(genderLetter, locale='EN') {
@@ -56,3 +63,27 @@ export const a2e = s => s.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexO
 
 export const p2a = s => s.replace(/[۰-۹]/g, d => '٠١٢٣٤٥٦٧٨٩'['۰۱۲۳۴۵۶۷۸۹'.indexOf(d)])
 export const a2p = s => s.replace(/[٠-٩]/g, d => '۰۱۲۳۴۵۶۷۸۹'['٠١٢٣٤٥٦٧٨٩'.indexOf(d)])
+
+
+export function jalaliToGeorgian(jalaliDate) {
+    jalaliDate = removeWhiteSpace(jalaliDate).toString();
+    if (jalaliDate == null || jalaliDate == '') return null;
+    let parts = [];
+    if (jalaliDate.includes('/'))
+        parts = jalaliDate.split('/');
+    else if (jalaliDate.includes('-'))
+        parts = jalaliDate.split('-');
+    else if (jalaliDate.includes(','))
+        parts = jalaliDate.split(',');
+
+    if (parts.length < 3) return null;
+    return _jalaliToGeorgian(parts[0], parts[1], parts[2]);
+}
+
+function _jalaliToGeorgian(year, month, day) {
+    const jDate = new jd.default();
+    jDate.setFullYear(year);
+    jDate.setMonth(month);
+    jDate.setDate(day);
+    return jDate.toGregorian();
+}
