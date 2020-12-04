@@ -56,6 +56,8 @@ export default class StupidButRealServerGateway {
                     let doctor = Doctor.ofDao(user);
                     let patients = await this.fetchPatientsOfDoctor(user['IDUser']);
                     doctor.patients = patients.map(patient => Patient.ofDao(patient));
+                    console.log("FETCHED THESE PATIETNS", patients);
+                    console.log("SAVED DOCTOR", doctor);
                     return doctor;
                 }
                 else if (user['RoleUser'] == 3) {

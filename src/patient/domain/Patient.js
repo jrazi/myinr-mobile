@@ -1,6 +1,6 @@
 import {UserRole} from "../../root/domain/Role";
 import Doctor from "../../doctor/domain/Doctor";
-import {translateGender} from "../../root/domain/Util";
+import {removeWhiteSpace, translateGender} from "../../root/domain/Util";
 
 
 export default class Patient {
@@ -19,6 +19,7 @@ export default class Patient {
         patient.email = normalize(info.EmailPatient);
         patient.nationalId = normalize(info.NIDPatient);
         patient.phone = normalize(info.PhonePatient);
+        patient.mobile = normalize(info.Mobile);
         patient.emergencyPhone = normalize(info.EssentialPhone);
         patient.role = UserRole.DOCTOR;
         patient.doctorInfo = {};
@@ -36,7 +37,7 @@ export default class Patient {
 }
 
 const normalize = (field) => {
-    return field == undefined ? null : field;
+    return (field == undefined || removeWhiteSpace(field) == "") ? null : field;
 }
 
 const joinNames = (firstName, lastName) => {

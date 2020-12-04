@@ -1,5 +1,6 @@
 import {UserRole} from "../../root/domain/Role";
 import Patient from "../../patient/domain/Patient";
+import {removeWhiteSpace} from "../../root/domain/Util";
 
 export default class Doctor {
 
@@ -33,7 +34,7 @@ const normalizeArray = (array) => Array.isArray(array) ? array : [];
 
 
 const normalize = (field) => {
-    return field == undefined ? null : field;
+    return (field == undefined || removeWhiteSpace(field) == '') ? null : field;
 }
 
 const joinNames = (firstName, lastName) => {

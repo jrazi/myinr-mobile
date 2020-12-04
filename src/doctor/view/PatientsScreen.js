@@ -11,6 +11,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {fullSize} from "../../root/view/styles/containers";
 import {currentTheme, mostlyWhiteTheme} from "../../../theme";
 import {rootDao} from "../../root/data/dao/RootDao";
+import {calcAge, e2p, normalizeDictForDisplay} from "../../root/domain/Util";
 
 const patientList = [
     {
@@ -93,7 +94,10 @@ class PatientsScreen extends React.Component {
 
     render() {
         const patientInfoCards = [];
-        for (const patient of this.state.patients) {
+        for (var patient of this.state.patients) {
+            console.log('patienttt is', patient);
+            patient.age = calcAge(patient.birthDate);
+            patient = normalizeDictForDisplay(patient, 'FA');
             patientInfoCards.push(
                 <PatientInfoCard
                     key={patient.username}
@@ -166,18 +170,34 @@ const PatientInfoCard = (props) => {
 }
 
 const PatientCardDetails = (props) => {
-    return (
-        <Row>
+    return ([
+        <Row key={'first'}>
             <InfoItem
-                title={props.patientInfo.illness}
+                title={props.patientInfo.medicalCondition}
                 customIcon={<MaterialCommunityIcons name="stethoscope" size={20} color={currentTheme.colors.placeholder}/>}
             />
             <InfoItem
+                wrapperStyle={{
+                    paddingLeft: 40,
+                }}
                 title={`${props.patientInfo.age} سال `}
                 customIcon={<MaterialCommunityIcons name={'calendar-account'} size={20} color={currentTheme.colors.placeholder}/>}
             />
+        </Row>,
+        <Row key={'second'}>
+            <InfoItem
+                title={props.patientInfo.mobile}
+                customIcon={<MaterialCommunityIcons name="cellphone" size={20} color={currentTheme.colors.placeholder}/>}
+            />
+            <InfoItem
+                wrapperStyle={{
+                    paddingLeft: 40,
+                }}
+                title={props.patientInfo.birthPlace}
+                customIcon={<MaterialCommunityIcons name={'map-marker-outline'} size={20} color={currentTheme.colors.placeholder}/>}
+            />
         </Row>
-    );
+    ]);
 }
 
 const InfoItem = (props) => {
@@ -186,6 +206,8 @@ const InfoItem = (props) => {
             style={{
                 flexDirection: 'row',
                 alignItems: 'center',
+                flexBasis: '50%',
+                ...props.wrapperStyle
             }}
         >
             <View
