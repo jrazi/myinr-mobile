@@ -95,7 +95,6 @@ class PatientsScreen extends React.Component {
     render() {
         const patientInfoCards = [];
         for (var patient of this.state.patients) {
-            console.log('patienttt is', patient);
             patient.age = calcAge(patient.birthDate);
             patient = normalizeDictForDisplay(patient, 'FA');
             patientInfoCards.push(

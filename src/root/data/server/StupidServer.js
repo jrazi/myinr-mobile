@@ -56,7 +56,6 @@ export default class StupidButRealServerGateway {
                     let doctor = Doctor.ofDao(user);
                     let patients = await this.fetchPatientsOfDoctor(user['IDUser']);
                     doctor.patients = patients.map(patient => Patient.ofDao(patient));
-                    console.log("FETCHED THESE PATIETNS", patients);
                     console.log("SAVED DOCTOR", doctor);
                     return doctor;
                 }
@@ -102,9 +101,11 @@ const fetchUniqueRecord =  (query) => {
             if ('recordset' in response) {
                 if (response.recordset.length === 1) return response;
                 else if (response.recordset.length > 1) {
-                    throw {
-                        errorType: 'RECORD_NOT_UNIQUE',
-                    }
+                    return response.recordset;
+                    // TODO decide
+                    // throw {
+                    //     errorType: 'RECORD_NOT_UNIQUE',
+                    // }
                 }
                 else if (response.recordset.length === 0) {
                     throw {
@@ -165,6 +166,8 @@ const createQueryUrl = (query) => {
 const fetchDoctorDataQuery = (userId) => {
     return `
         SELECT * FROM myinrir_test.dbo.PhysicianTbl pt 
+        JOIN myinrir_test.dbo.PhAnTbl pToAn on pt.IDUserPhysician = pToAn.IDUserPhAn 
+        JOIN myinrir_test.dbo.AnsectorTbl anc on pToAn.IDAncestorPhAn = anc.IDAnsector 
         WHERE pt.IDUserPhysician=${userId}
     `;
 }

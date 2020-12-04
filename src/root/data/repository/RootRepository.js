@@ -10,7 +10,6 @@ export default class RootRepository {
 
     async saveUser(user) {
         try {
-            console.log("GOING TO SAVE USER", user);
             await AsyncStorage.setItem(
                 user.username,
                 JSON.stringify(user)
@@ -19,7 +18,6 @@ export default class RootRepository {
                 USER_META_KEY,
                 JSON.stringify({username: user.username})
             );
-            console.log("SAVED THIS USER ERRORLESS", user);
         } catch (error) {
             return;
         }

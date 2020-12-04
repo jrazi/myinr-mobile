@@ -51,9 +51,13 @@ class ProfileScreen extends React.Component {
                         </View>
                         <View style={styles.bodyOfHeader}>
                             <Icons style={styles.avatar} name={'user'} size={150} color={currentTheme.colors.placeholder}/>
-                            <View>
+                            <View
+                                style={{
+                                    alignItems: 'center',
+                                }}
+                            >
                                 <Title>{this.state.user.fullName}</Title>
-                                <Caption>بیمارستان شریعتی</Caption>
+                                <Caption>{this.state.user.clinic != undefined ? this.state.user.clinic.name : null}</Caption>
                             </View>
                         </View>
                     </View>

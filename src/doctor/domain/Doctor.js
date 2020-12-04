@@ -17,6 +17,11 @@ export default class Doctor {
         doctor.nationalId = normalize(info.NIDPhysician);
         doctor.phone = normalize(info.PhonePhysician);
         doctor.patients = [];
+        doctor.clinic = {
+            id: normalize(info.IDAnsector),
+            name:  normalize(info.NameAnsector),
+            status:  normalize(info.StatusAncestor),
+        }
         doctor.role = UserRole.DOCTOR;
         return doctor;
     }
