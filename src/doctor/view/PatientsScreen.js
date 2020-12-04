@@ -10,6 +10,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {fullSize} from "../../root/view/styles/containers";
 import {currentTheme, mostlyWhiteTheme} from "../../../theme";
+import {rootDao} from "../../root/data/dao/RootDao";
 
 const patientList = [
     {
@@ -74,7 +75,18 @@ class PatientsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.user = {};
-        this.state = {}
+        this.state = {
+            patients: [],
+        }
+    }
+
+    async componentDidMount() {
+        this.user = await rootDao.getUser();
+        // console.log('userrrr is', this.user);
+        this.setState({
+            patients: this.user.patients.map(patient => patient.serialize('FA')),
+        })
+        // console.log('list of patients', this.state.patients);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -83,7 +95,7 @@ class PatientsScreen extends React.Component {
 
     render() {
         const patientInfoCards = [];
-        for (const patient of patientList) {
+        for (const patient of this.state.patients) {
             patientInfoCards.push(
                 <PatientInfoCard
                     key={patient.username}

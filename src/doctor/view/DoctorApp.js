@@ -19,13 +19,19 @@ class DoctorApp extends React.Component {
     constructor(props) {
         super(props);
         this.user = {};
+        this.state = {
+            loaded: false,
+        }
     }
 
     componentDidMount() {
-        rootDao.getUser().then(user => {
-            if (user == null) this.props.navigation.navigate('LOGIN');
-            else if (this.user.role = UserRole.PATIENT) this.props.navigation.navigate('LOGIN');
-            else this.user = user;
+        this.setState({loaded: false}, () => {
+            rootDao.getUser().then(user => {
+                if (user == null) this.props.navigation.navigate('LOGIN');
+                else if (this.user.role = UserRole.PATIENT) this.props.navigation.navigate('LOGIN');
+                else this.user = user;
+                this.setState({loaded: true});
+            });
         });
     }
 
@@ -39,6 +45,7 @@ class DoctorApp extends React.Component {
                 backBehavior={'history'}
                 activeColor={currentTheme.colors.primary}
                 inactiveColor={currentTheme.colors.placeholder}
+                lazy={false}
             >
                 <Tab.Screen
                     name="Home"
@@ -81,13 +88,6 @@ class DoctorApp extends React.Component {
                     }}
                 />
             </Tab.Navigator>
-            // <BottomNavigation
-            //     navigationState={{index: this.state.index, routes: this.state.routes}}
-            //     onIndexChange={(index) => {this.pushScreen(index); this.setState({index: index})}}
-            //     renderScene={renderScene}
-            //     shifting={false}
-            //     // theme={{ colors: {primary: '#FFFFFF', background: '#E744AB'} }}
-            // />
         );
     }
 };

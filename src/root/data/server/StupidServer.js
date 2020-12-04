@@ -54,6 +54,8 @@ export default class StupidButRealServerGateway {
                 if (user['RoleUser'] == 1) {
                     user= {...user, ...await this.fetchDoctorData(user['IDUser'])};
                     let doctor = Doctor.ofDao(user);
+                    let patients = await this.fetchPatientsOfDoctor(user['IDUser']);
+                    doctor.patients = patients.map(patient => Patient.ofDao(patient));
                     return doctor;
                 }
                 else if (user['RoleUser'] == 3) {
@@ -80,12 +82,16 @@ export default class StupidButRealServerGateway {
         return fetchUniqueRecord(fetchPatientDataQuery(userId));
     }
 
+    fetchPatientsOfDoctor(userId) {
+        return fetchList(fetchPatientsOfDoctorQuery(userId));
+    }
+
     async logout(username) {
         return {};
     }
 }
 
-const fetchUniqueRecord =  async (query) => {
+const fetchUniqueRecord =  (query) => {
     const url = createQueryUrl(query);
     return fetch(url)
         .then((response) => response.json())
@@ -111,6 +117,29 @@ const fetchUniqueRecord =  async (query) => {
             }
         })
         .then((jsonResponse) => jsonResponse.recordset[0])
+        .catch(error => {
+            throw {
+                errorType: getErrorType(error),
+            }
+        })
+}
+
+const fetchList = (query) => {
+    const url = createQueryUrl(query);
+    return fetch(url)
+        .then((response) => response.json())
+        .then((response) => {
+            if ('recordset' in response) {
+                if (response.recordset.length >= 0) return response;
+                else throw {
+                    errorType: 'UNABLE_TO_PARSE',
+                }
+            }
+            else throw {
+                errorType: 'UNABLE_TO_PARSE',
+            }
+        })
+        .then((jsonResponse) => jsonResponse.recordset)
         .catch(error => {
             throw {
                 errorType: getErrorType(error),
@@ -145,4 +174,10 @@ const fetchPatientDataQuery = (userId) => {
     `;
 }
 
+const fetchPatientsOfDoctorQuery = (userId) => {
+    return `
+        SELECT * FROM myinrir_test.dbo.PatientTbl pt 
+        WHERE pt.IDPhysicianPatient = ${userId}
+    `;
+}
 

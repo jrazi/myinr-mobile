@@ -3,6 +3,7 @@ import {StyleSheet, Text, View} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import UnderConstruction from "../../root/view/screen/UnderConstruction";
 import StupidButRealServerGateway from "../../root/data/server/StupidServer";
+import {rootDao} from "../../root/data/dao/RootDao";
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
@@ -13,12 +14,6 @@ export default class HomeScreen extends React.Component {
     }
 
     componentDidMount = async () => {
-        const server = new StupidButRealServerGateway();
-        const patient = '1300689343';
-        const doctor = '5040306938';
-        const user = doctor;
-        const result = await server.fetchUserDataWithLogin(user, '_' + user);
-
     }
 
 
