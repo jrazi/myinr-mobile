@@ -57,6 +57,8 @@ class RootDao {
 
     async deleteUser() {
         let user = await this.rootRepository.deleteUser();
+        this.user = null;
+        this.tempLastUpdate = new Date('2018-01-01').getTime()/1000;
         return user;
     }
 

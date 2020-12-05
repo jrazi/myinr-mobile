@@ -108,7 +108,7 @@ const fetchUniqueRecord =  (query) => {
             if ('recordset' in response) {
                 if (response.recordset.length === 1) return response;
                 else if (response.recordset.length > 1) {
-                    return response.recordset;
+                    return response;
                     // TODO decide
                     // throw {
                     //     errorType: 'RECORD_NOT_UNIQUE',

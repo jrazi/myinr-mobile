@@ -3,10 +3,12 @@ import {StyleSheet, View} from "react-native";
 import {DefaultTheme, Appbar, Surface, Title, Caption, List, TouchableRipple, Portal, Dialog, Paragraph, Button} from 'react-native-paper';
 import {fullSize} from "../../root/view/styles/containers";
 import Icons from 'react-native-vector-icons/EvilIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useNavigation} from '@react-navigation/native';
 import {serverGateway} from "../../root/data/server/ServerGateway";
 import {rootDao} from "../../root/data/dao/RootDao";
 import {currentTheme} from "../../../theme";
+import {guessGender} from "../../root/domain/Util";
 
 class ProfileScreen extends React.Component {
     constructor(props) {
@@ -50,7 +52,15 @@ class ProfileScreen extends React.Component {
                             <Appbar.Action icon="arrow-left" onPress={() => this.props.navigation.goBack()} color={currentTheme.colors.placeholder}/>
                         </View>
                         <View style={styles.bodyOfHeader}>
-                            <Icons style={styles.avatar} name={'user'} size={150} color={currentTheme.colors.placeholder}/>
+                            <View
+                                style = {{
+                                    backgroundColor: currentTheme.colors.primary,
+                                    borderRadius: 100,
+                                    padding: 25,
+                                }}
+                            >
+                                <SimpleLineIcons style={{}} name={guessGender(this.state.user) == 'F' ? 'user-female' : 'user'} size={40} color={'white'}/>
+                            </View>
                             <View
                                 style={{
                                     alignItems: 'center',
@@ -155,9 +165,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        paddingTop: 20,
+        paddingVertical: 20,
     },
     avatar: {
+        backgroundColor: currentTheme.colors.primary,
     },
     containerBody: {
         padding: 20,

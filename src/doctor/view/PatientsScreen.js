@@ -56,7 +56,7 @@ class PatientsScreen extends React.Component {
             patient = normalizeDictForDisplay(patient, 'FA');
             patientInfoCards.push(
                 <PatientInfoCard
-                    key={patient.username}
+                    key={patient.nationalId + patient.username}
                     patientInfo={patient}
                 />
             );

@@ -1,6 +1,16 @@
 
 import * as jd from 'jalali-date';
 
+
+export function guessGender(info) {
+    if (hasValue(info.gender)) return info.gender;
+    for (const female of FEMALE_NAMES) {
+        if (hasValue(info.fullName) && info.fullName.includes(female))
+            return 'F';
+    }
+    return 'M';
+}
+
 export function sleep(seconds) {
     return new Promise(resolve => setTimeout(resolve, seconds*1000));
 }
@@ -10,10 +20,16 @@ export function removeWhiteSpace(str) {
     return str.replace(/\s/g,'');
 }
 export function calcAge(birthDate) {
+    if (!hasValue(birthDate)) return null;
     return calculateAge(jalaliToGeorgian(birthDate));
 }
 
+export function hasValue(data) {
+    return data != undefined && data != null;
+}
+
 function calculateAge(birthday) {
+    if (!hasValue(birthday)) return null;
     let ageDifMs = Date.now() - birthday.getTime();
     let ageDate = new Date(ageDifMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
@@ -79,8 +95,11 @@ export function jalaliToGeorgian(jalaliDate) {
         parts = jalaliDate.split('-');
     else if (jalaliDate.includes(','))
         parts = jalaliDate.split(',');
+    else if (!Number.isNaN(jalaliDate)) parts[0] = jalaliDate;
 
-    if (parts.length < 3) return null;
+    if (parts.length < 1) return null;
+    if (!hasValue(parts[1])) parts[1] = '0';
+    if (!hasValue(parts[2])) parts[2] = '0';
     return _jalaliToGeorgian(parts[0], parts[1], parts[2]);
 }
 
@@ -91,3 +110,6 @@ function _jalaliToGeorgian(year, month, day) {
     jDate.setDate(day);
     return jDate.toGregorian();
 }
+
+
+const FEMALE_NAMES = ['پرستو', 'مهدیه']
