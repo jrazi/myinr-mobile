@@ -19,6 +19,59 @@ export function removeWhiteSpace(str) {
     if (!(typeof str == 'string')) return str;
     return str.replace(/\s/g,'');
 }
+
+export function jalaliTimePastInFarsi(oldDate) {
+    let timePast = jalaliTimePast(oldDate);
+    if (!hasValue(timePast) || timePast.length != 3) return null;
+    return timePastInFarsi(timePast[0], timePast[1], timePast[2]);
+}
+
+export function timePastInFarsi(year, month, day) {
+    let omitDay = false;
+    let omitMonth = false;
+    let omitYear = false;
+
+    year = Number(year);
+    month = Number(month);
+    day = Number(day);
+
+
+    if (year == 0 && month == 0 && day == 0) return 'امروز';
+
+    if (year >= 1 || day == 0 || month >= 3) omitDay = true;
+    if (year >= 3 || month == 0) omitMonth = true;
+    if (year == 0) omitYear = true;
+
+    let tp = '';
+    let parts = [];
+    if (!omitYear) parts.push(year + ' سال');
+    if (!omitMonth) parts.push(month + ' ماه');
+    if (!omitDay) parts.push(day + ' روز');
+
+    for (const part of parts) {
+        tp += part + ' و ';
+    }
+    if (parts.length > 0) tp = tp.slice(0, -3);
+    return e2p(tp);
+}
+
+export function jalaliTimePast(oldDate) {
+    if (!hasValue(oldDate)) return null;
+    oldDate = jalaliToGeorgian(oldDate);
+    return calcTimePast(oldDate);
+}
+
+export function calcTimePast(oldDate) {
+    if (!hasValue(oldDate)) return null;
+    const now = new Date();
+    let diff = new Date(
+        now.getFullYear()-oldDate.getFullYear(),
+        now.getMonth()-oldDate.getMonth(),
+        now.getDate()-oldDate.getDate()
+    );
+    return [diff.getYear(), diff.getMonth(), diff.getDate()];
+}
+
 export function calcAge(birthDate) {
     if (!hasValue(birthDate)) return null;
     return calculateAge(jalaliToGeorgian(birthDate));
@@ -57,8 +110,9 @@ export function normalizeDictForDisplay(dict, locale='EN') {
 export function normalizeValueForDisplay(value, locale='EN') {
     let na = locale == 'FA' ? 'نامشخص' : 'N/A';
     if (value == null || value == undefined) return na;
+    if (typeof value == 'object') return value;
     if (locale == 'FA') return e2p(value.toString());
-    else return value.toString();
+    return value.toString();
 }
 
 

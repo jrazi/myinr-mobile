@@ -11,7 +11,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {fullSize} from "../../root/view/styles/containers";
 import {currentTheme, mostlyWhiteTheme} from "../../../theme";
 import {rootDao} from "../../root/data/dao/RootDao";
-import {calcAge, e2p, normalizeDictForDisplay} from "../../root/domain/Util";
+import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../root/domain/Util";
 
 class PatientsScreen extends React.Component {
     constructor(props) {
@@ -96,12 +96,21 @@ const AlternatePatientInfoCard = (props) => {
     // TODO Refactor
     const nameSplitted = props.patientInfo.fullName.split(/\s+/);
     const nameChunks = [nameSplitted.shift(), nameSplitted.join(' ')];
+    let latestInrTestMessage = null;
+    if (hasValue(props.patientInfo.latestINR)) {
+        const timePast = jalaliTimePastInFarsi(props.patientInfo.latestINR.testDate);
+        latestInrTestMessage = 'آخرین گزارش INR در ' + timePast;
+        if (!timePast.includes('امروز')) latestInrTestMessage += ' قبل';
+    }
+    if (latestInrTestMessage == null) {
+        latestInrTestMessage = 'عدم ثبت شاخص INR';
+    }
     return (
         <Surface style={styles.patientInfoCardContainer}>
             <Card>
                 <Card.Title
                     title={props.patientInfo.fullName}
-                    subtitle="تحت نظر از ‌فروردین ۹۸"
+                    subtitle={latestInrTestMessage}
                     left={() => <Avatar.Text size={32} label={nameChunks[0][0] + '.' + nameChunks[1][0]} />}
                 />
                 <Card.Content>

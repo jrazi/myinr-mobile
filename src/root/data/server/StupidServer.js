@@ -41,7 +41,7 @@ function timeout(ms, promise) {
     })
 }
 
-const DEFAULT_TIMEOUT = 8000;
+const DEFAULT_TIMEOUT = 10000;
 
 export default class StupidButRealServerGateway {
 
@@ -197,8 +197,17 @@ const fetchPatientDataQuery = (userId) => {
 
 const fetchPatientsOfDoctorQuery = (userId) => {
     return `
-        SELECT * FROM myinrir_test.dbo.PatientTbl pt 
-        WHERE pt.IDPhysicianPatient = ${userId}
+        SELECT * FROM 
+        (
+            SELECT *, ROW_NUMBER() OVER(PARTITION BY pt.IDPatient ORDER BY inr.DateofINRTest DESC) rn FROM myinrir_test.dbo.PatientTbl pt 
+            JOIN myinrir_test.myinrir_test.INRTestTbl inr on pt.IDUserPatient = inr.UserIDPatient 
+            WHERE pt.IDPhysicianPatient = ${userId}
+        ) l
+        WHERE rn = 1
     `;
+    // return `
+    //     SELECT * FROM myinrir_test.dbo.PatientTbl pt
+    //     WHERE pt.IDPhysicianPatient = ${userId}
+    // `;
 }
 

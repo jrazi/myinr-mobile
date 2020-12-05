@@ -21,6 +21,12 @@ export default class Patient {
         patient.phone = normalize(info.PhonePatient);
         patient.mobile = normalize(info.Mobile);
         patient.emergencyPhone = normalize(info.EssentialPhone);
+        patient.latestINR = {
+            testId: normalize(info.IDINR),
+            testDate: normalize(info.DateofINRTest),
+            testTime: normalize(info.TimeofINRTest),
+            testResult: normalize(info.NewINR),
+        }
         patient.role = UserRole.PATIENT;
         patient.doctorInfo = {};
         return patient;
