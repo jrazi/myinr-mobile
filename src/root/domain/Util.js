@@ -142,6 +142,7 @@ export const a2p = s => s.replace(/[٠-٩]/g, d => '۰۱۲۳۴۵۶۷۸۹'['٠١�
 export function jalaliToGeorgian(jalaliDate) {
     jalaliDate = removeWhiteSpace(jalaliDate).toString();
     if (jalaliDate == null || jalaliDate == '') return null;
+    jalaliDate = p2e(a2e(jalaliDate));
     let parts = [];
     if (jalaliDate.includes('/'))
         parts = jalaliDate.split('/');

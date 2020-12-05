@@ -16,13 +16,17 @@ export default class App extends React.Component {
         this.state = {
             loaded: false,
         }
+        if(I18nManager.isRTL != true){
+            I18nManager.forceRTL(true);
+            RNRestart.Restart();
+        }
     }
 
     componentDidMount() {
-        this.loadFontsAsync();
         const locale = rootDao.getLocale();
         if (locale == Locale.FA) I18nManager.forceRTL(true);
         else I18nManager.forceRTL(true);
+        this.loadFontsAsync();
     }
 
     loadFontsAsync = async () => {

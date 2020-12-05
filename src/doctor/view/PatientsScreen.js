@@ -97,12 +97,13 @@ const AlternatePatientInfoCard = (props) => {
     const nameSplitted = props.patientInfo.fullName.split(/\s+/);
     const nameChunks = [nameSplitted.shift(), nameSplitted.join(' ')];
     let latestInrTestMessage = null;
+    let timePast = null;
     if (hasValue(props.patientInfo.latestINR)) {
-        const timePast = jalaliTimePastInFarsi(props.patientInfo.latestINR.testDate);
+        timePast = jalaliTimePastInFarsi(props.patientInfo.latestINR.testDate);
         latestInrTestMessage = 'آخرین گزارش INR در ' + timePast;
-        if (!timePast.includes('امروز')) latestInrTestMessage += ' قبل';
+        if (timePast != null && !timePast.includes('امروز')) latestInrTestMessage += ' قبل';
     }
-    if (latestInrTestMessage == null) {
+    if (timePast == null) {
         latestInrTestMessage = 'عدم ثبت شاخص INR';
     }
     return (
@@ -150,7 +151,7 @@ const PatientCardDetails = (props) => {
                 wrapperStyle={{
                     paddingLeft: 40,
                 }}
-                title={`${props.patientInfo.age} سال `}
+                title={props.patientInfo.age != 'نامشخص' ?  `${props.patientInfo.age} سال ` : 'نامشخص'}
                 customIcon={<MaterialCommunityIcons name={'calendar-account'} size={20} color={currentTheme.colors.placeholder}/>}
             />
         </Row>,
