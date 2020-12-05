@@ -21,7 +21,7 @@ export default class Patient {
         patient.phone = normalize(info.PhonePatient);
         patient.mobile = normalize(info.Mobile);
         patient.emergencyPhone = normalize(info.EssentialPhone);
-        patient.role = UserRole.DOCTOR;
+        patient.role = UserRole.PATIENT;
         patient.doctorInfo = {};
         return patient;
     }

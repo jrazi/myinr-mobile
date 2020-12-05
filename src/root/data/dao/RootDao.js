@@ -3,7 +3,7 @@ import {Locale} from "../../domain/Locale";
 import {serverGateway} from "../server/ServerGateway";
 import {sleep} from "../../domain/Util";
 
-export class RootDao {
+class RootDao {
 
     constructor() {
         this.rootRepository = new RootRepository();
@@ -18,8 +18,12 @@ export class RootDao {
 
     async getUser() {
         if (!this.tempTimeToUpdate() && this.user != null) return this.user;
+
         let user = await this.rootRepository.getUser();
-        if (!this.tempTimeToUpdate() && user != null) return user;
+        if (!this.tempTimeToUpdate() && user != null) {
+            this.user = user;
+            return this.user;
+        }
 
         let userMeta = await this.getUserMetaData();
         if (userMeta == null) return null;
@@ -29,6 +33,7 @@ export class RootDao {
             await this.saveUser(user);
         } catch (err) {
             user = await this.getOfflineUser();
+            this.user = user;
         }
         return user;
     }

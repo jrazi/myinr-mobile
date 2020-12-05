@@ -72,6 +72,9 @@ export default class StupidButRealServerGateway {
                     patient.doctorInfo = Doctor.ofDao(user);
                     return patient;
                 }
+                else throw {
+                    errorType: ErrorType.RECORD_NOT_FOUND,
+                }
             })
             .catch(err => {
                 throw {

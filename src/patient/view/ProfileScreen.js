@@ -14,10 +14,13 @@ class ProfileScreen extends React.Component {
         this.state = {
             logoutDialogVisible: false,
             isLoggingOut: false,
+            user: {},
         }
     }
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
+        const user = await rootDao.getUser();
+        this.setState({user: user});
     }
 
     logout = () => {
@@ -48,9 +51,13 @@ class ProfileScreen extends React.Component {
                         </View>
                         <View style={styles.bodyOfHeader}>
                             <Icons style={styles.avatar} name={'user'} size={150} color={currentTheme.colors.placeholder}/>
-                            <View>
-                                <Title>علی داوودنژاد</Title>
-                                {/*<Caption>بیمارستان شریعتی</Caption>*/}
+                            <View
+                                style={{
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Title>{this.state.user.fullName}</Title>
+                                <Caption>{null}</Caption>
                             </View>
                         </View>
                     </View>
