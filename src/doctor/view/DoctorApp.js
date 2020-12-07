@@ -8,7 +8,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import {rootDao} from "../../root/data/dao/RootDao";
 import {UserRole} from "../../root/domain/Role";
 import {currentTheme, theme} from "../../../theme";
-import {PatientTabNavigator} from "./patients/PatientTabNavigator";
+import {PatientsTab} from "./patients/PatientsTab";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -56,7 +56,7 @@ class DoctorApp extends React.Component {
                 />
                 <Tab.Screen
                     name="PatientsScreen"
-                    component={PatientTabNavigator}
+                    component={PatientsTab}
                     options={{
                         tabBarLabel: 'بیماران',
                         tabBarIcon: ({ color }) => (

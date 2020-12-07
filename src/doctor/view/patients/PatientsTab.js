@@ -5,7 +5,7 @@ import PatientProfileScreen from "./PatientProfileScreen";
 
 const Stack = createStackNavigator();
 
-export const PatientTabNavigator = (props) => {
+export const PatientsTab = (props) => {
     return (
         <Stack.Navigator
             initialRoute={'PatientsScreen'}
