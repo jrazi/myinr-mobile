@@ -1,17 +1,14 @@
 import React from 'react';
-import {StyleSheet, Text, View} from "react-native";
-import {StatusBar} from "expo-status-bar";
 import {BottomNavigation, useTheme} from "react-native-paper";
 import HomeScreen from "./HomeScreen";
-import PatientsScreen from "./PatientsScreen";
 import VisitsScreen from "./VisitsScreen";
 import ProfileScreen from "./ProfileScreen";
-import {useNavigation} from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {rootDao} from "../../root/data/dao/RootDao";
 import {UserRole} from "../../root/domain/Role";
 import {currentTheme, theme} from "../../../theme";
+import {PatientTabNavigator} from "./patients/PatientTabNavigator";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -59,7 +56,7 @@ class DoctorApp extends React.Component {
                 />
                 <Tab.Screen
                     name="PatientsScreen"
-                    component={PatientsScreen}
+                    component={PatientTabNavigator}
                     options={{
                         tabBarLabel: 'بیماران',
                         tabBarIcon: ({ color }) => (

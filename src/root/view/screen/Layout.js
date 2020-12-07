@@ -3,7 +3,6 @@ import {Appbar} from "react-native-paper";
 import {currentTheme, mostlyWhiteTheme} from "../../../../theme";
 import {StyleSheet, View} from "react-native";
 import {useNavigation} from '@react-navigation/native';
-import {fullSize} from "../styles/containers";
 
 export const ScreenLayout = (props) => {
     return (

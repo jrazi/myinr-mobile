@@ -1,13 +1,18 @@
 import React from "react";
 import {StyleSheet, View, ScrollView, RefreshControl} from "react-native";
-import {List, Surface, Card, Title, Paragraph, Headline, Text, Caption, Subheading, DataTable, Menu, Avatar, Appbar} from "react-native-paper";
+import {
+    List,
+    Surface,
+    Card,
+    Text,
+    Avatar,
+} from "react-native-paper";
 import Icons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {fullSize} from "../../root/view/styles/containers";
-import {currentTheme, mostlyWhiteTheme} from "../../../theme";
-import {rootDao} from "../../root/data/dao/RootDao";
-import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../root/domain/Util";
-import {ScreenHeader, ScreenLayout} from "../../root/view/screen/Layout";
+import {currentTheme, mostlyWhiteTheme} from "../../../../theme";
+import {rootDao} from "../../../root/data/dao/RootDao";
+import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../../root/domain/Util";
+import {ScreenHeader, ScreenLayout} from "../../../root/view/screen/Layout";
 
 class PatientsScreen extends React.Component {
     constructor(props) {
