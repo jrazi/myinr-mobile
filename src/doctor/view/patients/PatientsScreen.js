@@ -102,29 +102,29 @@ const PatientInfoCard = (props) => {
         latestInrTestMessage = 'عدم ثبت شاخص INR';
     }
     return (
-        <Surface style={styles.patientInfoCardContainer}>
-                <Card>
-                    <TouchableRipple
-                        onPress={props.onPress}
-                        rippleColor="rgba(0, 0, 0, .1)"
-                    >
-                        <View style={{
-                            paddingBottom: 10,
-                        }}>
-                            <Card.Title
-                                title={props.patientInfo.fullName}
-                                subtitle={latestInrTestMessage}
-                                left={() => <Avatar.Text size={32} label={nameChunks[0][0] + '.' + nameChunks[1][0]} />}
-                            />
-                            <Card.Content>
-                                <View >
-                                    <PatientCardDetails patientInfo={props.patientInfo}/>
-                                </View>
-                            </Card.Content>
-                        </View>
-                    </TouchableRipple>
-                </Card>
-        </Surface>
+            <Surface style={{
+                elevation: 4,
+            }}>
+                <TouchableRipple
+                    onPress={props.onPress}
+                    rippleColor="rgba(0, 0, 0, .1)"
+                >
+                    <View style={{
+                        paddingBottom: 10,
+                    }}>
+                        <Card.Title
+                            title={props.patientInfo.fullName}
+                            subtitle={latestInrTestMessage}
+                            left={() => <Avatar.Text size={32} label={nameChunks[0][0] + '.' + nameChunks[1][0]} />}
+                        />
+                        <Card.Content>
+                            <View >
+                                <PatientCardDetails patientInfo={props.patientInfo}/>
+                            </View>
+                        </Card.Content>
+                    </View>
+                </TouchableRipple>
+            </Surface>
     );
 }
 
@@ -211,8 +211,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     patientInfoCardContainer: {
-        elevation: 4,
+        // elevation: 4,
         marginVertical: 10,
+        // borderRadius: currentTheme.roundness*2,
     },
     patientInfoCard: {
     },
