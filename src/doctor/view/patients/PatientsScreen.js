@@ -87,7 +87,7 @@ class PatientsScreen extends React.Component {
 
 export default PatientsScreen;
 
-const AlternatePatientInfoCard = (props) => {
+const PatientInfoCard = (props) => {
     // TODO Refactor
     const nameSplitted = props.patientInfo.fullName.split(/\s+/);
     const nameChunks = [nameSplitted.shift(), nameSplitted.join(' ')];
@@ -124,22 +124,6 @@ const AlternatePatientInfoCard = (props) => {
                         </View>
                     </TouchableRipple>
                 </Card>
-        </Surface>
-    );
-}
-
-const PatientInfoCard = (props) => {
-    return (<AlternatePatientInfoCard {...props}/>);
-    return (
-        <Surface style={styles.patientInfoCardContainer}>
-            <List.Item
-                style={styles.patientInfoCard}
-                title={props.patientInfo.fullName}
-                // description={() => <PatientCardDetails patientInfo={props.patientInfo}/>}
-                left={() => <Icons style={styles.avatar} name={'user'} size={64}/>}
-                titleStyle={{paddingHorizontal: 10, paddingBottom: 10}}
-                descriptionStyle={{paddingHorizontal: 10, paddingBottom: 10}}
-            />
         </Surface>
     );
 }
@@ -220,7 +204,6 @@ const styles = StyleSheet.create({
     container: {
         paddingVertical: 10,
         paddingHorizontal: 30,
-        // backgroundColor: '#fff',
         flex: 1,
     },
 
