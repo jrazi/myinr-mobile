@@ -5,7 +5,7 @@ import {
     Surface,
     Card,
     Text,
-    Avatar,
+    Avatar, TouchableRipple,
 } from "react-native-paper";
 import Icons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -52,13 +52,14 @@ class PatientsScreen extends React.Component {
 
     render() {
         const patientInfoCards = [];
-        for (var patient of this.state.patients) {
+        for (let patient of this.state.patients) {
             patient.age = calcAge(patient.birthDate);
             patient = normalizeDictForDisplay(patient, 'FA');
             patientInfoCards.push(
                 <PatientInfoCard
                     key={patient.nationalId + patient.username}
                     patientInfo={patient}
+                    onPress={() => this.props.navigation.navigate('PatientProfileScreen', {userId: patient.userId})}
                 />
             );
         }
@@ -102,18 +103,27 @@ const AlternatePatientInfoCard = (props) => {
     }
     return (
         <Surface style={styles.patientInfoCardContainer}>
-            <Card>
-                <Card.Title
-                    title={props.patientInfo.fullName}
-                    subtitle={latestInrTestMessage}
-                    left={() => <Avatar.Text size={32} label={nameChunks[0][0] + '.' + nameChunks[1][0]} />}
-                />
-                <Card.Content>
-                    <View >
-                        <PatientCardDetails patientInfo={props.patientInfo}/>
-                    </View>
-                </Card.Content>
-            </Card>
+                <Card>
+                    <TouchableRipple
+                        onPress={props.onPress}
+                        rippleColor="rgba(0, 0, 0, .1)"
+                    >
+                        <View style={{
+                            paddingBottom: 10,
+                        }}>
+                            <Card.Title
+                                title={props.patientInfo.fullName}
+                                subtitle={latestInrTestMessage}
+                                left={() => <Avatar.Text size={32} label={nameChunks[0][0] + '.' + nameChunks[1][0]} />}
+                            />
+                            <Card.Content>
+                                <View >
+                                    <PatientCardDetails patientInfo={props.patientInfo}/>
+                                </View>
+                            </Card.Content>
+                        </View>
+                    </TouchableRipple>
+                </Card>
         </Surface>
     );
 }
