@@ -1,17 +1,13 @@
 import React from "react";
 import {StyleSheet, View, ScrollView, RefreshControl} from "react-native";
-import UnderConstruction from "../../root/view/screen/UnderConstruction";
-import {useNavigation} from "@react-navigation/native";
 import {List, Surface, Card, Title, Paragraph, Headline, Text, Caption, Subheading, DataTable, Menu, Avatar, Appbar} from "react-native-paper";
 import Icons from "react-native-vector-icons/EvilIcons";
-import {debugBorderRed} from "../../root/view/styles/borders";
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {fullSize} from "../../root/view/styles/containers";
 import {currentTheme, mostlyWhiteTheme} from "../../../theme";
 import {rootDao} from "../../root/data/dao/RootDao";
 import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../root/domain/Util";
+import {ScreenHeader, ScreenLayout} from "../../root/view/screen/Layout";
 
 class PatientsScreen extends React.Component {
     constructor(props) {
@@ -62,17 +58,10 @@ class PatientsScreen extends React.Component {
             );
         }
         return (
-            <View style={styles.componentWrapper}>
-                <Appbar.Header
-                    style={{
-                        paddingVertical: 40,
-                        paddingHorizontal: 10,
-                    }}
-                    theme={mostlyWhiteTheme}
-                >
-                    <Appbar.Content color={currentTheme.colors.primary} title="فهرست بیماران"  />
-                    <Appbar.Action icon="arrow-left" onPress={() => this.props.navigation.goBack()} color={currentTheme.colors.placeholder}/>
-                </Appbar.Header>
+            <ScreenLayout>
+                <ScreenHeader
+                    title="فهرست بیماران"
+                />
                 <ScrollView
                     style={styles.container}
                     refreshControl={
@@ -85,7 +74,7 @@ class PatientsScreen extends React.Component {
                         </List.Section>
                     </View>
                 </ScrollView>
-            </View>
+            </ScreenLayout>
         );
     }
 }
@@ -213,9 +202,6 @@ const Row = (props) => {return (
 )}
 
 const styles = StyleSheet.create({
-    componentWrapper: {
-        ...fullSize,
-    },
     container: {
         paddingVertical: 10,
         paddingHorizontal: 30,
