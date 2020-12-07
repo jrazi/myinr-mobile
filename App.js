@@ -8,6 +8,7 @@ import {Locale} from "./src/root/domain/Locale";
 import {I18nManager} from "react-native";
 import {rootDao} from "./src/root/data/dao/RootDao";
 import {currentTheme} from "./theme";
+import RNRestart from 'react-native-restart';
 
 export default class App extends React.Component {
 
@@ -23,9 +24,10 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-        const locale = rootDao.getLocale();
-        if (locale == Locale.FA) I18nManager.forceRTL(true);
-        else I18nManager.forceRTL(true);
+        if(I18nManager.isRTL != true){
+            I18nManager.forceRTL(true);
+            RNRestart.Restart();
+        }
         this.loadFontsAsync();
     }
 
