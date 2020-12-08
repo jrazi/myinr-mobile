@@ -19,6 +19,8 @@ export const ScreenHeader = (props) => {
             style={{
                 paddingVertical: 40,
                 paddingHorizontal: 10,
+                borderBottomWidth: 0,
+                ...props.style,
             }}
             theme={mostlyWhiteTheme}
         >
