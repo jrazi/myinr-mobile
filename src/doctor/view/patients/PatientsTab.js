@@ -19,6 +19,7 @@ export const PatientsTab = (props) => {
                 name={'PatientProfileScreen'}
                 component={PatientProfileScreen}
                 options={{ headerShown: false , headerTitle: props => null }}
+                initialParams={{ userId: null }}
             />
         </Stack.Navigator>
     )

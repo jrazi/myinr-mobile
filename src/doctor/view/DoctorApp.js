@@ -55,15 +55,16 @@ class DoctorApp extends React.Component {
                     }}
                 />
                 <Tab.Screen
-                    name="PatientsScreen"
-                    component={PatientsTab}
+                    name="PatientsTab"
                     options={{
                         tabBarLabel: 'بیماران',
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="clipboard-pulse-outline" color={color} size={26} />
                         ),
                     }}
-                />
+                >
+                    {() => <PatientsTab/>}
+                </Tab.Screen>
                 <Tab.Screen
                     name="VisitsScreen"
                     component={VisitsScreen}

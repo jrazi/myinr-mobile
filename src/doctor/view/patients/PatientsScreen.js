@@ -46,20 +46,17 @@ class PatientsScreen extends React.Component {
         })
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-    }
-
 
     render() {
         const patientInfoCards = [];
         for (let patient of this.state.patients) {
             patient.age = calcAge(patient.birthDate);
-            patient = normalizeDictForDisplay(patient, 'FA');
+            const displayPatient = normalizeDictForDisplay(patient, 'FA');
             patientInfoCards.push(
                 <PatientInfoCard
                     key={patient.nationalId + patient.username}
-                    patientInfo={patient}
-                    onPress={() => this.props.navigation.navigate('PatientProfileScreen', {userId: patient.userId})}
+                    patientInfo={displayPatient}
+                    onPress={() => this.props.navigation.navigate('PatientProfileScreen', {nationalId: patient.nationalId})}
                 />
             );
         }
