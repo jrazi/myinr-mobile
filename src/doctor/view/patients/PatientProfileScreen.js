@@ -13,7 +13,6 @@ import PatientsScreen from "./PatientsScreen";
 import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
 import {debugBorderRed} from "../../../root/view/styles/borders";
 import { FAB } from 'react-native-paper';
-
 const Tab = createMaterialTopTabNavigator();
 
 class PatientProfileScreen extends React.Component {
@@ -95,10 +94,8 @@ class PatientProfileScreen extends React.Component {
                 </Tab.Navigator>
                 <FAB
                     style={styles.fab}
-                    small
-                    icon="note-plus-outline"
-                    onPress={() => console.log('Presseddd')}
-                    theme={currentTheme}
+                    icon={'note-plus'}
+                    onPress={() => console.log('Pressed')}
                 />
             </ScreenLayout>
         );

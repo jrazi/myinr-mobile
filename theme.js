@@ -15,7 +15,8 @@ export const currentTheme = {
     colors: {
         ...DefaultTheme.colors,
         primary: '#03045e',
-        accent: '#0077b6',
+        accent: '#03045e',
+        // accent: '#0077b6',
         background: '#fff',
         surface: '#fff',
     },
