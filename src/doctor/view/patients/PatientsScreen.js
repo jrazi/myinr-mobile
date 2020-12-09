@@ -56,7 +56,7 @@ class PatientsScreen extends React.Component {
                 <PatientInfoCard
                     key={patient.nationalId + patient.username}
                     patientInfo={displayPatient}
-                    onPress={() => this.props.navigation.navigate('PatientProfileScreen', {nationalId: patient.nationalId})}
+                    onPress={() => this.props.navigation.navigate('PatientProfileScreen', {userId: patient.userId})}
                 />
             );
         }

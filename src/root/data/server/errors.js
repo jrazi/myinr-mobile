@@ -6,3 +6,11 @@ export const ErrorType = {
     CONNECTION_FAILED: 'CONNECTION_FAILED',
     UNKNOWN: 'UNKNOWN',
 }
+
+export function getErrorType(error) {
+    if (error == null || error == undefined || error['errorType'] == undefined || error['errorType'] == null)
+        return ErrorType.UNKNOWN;
+    if (error.errorType in ErrorType)
+        return ErrorType[error.errorType];
+    else return ErrorType.UNKNOWN;
+}

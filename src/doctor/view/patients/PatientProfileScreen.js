@@ -25,12 +25,12 @@ class PatientProfileScreen extends React.Component {
     }
 
     componentDidMount = () => {
-        if (!hasValue(this.props.route.params.nationalId)) return;
+        if (!hasValue(this.props.route.params.userId)) return;
         this.refresh();
     }
 
     refresh = () => {
-        doctorDao.getPatientInfo(this.props.route.params.nationalId)
+        doctorDao.getPatientInfo(this.props.route.params.userId)
             .then(patient => this.setState({patient: patient, loading: false}))
             .catch(err => {})
     }

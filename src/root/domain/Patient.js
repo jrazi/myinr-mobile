@@ -1,11 +1,11 @@
 import {UserRole} from "./Role";
-import {removeWhiteSpace, translateGender} from "./util/Util";
+import {firstNonEmpty, removeWhiteSpace, translateGender} from "./util/Util";
 
 
 export default class Patient {
     static ofDao(info) {
         let patient = {};
-        patient.userId = normalize(info.IDUser);
+        patient.userId = normalize(firstNonEmpty(info.IDUser, info.IDUserPatient));
         patient.patientId = normalize(info.IDPatient);
         patient.username = normalize(info.UsernameUser);
         patient.fullName = joinNames(normalize(info.FNamePatient), normalize(info.LNamePatient));
@@ -33,7 +33,7 @@ export default class Patient {
 }
 
 const normalize = (field) => {
-    return (field == undefined || removeWhiteSpace(field) == "") ? null : field;
+    return (field == undefined || removeWhiteSpace(field.toString()) == "") ? null : field;
 }
 
 const joinNames = (firstName, lastName) => {

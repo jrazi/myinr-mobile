@@ -1,17 +1,9 @@
 import Patient from "../../domain/Patient";
 import Doctor from "../../domain/Doctor";
-import {SERVER_ADDRESS} from "../../../../ServerConfig";
-import {ErrorType} from "./errors";
+import {ErrorType, getErrorType} from "./errors";
 import {DEFAULT_TIMEOUT, withTimeout} from "./util";
+import {fetchList, fetchUniqueRecord} from "./ServerGateway";
 
-
-export function getErrorType(error) {
-    if (error == null || error == undefined || error['errorType'] == undefined || error['errorType'] == null)
-        return ErrorType.UNKNOWN;
-    if (error.errorType in ErrorType)
-        return ErrorType[error.errorType];
-    else return ErrorType.UNKNOWN;
-}
 
 export default class StupidButRealServerGateway {
 
@@ -70,64 +62,6 @@ export default class StupidButRealServerGateway {
     }
 }
 
-const fetchUniqueRecord =  (query) => {
-    const url = createQueryUrl(query);
-    return fetch(url)
-        .then((response) => response.json())
-        .then((response) => {
-            if ('recordset' in response) {
-                if (response.recordset.length === 1) return response;
-                else if (response.recordset.length > 1) {
-                    return response;
-                    // TODO decide
-                    // throw {
-                    //     errorType: 'RECORD_NOT_UNIQUE',
-                    // }
-                }
-                else if (response.recordset.length === 0) {
-                    throw {
-                        errorType: 'RECORD_NOT_FOUND',
-                    }
-                }
-                else throw {
-                    errorType: 'UNABLE_TO_PARSE',
-                }
-            }
-            else throw {
-                errorType: 'UNABLE_TO_PARSE',
-            }
-        })
-        .then((jsonResponse) => jsonResponse.recordset[0])
-        .catch(error => {
-            throw {
-                errorType: getErrorType(error),
-            }
-        })
-}
-
-const fetchList = (query) => {
-    const url = createQueryUrl(query);
-    return fetch(url)
-        .then((response) => response.json())
-        .then((response) => {
-            if ('recordset' in response) {
-                if (response.recordset.length >= 0) return response;
-                else throw {
-                    errorType: 'UNABLE_TO_PARSE',
-                }
-            }
-            else throw {
-                errorType: 'UNABLE_TO_PARSE',
-            }
-        })
-        .then((jsonResponse) => jsonResponse.recordset)
-        .catch(error => {
-            throw {
-                errorType: getErrorType(error),
-            }
-        })
-}
-
 const fetchUserWithPasswordQuery = (username, password) => {
     return `
         SELECT * 
@@ -142,10 +76,6 @@ const fetchUserQuery = (username) => {
         FROM myinrir_test.dbo.UserTbl ut
         WHERE ut.UsernameUser='${username}'
     `;
-}
-
-const createQueryUrl = (query) => {
-    return `http://${SERVER_ADDRESS}/query?q=${query}`;
 }
 
 const fetchDoctorDataQuery = (userId) => {
@@ -175,9 +105,5 @@ const fetchPatientsOfDoctorQuery = (userId) => {
         ) l
         WHERE rn = 1
     `;
-    // return `
-    //     SELECT * FROM myinrir_test.dbo.PatientTbl pt
-    //     WHERE pt.IDPhysicianPatient = ${userId}
-    // `;
 }
 

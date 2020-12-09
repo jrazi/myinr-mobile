@@ -7,10 +7,10 @@ class DoctorDao {
     constructor() {
     }
 
-    getPatientInfo = (nationalId) => {
+    getPatientInfo = (userId) => {
         return rootDao.getUser()
             .then(doctor => {
-                const patient = doctor.patients.filter(patient => patient.nationalId === nationalId)[0];
+                const patient = doctor.patients.filter(patient => patient.userId === userId)[0];
                 if (hasValue(patient)) return patient;
                 throw "NOT_FOUND";
             })
@@ -19,11 +19,11 @@ class DoctorDao {
             })
     }
 
-    getVisitState = (patientNatId) => {
-        return this.getCachedVisit(patientNatId)
+    getVisitState = (patientUserId) => {
+        return this.getCachedVisit(patientUserId)
             .then(cachedVisit => {
                 if (cachedVisit == null) {
-                    return this.getVisitsHistory(patientNatId)
+                    return this.getVisitsHistory(patientUserId)
                         .then(visits => {
                             return (hasValue(visits) && visits.length > 0) ? VisitState.FOLLOWUP_VISIT : VisitState.FIRST_VISIT;
                         })
@@ -32,27 +32,27 @@ class DoctorDao {
             })
     }
 
-    getCachedVisit = (patientNatId) => {
-        return AsyncStorage.getItem(RecordIdentifier.cachedVisit(patientNatId))
+    getCachedVisit = (patientUserId) => {
+        return AsyncStorage.getItem(RecordIdentifier.cachedVisit(patientUserId))
             .then(cachedVisit => {
                 return JSON.parse(cachedVisit);
             })
             .catch(err => null)
     }
 
-    saveCachedVisit = (patientNatId, cachedVisit) => {
+    saveCachedVisit = (patientUserId, cachedVisit) => {
         return AsyncStorage.setItem(
-            RecordIdentifier.cachedVisit(patientNatId),
+            RecordIdentifier.cachedVisit(patientUserId),
             cachedVisit
         );
     }
 
-    deleteCachedVisit = (patientNatId) => {
-        return AsyncStorage.removeItem(RecordIdentifier.cachedVisit(patientNatId));
+    deleteCachedVisit = (patientUserId) => {
+        return AsyncStorage.removeItem(RecordIdentifier.cachedVisit(patientUserId));
     }
 
-    getVisitsHistory = (patientNatId) => {
-        return AsyncStorage.getItem(RecordIdentifier.visits(patientNatId))
+    getVisitsHistory = (patientUserId) => {
+        return AsyncStorage.getItem(RecordIdentifier.visits(patientUserId))
             .then(visit => {
                 return JSON.parse(visit);
             })
