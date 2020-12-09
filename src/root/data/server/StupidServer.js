@@ -1,17 +1,9 @@
-
 import Patient from "../../domain/Patient";
 import Doctor from "../../domain/Doctor";
 import {SERVER_ADDRESS} from "../../../../ServerConfig";
+import {ErrorType} from "./errors";
+import {DEFAULT_TIMEOUT, withTimeout} from "./util";
 
-
-export const ErrorType = {
-    RECORD_NOT_UNIQUE: 'RECORD_NOT_UNIQUE',
-    UNABLE_TO_PARSE: 'UNABLE_TO_PARSE',
-    RECORD_NOT_FOUND: 'RECORD_NOT_FOUND',
-    TIMEOUT: 'TIMEOUT',
-    CONNECTION_FAILED: 'CONNECTION_FAILED',
-    UNKNOWN: 'UNKNOWN',
-}
 
 export function getErrorType(error) {
     if (error == null || error == undefined || error['errorType'] == undefined || error['errorType'] == null)
@@ -20,28 +12,6 @@ export function getErrorType(error) {
         return ErrorType[error.errorType];
     else return ErrorType.UNKNOWN;
 }
-
-function timeout(ms, promise) {
-    return new Promise((resolve, reject) => {
-        const timer = setTimeout(() => {
-            reject({
-                errorType: ErrorType.TIMEOUT,
-            })
-        }, ms)
-
-        promise
-            .then(value => {
-                clearTimeout(timer)
-                resolve(value)
-            })
-            .catch(reason => {
-                clearTimeout(timer)
-                reject(reason)
-            })
-    })
-}
-
-const DEFAULT_TIMEOUT = 10000;
 
 export default class StupidButRealServerGateway {
 
@@ -57,7 +27,7 @@ export default class StupidButRealServerGateway {
     }
 
     fetchUserDataWithQuery(fetchQuery) {
-        return timeout(DEFAULT_TIMEOUT,fetchUniqueRecord(fetchQuery))
+        return withTimeout(DEFAULT_TIMEOUT,fetchUniqueRecord(fetchQuery))
             .then(async user => {
                 if (user['RoleUser'] == 1) {
                     user= {...user, ...await this.fetchDoctorData(user['IDUser'])};

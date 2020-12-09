@@ -6,10 +6,6 @@ import Doctor from "./Doctor";
 export default class UserFactory {
 
     static createUser(userInfo) {
-        if (userInfo.role == UserRole.PATIENT)
-            return Patient.ofDict(userInfo);
-        else if (userInfo.role == UserRole.DOCTOR)
-            return Doctor.ofDict(userInfo);
-        else return null;
+        return userInfo; // TODO Remove when safe
     }
 }

@@ -15,7 +15,8 @@ import {Screen} from "../../root/view/Screen";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
 import {TextInput, Button, Text, Title, Headline, HelperText, Snackbar, Portal} from 'react-native-paper';
 import {fullSize} from "../../root/view/styles/containers";
-import {ErrorType, getErrorType} from "../../root/data/server/StupidServer";
+import {getErrorType} from "../../root/data/server/StupidServer";
+import {ErrorType} from "../../root/data/server/errors";
 
 export default class LoginForm extends React.Component {
 

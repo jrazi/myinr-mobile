@@ -2,7 +2,7 @@ import React from "react";
 import {StyleSheet, View} from "react-native";
 import {serverGateway} from "../../root/data/server/ServerGateway";
 import {rootDao} from "../../root/data/dao/RootDao";
-import {guessGender} from "../../root/domain/Util";
+import {guessGender} from "../../root/domain/util/Util";
 import * as Profile from '../../root/view/screen/Profile';
 
 class ProfileScreen extends React.Component {

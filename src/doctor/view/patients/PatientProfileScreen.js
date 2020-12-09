@@ -5,7 +5,7 @@ import {ScreenHeader, ScreenLayout} from "../../../root/view/screen/Layout";
 import {Button, Text} from "react-native-paper";
 import {rootDao} from "../../../root/data/dao/RootDao";
 import {doctorDao} from "../../data/dao/DoctorDao";
-import {hasValue} from "../../../root/domain/Util";
+import {hasValue} from "../../../root/domain/util/Util";
 import {currentTheme} from "../../../../theme";
 import HomeScreen from "../HomeScreen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";

@@ -11,7 +11,7 @@ import Icons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {currentTheme, mostlyWhiteTheme} from "../../../../theme";
 import {rootDao} from "../../../root/data/dao/RootDao";
-import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../../root/domain/Util";
+import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../../root/domain/util/Util";
 import {ScreenHeader, ScreenLayout} from "../../../root/view/screen/Layout";
 
 class PatientsScreen extends React.Component {

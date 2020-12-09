@@ -1,5 +1,5 @@
 import {UserRole} from "./Role";
-import {removeWhiteSpace, translateGender} from "./Util";
+import {removeWhiteSpace, translateGender} from "./util/Util";
 
 
 export default class Patient {
@@ -30,15 +30,6 @@ export default class Patient {
         patient.doctorInfo = {};
         return patient;
     }
-
-    static ofDict(info) {
-        let patient = new Patient();
-        for (const key in info) {
-            patient[key] = info[key];
-        }
-        return patient;
-    }
-
 }
 
 const normalize = (field) => {

@@ -1,5 +1,5 @@
 import {UserRole} from "./Role";
-import {removeWhiteSpace} from "./Util";
+import {removeWhiteSpace} from "./util/Util";
 
 export default class Doctor {
 
@@ -22,14 +22,6 @@ export default class Doctor {
             status:  normalize(info.StatusAncestor),
         }
         doctor.role = UserRole.DOCTOR;
-        return doctor;
-    }
-
-    static ofDict(info) {
-        let doctor = new Doctor();
-        for (const key in info) {
-            doctor[key] = info[key];
-        }
         return doctor;
     }
 }

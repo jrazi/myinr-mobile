@@ -1,7 +1,7 @@
 import RootRepository from "../repository/RootRepository";
 import {Locale} from "../../domain/Locale";
 import {serverGateway} from "../server/ServerGateway";
-import {sleep} from "../../domain/Util";
+import {sleep} from "../../domain/util/Util";
 
 class RootDao {
 
