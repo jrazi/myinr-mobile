@@ -1,6 +1,5 @@
-import {UserRole} from "../../root/domain/Role";
-import Doctor from "../../doctor/domain/Doctor";
-import {removeWhiteSpace, translateGender} from "../../root/domain/Util";
+import {UserRole} from "./Role";
+import {removeWhiteSpace, translateGender} from "./Util";
 
 
 export default class Patient {

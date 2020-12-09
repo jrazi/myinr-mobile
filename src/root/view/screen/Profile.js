@@ -99,6 +99,7 @@ export const Screen = (props) => {return (
                         title={item.title}
                         left={(props) => <List.Icon icon={item.iconId} color={currentTheme.colors.primary}/>}
                         onPress={item.onPress}
+                        key={item.title}
                     />
                 )})
             }

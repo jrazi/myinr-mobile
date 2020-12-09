@@ -1,6 +1,6 @@
 
-import Patient from "../../../patient/domain/Patient";
-import Doctor from "../../../doctor/domain/Doctor";
+import Patient from "../../domain/Patient";
+import Doctor from "../../domain/Doctor";
 import {SERVER_ADDRESS} from "../../../../ServerConfig";
 
 

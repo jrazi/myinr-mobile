@@ -168,3 +168,11 @@ function _jalaliToGeorgian(year, month, day) {
 
 
 const FEMALE_NAMES = ['پرستو', 'مهدیه']
+
+// Return the first object that is not null or undefined
+export function firstNonEmpty(...values) {
+    for (const value of values) {
+        if (hasValue(value)) return value;
+    }
+    return null;
+}
