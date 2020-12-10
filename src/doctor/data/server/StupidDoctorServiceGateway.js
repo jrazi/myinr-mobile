@@ -1,9 +1,9 @@
 import {DEFAULT_TIMEOUT, withTimeout} from "../../../root/data/server/util";
-import {fetchList, fetchUniqueRecord} from "../../../root/data/server/ServerGateway";
 import Doctor from "../../../root/domain/Doctor";
 import Patient from "../../../root/domain/Patient";
 import {ErrorType, getErrorType} from "../../../root/data/server/errors";
-import FirstVisit from "../../domain/visit/Visit";
+import {FirstVisit} from "../../domain/visit/Visit";
+import {fetchList, fetchUniqueRecord} from "../../../root/data/server/Sql";
 
 
 export default class StupidDoctorServiceGateway {
@@ -14,10 +14,11 @@ export default class StupidDoctorServiceGateway {
     getVisitsHistory = (patientUserId) => {
         let visits = [];
         return withTimeout(DEFAULT_TIMEOUT, fetchList(fetchFirstVisitQuery(patientUserId)))
-            .then(recordSet => recordSet[0])
+            .then(recordset => recordset[0])
             .then(firstVisitDto => {
-                console.log('so here is the dto', firstVisitDto);
+                // console.log('so here is the dto', firstVisitDto);
                 let firstVisit = FirstVisit.ofDao(firstVisitDto);
+                // console.log('and now the domain object', firstVisit);
                 visits.push(firstVisit);
                 return visits;
             })

@@ -1,6 +1,7 @@
 import {rootDao} from "../../../root/data/dao/RootDao";
 import {hasValue} from "../../../root/domain/util/Util";
 import {AsyncStorage} from "react-native";
+import {doctorService} from "../server/DoctorServiceGateway";
 
 class DoctorDao {
 
@@ -54,9 +55,13 @@ class DoctorDao {
     getVisitsHistory = (patientUserId) => {
         return AsyncStorage.getItem(RecordIdentifier.visits(patientUserId))
             .then(visit => {
+                if (visit == null) throw "NOT_FOUND";
                 return JSON.parse(visit);
             })
-            .catch(err => [])
+            .catch(err => {
+                doctorService.getVisitsHistory(patientUserId);
+                return [];
+            })
     }
 }
 

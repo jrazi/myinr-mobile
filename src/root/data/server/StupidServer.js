@@ -2,7 +2,7 @@ import Patient from "../../domain/Patient";
 import Doctor from "../../domain/Doctor";
 import {ErrorType, getErrorType} from "./errors";
 import {DEFAULT_TIMEOUT, withTimeout} from "./util";
-import {fetchList, fetchUniqueRecord} from "./ServerGateway";
+import {fetchList, fetchUniqueRecord} from "./Sql";
 
 
 export default class StupidButRealServerGateway {
