@@ -55,11 +55,15 @@ class DoctorDao {
     getVisitsHistory = (patientUserId) => {
         return AsyncStorage.getItem(RecordIdentifier.visits(patientUserId))
             .then(visit => {
-                if (visit == null) throw "NOT_FOUND";
+                if (visit == null) {
+                    return doctorService.getVisitsHistory(patientUserId)
+                        .then(visitHistory => {
+                            return visitHistory;
+                        })
+                }
                 return JSON.parse(visit);
             })
             .catch(err => {
-                doctorService.getVisitsHistory(patientUserId);
                 return [];
             })
     }
