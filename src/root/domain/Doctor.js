@@ -1,5 +1,5 @@
 import {UserRole} from "./Role";
-import {removeWhiteSpace} from "./util/Util";
+import {joinNames, normalize} from "./util/normalize";
 
 export default class Doctor {
 
@@ -26,13 +26,4 @@ export default class Doctor {
     }
 }
 
-const normalizeArray = (array) => Array.isArray(array) ? array : [];
 
-
-const normalize = (field) => {
-    return (field == undefined || removeWhiteSpace(field) == '') ? null : field;
-}
-
-const joinNames = (firstName, lastName) => {
-    return firstName + ' ' + lastName;
-}

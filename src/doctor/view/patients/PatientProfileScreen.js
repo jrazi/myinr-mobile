@@ -33,6 +33,8 @@ class PatientProfileScreen extends React.Component {
         doctorDao.getPatientInfo(this.props.route.params.userId)
             .then(patient => this.setState({patient: patient, loading: false}))
             .catch(err => {})
+
+        doctorDao.getVisitsHistory();
     }
 
     render() {
