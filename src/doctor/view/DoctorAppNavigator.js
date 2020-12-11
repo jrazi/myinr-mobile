@@ -13,11 +13,13 @@ export default class DoctorAppNavigator extends React.Component {
         super(props);
     }
 
+    componentDidMount() {
+    }
 
     render() {
         return (
             <Stack.Navigator
-                initialRoute={'DoctorApp'}
+                initialRoute={'WIP'}
             >
                 <Stack.Screen
                     name={'DoctorApp'}
@@ -34,7 +36,13 @@ export default class DoctorAppNavigator extends React.Component {
                     name={'VisitSessionScreen'}
                     component={FirstVisitScreen}
                     options={{ headerShown: false , headerTitle: props => null }}
-                    initialParams={{ userId: null, useCache: true }}
+                    initialParams={{ userId: null, patientName: null, useCache: true }}
+                />
+                <Stack.Screen
+                    name={'WIP'}
+                    component={FirstVisitScreen}
+                    options={{ headerShown: false , headerTitle: props => null }}
+                    initialParams={{ userId: 5130, patientName: 'فاطمه محمدکریمی', useCache: true }}
                 />
             </Stack.Navigator>
         );

@@ -23,6 +23,7 @@ class DoctorApp extends React.Component {
     }
 
     componentDidMount() {
+        this.props.navigation.navigate("WIP");
         this.setState({loaded: false}, () => {
             rootDao.getUser().then(user => {
                 if (user == null) this.props.navigation.navigate('LOGIN');

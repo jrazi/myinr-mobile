@@ -13,6 +13,14 @@ export const ScreenLayout = (props) => {
 }
 
 export const ScreenHeader = (props) => {
+    return (
+        <CustomContentScreenHeader style={props.style}>
+            <Appbar.Content color={currentTheme.colors.primary} title={props.title}  />
+        </CustomContentScreenHeader>
+    );
+}
+
+export const CustomContentScreenHeader = (props) => {
     let navigation = useNavigation();
     return (
         <Appbar.Header
@@ -24,7 +32,7 @@ export const ScreenHeader = (props) => {
             }}
             theme={mostlyWhiteTheme}
         >
-            <Appbar.Content color={currentTheme.colors.primary} title={props.title}  />
+            {props.children}
             <Appbar.Action icon="arrow-left" onPress={() => navigation.goBack()} color={currentTheme.colors.placeholder}/>
         </Appbar.Header>
     );

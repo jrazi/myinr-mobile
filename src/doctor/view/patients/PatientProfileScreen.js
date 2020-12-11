@@ -40,7 +40,10 @@ class PatientProfileScreen extends React.Component {
 
     startVisitSession = (useCache) => {
         this.setState({newVisitDialogOpen: false}, () => {
-            this.props.navigation.navigate('VisitSessionScreen', {userId: this.props.route.params.userId, useCache: useCache});
+            this.props.navigation.navigate(
+                'VisitSessionScreen',
+                {userId: this.props.route.params.userId, patientName: this.state.patient.fullName, useCache: useCache}
+            );
         })
     }
     render() {
