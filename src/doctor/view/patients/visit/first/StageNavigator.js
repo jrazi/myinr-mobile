@@ -32,14 +32,12 @@ class StageNavigator extends React.Component {
 
     onTabPress = ({route}) => {
         const index = route.key == 'prev' ? 0 : 1;
-        console.log('index is', index, this.state.currentStage, stages.length);
         if (index == 0 && this.state.currentStage == 0) return;
         if (index == 1 && this.state.currentStage == stages.length-1) {
             if (hasValue(this.props.onFinish)) this.props.onFinish();
             return;
         }
 
-        console.log('and index is here', index);
         if (index == 1 && this.state.currentStage == stages.length - 2) {
             this.state.routes[1].title = 'اتمام ویزیت';
         }
@@ -51,7 +49,7 @@ class StageNavigator extends React.Component {
 
         this.setState({currentStage: this.state.currentStage + inc}, () => {
             if (hasValue(this.props.onNewStage) && inc != 0) this.props.onNewStage(this.state.currentStage);
-            this.props.navigation.navigate(this.state.currentStage == 0 ? "T1" : this.state.currentStage == 1 ? "T2" : "T3")
+            this.props.navigation.navigate(`VisitStage:${this.state.currentStage}`);
         });
     }
 
@@ -60,7 +58,6 @@ class StageNavigator extends React.Component {
         const renderScene = ({ route, jumpTo }) => {
             let Component = stages[this.state.currentStage];
             return <StageNavStack/>;
-            // return <Component/>;
             return null;
         }
 
@@ -84,25 +81,20 @@ const Stack = createStackNavigator();
 
 const StageNavStack = (props) => {return (
     <Stack.Navigator
-        initialRoute={'T1'}
+        initialRoute={'VisitStage:0'}
     >
-        <Stack.Screen
-            name={'T1'}
-            component={PreliminaryStage}
-            options={{ headerShown: false , headerTitle: props => null }}
-        />
-        <Stack.Screen
-            name={'T2'}
-            component={HasBledScoreStage}
-            options={{ headerShown: false , headerTitle: props => null }}
-            initialParams={{ userId: null }}
-        />
-        <Stack.Screen
-            name={'T3'}
-            component={DosageRecommendationStage}
-            options={{ headerShown: false , headerTitle: props => null }}
-            initialParams={{ userId: null }}
-        />
+        {
+            stages.map((stage, index) => {
+                return (
+                    <Stack.Screen
+                        name={`VisitStage:${index}`}
+                        component={stage}
+                        options={{ headerShown: false , headerTitle: props => null }}
+                    />
+                )
+            })
+        }
+
     </Stack.Navigator>
 )}
 
