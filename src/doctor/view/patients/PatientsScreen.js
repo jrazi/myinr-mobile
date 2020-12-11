@@ -99,9 +99,9 @@ const PatientInfoCard = (props) => {
         latestInrTestMessage = 'عدم ثبت شاخص INR';
     }
     return (
-            <Surface style={{
+            <Surface style={[{
                 elevation: 4,
-            }}>
+            }, styles.patientInfoCardContainer]}>
                 <TouchableRipple
                     onPress={props.onPress}
                     rippleColor="rgba(0, 0, 0, .1)"

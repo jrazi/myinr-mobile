@@ -16,18 +16,6 @@ export const PatientsTab = (props) => {
                 component={PatientsScreen}
                 options={{ headerShown: false , headerTitle: props => null }}
             />
-            <Stack.Screen
-                name={'PatientProfileScreen'}
-                component={PatientProfileScreen}
-                options={{ headerShown: false , headerTitle: props => null }}
-                initialParams={{ userId: null }}
-            />
-            <Stack.Screen
-                name={'VisitSessionScreen'}
-                component={FirstVisitScreen}
-                options={{ headerShown: false , headerTitle: props => null }}
-                initialParams={{ userId: null, useCache: true }}
-            />
         </Stack.Navigator>
     )
 }

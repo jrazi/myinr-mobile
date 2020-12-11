@@ -9,6 +9,7 @@ import {rootDao} from "../../root/data/dao/RootDao";
 import {UserRole} from "../../root/domain/Role";
 import {currentTheme, theme} from "../../../theme";
 import {PatientsTab} from "./patients/PatientsTab";
+import PatientsScreen from "./patients/PatientsScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -55,16 +56,15 @@ class DoctorApp extends React.Component {
                     }}
                 />
                 <Tab.Screen
-                    name="PatientsTab"
+                    name="PatientsScreen"
+                    component={PatientsScreen}
                     options={{
                         tabBarLabel: 'بیماران',
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="clipboard-pulse-outline" color={color} size={26} />
                         ),
                     }}
-                >
-                    {() => <PatientsTab/>}
-                </Tab.Screen>
+                />
                 <Tab.Screen
                     name="VisitsScreen"
                     component={VisitsScreen}

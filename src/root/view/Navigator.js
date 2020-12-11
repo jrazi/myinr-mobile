@@ -4,9 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import RootEntry from "./RootEntry";
 import PatientApp from "../../patient/view/PatientApp";
-import DoctorApp from "../../doctor/view/DoctorApp";
 import {Screen} from "./Screen";
 import LoginScreen from "../../login/view/LoginScreen";
+import DoctorAppNavigator from "../../doctor/view/DoctorAppNavigator";
 
 const Stack = createStackNavigator();
 
@@ -39,7 +39,7 @@ export default class Navigator extends React.Component {
                     />
                     <Stack.Screen
                         name={Screen.DOCTOR}
-                        component={DoctorApp}
+                        component={DoctorAppNavigator}
                         options={{ headerShown: false , headerTitle: props => null }}
                     />
                 </Stack.Navigator>
