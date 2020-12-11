@@ -1,11 +1,11 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import {Button, Text, ProgressBar, Colors} from "react-native-paper";
-import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
+import {ProgressBar} from "react-native-paper";
+import {CustomContentScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {FirstVisit} from "../../../../domain/visit/Visit";
 import {doctorDao} from "../../../../data/dao/DoctorDao";
-import {firstNonEmpty} from "../../../../../root/domain/util/Util";
 import {currentTheme} from "../../../../../../theme";
+import StageNavigator from "./StageNavigator";
 
 const FIRST_STAGE = '';
 
@@ -42,16 +42,17 @@ export class FirstVisitScreen extends React.Component {
                     </View>
                 </CustomContentScreenHeader>
                 <View style={styles.mainContainer}>
-                    <Text>USE CACHE: {new String(this.props.route.params.useCache).toString()} HAVE A NICE DAY</Text>
+                    <StageNavigator navigation={this.props.navigation}/>
                 </View>
             </ScreenLayout>
         )
     }
 }
-// <ScreenHeader title={'ویزیت ' + firstNonEmpty(this.props.route.params.patientName, 'بیمار')} style={{elevation: 0}}/>
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         backgroundColor: currentTheme.colors.surface,
     }
 })
+
+
