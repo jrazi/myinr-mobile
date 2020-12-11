@@ -4,13 +4,10 @@ import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
 import {hasValue} from "../../../../../root/domain/util/Util";
 import {stages} from "./FirstVisitProperties";
 import {createStackNavigator} from "@react-navigation/stack";
-import {PreliminaryStage} from "./PreliminaryStage";
-import {HasBledScoreStage} from "./HasBledScoreStage";
-import {DosageRecommendationStage} from "./DosageRecommendtionStage";
 import {StyleSheet, View} from "react-native";
 import {fullSize} from "../../../../../root/view/styles/containers";
 
-class StageNavigator extends React.Component {
+export default class StageNavigator extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,7 +16,6 @@ class StageNavigator extends React.Component {
                 { key: 'prev', title: 'قبلی', icon: 'chevron-right' },
                 { key: 'next', title: 'بعدی', icon: 'chevron-left' },
             ],
-            currentStage: 0,
         }
     }
 
@@ -32,31 +28,29 @@ class StageNavigator extends React.Component {
 
     onTabPress = ({route}) => {
         const index = route.key == 'prev' ? 0 : 1;
-        if (index == 0 && this.state.currentStage == 0) return;
-        if (index == 1 && this.state.currentStage == stages.length-1) {
+        if (index == 0 && this.props.currentStage == 0) return;
+        if (index == 1 && this.props.currentStage == stages.length-1) {
             if (hasValue(this.props.onFinish)) this.props.onFinish();
             return;
         }
 
-        if (index == 1 && this.state.currentStage == stages.length - 2) {
+        if (index == 1 && this.props.currentStage == stages.length - 2) {
             this.state.routes[1].title = 'اتمام ویزیت';
         }
-        else if (index == 0 && this.state.currentStage == stages.length-1) {
+        else if (index == 0 && this.props.currentStage == stages.length-1) {
             this.state.routes[1].title = 'بعدی';
         }
 
         const inc = index == 0 ? -1 : index == 1 ? 1 : 0;
+        const newStage = this.props.currentStage + inc;
 
-        this.setState({currentStage: this.state.currentStage + inc}, () => {
-            if (hasValue(this.props.onNewStage) && inc != 0) this.props.onNewStage(this.state.currentStage);
-            this.props.navigation.navigate(`VisitStage:${this.state.currentStage}`, {visitInfo: props.visitInfo});
-        });
+        if (hasValue(this.props.onNewStage) && inc != 0) this.props.onNewStage(newStage);
+        this.props.navigation.navigate(`VisitStage:${newStage}`, {visitInfo: this.props.visitInfo});
     }
 
     render() {
 
         const renderScene = ({ route, jumpTo }) => {
-            let Component = stages[this.state.currentStage];
             return <StageNavStack visitInfo={this.props.visitInfo}/>;
         }
 
@@ -98,9 +92,3 @@ const StageNavStack = (props) => {return (
     </Stack.Navigator>
 )}
 
-
-export default function(props) {
-    const defaultTheme = useTheme();
-
-    return <StageNavigator {...props} defaultTheme={defaultTheme}/>;
-}

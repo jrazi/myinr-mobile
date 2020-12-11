@@ -7,14 +7,13 @@ import {doctorDao} from "../../../../data/dao/DoctorDao";
 import {currentTheme} from "../../../../../../theme";
 import StageNavigator from "./StageNavigator";
 
-const FIRST_STAGE = '';
 
 export class FirstVisitScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             visitInfo: FirstVisit.createNew(),
-            currentStage: FIRST_STAGE,
+            currentStage: 0,
         }
     }
 
@@ -27,8 +26,21 @@ export class FirstVisitScreen extends React.Component {
                 this.setState({visitInfo: cachedVisit.visitInfo, currentStage: cachedVisit.currentStage})
             })
             .catch(err => {
-                this.setState({visitInfo: FirstVisit.createNew(), currentStage: FIRST_STAGE})
+                this.setState({visitInfo: FirstVisit.createNew(), currentStage: 0})
             })
+    }
+
+    cacheVisit = () => {
+        doctorDao.saveCachedVisit(
+            this.props.route.params.userId,
+            {currentStage: this.state.currentStage, visitInfo: this.state.visitInfo}
+        );
+    }
+
+    onNewStage = (stageIndex) => {
+        this.setState({currentStage: stageIndex}, () => {
+            // this.cacheVisit();
+        });
     }
 
     render() {
@@ -42,7 +54,12 @@ export class FirstVisitScreen extends React.Component {
                     </View>
                 </CustomContentScreenHeader>
                 <View style={styles.mainContainer}>
-                    <StageNavigator navigation={this.props.navigation} visitInfo={this.state.visitInfo}/>
+                    <StageNavigator
+                        navigation={this.props.navigation}
+                        visitInfo={this.state.visitInfo}
+                        onNewStage={this.onNewStage}
+                        currentStage={this.state.currentStage}
+                    />
                 </View>
             </ScreenLayout>
         )

@@ -17,13 +17,16 @@ export class PreliminaryStage extends React.Component {
 
     render() {
         return (
-            <ScreenLayout>
+            <ScreenLayout style={styles.wrapper}>
                 <Text>PRELIMINARY</Text>
             </ScreenLayout>
         )
     }
 }
 const styles = StyleSheet.create({
+    wrapper: {
+        backgroundColor: currentTheme.colors.surface,
+    },
     mainContainer: {
         flex: 1,
         backgroundColor: currentTheme.colors.surface,

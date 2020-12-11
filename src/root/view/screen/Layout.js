@@ -6,7 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 
 export const ScreenLayout = (props) => {
     return (
-        <View style={styles.screenWrapper}>
+        <View style={[styles.screenWrapper, props.style]}>
             {props.children}
         </View>
     )
