@@ -6,6 +6,7 @@ import {FirstVisit} from "../../../../domain/visit/Visit";
 import {doctorDao} from "../../../../data/dao/DoctorDao";
 import {currentTheme} from "../../../../../../theme";
 import StageNavigator from "./StageNavigator";
+import {stages} from "./FirstVisitProperties";
 
 
 export class FirstVisitScreen extends React.Component {
@@ -46,10 +47,10 @@ export class FirstVisitScreen extends React.Component {
     render() {
         return (
             <ScreenLayout>
-                <CustomContentScreenHeader>
+                <CustomContentScreenHeader style={{elevation: 0}}>
                     <View style={{flex: 1}}>
                         <View style={{width: '50%'}}>
-                            <ProgressBar progress={0.2} color={currentTheme.colors.primary} />
+                            <ProgressBar progress={(1+this.state.currentStage)/stages.length} color={currentTheme.colors.primary} />
                         </View>
                     </View>
                 </CustomContentScreenHeader>
