@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from '@react-navigation/stack';
 import PatientsScreen from "./PatientsScreen";
 import PatientProfileScreen from "./PatientProfileScreen";
+import {FirstVisitScreen} from "./visit/first/FirstVisitScreen";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,12 @@ export const PatientsTab = (props) => {
                 component={PatientProfileScreen}
                 options={{ headerShown: false , headerTitle: props => null }}
                 initialParams={{ userId: null }}
+            />
+            <Stack.Screen
+                name={'VisitSessionScreen'}
+                component={FirstVisitScreen}
+                options={{ headerShown: false , headerTitle: props => null }}
+                initialParams={{ userId: null, useCache: true }}
             />
         </Stack.Navigator>
     )

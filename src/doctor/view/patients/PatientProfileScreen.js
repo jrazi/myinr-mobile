@@ -38,6 +38,11 @@ class PatientProfileScreen extends React.Component {
             .catch(err => {})
     }
 
+    startVisitSession = (useCache) => {
+        this.setState({newVisitDialogOpen: false}, () => {
+            this.props.navigation.navigate('VisitSessionScreen', {userId: this.props.route.params.userId, useCache: useCache});
+        })
+    }
     render() {
         const colors = currentTheme.colors;
         return (
@@ -101,9 +106,11 @@ class PatientProfileScreen extends React.Component {
                     onPress={() => this.setState({newVisitDialogOpen: true})}
                 />
                 <StartVisitDialog
-                    visitState={this.state.visitState}
+                    visitState={5 > 3 ? VisitState.INCOMPLETE_VISIT : this.state.visitState} // TODO temp values
                     visible={this.state.newVisitDialogOpen}
                     onDismiss={() => this.setState({newVisitDialogOpen: false})}
+                    onBeginNew={() => this.startVisitSession(false)}
+                    onContinuePrevious={() => this.startVisitSession(true)}
                 />
             </ScreenLayout>
         );
@@ -125,6 +132,7 @@ const StartVisitDialog = (props) => {
     if (props.visitState == VisitState.FIRST_VISIT) {
         return <StartFirstVisitDialog
             visible={props.visible} onDismiss={props.onDismiss} dismissable={true}
+            onBeginNew={props.onBeginNew}
         />
     }
     else if (props.visitState == VisitState.FOLLOWUP_VISIT) {
@@ -135,6 +143,8 @@ const StartVisitDialog = (props) => {
     else if (props.visitState == VisitState.INCOMPLETE_VISIT) {
         return <ContinueCachedVisitDialog
             visible={props.visible} onDismiss={props.onDismiss} dismissable={true}
+            onBeginNew={props.onBeginNew}
+            onContinue={props.onContinuePrevious}
         />
     }
     else return null;
