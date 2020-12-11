@@ -42,7 +42,7 @@ export class FirstVisitScreen extends React.Component {
                     </View>
                 </CustomContentScreenHeader>
                 <View style={styles.mainContainer}>
-                    <StageNavigator navigation={this.props.navigation}/>
+                    <StageNavigator navigation={this.props.navigation} visitInfo={this.state.visitInfo}/>
                 </View>
             </ScreenLayout>
         )

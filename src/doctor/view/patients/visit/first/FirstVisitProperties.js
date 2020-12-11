@@ -4,7 +4,7 @@ import {DosageRecommendationStage} from "./DosageRecommendtionStage";
 import React from "react";
 
 export const stages = [
-    (props) => <PreliminaryStage props={props}/>,
-    (props) => <HasBledScoreStage props={props}/>,
-    (props) => <DosageRecommendationStage props={props}/>,
+    (props) => <PreliminaryStage {...props}/>,
+    (props) => <HasBledScoreStage {...props}/>,
+    (props) => <DosageRecommendationStage {...props}/>,
 ]

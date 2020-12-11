@@ -49,7 +49,7 @@ class StageNavigator extends React.Component {
 
         this.setState({currentStage: this.state.currentStage + inc}, () => {
             if (hasValue(this.props.onNewStage) && inc != 0) this.props.onNewStage(this.state.currentStage);
-            this.props.navigation.navigate(`VisitStage:${this.state.currentStage}`);
+            this.props.navigation.navigate(`VisitStage:${this.state.currentStage}`, {visitInfo: props.visitInfo});
         });
     }
 
@@ -57,8 +57,7 @@ class StageNavigator extends React.Component {
 
         const renderScene = ({ route, jumpTo }) => {
             let Component = stages[this.state.currentStage];
-            return <StageNavStack/>;
-            return null;
+            return <StageNavStack visitInfo={this.props.visitInfo}/>;
         }
 
         return (
@@ -90,6 +89,7 @@ const StageNavStack = (props) => {return (
                         name={`VisitStage:${index}`}
                         component={stage}
                         options={{ headerShown: false , headerTitle: props => null }}
+                        initialParams={{visitInfo: props.visitInfo}}
                     />
                 )
             })
