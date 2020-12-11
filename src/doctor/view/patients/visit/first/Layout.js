@@ -1,21 +1,28 @@
 import React from "react";
 import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
-import {StyleSheet, View} from "react-native";
-import {Title, Caption, Headline, Divider} from "react-native-paper";
+import {StyleSheet, View, ScrollView} from "react-native";
+import {Title, Caption, Headline, Divider, Text} from "react-native-paper";
+import {hasValue, removeWhiteSpace} from "../../../../../root/domain/util/Util";
+import {fullWidth} from "../../../../../root/view/styles/containers";
 
 export const VisitScreen = (props) => {
     return (
-        <View style={[styles.screenWrapper, props.style]}>
+        <ScrollView style={[styles.screenWrapper, props.style]}>
             {props.children}
-        </View>
+        </ScrollView>
     )
 }
 
 export const FormSection = (props) => {
     return (
         <View style={styles.formSection}>
-            {props.children}
-            <Divider style={{marginTop: 20,}}/>
+            {
+                [
+                    props.children,
+                    props.divider ? <Divider style={{marginTop: 20,}}/> : null
+                ]
+            }
+
         </View>
     )
 }
@@ -32,7 +39,22 @@ export const SectionTitle = (props) => {
     return (
         <View style={styles.sectionTitle}>
             <Title>{props.title}</Title>
-            <Caption>{props.description}</Caption>
+            {
+                !hasValue(props.description) || removeWhiteSpace(props.description) == "" ? null :
+                    <Caption>{props.description}</Caption>
+            }
+        </View>
+    )
+}
+
+export const InputTitle = (props) => {
+    return (
+        <View style={styles.sectionTitle}>
+            <Title style={{fontSize: 16}}>{props.title}</Title>
+            {
+                !hasValue(props.description) || removeWhiteSpace(props.description) == "" ? null :
+                    <Caption >{props.description}</Caption>
+            }
         </View>
     )
 }
@@ -61,14 +83,38 @@ export const InputArea = (props) => {
     )
 }
 
-export const Row = (props) => {
+export const RowWithDivider = (props) => {
     return (
-        <View style={styles.row}>
-            {props.children}
-        </View>
+        [
+            <Divider style={{marginBottom: 10,}}/>,
+            <Row {...props}>{props.children}</Row>,
+            <Divider style={{marginTop: 10,}}/>
+        ]
     )
 }
 
+export const RowWithBottomDivider = (props) => {
+    return (
+        [
+            <Row {...props}>{props.children}</Row>,
+            <Divider style={{marginTop: 10,}}/>
+        ]
+    )
+}
+
+export const Row = (props) => {return (
+    <View style={
+        [styles.row,
+            {
+                justifyContent: props.justifyAround == true ?
+                    'space-around' : props.justifyBetween == true ?
+                        'space-between' : 'flex-start'
+            },
+        ]
+    }>
+        {props.children}
+    </View>
+)}
 export const ItemsBox = (props) => {
     return (
         <View style={styles.itemsBox}>
@@ -81,6 +127,31 @@ export const BasicElement = (props) => {
     return (
         <View style={styles.basicElement}>
             {props.children}
+        </View>
+    )
+}
+
+export const PrimaryText = (props) => {
+    return (
+        <Text style={{color: currentTheme.colors.primary}}/>
+    )
+}
+
+export const IntraSectionDivider = (props) => {
+    return (
+        <View style={{
+            paddingVertical: props.xs ? 5 : props.s ? 10 : props.m ? 20 : 20,
+        }}>
+            <Divider/>
+        </View>
+    )
+}
+
+export const IntraSectionInvisibleDivider = (props) => {
+    return (
+        <View style={{
+            paddingVertical: props.xs ? 5 : props.s ? 10 : props.m ? 20 : 20,
+        }}>
         </View>
     )
 }
@@ -116,12 +187,14 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
         alignItems: 'center',
+        // paddingVertical: 10,
+        flexWrap: 'nowrap'
     },
     itemsBox: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+        paddingTop: 10,
     },
     basicElement: {
         paddingHorizontal: 5,

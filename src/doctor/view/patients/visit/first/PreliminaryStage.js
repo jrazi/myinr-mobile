@@ -1,20 +1,36 @@
 import React from "react";
-import {StyleSheet, View} from "react-native";
-import {Text, Chip} from "react-native-paper";
+import {StyleSheet, View, ScrollView} from "react-native";
+import {Text, Chip, Switch, Divider} from "react-native-paper";
 import {currentTheme} from "../../../../../../theme";
 import * as Layout from './Layout';
-import {BasicElement} from "./Layout";
+import {BasicElement, SectionTitle} from "./Layout";
 
 export class PreliminaryStage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             reasonForWarfarin: [false, false, false, false],
+            valveReplaced: false,
+            reasonForValveReplacement: [false, false, false],
+            firstTimeWarfarin: true,
         }
     }
 
     reasonForWarfarinItemToggled = (itemId) => {
         this.state.reasonForWarfarin[itemId] = !this.state.reasonForWarfarin[itemId];
+        this.setState(this.state);
+    }
+
+    valveReplacedTriggered = () => {
+        this.setState({valveReplaced: !this.state.valveReplaced});
+    }
+
+    firstWarfarinToggled = () => {
+        this.setState({firstTimeWarfarin: !this.state.firstTimeWarfarin});
+    }
+
+    reasonForValveReplacementTriggered = (itemId) => {
+        this.state.reasonForValveReplacement[itemId] = !this.state.reasonForValveReplacement[itemId];
         this.setState(this.state);
     }
 
@@ -25,6 +41,7 @@ export class PreliminaryStage extends React.Component {
         return (
             <Layout.VisitScreen>
                 <Layout.ScreenTitle title={'اطلاعات اولیه'}/>
+
                 <Layout.FormSection>
                     <Layout.SectionTitle title={'دلیل مصرف وارفارین'} description={'لطفا دلایل مصرف وارفارین توسط بیمار را مشخص کنید.'}/>
                     <Layout.InputArea>
@@ -55,14 +72,72 @@ export class PreliminaryStage extends React.Component {
                             />
                         </Layout.ItemsBox>
                     </Layout.InputArea>
+                    <Layout.IntraSectionInvisibleDivider/>
+                    <Layout.Row justifyBetween style={{paddingBottom: 10}}>
+                        <Layout.InputTitle title={'تعویض دریچه قلب'}/>
+                        <Switch
+                            style={{}} value={this.state.valveReplaced}
+                            color={currentTheme.colors.primary}
+                            onValueChange={() => this.valveReplacedTriggered()}
+                        />
+                    </Layout.Row>
+                            {
+                                !this.state.valveReplaced ? null :
+                                    <Layout.InputArea>
+                                        <Layout.ItemsBox>
+                                            <ConditionSelectChip
+                                                title={"MVR"}
+                                                id={0}
+                                                onPress={this.reasonForValveReplacementTriggered}
+                                                selected={this.state.reasonForValveReplacement[0]}
+                                            />
+                                            <ConditionSelectChip
+                                            title={"AVR"}
+                                            id={1}
+                                            onPress={this.reasonForValveReplacementTriggered}
+                                            selected={this.state.reasonForValveReplacement[1]}
+                                            />
+                                            <ConditionSelectChip
+                                            title={"TVR"}
+                                            id={2}
+                                            onPress={this.reasonForValveReplacementTriggered}
+                                            selected={this.state.reasonForValveReplacement[2]}
+                                            />
+                                        </Layout.ItemsBox>
+                                    </Layout.InputArea>
+                            }
+                    <Layout.IntraSectionDivider s/>
+                    {/*<Divider/>*/}
+                    <Layout.Row justifyBetween>
+                        <Layout.InputTitle title={'نخستین تجویز وارفارین'} description={'آیا این نخستین تجربه مصرف وارفارین است؟'}/>
+                        <Switch
+                            style={{}}
+                            value={this.state.firstTimeWarfarin}
+                            color={currentTheme.colors.primary}
+                            onValueChange={() => this.firstWarfarinToggled()}
+                        />
+                    </Layout.Row>
                 </Layout.FormSection>
-                <Layout.FormSection>
-                    <Layout.SectionTitle title={'اطلاعات آخرین دوز مصرفی'} description={'در صورتی که بیمار در هفته اخیر از وارفارین استفاده کرده، لطفا میزان دوز مصرفی را مشخص کنید.'}/>
-                </Layout.FormSection>
+                {
+                    this.state.firstTimeWarfarin ? null :
+                        <Layout.FormSection>
+                            <Layout.SectionTitle title={'اطلاعات آخرین دوز مصرفی'} description={'در صورت استفاده از وارفارین،‌ لطفا دوز مصرفی بیمار در هفته اخیر را وارد کنید.'}/>
+
+                        </Layout.FormSection>
+                }
             </Layout.VisitScreen>
+
         )
     }
 }
+
+const IsoSwitch = () => {
+    const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+
+    const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+
+    return <Switch style={{fontSize: 40}} value={isSwitchOn} onValueChange={onToggleSwitch} />;
+};
 
 const ConditionSelectChip = (props) => {return (
     <Layout.BasicElement>
