@@ -7,7 +7,9 @@ import {fullWidth} from "../../../../../root/view/styles/containers";
 
 export const VisitScreen = (props) => {
     return (
-        <ScrollView style={[styles.screenWrapper, props.style]}>
+        <ScrollView
+            style={[styles.screenWrapper, props.style]}
+        >
             {props.children}
         </ScrollView>
     )

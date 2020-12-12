@@ -84,10 +84,10 @@ const StageProgressBar = (props) => {
         progressDots.push(
             <MaterialIcons
                 style={{
-                    marginHorizontal: 5,
+                    marginHorizontal: 4,
                     opacity: props.currentStage == i ? 1.0 : 0.2,
                 }}
-                size={24}
+                size={20}
                 name={"circle"}
                 color={currentTheme.colors.primary}
                 key={i}
@@ -102,7 +102,6 @@ const StageProgressBar = (props) => {
                 // ...debugBorderRed,
                 alignItems: 'center',
             }}
-            titleRef={ progressDots}
         >
             {progressDots}
         </View>
