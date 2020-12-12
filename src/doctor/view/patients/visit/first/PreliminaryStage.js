@@ -6,6 +6,7 @@ import * as Layout from './Layout';
 import {BasicElement, FormSection, IntraSectionInvisibleDivider, SectionTitle} from "./Layout";
 // import CircleSlider from "react-native-circle-slider";
 import CircularPicker from 'react-native-circular-picker';
+import {getFormattedJalaliDate} from "../../../../../root/domain/util/Util";
 
 export class PreliminaryStage extends React.Component {
     constructor(props) {
@@ -155,10 +156,13 @@ const ConditionSelectChip = (props) => {return (
 
 const WeeklyDosagePicker = (props) => {
     let dosageElements = [];
+    let now = Date.now();
     for (let i = 0; i < 7; i++) {
+        const date = new Date(now);
+        date.setDate(date.getDate() - i);
         dosageElements.push(
             <DosageForDay
-                date={null}
+                date={date}
                 key={'DosageForDay' + i}
             />
         )
@@ -182,43 +186,31 @@ const WeeklyDosagePicker = (props) => {
 }
 
 const DosageForDay = (props) => {
-    const [price, setPrice] = useState(0);
-    const handleChange = (v) => setPrice((v * 20).toFixed(0));
-
-    let unit = 12.5;
+    let unit = 2.5;
     let steps = [];
-    for (let u = 0; u <= 100; u += unit) {
+    for (let u = 0; u <= 100 ; u += unit*2.5) {
         steps.push(u);
     }
+
+    const [dose, setDose] = useState(0);
+    const handleChange = (v) => setDose((v/2.5).toFixed(2));
+
     return (
         <CircularPicker
             size={140}
             strokeWidth={15}
+            defaultPos={steps[0]}
             steps={steps}
             gradients={{
                 0: [currentTheme.colors.primary, currentTheme.colors.primary],
-                // 0: ['rgb(255, 97, 99)', 'rgb(247, 129, 119)'],
-                // 1.25: ['rgb(255, 204, 0)', 'rgb(255, 214, 10)'],
-                // 2.5: ['rgb(52, 199, 89)', 'rgb(48, 209, 88)'],
-                // 5: ['rgb(0, 122, 255)', 'rgb(10, 132, 255)'],
             }}
             onChange={handleChange}
         >
             <>
-                <Text style={{ textAlign: 'center', fontSize: 12, marginBottom: 8 }}>{price} میلی گرم </Text>
-                <Text style={{ textAlign: 'center' , fontSize: 12}}>شنبه، ۹ آبان</Text>
+                <Text style={{ textAlign: 'center', fontSize: 12, marginBottom: 8 }}>{`${dose} mg`}</Text>
+                <Text style={{ textAlign: 'center' , fontSize: 12}}>{getFormattedJalaliDate(props.date)}</Text>
             </>
         </CircularPicker>
-    // <CircleSlider
-    //     value={90}
-    //     dialRadius={40}
-    //     dialWidth={5}
-    //     meterColor={currentTheme.colors.primary}
-    //     // xCenter={0}
-    //     // yCenter={0}
-    // >
-    //     <Text>YELLOW</Text>
-    // </CircleSlider>
     )
 }
 

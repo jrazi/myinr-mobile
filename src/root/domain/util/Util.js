@@ -176,3 +176,10 @@ export function firstNonEmpty(...values) {
     }
     return null;
 }
+
+export function getFormattedJalaliDate(date) {
+    if (!hasValue(date)) date = new Date(Date.now());
+    const jDate = new jd.default(date);
+    const dateStr = jDate.format('dddd DD MMMM');
+    return e2p(dateStr);
+}
