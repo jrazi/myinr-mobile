@@ -3,7 +3,7 @@ import {StyleSheet, View, ScrollView} from "react-native";
 import {Text, Chip, Switch, Divider} from "react-native-paper";
 import {currentTheme} from "../../../../../../theme";
 import * as Layout from './Layout';
-import {BasicElement, SectionTitle} from "./Layout";
+import {BasicElement, IntraSectionInvisibleDivider, SectionTitle} from "./Layout";
 
 export class PreliminaryStage extends React.Component {
     constructor(props) {
@@ -119,12 +119,13 @@ export class PreliminaryStage extends React.Component {
                     </Layout.Row>
                 </Layout.FormSection>
                 {
-                    this.state.firstTimeWarfarin ? null :
+                    !this.state.firstTimeWarfarin ? null :
                         <Layout.FormSection>
                             <Layout.SectionTitle title={'اطلاعات آخرین دوز مصرفی'} description={'در صورت استفاده از وارفارین،‌ لطفا دوز مصرفی بیمار در هفته اخیر را وارد کنید.'}/>
 
                         </Layout.FormSection>
                 }
+                <IntraSectionInvisibleDivider/>
             </Layout.VisitScreen>
 
         )

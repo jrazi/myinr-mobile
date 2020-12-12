@@ -29,6 +29,8 @@ export const CustomContentScreenHeader = (props) => {
                 paddingHorizontal: 10,
                 borderBottomWidth: 0,
                 ...props.style,
+                // flexDirection: 'row',
+                // justifyContent: 'space-around',
             }}
             theme={mostlyWhiteTheme}
         >
