@@ -6,7 +6,7 @@ import * as Layout from './Layout';
 import {BasicElement, FormSection, IntraSectionInvisibleDivider, SectionTitle} from "./Layout";
 // import CircleSlider from "react-native-circle-slider";
 import CircularPicker from 'react-native-circular-picker';
-import {getFormattedJalaliDate} from "../../../../../root/domain/util/Util";
+import {firstNonEmpty, getFormattedJalaliDate, hasValue} from "../../../../../root/domain/util/Util";
 
 export class PreliminaryStage extends React.Component {
     constructor(props) {
@@ -16,6 +16,7 @@ export class PreliminaryStage extends React.Component {
             valveReplaced: false,
             reasonForValveReplacement: [false, false, false],
             firstTimeWarfarin: true,
+            firstTimeDoseData: [{}, {}, {}, {}, {}, {}, {}]
         }
     }
 
@@ -34,6 +35,14 @@ export class PreliminaryStage extends React.Component {
 
     reasonForValveReplacementTriggered = (itemId) => {
         this.state.reasonForValveReplacement[itemId] = !this.state.reasonForValveReplacement[itemId];
+        this.setState(this.state);
+    }
+
+    updateFirstTimeDose = (id, date, dose) => {
+        this.state.firstTimeDoseData[id] = {
+            date: date,
+            dose: dose,
+        }
         this.setState(this.state);
     }
 
@@ -126,7 +135,7 @@ export class PreliminaryStage extends React.Component {
                     !this.state.firstTimeWarfarin ? null :
                         <Layout.FormSection>
                             <Layout.SectionTitle title={'اطلاعات آخرین دوز مصرفی'} description={'در صورت استفاده از وارفارین،‌ لطفا دوز مصرفی بیمار در هفته اخیر را وارد کنید.'}/>
-                            <WeeklyDosagePicker/>
+                            <WeeklyDosagePicker doseData={this.state.firstTimeDoseData} onDoseUpdate={this.updateFirstTimeDose}/>
                         </Layout.FormSection>
                 }
                 <IntraSectionInvisibleDivider/>
@@ -164,6 +173,8 @@ const WeeklyDosagePicker = (props) => {
             <DosageForDay
                 date={date}
                 key={'DosageForDay' + i}
+                onChange={(dose) => props.onDoseUpdate(i, date, dose)}
+                dose={props.doseData[i].dose}
             />
         )
     }
@@ -188,26 +199,33 @@ const WeeklyDosagePicker = (props) => {
 const DosageForDay = (props) => {
     let unit = 2.5;
     let steps = [];
+
     for (let u = 0; u <= 100 ; u += unit*2.5) {
         steps.push(u);
     }
 
-    const [dose, setDose] = useState(0);
-    const handleChange = (v) => setDose((v/2.5).toFixed(2));
+    const [percentage, setPercentage] = useState(null);
 
+    const handleChange = (v) => {
+        setPercentage(v);
+        // props.onChange(v);
+    }
+
+    const currentDose = firstNonEmpty(percentage, props.dose, 0)
     return (
         <CircularPicker
             size={140}
             strokeWidth={15}
-            defaultPos={steps[0]}
             steps={steps}
             gradients={{
                 0: [currentTheme.colors.primary, currentTheme.colors.primary],
+                100: [currentTheme.colors.primary, currentTheme.colors.primary],
             }}
+            perc={currentDose}
             onChange={handleChange}
         >
             <>
-                <Text style={{ textAlign: 'center', fontSize: 12, marginBottom: 8 }}>{`${dose} mg`}</Text>
+                <Text style={{ textAlign: 'center', fontSize: 12, marginBottom: 8 }}>{`${(currentDose/2.5).toFixed(2)} mg`}</Text>
                 <Text style={{ textAlign: 'center' , fontSize: 12}}>{getFormattedJalaliDate(props.date)}</Text>
             </>
         </CircularPicker>
