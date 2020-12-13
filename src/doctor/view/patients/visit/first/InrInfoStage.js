@@ -58,7 +58,7 @@ export class InrInfoStage extends React.Component {
                     </ConditionalRender>
                     {/*<Layout.InputTitle title={'تاریخ آزمایش'} />*/}
                     <Layout.InputTitle title={'تاریخ آزمایش'}/>
-                    <Layout.Row justifyBetween>
+                    <Layout.Row justifyCenter>
                         <DefaultTextInput
                             placeholder={"روز"}
                             style={{flexGrow: 0, paddingHorizontal: 25}}
@@ -66,7 +66,7 @@ export class InrInfoStage extends React.Component {
                         />
                         <DefaultTextInput
                             placeholder={"ماه"}
-                            style={{flexGrow: 0, paddingHorizontal: 25}}
+                            style={{flexGrow: 0,marginHorizontal: 15,  paddingHorizontal: 25}}
                             numeric
                         />
                         <DefaultTextInput
@@ -79,16 +79,16 @@ export class InrInfoStage extends React.Component {
                     <Layout.InputTitle title={'بازه هدف'}
 
                     />
-                    <Layout.Row justifyAround>
+                    <Layout.Row justifyCenter>
                         <DefaultTextInput
                             label={'از'}
-                            style={{flexGrow: 1, }}
+                            style={{flexGrow: 0, paddingHorizontal: 25}}
                             numeric
                         />
-                        <View style={{paddingHorizontal: 20}}></View>
+                        <View style={{flexGrow: 0, marginHorizontal: 15,  paddingHorizontal: 30}}></View>
                         <DefaultTextInput
                             label={'تا'}
-                            style={{flexGrow: 1, }}
+                            style={{flexGrow: 0, paddingHorizontal: 25}}
                             numeric
                         />
                     </Layout.Row>
