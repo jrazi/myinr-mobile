@@ -30,5 +30,6 @@ export const mostlyWhiteTheme = {
         accent: '#fff',
         background: '#fff',
         surface: '#fff',
+        backdrop: '#fff',
     },
 };

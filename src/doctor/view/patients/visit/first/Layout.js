@@ -32,7 +32,10 @@ export const FormSection = (props) => {
 export const ScreenTitle = (props) => {
     return (
         <View style={styles.screenTitle}>
-            <Headline style={{color: currentTheme.colors.primary}}>{props.title}</Headline>
+            <Title style={{color: currentTheme.colors.primary}}>{props.title}</Title>
+            <ConditionalRender hidden={!hasValue(props.description)}>
+                <Caption>{props.description}</Caption>
+            </ConditionalRender>
         </View>
     )
 }
@@ -51,11 +54,11 @@ export const SectionTitle = (props) => {
 
 export const InputTitle = (props) => {
     return (
-        <View style={styles.sectionTitle}>
-            <Title style={{fontSize: 16}}>{props.title}</Title>
+        <View style={styles.inputTitle}>
+            <Text style={{fontSize: 16, color: currentTheme.colors.primary}}>{props.title}</Text>
             {
                 !hasValue(props.description) || removeWhiteSpace(props.description) == "" ? null :
-                    <Caption >{props.description}</Caption>
+                    <Caption style={styles.inputTitleDescription}>{props.description}</Caption>
             }
         </View>
     )
@@ -110,7 +113,7 @@ export const Row = (props) => {return (
             {
                 justifyContent: props.justifyAround == true ?
                     'space-around' : props.justifyBetween == true ?
-                        'space-between' : 'flex-start'
+                        'space-between' : props.justifyCenter ? 'center' : 'flex-start'
             },
         ]
     }>
@@ -135,7 +138,7 @@ export const BasicElement = (props) => {
 
 export const PrimaryText = (props) => {
     return (
-        <Text style={{color: currentTheme.colors.primary}}/>
+        <Text style={{color: currentTheme.colors.primary}}>{props.children}</Text>
     )
 }
 
@@ -152,7 +155,7 @@ export const IntraSectionDivider = (props) => {
 export const IntraSectionInvisibleDivider = (props) => {
     return (
         <View style={{
-            paddingVertical: props.xs ? 5 : props.s ? 10 : props.m ? 20 : 20,
+            paddingVertical: props.xs ? 5 : props.s ? 10 : props.sm ? 15 : props.m ? 20 : props.l ? 30 : props.xl ? 40 : 20,
         }}>
         </View>
     )
@@ -175,10 +178,18 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     screenTitle: {
-        paddingBottom: 15,
+        // paddingBottom: 15,
     },
     sectionTitle: {
         paddingBottom: 10,
+    },
+    inputTitle: {
+
+    },
+    inputTitleDescription: {
+        fontSize: 12,
+        paddingVertical: 0,
+        marginVertical: 0,
     },
     sectionDescription: {
 
@@ -190,7 +201,6 @@ const styles = StyleSheet.create({
 
     },
     inputArea: {
-
     },
     row: {
         flexDirection: 'row',
