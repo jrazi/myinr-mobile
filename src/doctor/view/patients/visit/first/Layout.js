@@ -1,7 +1,7 @@
 import React from "react";
 import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
 import {StyleSheet, View, ScrollView} from "react-native";
-import {Title, Caption, Headline, Divider, Text} from "react-native-paper";
+import {Title, Caption, Headline, Divider, Text, Chip} from "react-native-paper";
 import {hasValue, removeWhiteSpace} from "../../../../../root/domain/util/Util";
 import {fullWidth} from "../../../../../root/view/styles/containers";
 
@@ -32,7 +32,7 @@ export const FormSection = (props) => {
 export const ScreenTitle = (props) => {
     return (
         <View style={styles.screenTitle}>
-            <Title style={{color: currentTheme.colors.primary}}>{props.title}</Title>
+            <Headline style={{color: currentTheme.colors.text}}>{props.title}</Headline>
             <ConditionalRender hidden={!hasValue(props.description)}>
                 <Caption>{props.description}</Caption>
             </ConditionalRender>
@@ -54,7 +54,7 @@ export const SectionTitle = (props) => {
 
 export const InputTitle = (props) => {
     return (
-        <View style={styles.inputTitle}>
+        <View style={[styles.inputTitle, props.style]}>
             <Text style={{fontSize: 16, color: currentTheme.colors.primary}}>{props.title}</Text>
             {
                 !hasValue(props.description) || removeWhiteSpace(props.description) == "" ? null :
@@ -63,6 +63,15 @@ export const InputTitle = (props) => {
         </View>
     )
 }
+
+export const InputDescription = (props) => {
+    return (
+        <View style={styles.inputTitle}>
+            <Text style={{fontSize: 16, color: currentTheme.colors.text}}>{props.title}</Text>
+        </View>
+    )
+}
+
 
 export const SectionDescription = (props) => {
     return (
@@ -145,7 +154,7 @@ export const PrimaryText = (props) => {
 export const IntraSectionDivider = (props) => {
     return (
         <View style={{
-            paddingVertical: props.xs ? 5 : props.s ? 10 : props.m ? 20 : 20,
+            paddingVertical: props.none ? 0 : props.xs ? 5 : props.s ? 10 : props.sm ? 15 : props.m ? 20 : props.l ? 30 : props.xl ? 40 : 20,
         }}>
             <Divider/>
         </View>
@@ -155,7 +164,7 @@ export const IntraSectionDivider = (props) => {
 export const IntraSectionInvisibleDivider = (props) => {
     return (
         <View style={{
-            paddingVertical: props.xs ? 5 : props.s ? 10 : props.sm ? 15 : props.m ? 20 : props.l ? 30 : props.xl ? 40 : 20,
+            paddingVertical: props.none ? 0 : props.xs ? 5 : props.s ? 10 : props.sm ? 15 : props.m ? 20 : props.l ? 30 : props.xl ? 40 : 20,
         }}>
         </View>
     )
@@ -164,6 +173,22 @@ export const IntraSectionInvisibleDivider = (props) => {
 export const ConditionalRender = (props) => {
     if (props.hidden) return null;
     else return props.children;
+}
+
+export const FormContainer = (props) => {
+    return props.children;
+}
+
+export const DefaultChip = (props) => {
+    return (
+        <BasicElement>
+            <Chip
+                selected={props.selected} icon="information" onPress={() => props.onPress()}
+            >
+                {props.title}
+            </Chip>
+        </BasicElement>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -175,10 +200,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     formSection: {
-        paddingTop: 20,
+        paddingTop: 10,
     },
     screenTitle: {
-        // paddingBottom: 15,
+        paddingBottom: 20,
     },
     sectionTitle: {
         paddingBottom: 10,

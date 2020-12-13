@@ -56,7 +56,7 @@ export class PreliminaryStage extends React.Component {
                 <Layout.ScreenTitle title={'اطلاعات اولیه'}/>
 
                 <Layout.FormSection>
-                    <Layout.SectionTitle title={'دلیل مصرف وارفارین'} description={'لطفا دلایل مصرف وارفارین توسط بیمار را مشخص کنید.'}/>
+                    <Layout.InputTitle title={'دلیل مصرف وارفارین'} description={'لطفا دلایل مصرف وارفارین توسط بیمار را مشخص کنید.'}/>
                     <Layout.InputArea>
                         <Layout.ItemsBox>
                             <ConditionSelectChip
@@ -85,8 +85,8 @@ export class PreliminaryStage extends React.Component {
                             />
                         </Layout.ItemsBox>
                     </Layout.InputArea>
-                    <Layout.IntraSectionInvisibleDivider/>
-                    <Layout.Row justifyBetween style={{paddingBottom: 10}}>
+                    <Layout.IntraSectionInvisibleDivider s/>
+                    <Layout.Row justifyBetween>
                         <Layout.InputTitle title={'تعویض دریچه قلب'}/>
                         <Switch
                             style={{}} value={this.state.valveReplaced}
@@ -119,7 +119,7 @@ export class PreliminaryStage extends React.Component {
                                         </Layout.ItemsBox>
                                     </Layout.InputArea>
                             }
-                    <Layout.IntraSectionDivider s/>
+                    <Layout.IntraSectionDivider m/>
                     {/*<Divider/>*/}
                     <Layout.Row justifyBetween>
                         <Layout.InputTitle title={'نخستین تجویز وارفارین'} description={'آیا این نخستین تجربه مصرف وارفارین است؟'}/>

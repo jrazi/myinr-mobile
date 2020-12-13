@@ -43,16 +43,18 @@ export class InrInfoStage extends React.Component {
                     <Layout.InputTitle title={'میزان شاخص'}/>
                     <DefaultTextInput
                         // label="میزان شاخص "
-                        placeholder={"شاخص INR"}
+                        placeholder={"INR"}
                         numeric
                     />
                     <Layout.IntraSectionInvisibleDivider sm/>
                     <ConditionalRender hidden={this.state.latestInrAtHome}>
                         {/*<Layout.InputTitle title={'محل آزمایش'}/>*/}
-                        <Layout.InputTitle title={'محل آزمایش'}/>
+                        <Layout.InputTitle title={'محل آزمایش'} style={{}}/>
                         <DefaultTextInput
-                            placeholder={"مکان تست"}
+                            placeholder={"مثال: آزمایشگاه فارابی"}
+                            // label={"محل آزمایش"}
                             textContentType={'location'}
+                            style={{}}
                         />
                         <Layout.IntraSectionInvisibleDivider sm/>
                     </ConditionalRender>
@@ -134,17 +136,29 @@ const DefaultTextInput = (props) => {
                 autoCorrect={false}
                 // onBlur={handleBlur('username')}
                 // mode={'outlined'}
+                borderless={true}
                 // style={{width: 75, textAlign: 'center'}}
                 // textAlign={'center'}
                 style={{
                     backgroundColor: currentTheme.colors.surface,
                     // flexGrow: 1,
+                    // borderBottomColor: 'red',
+                    fontSize: 14,
                     flexGrow: 0,
                     paddingHorizontal: 0,
+
                     // textAlign: 'center',
+                    // color: 'red',
                     ...props.style
                     // ...debugBorderRed
                 }}
+                // labelStyle={{
+                //     color: 'blue',
+                // }}
+                // textStyle={{
+                //     color: 'blue',
+                // }}
+                // placeholderTextColor={currentTheme.colors.primary}
                 // dense={true}
 
             />

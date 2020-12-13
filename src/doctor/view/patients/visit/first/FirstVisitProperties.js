@@ -1,5 +1,5 @@
 import {PreliminaryStage} from "./PreliminaryStage";
-import {HasBledScoreStage} from "./HasBledScoreStage";
+import {PastMedicalHistoryStage} from "./PastMedicalHistoryStage";
 import {DosageRecommendationStage} from "./DosageRecommendtionStage";
 import React from "react";
 import {InrInfoStage} from "./InrInfoStage";
@@ -7,6 +7,6 @@ import {InrInfoStage} from "./InrInfoStage";
 export const stages = [
     (props) => <PreliminaryStage {...props}/>,
     (props) => <InrInfoStage {...props}/>,
-    (props) => <HasBledScoreStage {...props}/>,
+    (props) => <PastMedicalHistoryStage {...props}/>,
     (props) => <DosageRecommendationStage {...props}/>,
 ]
