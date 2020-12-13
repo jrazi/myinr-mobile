@@ -158,6 +158,11 @@ export const IntraSectionInvisibleDivider = (props) => {
     )
 }
 
+export const ConditionalRender = (props) => {
+    if (props.hidden) return null;
+    else return props.children;
+}
+
 const styles = StyleSheet.create({
     screenWrapper: {
         flex: 1,

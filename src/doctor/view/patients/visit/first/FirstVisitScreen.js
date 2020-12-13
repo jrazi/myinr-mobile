@@ -85,11 +85,11 @@ const StageProgressBar = (props) => {
             <MaterialIcons
                 style={{
                     marginHorizontal: 4,
-                    opacity: props.currentStage == i ? 1.0 : 0.2,
+                    opacity: props.currentStage == i ? 1.0 : 0.3,
                 }}
-                size={20}
+                size={16}
                 name={"circle"}
-                color={currentTheme.colors.primary}
+                color={props.currentStage == i ? currentTheme.colors.primary : currentTheme.colors.placeholder}
                 key={i}
             />
         )

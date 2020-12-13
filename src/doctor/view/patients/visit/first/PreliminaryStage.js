@@ -40,10 +40,10 @@ export class PreliminaryStage extends React.Component {
 
     updateFirstTimeDose = (id, date, dose) => {
         this.state.firstTimeDoseData[id] = {
-            date: date,
+            // date: date,
             dose: dose,
         }
-        this.setState(this.state);
+        this.setState({firstTimeDoseData: this.state.firstTimeDoseData});
     }
 
     componentDidMount() {
@@ -132,7 +132,7 @@ export class PreliminaryStage extends React.Component {
                     </Layout.Row>
                 </Layout.FormSection>
                 {
-                    !this.state.firstTimeWarfarin ? null :
+                    this.state.firstTimeWarfarin ? null :
                         <Layout.FormSection>
                             <Layout.SectionTitle title={'اطلاعات آخرین دوز مصرفی'} description={'در صورت استفاده از وارفارین،‌ لطفا دوز مصرفی بیمار در هفته اخیر را وارد کنید.'}/>
                             <WeeklyDosagePicker doseData={this.state.firstTimeDoseData} onDoseUpdate={this.updateFirstTimeDose}/>
@@ -173,7 +173,7 @@ const WeeklyDosagePicker = (props) => {
             <DosageForDay
                 date={date}
                 key={'DosageForDay' + i}
-                onChange={(dose) => props.onDoseUpdate(i, date, dose)}
+                onChange={(dose) => {props.onDoseUpdate(i, date, dose)}}
                 dose={props.doseData[i].dose}
             />
         )
