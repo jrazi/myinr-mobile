@@ -1,9 +1,10 @@
 import React, {useState} from "react";
 import {StyleSheet, View, Picker} from "react-native";
 import {currentTheme} from "../../../../../../theme";
-import {Text, Checkbox, RadioButton} from 'react-native-paper';
+import {Text, Checkbox, RadioButton, Headline} from 'react-native-paper';
 import * as Layout from "./Layout";
 import {e2p} from "../../../../../root/domain/util/Util";
+import {IntraSectionInvisibleDivider} from "./Layout";
 
 
 export class CHA2DS2_VAScStage extends React.Component {
@@ -18,13 +19,13 @@ export class CHA2DS2_VAScStage extends React.Component {
 
     render() {
         let titleElement = (
-                <View style={{flexDirection: 'row', alignItems: 'flex-start'}}>
-                    <Text style={{fontSize: 20, }}>CHA</Text>
-                    <Text style={{fontSize: 11, lineHeight: 40}}>2</Text>
-                    <Text style={{fontSize: 20, }}>DS</Text>
-                    <Text style={{fontSize: 11, lineHeight: 40}}>2</Text>
-                    <Text style={{fontSize: 20, }}>–VASc</Text>
-                    <Text style={{fontSize: 20, }}>نمره </Text>
+                <View style={{flexDirection: 'row', alignItems: 'flex-start', }}>
+                    <Headline style={{}}>CHA</Headline>
+                    <Text style={{fontSize: 14, paddingTop: 15}}>2</Text>
+                    <Headline style={{}}>DS</Headline>
+                    <Text style={{fontSize: 14, paddingTop: 15}}>2</Text>
+                    <Headline style={{ }}>–VASc</Headline>
+                    <Headline style={{}}>نمره </Headline>
             </View>
         );
         return (
@@ -54,6 +55,7 @@ const ScoreForm = (props) => {
     return (
         <View>
             <ScoreRadioBox items={scoreRadios}/>
+            <IntraSectionInvisibleDivider s/>
             <ScoreChipBox items={scoreChips}/>
         </View>
     )
@@ -106,6 +108,8 @@ const ScoreChipBox = (props) => {
 
     return (
         <Layout.InputArea>
+            <Layout.InputTitle title={'سوابق پزشکی'}/>
+            <IntraSectionInvisibleDivider xs/>
             <Layout.ItemsBox>
                 {chips}
             </Layout.ItemsBox>
