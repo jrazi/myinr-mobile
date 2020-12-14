@@ -84,7 +84,7 @@ const StageProgressBar = (props) => {
         progressDots.push(
             <MaterialIcons
                 style={{
-                    marginHorizontal: 4,
+                    marginHorizontal: 3,
                     opacity: props.currentStage == i ? 1.0 : 0.3,
                 }}
                 size={16}

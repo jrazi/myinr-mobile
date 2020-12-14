@@ -74,16 +74,10 @@ const DefaultTextInput = (props) => {
             style={{
                 backgroundColor: currentTheme.colors.surface,
                 fontSize: 14,
-                // flexGrow: 0,
-                // flexGrow: 1,
-                // width: '75%',
                 width: '50%',
                 // flex: 1,
                 // paddingLeft: '50%',
                 alignSelf: 'center',
-                // marginLeft: '50%',
-                // alignItems: 'flex-end',
-                // alignItems: 'stretch',
                 ...props.style
             }}
             // dense={true}
