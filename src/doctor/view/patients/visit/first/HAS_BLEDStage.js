@@ -23,7 +23,7 @@ export class HAS_BLEDStage extends React.Component {
             <Layout.VisitScreen>
                 <Layout.ScreenTitle title={'نمره' + ' HAS-BLED'}/>
                 <Layout.FormSection>
-                    <ScoreForm/>
+                    <GenericScoreForm medicalConditions={medicalConditions}/>
                 </Layout.FormSection>
             </Layout.VisitScreen>
         )
@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
     }
 })
 
-const ScoreForm = (props) => {
+export const GenericScoreForm = (props) => {
     let selectedStates = [];
-    let conditionElements = medicalConditions
+    let conditionElements = props.medicalConditions
         .map(condition => {
             const [value, setValue] = useState(false);
             selectedStates.push([value, setValue]);

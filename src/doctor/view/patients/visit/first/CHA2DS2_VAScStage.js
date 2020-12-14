@@ -5,6 +5,7 @@ import {Text, Checkbox, RadioButton, Headline} from 'react-native-paper';
 import * as Layout from "./Layout";
 import {e2p} from "../../../../../root/domain/util/Util";
 import {IntraSectionInvisibleDivider} from "./Layout";
+import {GenericScoreForm} from "./HAS_BLEDStage";
 
 
 export class CHA2DS2_VAScStage extends React.Component {
@@ -69,13 +70,13 @@ const ScoreRadioBox = (props) => {
             selectedStates.push([value, setValue]);
             return (
                 <Layout.Row justifyBetween>
-                    <Layout.InputTitle title={item.title}/>
+                    <Layout.InputTitle title={item.name}/>
                     <Picker
                         selectedValue={value}
                         style={{ height: 50, width: 150 }}
                         mode={'dropdown'}
                         onValueChange={(itemValue, itemIndex) => setValue(itemValue)}
-                        key={'ScoreRadioBox' + item.title}
+                        key={'ScoreRadioBox' + item.name}
 
                     >
                         {
@@ -95,7 +96,7 @@ const ScoreRadioBox = (props) => {
 const ScoreChipBox = (props) => {
     let selectedStates = [];
     let chips = props.items
-        .sort((a, b) => a.title.length - b.title.length)
+        .sort((a, b) => a.name.length - b.name.length)
         .map(item => {
             const [value, setValue] = useState(false);
             selectedStates.push([value, setValue]);
@@ -109,10 +110,12 @@ const ScoreChipBox = (props) => {
     return (
         <Layout.InputArea>
             <Layout.InputTitle title={'سوابق پزشکی'}/>
-            <IntraSectionInvisibleDivider xs/>
-            <Layout.ItemsBox>
-                {chips}
-            </Layout.ItemsBox>
+            <IntraSectionInvisibleDivider s/>
+            <GenericScoreForm medicalConditions={props.items}/>
+            {/*<IntraSectionInvisibleDivider xs/>*/}
+            {/*<Layout.ItemsBox>*/}
+            {/*    {chips}*/}
+            {/*</Layout.ItemsBox>*/}
         </Layout.InputArea>
     )
 }
@@ -125,7 +128,7 @@ const ScoreRadioItem = (props) => {
 
 let scoreItems = [
     {
-        title: 'گروه سنی',
+        name: 'گروه سنی',
         options: [
             {
                 id: 0,
@@ -145,7 +148,7 @@ let scoreItems = [
         ],
     },
     {
-        title: 'جنسیت',
+        name: 'جنسیت',
         options: [
             {
                 id: 0,
@@ -160,31 +163,36 @@ let scoreItems = [
         ],
     },
     {
-        title: 'Congestive Heart Failure',
+        id: 0,
+        name: 'Congestive Heart Failure',
         yesNo: true,
         noScore: 0,
         yesScore: 1,
     },
     {
-        title: 'Hypertension',
+        id: 1,
+        name: 'Hypertension',
         yesNo: true,
         noScore: 0,
         yesScore: 1,
     },
     {
-        title: 'Stroke/TIA/Thromboembolism',
+        id: 2,
+        name: 'Stroke/TIA/Thromboembolism',
         yesNo: true,
         noScore: 0,
         yesScore: 2,
     },
     {
-        title: 'Vascular Disease',
+        id: 3,
+        name: 'Vascular Disease',
         yesNo: true,
         noScore: 0,
         yesScore: 1,
     },
     {
-        title: 'Diabetes',
+        id: 4,
+        name: 'Diabetes',
         yesNo: true,
         noScore: 0,
         yesScore: 1,
