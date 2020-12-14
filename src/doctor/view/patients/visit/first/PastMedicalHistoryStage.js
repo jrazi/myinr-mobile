@@ -23,7 +23,7 @@ export class PastMedicalHistoryStage extends React.Component {
             >
                 <Layout.ScreenTitle title={'سوابق پزشکی و دارویی'}/>
                 <Layout.FormSection>
-                    <Layout.InputTitle title={'زمینه‌های پزشکی بیمار'}/>
+                    <Layout.InputTitle title={'سوابق پزشکی بیمار'}/>
                     <IntraSectionInvisibleDivider xs/>
                     <MedicalHistoryChipBox/>
                 </Layout.FormSection>

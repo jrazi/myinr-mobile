@@ -1,7 +1,7 @@
 import React from 'react';
 import {BottomNavigation, useTheme} from "react-native-paper";
 import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
-import {hasValue} from "../../../../../root/domain/util/Util";
+import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
 import {stages} from "./FirstVisitProperties";
 import {createStackNavigator} from "@react-navigation/stack";
 import {StyleSheet, View} from "react-native";
@@ -20,6 +20,11 @@ export default class StageNavigator extends React.Component {
     }
 
     componentDidMount() {
+        // console.log(' hi there here we arase', `VisitStage:${firstNonEmpty(this.props.currentStage, 0)}`)
+        // this.props.navigation.navigate(`VisitStage:${firstNonEmpty(this.props.currentStage, 0)}`, {visitInfo: this.props.visitInfo});
+        // this.props.onNewStage(this.props.currentStage);
+        this.props.navigation.navigate(this.props.route.name, {screen: `VisitStage:${this.props.currentStage}`, visitInfo: this.props.visitInfo});
+
     }
 
     onIndexChange = (index) => {
@@ -48,10 +53,13 @@ export default class StageNavigator extends React.Component {
         this.props.navigation.navigate(`VisitStage:${newStage}`, {visitInfo: this.props.visitInfo});
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+    }
+
     render() {
 
         const renderScene = ({ route, jumpTo }) => {
-            return <StageNavStack visitInfo={this.props.visitInfo}/>;
+            return <StageNavStack visitInfo={this.props.visitInfo} currentStage={this.props.currentStage}/>;
         }
 
         return (
@@ -72,9 +80,10 @@ export default class StageNavigator extends React.Component {
 };
 const Stack = createStackNavigator();
 
-const StageNavStack = (props) => {return (
+const StageNavStack = (props) => {
+    return (
     <Stack.Navigator
-        initialRoute={'VisitStage:0'}
+        initialRoute={`VisitStage:${firstNonEmpty(props.currentStage, 0)}`}
     >
         {
             stages.map((stage, index) => {

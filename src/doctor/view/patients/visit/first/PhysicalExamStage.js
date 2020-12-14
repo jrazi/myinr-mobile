@@ -84,7 +84,7 @@ const DefaultTextInput = (props) => {
 
                 ...props.style
             }}
-            dense={true}
+            // dense={true}
         />
     )
 }

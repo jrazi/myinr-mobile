@@ -1,9 +1,9 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import {Text, ProgressBar, Badge, Appbar, Avatar} from "react-native-paper";
+import {Text, ProgressBar, Badge, Appbar, Avatar, FAB, Portal, Dialog, Button, Subheading} from "react-native-paper";
 import {CustomContentScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {FirstVisit} from "../../../../domain/visit/Visit";
-import {doctorDao} from "../../../../data/dao/DoctorDao";
+import {doctorDao, VisitState} from "../../../../data/dao/DoctorDao";
 import {currentTheme} from "../../../../../../theme";
 import StageNavigator from "./StageNavigator";
 import {stages} from "./FirstVisitProperties";
@@ -18,6 +18,7 @@ export class FirstVisitScreen extends React.Component {
         this.state = {
             visitInfo: FirstVisit.createNew(),
             currentStage: 0,
+            finishVisitDialogOpen: false,
         }
     }
 
@@ -30,7 +31,7 @@ export class FirstVisitScreen extends React.Component {
                 this.setState({visitInfo: cachedVisit.visitInfo, currentStage: cachedVisit.currentStage})
             })
             .catch(err => {
-                this.setState({visitInfo: FirstVisit.createNew(), currentStage: 0})
+                this.setState({visitInfo: FirstVisit.createNew(), currentStage: 7})
             })
     }
 
@@ -43,8 +44,12 @@ export class FirstVisitScreen extends React.Component {
 
     onNewStage = (stageIndex) => {
         this.setState({currentStage: stageIndex}, () => {
-            // this.cacheVisit();
         });
+    }
+
+    finishVisit = () => {
+        this.setState({finishVisitDialogOpen: false});
+        this.props.navigation.navigate('PatientProfileScreen', {userId: this.props.route.params.userId});
     }
 
     render() {
@@ -61,11 +66,18 @@ export class FirstVisitScreen extends React.Component {
                 <View style={styles.mainContainer}>
                     <StageNavigator
                         navigation={this.props.navigation}
+                        route={this.props.route}
                         visitInfo={this.state.visitInfo}
                         onNewStage={this.onNewStage}
                         currentStage={this.state.currentStage}
+                        onFinish={() => this.setState({finishVisitDialogOpen: true})}
                     />
                 </View>
+                <FinishVisitDialog
+                    visible={this.state.finishVisitDialogOpen}
+                    onDismiss={() => this.setState({finishVisitDialogOpen: false})}
+                    onFinish={this.finishVisit}
+                />
             </ScreenLayout>
         )
     }
@@ -109,3 +121,22 @@ const StageProgressBar = (props) => {
 }
 
 
+const FinishVisitDialog = (props) => {
+    return (
+        <Portal>
+            <Dialog visible={props.visible} onDismiss={props.onDismiss} style={{paddingBottom: 5}} dismissable={false}>
+                <DialogMessage>آیا مطمئن هستید؟</DialogMessage>
+                <Dialog.Actions style={{alignItems: 'center', justifyContent: 'space-around',}}>
+                    <Button style={{}} labelStyle={{padding: 5}} mode="text" loading={props.loading} onPress={props.onFinish} >اتمام ویزیت</Button>
+                    <Button disabled={false} style={{}} labelStyle={{padding: 5}} mode="text" onPress={props.onDismiss} >انصرف</Button>
+                </Dialog.Actions>
+            </Dialog>
+        </Portal>
+    )
+}
+
+const DialogMessage = (props) => {return (
+    <Dialog.Content color={currentTheme.colors.placeholder} style={{paddingTop: 20}}>
+        <Subheading style={{textAlign: 'center'}}>{props.children}</Subheading>
+    </Dialog.Content>
+)}
