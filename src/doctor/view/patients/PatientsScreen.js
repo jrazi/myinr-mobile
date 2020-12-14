@@ -13,6 +13,7 @@ import {currentTheme, mostlyWhiteTheme} from "../../../../theme";
 import {rootDao} from "../../../root/data/dao/RootDao";
 import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../../root/domain/util/Util";
 import {ScreenHeader, ScreenLayout} from "../../../root/view/screen/Layout";
+import {IntraSectionDivider} from "./visit/first/Layout";
 
 class PatientsScreen extends React.Component {
     constructor(props) {
@@ -52,18 +53,20 @@ class PatientsScreen extends React.Component {
         for (let patient of this.state.patients) {
             patient.age = calcAge(patient.birthDate);
             const displayPatient = normalizeDictForDisplay(patient, 'FA');
-            patientInfoCards.push(
+            patientInfoCards.push([
                 <PatientInfoCard
                     key={patient.nationalId + patient.username}
                     patientInfo={displayPatient}
                     onPress={() => this.props.navigation.navigate('PatientProfileScreen', {userId: patient.userId})}
-                />
-            );
+                />,
+
+            ]);
         }
         return (
             <ScreenLayout>
                 <ScreenHeader
                     title="فهرست بیماران"
+                    style={{elevation: 0}}
                 />
                 <ScrollView
                     style={styles.container}
@@ -100,14 +103,15 @@ const PatientInfoCard = (props) => {
     }
     return (
             <Surface style={[{
-                elevation: 4,
+                // elevation: 4,
             }, styles.patientInfoCardContainer]}>
                 <TouchableRipple
                     onPress={props.onPress}
                     rippleColor="rgba(0, 0, 0, .1)"
+                    delayPressIn={ 100 }
                 >
                     <View style={{
-                        paddingBottom: 10,
+                        // paddingBottom: 10,
                     }}>
                         <Card.Title
                             title={props.patientInfo.fullName}
@@ -121,6 +125,7 @@ const PatientInfoCard = (props) => {
                         </Card.Content>
                     </View>
                 </TouchableRipple>
+                <IntraSectionDivider xs borderWidth={0.1}/>
             </Surface>
     );
 }
@@ -199,17 +204,19 @@ const Row = (props) => {return (
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 10,
-        paddingHorizontal: 30,
+        // paddingVertical: 10,
+        // paddingHorizontal: 30,
         flex: 1,
+        backgroundColor: 'white',
     },
 
     patientsListContainer: {
-        paddingVertical: 10,
+        // paddingVertical: 10,
+        // paddingHorizontal: 20,
     },
     patientInfoCardContainer: {
         // elevation: 4,
-        marginVertical: 10,
+        // marginVertical: 10,
         // borderRadius: currentTheme.roundness*2,
     },
     patientInfoCard: {

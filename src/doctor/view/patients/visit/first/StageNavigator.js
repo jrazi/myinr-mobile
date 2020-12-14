@@ -20,9 +20,6 @@ export default class StageNavigator extends React.Component {
     }
 
     componentDidMount() {
-        // console.log(' hi there here we arase', `VisitStage:${firstNonEmpty(this.props.currentStage, 0)}`)
-        // this.props.navigation.navigate(`VisitStage:${firstNonEmpty(this.props.currentStage, 0)}`, {visitInfo: this.props.visitInfo});
-        // this.props.onNewStage(this.props.currentStage);
         this.props.navigation.navigate(this.props.route.name, {screen: `VisitStage:${this.props.currentStage}`, visitInfo: this.props.visitInfo});
 
     }

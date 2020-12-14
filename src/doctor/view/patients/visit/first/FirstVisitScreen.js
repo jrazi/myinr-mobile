@@ -31,7 +31,7 @@ export class FirstVisitScreen extends React.Component {
                 this.setState({visitInfo: cachedVisit.visitInfo, currentStage: cachedVisit.currentStage})
             })
             .catch(err => {
-                this.setState({visitInfo: FirstVisit.createNew(), currentStage: 7})
+                this.setState({visitInfo: FirstVisit.createNew(), currentStage: 0})
             })
     }
 
@@ -49,7 +49,10 @@ export class FirstVisitScreen extends React.Component {
 
     finishVisit = () => {
         this.setState({finishVisitDialogOpen: false});
-        this.props.navigation.navigate('PatientProfileScreen', {userId: this.props.route.params.userId});
+        this.props.navigation.reset({
+            index: 0,
+            routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
+        });
     }
 
     render() {

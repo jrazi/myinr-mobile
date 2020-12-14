@@ -8,7 +8,7 @@ import {currentTheme} from "../../../../theme";
 import HomeScreen from "../HomeScreen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
-import {Button, Dialog, FAB, Headline, Paragraph, Portal, Subheading, Text} from 'react-native-paper';
+import {Button, Dialog, FAB, Headline, Paragraph, Portal, Subheading, Text, Title} from 'react-native-paper';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -48,6 +48,9 @@ class PatientProfileScreen extends React.Component {
     }
     render() {
         const colors = currentTheme.colors;
+        const NoData = (props) => {return (
+            <View style={{backgroundColor: 'white', flex: 1, justifyContent: 'center', alignItems: 'center'}}><Title style={{fontWeight: 'bold'}}>داده‌ای موجود نیست.</Title></View>
+        )}
         return (
             <ScreenLayout>
                 <ScreenHeader title={this.state.patient.fullName} style={{elevation: 0}}/>
@@ -72,7 +75,7 @@ class PatientProfileScreen extends React.Component {
                 >
                     <Tab.Screen
                         name="Home"
-                        component={HomeScreen}
+                        component={NoData}
                         options={{
                             tabBarLabel: 'مشخصات',
                             tabBarIcon: ({ color }) => (
@@ -82,7 +85,7 @@ class PatientProfileScreen extends React.Component {
                     />
                     <Tab.Screen
                         name="PatientsTab"
-                        component={HomeScreen}
+                        component={NoData}
                         options={{
                             tabBarLabel: 'ویزیت‌ها',
                             tabBarIcon: ({ color }) => (
@@ -93,7 +96,7 @@ class PatientProfileScreen extends React.Component {
                     />
                     <Tab.Screen
                         name="Visits"
-                        component={HomeScreen}
+                        component={NoData}
                         options={{
                             tabBarLabel: 'آزمایش‌ها',
                             tabBarIcon: ({ color }) => (
@@ -125,7 +128,7 @@ export default PatientProfileScreen;
 const styles = StyleSheet.create({
     fab: {
         position: 'absolute',
-        margin: 20,
+        margin: 24,
         left: 0,
         bottom: 0,
     },

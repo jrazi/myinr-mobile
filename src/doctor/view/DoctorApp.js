@@ -23,7 +23,6 @@ class DoctorApp extends React.Component {
     }
 
     componentDidMount() {
-        this.props.navigation.navigate("WIP");
         this.setState({loaded: false}, () => {
             rootDao.getUser().then(user => {
                 if (user == null) this.props.navigation.navigate('LOGIN');
@@ -39,7 +38,7 @@ class DoctorApp extends React.Component {
         return (
             <Tab.Navigator
                 initialRouteName={"Home"}
-                barStyle={{ backgroundColor: colors.background }}
+                barStyle={{ backgroundColor: currentTheme.colors.background}}
                 shifting={false}
                 backBehavior={'history'}
                 activeColor={currentTheme.colors.primary}

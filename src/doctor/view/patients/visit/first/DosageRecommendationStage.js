@@ -63,10 +63,10 @@ const WeeklyDosagePicker = (props) => {
 
     return (
         <Layout.FormSection>
-            <DosageElemRow items={dosageElements.slice(0, 2)} key={0}/>
-            <DosageElemRow items={dosageElements.slice(2, 4)} key={1}/>
-            <DosageElemRow items={dosageElements.slice(4, 6)} key={2}/>
-            <DosageElemRow items={dosageElements.slice(6, 7)} key={3}/>
+            <DosageElemRow items={dosageElements.slice(0, 2)} key={`DosageElemRow${0}`}/>
+            <DosageElemRow items={dosageElements.slice(2, 4)} key={`DosageElemRow${1}`}/>
+            <DosageElemRow items={dosageElements.slice(4, 6)} key={`DosageElemRow${2}`}/>
+            <DosageElemRow items={dosageElements.slice(6, 7)} key={`DosageElemRow${3}`}/>
         </Layout.FormSection>
     );
 }
