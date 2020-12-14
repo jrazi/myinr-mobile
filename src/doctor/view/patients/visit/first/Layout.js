@@ -11,6 +11,7 @@ export const VisitScreen = (props) => {
             style={[styles.screenWrapper, props.style]}
         >
             {props.children}
+            <IntraSectionInvisibleDivider s/>
         </ScrollView>
     )
 }
@@ -59,6 +60,18 @@ export const InputTitle = (props) => {
             {
                 !hasValue(props.description) || removeWhiteSpace(props.description) == "" ? null :
                     <Caption style={styles.inputTitleDescription}>{props.description}</Caption>
+            }
+        </View>
+    )
+}
+
+export const SecondaryInputTitle = (props) => {
+    return (
+        <View style={[styles.inputTitle, props.style]}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={{fontSize: 14, color: currentTheme.colors.text}}>{props.title}</Text>
+            {
+                !hasValue(props.description) || removeWhiteSpace(props.description) == "" ? null :
+                    <Caption numberOfLines={1} ellipsizeMode={'tail'} style={[styles.inputTitleDescription, {}]}>{props.description}</Caption>
             }
         </View>
     )
@@ -124,6 +137,7 @@ export const Row = (props) => {return (
                     'space-around' : props.justifyBetween == true ?
                         'space-between' : props.justifyCenter ? 'center' : 'flex-start'
             },
+            props.style
         ]
     }>
         {props.children}
@@ -198,6 +212,7 @@ const styles = StyleSheet.create({
         elevation: 0,
         paddingTop: 20,
         paddingHorizontal: 20,
+        // marginBottom: 20,
     },
     formSection: {
         paddingTop: 10,
@@ -210,11 +225,13 @@ const styles = StyleSheet.create({
     },
     inputTitle: {
 
+        // flexShrink: 1,
     },
     inputTitleDescription: {
         fontSize: 12,
         paddingVertical: 0,
         marginVertical: 0,
+        // paddingHorizontal: 2,
     },
     sectionDescription: {
 

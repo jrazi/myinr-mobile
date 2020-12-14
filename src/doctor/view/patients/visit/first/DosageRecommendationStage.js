@@ -3,6 +3,7 @@ import {StyleSheet, View} from "react-native";
 import {Text} from "react-native-paper";
 import {ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {currentTheme} from "../../../../../../theme";
+import * as Layout from "./Layout";
 
 
 export class DosageRecommendationStage extends React.Component {
@@ -17,9 +18,11 @@ export class DosageRecommendationStage extends React.Component {
 
     render() {
         return (
-            <ScreenLayout>
-                <Text>Dosage Recommendation Stage</Text>
-            </ScreenLayout>
+            <Layout.VisitScreen>
+                <Layout.ScreenTitle title={'برنامه دارویی'}/>
+                <Layout.FormSection>
+                </Layout.FormSection>
+            </Layout.VisitScreen>
         )
     }
 }

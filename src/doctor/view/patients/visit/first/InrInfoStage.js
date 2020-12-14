@@ -101,7 +101,7 @@ export class InrInfoStage extends React.Component {
     }
 }
 
-const SwitchRow = (props) => {
+export const SwitchRow = (props) => {
     return (
         <Layout.Row justifyBetween>
             <Layout.InputTitle title={props.title} description={props.description}/>
