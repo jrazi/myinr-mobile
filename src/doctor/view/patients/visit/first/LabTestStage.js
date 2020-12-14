@@ -6,6 +6,7 @@ import {currentTheme} from "../../../../../../theme";
 import * as Layout from "./Layout";
 import {DefaultText} from "../../../../../root/view/basic/Text";
 import {IntraSectionInvisibleDivider} from "./Layout";
+import {debugBorderRed} from "../../../../../root/view/styles/borders";
 
 
 export class LabTestStage extends React.Component {
@@ -45,17 +46,15 @@ const LabTestResultForm = (props) => {
         })
 
     return (
-        <View>
+        <View style={{flex: 1, flexGrow:1, alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'column'}}>
             {fieldsElements}
         </View>
     )
 }
 const LabTestField = (props) => {
     return (
-        <View>
-            <View>
-                <DefaultTextInput label={props.name} placeholder={props.unit}/>
-            </View>
+        <View style={{width: '100%'}}>
+            <DefaultTextInput label={props.name} placeholder={props.unit}/>
             <IntraSectionInvisibleDivider s/>
         </View>
     )
@@ -76,13 +75,13 @@ const DefaultTextInput = (props) => {
                 backgroundColor: currentTheme.colors.surface,
                 fontSize: 14,
                 // flexGrow: 0,
-                flexGrow: 0,
+                // flexGrow: 1,
                 // width: '75%',
+                width: '50%',
                 // flex: 1,
-                paddingHorizontal: 0,
-                paddingRight: 50,
-                // flexDirection: 'row',
-                // justifyContent: 'flex-end',
+                // paddingLeft: '50%',
+                alignSelf: 'center',
+                // marginLeft: '50%',
                 // alignItems: 'flex-end',
                 // alignItems: 'stretch',
                 ...props.style
