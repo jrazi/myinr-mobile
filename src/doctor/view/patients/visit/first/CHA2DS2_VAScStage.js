@@ -2,9 +2,9 @@ import React, {useState} from "react";
 import {StyleSheet, View, Picker} from "react-native";
 import {currentTheme} from "../../../../../../theme";
 import {Text, Checkbox, RadioButton, Headline} from 'react-native-paper';
-import * as Layout from "./Layout";
+import * as Layout from "./forms/Layout";
 import {e2p} from "../../../../../root/domain/util/Util";
-import {IntraSectionInvisibleDivider} from "./Layout";
+import {IntraSectionInvisibleDivider} from "./forms/Layout";
 import {GenericScoreForm} from "./HAS_BLEDStage";
 
 

@@ -90,6 +90,7 @@ const StageNavStack = (props) => {
                         component={stage}
                         options={{ headerShown: false , headerTitle: props => null }}
                         initialParams={{visitInfo: props.visitInfo}}
+                        key={`VisitStage:${index}`}
                     />
                 )
             })

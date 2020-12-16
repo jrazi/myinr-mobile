@@ -2,11 +2,14 @@ import React, {useState} from "react";
 import {StyleSheet, View, ScrollView} from "react-native";
 import {Text, Chip, Switch, Divider} from "react-native-paper";
 import {currentTheme, theme} from "../../../../../../theme";
-import * as Layout from './Layout';
-import {BasicElement, FormSection, IntraSectionInvisibleDivider, SectionTitle} from "./Layout";
+import * as Layout from './forms/Layout';
+import {BasicElement, ConditionalRender, FormSection, IntraSectionInvisibleDivider, SectionTitle} from "./forms/Layout";
 // import CircleSlider from "react-native-circle-slider";
 import CircularPicker from 'react-native-circular-picker';
 import {firstNonEmpty, getFormattedJalaliDate, hasValue} from "../../../../../root/domain/util/Util";
+import * as Data from './Data';
+import {ChipBox, DefaultSwitchRow} from "./forms/ContextSpecificComponents";
+import Condition from "yup/lib/Condition";
 
 export class PreliminaryStage extends React.Component {
     constructor(props) {
@@ -57,87 +60,12 @@ export class PreliminaryStage extends React.Component {
 
                 <Layout.FormSection>
                     <Layout.InputTitle title={'دلیل مصرف وارفارین'} description={'لطفا دلایل مصرف وارفارین توسط بیمار را مشخص کنید.'}/>
-                    <Layout.InputArea>
-                        <Layout.ItemsBox>
-                            <ConditionSelectChip
-                                title={"DVT"}
-                                id={0}
-                                onPress={this.reasonForWarfarinItemToggled}
-                                selected={this.state.reasonForWarfarin[0]}
-                            />
-                            <ConditionSelectChip
-                                title={"Non Valvular AF"}
-                                id={1}
-                                onPress={this.reasonForWarfarinItemToggled}
-                                selected={this.state.reasonForWarfarin[1]}
-                            />
-                            <ConditionSelectChip
-                                title={"Pulmonary Embolism"}
-                                id={2}
-                                onPress={this.reasonForWarfarinItemToggled}
-                                selected={this.state.reasonForWarfarin[2]}
-                            />
-                            <ConditionSelectChip
-                                title={"Post-myocardial Infarction"}
-                                id={3}
-                                onPress={this.reasonForWarfarinItemToggled}
-                                selected={this.state.reasonForWarfarin[3]}
-                            />
-                        </Layout.ItemsBox>
-                    </Layout.InputArea>
+                    <ReasonForWarfarinPicker/>
                     <Layout.IntraSectionInvisibleDivider s/>
-                    <Layout.Row justifyBetween>
-                        <Layout.InputTitle title={'تعویض دریچه قلب'}/>
-                        <Switch
-                            style={{}} value={this.state.valveReplaced}
-                            color={currentTheme.colors.primary}
-                            onValueChange={() => this.valveReplacedTriggered()}
-                        />
-                    </Layout.Row>
-                            {
-                                !this.state.valveReplaced ? null :
-                                    <Layout.InputArea>
-                                        <Layout.ItemsBox>
-                                            <ConditionSelectChip
-                                                title={"MVR"}
-                                                id={0}
-                                                onPress={this.reasonForValveReplacementTriggered}
-                                                selected={this.state.reasonForValveReplacement[0]}
-                                            />
-                                            <ConditionSelectChip
-                                            title={"AVR"}
-                                            id={1}
-                                            onPress={this.reasonForValveReplacementTriggered}
-                                            selected={this.state.reasonForValveReplacement[1]}
-                                            />
-                                            <ConditionSelectChip
-                                            title={"TVR"}
-                                            id={2}
-                                            onPress={this.reasonForValveReplacementTriggered}
-                                            selected={this.state.reasonForValveReplacement[2]}
-                                            />
-                                        </Layout.ItemsBox>
-                                    </Layout.InputArea>
-                            }
+                    <HeartValveReplacementConditions/>
                     <Layout.IntraSectionDivider m/>
-                    {/*<Divider/>*/}
-                    <Layout.Row justifyBetween>
-                        <Layout.InputTitle title={'نخستین تجویز وارفارین'} description={'آیا این نخستین تجربه مصرف وارفارین است؟'}/>
-                        <Switch
-                            style={{}}
-                            value={this.state.firstTimeWarfarin}
-                            color={currentTheme.colors.primary}
-                            onValueChange={() => this.firstWarfarinToggled()}
-                        />
-                    </Layout.Row>
                 </Layout.FormSection>
-                {
-                    this.state.firstTimeWarfarin ? null :
-                        <Layout.FormSection>
-                            <Layout.SectionTitle title={'اطلاعات آخرین دوز مصرفی'} description={'در صورت استفاده از وارفارین،‌ لطفا دوز مصرفی بیمار در هفته اخیر را وارد کنید.'}/>
-                            <WeeklyDosagePicker doseData={this.state.firstTimeDoseData} onDoseUpdate={this.updateFirstTimeDose}/>
-                        </Layout.FormSection>
-                }
+                <FirstTimeWarfarinForm/>
                 <IntraSectionInvisibleDivider/>
             </Layout.VisitScreen>
 
@@ -145,23 +73,49 @@ export class PreliminaryStage extends React.Component {
     }
 }
 
-const IsoSwitch = () => {
-    const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+const ReasonForWarfarinPicker = (props) => {
+    let medicalConditions = Data.PreliminaryStage.REASON_FOR_WARFARIN_CONDITIONS;
+    return (
+        <Layout.InputArea>
+            <ChipBox items={medicalConditions}/>
+        </Layout.InputArea>
+    );
+}
 
-    const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+const HeartValveReplacementConditions = (props) => {
+    let medicalConditions = Data.PreliminaryStage.HEART_VALVE_REPLACEMENT_CONDITIONS;
+    let [value, setValue] = useState(false);
+    return (
+        <View>
+            <DefaultSwitchRow value={value} onFlip={setValue} title={'تعویض دریچه قلب'}/>
+            <ConditionalRender hidden={!value}>
+                <Layout.InputArea>
+                    <ChipBox items={medicalConditions}/>
+                </Layout.InputArea>
+            </ConditionalRender>
+        </View>
+    );
+}
 
-    return <Switch style={{fontSize: 40}} value={isSwitchOn} onValueChange={onToggleSwitch} />;
-};
-
-const ConditionSelectChip = (props) => {return (
-    <Layout.BasicElement>
-        <Chip
-            selected={props.selected} icon="information" onPress={() => props.onPress(props.id)}
-        >
-            {props.title}
-        </Chip>
-    </Layout.BasicElement>
-)}
+const FirstTimeWarfarinForm = (props) => {
+    let [firstTimeWarfarin, setFirstTimeWarfarin] = useState(true);
+    return (
+        <View>
+            <DefaultSwitchRow
+                value={firstTimeWarfarin}
+                onFlip={() => setFirstTimeWarfarin(!firstTimeWarfarin)}
+                title={'نخستین تجویز وارفارین'}
+                description={'آیا این نخستین تجربه مصرف وارفارین است؟'}
+            />
+            <ConditionalRender hidden={firstTimeWarfarin}>
+                <Layout.FormSection>
+                    <Layout.SectionTitle title={'اطلاعات آخرین دوز مصرفی'} description={'در صورت استفاده از وارفارین،‌ لطفا دوز مصرفی بیمار در هفته اخیر را وارد کنید.'}/>
+                    <WeeklyDosagePicker doseData={[]} onDoseUpdate={() => {}}/>
+                </Layout.FormSection>
+            </ConditionalRender>
+        </View>
+    );
+}
 
 const WeeklyDosagePicker = (props) => {
     let dosageElements = [];
@@ -173,8 +127,8 @@ const WeeklyDosagePicker = (props) => {
             <DosageForDay
                 date={date}
                 key={'DosageForDay' + i}
-                onChange={(dose) => {props.onDoseUpdate(i, date, dose)}}
-                dose={props.doseData[i].dose}
+                onChange={(dose) => {}}
+                dose={0}
             />
         )
     }

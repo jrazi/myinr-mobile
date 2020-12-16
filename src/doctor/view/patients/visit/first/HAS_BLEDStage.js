@@ -3,9 +3,9 @@ import {StyleSheet, View} from "react-native";
 import {Switch, Text} from "react-native-paper";
 import {ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {currentTheme} from "../../../../../../theme";
-import * as Layout from "./Layout";
+import * as Layout from "./forms/Layout";
 import {SwitchRow} from "./InrInfoStage";
-import {IntraSectionDivider, IntraSectionInvisibleDivider} from "./Layout";
+import {IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
 
 
 export class HAS_BLEDStage extends React.Component {

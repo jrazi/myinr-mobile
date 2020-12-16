@@ -1,9 +1,9 @@
 import React from "react";
-import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
+import {currentTheme, mostlyWhiteTheme} from "../../../../../../../theme";
 import {StyleSheet, View, ScrollView} from "react-native";
 import {Title, Caption, Headline, Divider, Text, Chip} from "react-native-paper";
-import {hasValue, removeWhiteSpace} from "../../../../../root/domain/util/Util";
-import {fullWidth} from "../../../../../root/view/styles/containers";
+import {hasValue, removeWhiteSpace} from "../../../../../../root/domain/util/Util";
+import {fullWidth} from "../../../../../../root/view/styles/containers";
 
 export const VisitScreen = (props) => {
     return (

@@ -1,9 +1,9 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
 import {Text, TextInput} from "react-native-paper";
-import * as Layout from './Layout';
+import * as Layout from './forms/Layout';
 import {currentTheme} from "../../../../../../theme";
-import {IntraSectionInvisibleDivider} from "./Layout";
+import {IntraSectionInvisibleDivider} from "./forms/Layout";
 
 
 export class PhysicalExamStage extends React.Component {

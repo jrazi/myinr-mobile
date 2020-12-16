@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from "react";
-import * as Layout from "./Layout";
+import * as Layout from "./forms/Layout";
 import {Text, Button, Divider, Switch, TextInput} from "react-native-paper";
 import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
-import {ConditionalRender, IntraSectionInvisibleDivider, PrimaryText} from "./Layout";
+import {ConditionalRender, IntraSectionInvisibleDivider, PrimaryText} from "./forms/Layout";
 import {Platform, PanResponder, View} from 'react-native';
 import {Formik} from "formik";
 import * as Yup from 'yup';

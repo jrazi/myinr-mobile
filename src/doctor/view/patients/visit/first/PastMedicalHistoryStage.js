@@ -3,8 +3,8 @@ import React, {useState} from "react";
 import {StyleSheet, View} from "react-native";
 import {Text} from "react-native-paper";
 import {currentTheme} from "../../../../../../theme";
-import * as Layout from "./Layout";
-import {DefaultChip, IntraSectionDivider, IntraSectionInvisibleDivider, ItemsBox} from "./Layout";
+import * as Layout from "./forms/Layout";
+import {DefaultChip, IntraSectionDivider, IntraSectionInvisibleDivider, ItemsBox} from "./forms/Layout";
 
 
 export class PastMedicalHistoryStage extends React.Component {

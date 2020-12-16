@@ -3,8 +3,8 @@ import {StyleSheet, View} from "react-native";
 import {Text} from "react-native-paper";
 import {ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {currentTheme} from "../../../../../../theme";
-import * as Layout from "./Layout";
-import {IntraSectionInvisibleDivider} from "./Layout";
+import * as Layout from "./forms/Layout";
+import {IntraSectionInvisibleDivider} from "./forms/Layout";
 import {firstNonEmpty, getFormattedJalaliDate} from "../../../../../root/domain/util/Util";
 import CircularPicker from "react-native-circular-picker";
 

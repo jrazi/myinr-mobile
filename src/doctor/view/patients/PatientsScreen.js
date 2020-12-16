@@ -13,7 +13,7 @@ import {currentTheme, mostlyWhiteTheme} from "../../../../theme";
 import {rootDao} from "../../../root/data/dao/RootDao";
 import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../../root/domain/util/Util";
 import {ScreenHeader, ScreenLayout} from "../../../root/view/screen/Layout";
-import {IntraSectionDivider} from "./visit/first/Layout";
+import {IntraSectionDivider} from "./visit/first/forms/Layout";
 
 class PatientsScreen extends React.Component {
     constructor(props) {
