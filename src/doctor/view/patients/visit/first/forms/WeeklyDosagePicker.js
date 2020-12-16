@@ -5,6 +5,7 @@ import {firstNonEmpty, getFormattedJalaliDate} from "../../../../../../root/doma
 import CircularPicker from "react-native-circular-picker";
 import {currentTheme} from "../../../../../../../theme";
 import {Text} from "react-native-paper";
+import {Animated} from 'react-native';
 
 export const WeeklyDosagePicker = (props) => {
     let dosageElements = [];
@@ -29,12 +30,28 @@ export const WeeklyDosagePicker = (props) => {
         <IntraSectionInvisibleDivider s/>
     ])};
 
+    const [fadeAnim] = useState(new Animated.Value(0));
+
+    React.useEffect(() => {
+        Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 250,
+            useNativeDriver: false,
+        }).start();
+    }, []);
+
     return (
         <Layout.FormSection>
-            <DosageElemRow items={dosageElements.slice(0, 2)}/>
-            <DosageElemRow items={dosageElements.slice(2, 4)}/>
-            <DosageElemRow items={dosageElements.slice(4, 6)}/>
-            <DosageElemRow items={dosageElements.slice(6, 7)}/>
+            <Animated.View
+                style={{
+                    opacity: fadeAnim,
+                }}
+            >
+                <DosageElemRow items={dosageElements.slice(0, 2)} key={0}/>
+                <DosageElemRow items={dosageElements.slice(2, 4)} key={1}/>
+                <DosageElemRow items={dosageElements.slice(4, 6)} key={2}/>
+                <DosageElemRow items={dosageElements.slice(6, 7)} key={3}/>
+            </Animated.View>
         </Layout.FormSection>
     );
 }
@@ -68,7 +85,7 @@ const DosageForDay = (props) => {
             onChange={handleChange}
         >
             <>
-                <Text style={{ textAlign: 'center', fontSize: 12, marginBottom: 8 }}>{`${(currentDose/2.5).toFixed(2)} mg`}</Text>
+                <Text style={{ textAlign: 'center', fontSize: 12, fontWeight: 'bold', marginBottom: 8 }}>{`${(currentDose/2.5).toFixed(2)} mg`}</Text>
                 <Text style={{ textAlign: 'center' , fontSize: 12}}>{getFormattedJalaliDate(props.date)}</Text>
             </>
         </CircularPicker>

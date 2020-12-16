@@ -1,11 +1,8 @@
 import React, {useState} from "react";
 import {StyleSheet, View, ScrollView} from "react-native";
-import {Text, Chip, Switch, Divider} from "react-native-paper";
 import {currentTheme, theme} from "../../../../../../theme";
 import * as Layout from './forms/Layout';
-import {BasicElement, ConditionalRender, FormSection, IntraSectionInvisibleDivider, SectionTitle} from "./forms/Layout";
-import CircularPicker from 'react-native-circular-picker';
-import {firstNonEmpty, getFormattedJalaliDate, hasValue} from "../../../../../root/domain/util/Util";
+import {ConditionalRender, IntraSectionInvisibleDivider} from "./forms/Layout";
 import * as Data from './Data';
 import {ChipBox, DefaultSwitchRow} from "./forms/ContextSpecificComponents";
 import {WeeklyDosagePicker} from "./forms/WeeklyDosagePicker";
@@ -92,11 +89,4 @@ const FirstTimeWarfarinForm = (props) => {
 
 
 const styles = StyleSheet.create({
-    wrapper: {
-        backgroundColor: currentTheme.colors.surface,
-    },
-    mainContainer: {
-        flex: 1,
-        backgroundColor: currentTheme.colors.surface,
-    }
 })
