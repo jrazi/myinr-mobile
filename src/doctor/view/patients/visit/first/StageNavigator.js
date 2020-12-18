@@ -56,7 +56,7 @@ export default class StageNavigator extends React.Component {
     render() {
 
         const renderScene = ({ route, jumpTo }) => {
-            return <StageNavStack visitInfo={this.props.visitInfo} currentStage={this.props.currentStage}/>;
+            return <StageNavStack visitInfo={this.props.visitInfo} userId={this.props.userId} currentStage={this.props.currentStage}/>;
         }
 
         return (
@@ -89,7 +89,7 @@ const StageNavStack = (props) => {
                         name={`VisitStage:${index}`}
                         component={stage}
                         options={{ headerShown: false , headerTitle: props => null }}
-                        initialParams={{visitInfo: props.visitInfo}}
+                        initialParams={{visitInfo: props.visitInfo, userId: props.userId}}
                         key={`VisitStage:${index}`}
                     />
                 )

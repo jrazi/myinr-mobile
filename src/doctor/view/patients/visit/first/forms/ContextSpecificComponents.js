@@ -16,7 +16,7 @@ export const ChipBox = (props) => {
                 <ConditionSelectChip
                     title={condition.name}
                     id={condition.id}
-                    onPress={() => setValue(!value)}
+                    onPress={() => {props.onChange(id, !value); setValue(!value)}}
                     selected={value}
                     key={condition.id}
                 />

@@ -10,6 +10,7 @@ import {stages} from "./FirstVisitProperties";
 import {debugBorderRed} from "../../../../../root/view/styles/borders";
 import {firstNonEmpty} from "../../../../../root/domain/util/Util";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {visitDao} from "../../../../data/dao/VisitDao";
 
 
 export class FirstVisitScreen extends React.Component {
@@ -24,14 +25,19 @@ export class FirstVisitScreen extends React.Component {
 
     componentDidMount() {
         const {userId, useCache} = this.props.route.params;
+
+        visitDao.initVisit(userId);
         if (useCache != true) return;
 
         doctorDao.getCachedVisit(userId)
             .then(cachedVisit => {
-                this.setState({visitInfo: cachedVisit.visitInfo, currentStage: cachedVisit.currentStage})
+                this.setState({visitInfo: cachedVisit.visitInfo, currentStage: cachedVisit.currentStage});
+                visitDao.setVisits(userId, cachedVisit);
             })
             .catch(err => {
-                this.setState({visitInfo: FirstVisit.createNew(), currentStage: 0})
+                this.setState({visitInfo: FirstVisit.createNew(), currentStage: 0});
+            })
+            .finally(() => {
             })
     }
 
@@ -71,6 +77,7 @@ export class FirstVisitScreen extends React.Component {
                         navigation={this.props.navigation}
                         route={this.props.route}
                         visitInfo={this.state.visitInfo}
+                        userId={this.props.route.params.userId}
                         onNewStage={this.onNewStage}
                         currentStage={this.state.currentStage}
                         onFinish={() => this.setState({finishVisitDialogOpen: true})}

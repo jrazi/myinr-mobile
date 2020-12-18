@@ -10,7 +10,7 @@ export class FirstVisit {
             id: null,
             patientUserId: null,
 
-            reasonForWarfarin: [],
+            reasonForWarfarin: {},
             dateOfDiagnosis: null,
             firstWarfarin: {
 

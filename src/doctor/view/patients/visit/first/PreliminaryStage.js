@@ -1,11 +1,12 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {StyleSheet, View, ScrollView} from "react-native";
-import {currentTheme, theme} from "../../../../../../theme";
 import * as Layout from './forms/Layout';
 import {ConditionalRender, IntraSectionInvisibleDivider} from "./forms/Layout";
 import * as Data from './Data';
 import {ChipBox, DefaultSwitchRow} from "./forms/ContextSpecificComponents";
 import {WeeklyDosagePicker} from "./forms/WeeklyDosagePicker";
+import {visitDao} from "../../../../data/dao/VisitDao";
+import {firstNonEmpty} from "../../../../../root/domain/util/Util";
 
 export class PreliminaryStage extends React.Component {
     constructor(props) {
@@ -16,6 +17,7 @@ export class PreliminaryStage extends React.Component {
 
 
     componentDidMount() {
+        this.visitInfo = this.props.route.params.visitInfo;
     }
 
     render() {
@@ -23,7 +25,7 @@ export class PreliminaryStage extends React.Component {
             <Layout.VisitScreen
             >
                 <Layout.ScreenTitle title={'اطلاعات اولیه'}/>
-                <ReasonForWarfarinPicker/>
+                <ReasonForWarfarinPicker userId={props.userId}/>
 
                 <Layout.IntraSectionDivider m/>
 
@@ -42,11 +44,14 @@ export class PreliminaryStage extends React.Component {
 
 const ReasonForWarfarinPicker = (props) => {
     let medicalConditions = Data.PreliminaryStage.REASON_FOR_WARFARIN_CONDITIONS;
+    let visit = {};
+    useEffect(() => visit = visitDao.getVisits(props.userId));
+    const changeValue = (id, value) => visit.reasonForWarfarin[id] = value;
     return (
         <View>
             <Layout.InputTitle title={'دلیل مصرف وارفارین'} description={'لطفا دلایل مصرف وارفارین توسط بیمار را مشخص کنید.'}/>
             <Layout.InputArea>
-                <ChipBox items={medicalConditions}/>
+                <ChipBox items={medicalConditions} onChange={changeValue}/>
             </Layout.InputArea>
         </View>
     );
