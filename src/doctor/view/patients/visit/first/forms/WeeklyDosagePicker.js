@@ -26,10 +26,10 @@ export const WeeklyDosagePicker = (props) => {
     }
 
     const DosageElemRow = (props) => {return ([
-        <Layout.Row justifyBetween style={{}}>
+        <Layout.Row justifyBetween style={{}} key={'row0E'}>
             {props.items}
         </Layout.Row>,
-        <IntraSectionInvisibleDivider s/>
+        <IntraSectionInvisibleDivider s key={'row1E'}/>
     ])};
 
     const [fadeAnim] = useState(new Animated.Value(0));
