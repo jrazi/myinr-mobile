@@ -11,9 +11,14 @@ export class FirstVisit {
             patientUserId: null,
 
             reasonForWarfarin: {},
+            heartValveReplacementCondition: {
+                replaced: false,
+                conditionType: {},
+            },
             dateOfDiagnosis: null,
             firstWarfarin: {
-
+                isFirstTime: true,
+                weeklyDosage: [],
             },
             inr: {
             },

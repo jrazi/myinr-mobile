@@ -30,11 +30,11 @@ export class PreliminaryStage extends React.Component {
 
                 <Layout.IntraSectionDivider m/>
 
-                <HeartValveReplacementConditions/>
+                <HeartValveReplacementConditions userId={this.props.route.params.userId}/>
 
                 <Layout.IntraSectionDivider m/>
 
-                <FirstTimeWarfarinForm/>
+                <FirstTimeWarfarinForm userId={this.props.route.params.userId}/>
 
                 <IntraSectionInvisibleDivider/>
             </Layout.VisitScreen>
@@ -72,14 +72,32 @@ const ReasonForWarfarinPicker = (props) => {
 }
 
 const HeartValveReplacementConditions = (props) => {
-    let medicalConditions = Data.PreliminaryStage.HEART_VALVE_REPLACEMENT_CONDITIONS;
+    let medicalConditions = useRef(Data.PreliminaryStage.HEART_VALVE_REPLACEMENT_CONDITIONS);
+
     let [value, setValue] = useState(false);
+    let visit = useRef({});
+
+    let [loaded, setLoaded] = useState(false);
+    useEffect(() => {
+        visit.current = visitDao.getVisits(props.userId);
+        setValue(firstNonEmpty(visit.current.heartValveReplacementCondition.replaced, false));
+        medicalConditions.current.forEach(condition => {
+            condition['value'] = firstNonEmpty(visit.current.heartValveReplacementCondition.conditionType[condition.id], false);
+        });
+        setLoaded(true);
+    }, [value]);
+
+
+    let changeConditionStatus = (id, val) => {
+        visit.current.heartValveReplacementCondition.conditionType[id] = val;
+    }
+
     return (
         <View>
-            <DefaultSwitchRow value={value} onFlip={setValue} title={'تعویض دریچه قلب'}/>
-            <ConditionalRender hidden={!value}>
+            <DefaultSwitchRow value={value} onFlip={(val) => {visit.current.heartValveReplacementCondition.replaced = val; setValue(val)}} title={'تعویض دریچه قلب'}/>
+            <ConditionalRender hidden={!value || !loaded}>
                 <Layout.InputArea>
-                    <ChipBox items={medicalConditions}/>
+                    <ChipBox items={medicalConditions.current} onChange={changeConditionStatus}/>
                 </Layout.InputArea>
             </ConditionalRender>
         </View>
@@ -88,18 +106,31 @@ const HeartValveReplacementConditions = (props) => {
 
 const FirstTimeWarfarinForm = (props) => {
     let [firstTimeWarfarin, setFirstTimeWarfarin] = useState(true);
+    let [loaded, setLoaded] = useState(false);
+
+    let visit = useRef({});
+    useEffect(() => {
+        visit.current = visitDao.getVisits(props.userId);
+        setFirstTimeWarfarin(firstNonEmpty(visit.current.firstWarfarin.isFirstTime, true));
+        setLoaded(true);
+    }, []);
+
+    const onDoseUpdate = (day, dose) => {
+        visit.current.firstWarfarin.weeklyDosage[day] = dose;
+    }
+
     return (
         <View>
             <DefaultSwitchRow
                 value={firstTimeWarfarin}
-                onFlip={() => setFirstTimeWarfarin(!firstTimeWarfarin)}
+                onFlip={() => {visit.current.firstWarfarin.isFirstTime= !firstTimeWarfarin; setFirstTimeWarfarin(!firstTimeWarfarin)}}
                 title={'نخستین تجویز وارفارین'}
                 description={'آیا این نخستین تجربه مصرف وارفارین است؟'}
             />
-            <ConditionalRender hidden={firstTimeWarfarin}>
+            <ConditionalRender hidden={firstTimeWarfarin || !loaded}>
                 <Layout.FormSection>
                     <Layout.SectionTitle title={'اطلاعات آخرین دوز مصرفی'} description={'در صورت استفاده از وارفارین،‌ لطفا دوز مصرفی بیمار در هفته اخیر را وارد کنید.'}/>
-                    <WeeklyDosagePicker doseData={[]} onDoseUpdate={() => {}}/>
+                    <WeeklyDosagePicker initialData={loaded ? visit.current.firstWarfarin.weeklyDosage : []} doseData={[]} onDoseUpdate={onDoseUpdate}/>
                 </Layout.FormSection>
             </ConditionalRender>
         </View>

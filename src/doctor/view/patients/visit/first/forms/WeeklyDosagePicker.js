@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as Layout from "./Layout";
 import {IntraSectionInvisibleDivider} from "./Layout";
 import {firstNonEmpty, getFormattedJalaliDate} from "../../../../../../root/domain/util/Util";
@@ -6,6 +6,7 @@ import CircularPicker from "react-native-circular-picker";
 import {currentTheme} from "../../../../../../../theme";
 import {Text} from "react-native-paper";
 import {Animated} from 'react-native';
+import {visitDao} from "../../../../../data/dao/VisitDao";
 
 export const WeeklyDosagePicker = (props) => {
     let dosageElements = [];
@@ -17,8 +18,9 @@ export const WeeklyDosagePicker = (props) => {
             <DosageForDay
                 date={date}
                 key={'DosageForDay' + i}
-                onChange={(dose) => {}}
+                onDoseUpdate={(dose) => {props.onDoseUpdate(i, dose)}}
                 dose={0}
+                initialDose={firstNonEmpty(props.initialData[i], 0)}
             />
         )
     }
@@ -47,10 +49,10 @@ export const WeeklyDosagePicker = (props) => {
                     opacity: fadeAnim,
                 }}
             >
-                <DosageElemRow items={dosageElements.slice(0, 2)} key={0}/>
-                <DosageElemRow items={dosageElements.slice(2, 4)} key={1}/>
-                <DosageElemRow items={dosageElements.slice(4, 6)} key={2}/>
-                <DosageElemRow items={dosageElements.slice(6, 7)} key={3}/>
+                <DosageElemRow items={dosageElements.slice(0, 2)} key={`DosageElemRow:0`}/>
+                <DosageElemRow items={dosageElements.slice(2, 4)} key={`DosageElemRow:1`}/>
+                <DosageElemRow items={dosageElements.slice(4, 6)} key={`DosageElemRow:2`}/>
+                <DosageElemRow items={dosageElements.slice(6, 7)} key={`DosageElemRow:3`}/>
             </Animated.View>
         </Layout.FormSection>
     );
@@ -64,14 +66,17 @@ const DosageForDay = (props) => {
         steps.push(u);
     }
 
-    const [percentage, setPercentage] = useState(null);
+    const [percentage, setPercentage] = useState(0);
 
     const handleChange = (v) => {
         setPercentage(v);
-        // props.onChange(v);
+        props.onDoseUpdate(v/2.5);
     }
 
-    const currentDose = firstNonEmpty(percentage, props.dose, 0)
+    useEffect(() => {
+        setPercentage(firstNonEmpty(props.initialDose*2.5, 0));
+    }, []);
+
     return (
         <CircularPicker
             size={140}
@@ -81,11 +86,11 @@ const DosageForDay = (props) => {
                 0: [currentTheme.colors.primary, currentTheme.colors.primary],
                 100: [currentTheme.colors.primary, currentTheme.colors.primary],
             }}
-            perc={currentDose}
+            perc={percentage}
             onChange={handleChange}
         >
             <>
-                <Text style={{ textAlign: 'center', fontSize: 12, fontWeight: 'bold', marginBottom: 8 }}>{`${(currentDose/2.5).toFixed(2)} mg`}</Text>
+                <Text style={{ textAlign: 'center', fontSize: 12, fontWeight: 'bold', marginBottom: 8 }}>{`${(percentage/2.5).toFixed(2)} mg`}</Text>
                 <Text style={{ textAlign: 'center' , fontSize: 12}}>{getFormattedJalaliDate(props.date)}</Text>
             </>
         </CircularPicker>
