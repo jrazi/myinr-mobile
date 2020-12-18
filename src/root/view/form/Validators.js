@@ -31,5 +31,30 @@ export const PASSWORD = {
         .required('این فیلد نمی‌تواند خالی باشد.'),
 }
 
+export const INR = Yup.number()
+    .nullable()
+    .min(0.1, 'مقدار در بازه صحیح قرار ندارد.')
+    .max(5.0, 'مقدار در بازه صحیح قرار ندارد.')
+
+export const YEAR = Yup.number()
+    .nullable()
+    .min(98, '۹۸-۹۹')
+    .max(99, '۹۸-۹۹')
+
+export const MONTH = Yup.number()
+    .nullable()
+    .min(1, '۱-۱۲')
+    .max(12, '۱-۱۲')
+
+export const DAY = Yup.number()
+    .nullable()
+    .min(1, '۱-۳۱')
+    .max(31, '۱-۳۱')
+
+
+export const SHORT_TEXT = Yup.string()
+    .nullable()
+    .max(64, 'مقدار نباید از ۶۴ کاراکتر بیشتر باشد.')
+
 export const NATIONAL_CODE = null;
 export const PASSWORD_REPEAT = null;

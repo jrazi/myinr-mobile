@@ -21,6 +21,11 @@ export class FirstVisit {
                 weeklyDosage: [],
             },
             inr: {
+                testAtHome: false,
+                inrResult: null,
+                testLocation: null,
+                testDate: [null, null, null],
+                targetRange: [null, null]
             },
             bleedingOrClottingType: [],
             medicalHistory: {
