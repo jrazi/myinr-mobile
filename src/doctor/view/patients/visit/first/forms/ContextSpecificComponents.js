@@ -10,13 +10,13 @@ export const ChipBox = (props) => {
     let states = [];
     let chips = props.items
         .map(condition => {
-            let [value, setValue] = useState(false);
+            let [value, setValue] = useState(condition.value);
             states.push([value, setValue]);
             return (
                 <ConditionSelectChip
                     title={condition.name}
                     id={condition.id}
-                    onPress={() => {props.onChange(id, !value); setValue(!value)}}
+                    onPress={() => {props.onChange(condition.id, !value); setValue(!value)}}
                     selected={value}
                     key={condition.id}
                 />

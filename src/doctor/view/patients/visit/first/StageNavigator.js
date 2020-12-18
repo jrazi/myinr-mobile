@@ -59,6 +59,7 @@ export default class StageNavigator extends React.Component {
             return <StageNavStack visitInfo={this.props.visitInfo} userId={this.props.userId} currentStage={this.props.currentStage}/>;
         }
 
+
         return (
             <View style={{...fullSize}}>
                 <BottomNavigation

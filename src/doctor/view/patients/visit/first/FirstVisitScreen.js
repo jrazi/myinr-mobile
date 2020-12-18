@@ -11,6 +11,7 @@ import {debugBorderRed} from "../../../../../root/view/styles/borders";
 import {firstNonEmpty} from "../../../../../root/domain/util/Util";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {visitDao} from "../../../../data/dao/VisitDao";
+import {ConditionalRender} from "./forms/Layout";
 
 
 export class FirstVisitScreen extends React.Component {
@@ -20,22 +21,23 @@ export class FirstVisitScreen extends React.Component {
             visitInfo: FirstVisit.createNew(),
             currentStage: 0,
             finishVisitDialogOpen: false,
+            loaded: false,
         }
     }
 
     componentDidMount() {
         const {userId, useCache} = this.props.route.params;
 
-        visitDao.initVisit(userId);
+        let visitInfo = visitDao.initVisit(userId);
         if (useCache != true) return;
 
         doctorDao.getCachedVisit(userId)
             .then(cachedVisit => {
-                this.setState({visitInfo: cachedVisit.visitInfo, currentStage: cachedVisit.currentStage});
-                visitDao.setVisits(userId, cachedVisit);
+                visitInfo = visitDao.setVisits(userId, cachedVisit.visitInfo);
+                this.setState({visitInfo: visitInfo, currentStage: cachedVisit.currentStage, loaded: true});
             })
             .catch(err => {
-                this.setState({visitInfo: FirstVisit.createNew(), currentStage: 0});
+                this.setState({visitInfo: visitInfo, currentStage: 0, loaded: true});
             })
             .finally(() => {
             })
@@ -73,15 +75,17 @@ export class FirstVisitScreen extends React.Component {
                     </View>
                 </CustomContentScreenHeader>
                 <View style={styles.mainContainer}>
-                    <StageNavigator
-                        navigation={this.props.navigation}
-                        route={this.props.route}
-                        visitInfo={this.state.visitInfo}
-                        userId={this.props.route.params.userId}
-                        onNewStage={this.onNewStage}
-                        currentStage={this.state.currentStage}
-                        onFinish={() => this.setState({finishVisitDialogOpen: true})}
-                    />
+                    <ConditionalRender hidden={!this.state.loaded}>
+                        <StageNavigator
+                            navigation={this.props.navigation}
+                            route={this.props.route}
+                            visitInfo={this.state.visitInfo}
+                            userId={this.props.route.params.userId}
+                            onNewStage={this.onNewStage}
+                            currentStage={this.state.currentStage}
+                            onFinish={() => this.setState({finishVisitDialogOpen: true})}
+                        />
+                    </ConditionalRender>
                 </View>
                 <FinishVisitDialog
                     visible={this.state.finishVisitDialogOpen}

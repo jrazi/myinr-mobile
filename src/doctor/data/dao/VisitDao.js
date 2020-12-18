@@ -12,10 +12,12 @@ export class InMemVisitDao {
 
     initVisit(userId) {
         this.visits[userId] = FirstVisit.createNew();
+        return this.visits[userId];
     }
 
     setVisits(userId, visits) {
         this.visits[userId] = visits;
+        return this.visits[userId];
     }
 
     getVisits(userId) {

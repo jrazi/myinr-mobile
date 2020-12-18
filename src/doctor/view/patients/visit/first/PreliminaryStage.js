@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, View, ScrollView} from "react-native";
 import * as Layout from './forms/Layout';
 import {ConditionalRender, IntraSectionInvisibleDivider} from "./forms/Layout";
@@ -17,15 +17,16 @@ export class PreliminaryStage extends React.Component {
 
 
     componentDidMount() {
-        this.visitInfo = this.props.route.params.visitInfo;
+
     }
 
     render() {
+
         return (
             <Layout.VisitScreen
             >
                 <Layout.ScreenTitle title={'اطلاعات اولیه'}/>
-                <ReasonForWarfarinPicker userId={props.userId}/>
+                <ReasonForWarfarinPicker userId={this.props.route.params.userId}/>
 
                 <Layout.IntraSectionDivider m/>
 
@@ -44,14 +45,27 @@ export class PreliminaryStage extends React.Component {
 
 const ReasonForWarfarinPicker = (props) => {
     let medicalConditions = Data.PreliminaryStage.REASON_FOR_WARFARIN_CONDITIONS;
-    let visit = {};
-    useEffect(() => visit = visitDao.getVisits(props.userId));
-    const changeValue = (id, value) => visit.reasonForWarfarin[id] = value;
+    medicalConditions.forEach(condition => condition['value'] = false);
+    let visit = useRef({});
+
+    let [loaded, setLoaded] = useState(false);
+    useEffect(() => {
+        visit.current = visitDao.getVisits(props.userId);
+        medicalConditions.forEach(condition => {
+            condition['value'] = firstNonEmpty(visit.current.reasonForWarfarin[condition.id], false);
+        });
+        setLoaded(true);
+    }, []);
+
+    const changeValue = (id, value) => {visit.current.reasonForWarfarin[id] = value};
+
     return (
         <View>
             <Layout.InputTitle title={'دلیل مصرف وارفارین'} description={'لطفا دلایل مصرف وارفارین توسط بیمار را مشخص کنید.'}/>
             <Layout.InputArea>
-                <ChipBox items={medicalConditions} onChange={changeValue}/>
+                <ConditionalRender hidden={false}>
+                    <ChipBox items={medicalConditions} onChange={changeValue}/>
+                </ConditionalRender>
             </Layout.InputArea>
         </View>
     );
