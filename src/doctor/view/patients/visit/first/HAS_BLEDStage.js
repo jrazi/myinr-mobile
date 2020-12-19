@@ -18,12 +18,13 @@ export class HAS_BLEDStage extends React.Component {
             loaded: false,
         }
         this.hasBledInfo = FirstVisit.createNew().hasBledScore;
+        this.medicalConditions = medicalConditions.map(c => c);
     }
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
             this.hasBledInfo = visitDao.getVisits(this.props.route.params.userId).hasBledScore;
-            medicalConditions.forEach(
+            this.medicalConditions.forEach(
                 condition => condition['value'] = firstNonEmpty(this.hasBledInfo.medicalConditions[condition.id], false)
             )
             this.setState({loaded: true});
@@ -39,7 +40,7 @@ export class HAS_BLEDStage extends React.Component {
             <Layout.VisitScreen>
                 <Layout.ScreenTitle title={'نمره' + ' HAS-BLED'}/>
                 <Layout.FormSection>
-                    <GenericScoreForm medicalConditions={medicalConditions} onChange={this.onValueChange}/>
+                    <GenericScoreForm medicalConditions={this.medicalConditions} onChange={this.onValueChange} key={this.state.loaded}/>
                 </Layout.FormSection>
             </Layout.VisitScreen>
         )
@@ -82,7 +83,7 @@ export const GenericScoreForm = (props) => {
                         onValueChange={() => {{props.onChange(condition.id, !value); setValue(!value)}}}
                     />
                 </Layout.Row>,
-                <IntraSectionDivider s/>
+                <IntraSectionDivider key={'hasBledDivider' + condition.id} s/>
             ]
         })
     return (

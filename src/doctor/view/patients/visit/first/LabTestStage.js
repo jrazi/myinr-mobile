@@ -68,7 +68,6 @@ class LabTestResultForm extends React.Component {
     }
 
     handleChange = async (inputName, data, isValid) => {
-        console.log('hi there', inputName, data);
         this.labTestResult[inputName] = data;
     }
 
