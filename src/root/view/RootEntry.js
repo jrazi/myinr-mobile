@@ -6,6 +6,7 @@ import {Screen} from "./Screen";
 import {UserRole} from "../domain/Role";
 import {rootDao} from "../data/dao/RootDao";
 import {Locale} from '../domain/Locale';
+import {LoadingScreen} from "./loading/Loading";
 
 export default class RootEntry extends React.Component {
     constructor(props) {
@@ -34,9 +35,7 @@ export default class RootEntry extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <ActivityIndicator animating={true} size={'large'} />
-            </View>
+            <LoadingScreen loaded={false}></LoadingScreen>
         );
     }
 }

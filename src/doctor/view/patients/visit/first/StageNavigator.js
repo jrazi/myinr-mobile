@@ -21,7 +21,6 @@ export default class StageNavigator extends React.Component {
 
     componentDidMount() {
         this.props.navigation.navigate(this.props.route.name, {screen: `VisitStage:${this.props.currentStage}`, visitInfo: this.props.visitInfo});
-
     }
 
     onIndexChange = (index) => {

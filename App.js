@@ -9,6 +9,7 @@ import {I18nManager} from "react-native";
 import {rootDao} from "./src/root/data/dao/RootDao";
 import {currentTheme} from "./theme";
 import RNRestart from 'react-native-restart';
+import {LoadingScreen} from "./src/root/view/loading/Loading";
 
 export default class App extends React.Component {
 
@@ -40,13 +41,14 @@ export default class App extends React.Component {
     };
 
     render() {
-        if (!this.state.loaded) return <AppLoading/>
-        else return (
-            <PaperProvider theme={currentTheme}>
-                <Portal.Host>
-                    <Navigator/>
-                </Portal.Host>
-            </PaperProvider>
+        return (
+            <LoadingScreen loaded={this.state.loaded}>
+                <PaperProvider theme={currentTheme}>
+                    <Portal.Host>
+                        <Navigator/>
+                    </Portal.Host>
+                </PaperProvider>
+            </LoadingScreen>
         );
     }
 }
