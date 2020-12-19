@@ -1,10 +1,16 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import {Text, TextInput} from "react-native-paper";
+import {HelperText, Text, TextInput} from "react-native-paper";
 import {ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {currentTheme} from "../../../../../../theme";
 import * as Layout from "./forms/Layout";
 import {IntraSectionInvisibleDivider} from "./forms/Layout";
+import {Formik} from "formik";
+import * as Yup from "yup";
+import * as Validators from "../../../../../root/view/form/Validators";
+import {FirstVisit} from "../../../../domain/visit/Visit";
+import {visitDao} from "../../../../data/dao/VisitDao";
+import {hasValue} from "../../../../../root/domain/util/Util";
 
 
 export class Echocardiography extends React.Component {
@@ -22,7 +28,7 @@ export class Echocardiography extends React.Component {
             <Layout.VisitScreen>
                 <Layout.ScreenTitle title={'اکوکاردیوگرافی'}/>
                 <Layout.FormSection>
-                    <ECForm/>
+                    <ECForm userId={this.props.route.params.userId}/>
                 </Layout.FormSection>
             </Layout.VisitScreen>
         )
@@ -35,19 +41,92 @@ const styles = StyleSheet.create({
     }
 })
 
-const ECForm = (Props) => {
-    return (
-        <View>
-            <LabTestField name={'EF'} unit={'%'}/>
-            <LabTestField name={'LAVI'} unit={'ml/m^2'}/>
-            <DefaultTextInput label={'توضیحات'} multiline={true} numberOfLines={10}/>
-        </View>
-    )
+export class ECForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loaded: false,
+        }
+        this.echocardiographyInfo = FirstVisit.createNew().echocardiography;
+    }
+
+    componentDidMount() {
+        this.setState({loaded: false}, () => {
+            this.echocardiographyInfo = visitDao.getVisits(this.props.userId).echocardiography;
+            this.setState({loaded: true});
+        })
+    }
+
+    handleChange = (inputName, data, isValid) => {
+        this.echocardiographyInfo[inputName] = data;
+    }
+
+    render() {
+        return (
+            <Formik
+                initialValues={{
+                    EF: this.echocardiographyInfo.EF,
+                    LAVI: this.echocardiographyInfo.LAVI,
+                    comment: this.echocardiographyInfo.comment,
+                }}
+                validationSchema={Yup.object({
+                    EF: Validators.PERCENTAGE,
+                    LAVI: Validators.USUAL_NUMBER,
+                })}
+                validateOnChange={false}
+                validateOnBlur={true}
+                validateOnMount={true}
+                key={this.state.loaded}
+                onSubmit={(values, { validate }) => {
+                }}
+            >
+                {({ handleChange, handleBlur, values, touched, errors, validateField, isValid }) => {
+                    return (
+                        <View>
+                            <LabTestField
+                                name={'EF'} unit={'%'}
+                                value={values.EF}
+                                onChangeText={handleChange('EF')}
+                                onBlur={(event) => {
+                                    handleBlur('EF')(event);
+                                    this.handleChange('EF', values.EF, true);
+                                }}
+                                error={errors.EF}
+                            />
+                            <LabTestField
+                                name={'LAVI'} unit={'ml/m^2'}
+                                value={values.LAVI}
+                                onChangeText={handleChange('LAVI')}
+                                onBlur={(event) => {
+                                    handleBlur('LAVI')(event);
+                                    this.handleChange('LAVI', values.LAVI, true);
+                                }}
+                                error={errors.LAVI}
+                            />
+                            <DefaultTextInput
+                                label={'توضیحات'}
+                                multiline={true} numberOfLines={10}
+                                value={values.comment}
+                                onChangeText={handleChange('comment')}
+                                onBlur={(event) => {
+                                    handleBlur('comment')(event);
+                                    this.handleChange('comment', values.comment, true);
+                                }}
+                            />
+                        </View>
+                    );
+                }}
+            </Formik>
+        )
+    }
 }
-const LabTestField = (props) => {
+const LabTestField = ({name, unit, error, ...props}) => {
     return (
         <View style={{}}>
-            <DefaultTextInput label={props.name} placeholder={props.unit} numeric/>
+            <DefaultTextInput label={name} placeholder={unit} {...props} numeric/>
+            <HelperText type="error" visible={hasValue(error)}>
+                {error}
+            </HelperText>
             <IntraSectionInvisibleDivider s/>
         </View>
     )
@@ -57,9 +136,10 @@ const DefaultTextInput = (props) => {
     return (
         <TextInput
             label={props.label}
-            // value={}
+            value={props.value}
             placeholder={props.placeholder}
-            onChangeText={() => {}}
+            onChangeText={props.onChangeText}
+            onBlur={props.onBlur}
             autoCompleteType={'off'}
             keyboardType={props.numeric ? 'numeric' : 'default'}
             textContentType={props.textContentType}

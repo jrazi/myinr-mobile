@@ -53,7 +53,6 @@ export class FirstVisit {
 
             },
             echocardiography: {
-
             },
             visitDate: {
 
