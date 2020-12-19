@@ -1,9 +1,10 @@
 import React, {useState} from "react";
 import * as Data from "../Data";
 import * as Layout from "./Layout";
-import {Chip, Switch} from "react-native-paper";
+import {Badge, Chip, Switch} from "react-native-paper";
 import {currentTheme} from "../../../../../../../theme";
 import {View} from "react-native";
+import {LayoutStyles} from "./Layout";
 
 
 export const ChipBox = (props) => {
@@ -49,3 +50,16 @@ export const DefaultSwitchRow = (props) => {return (
         />
     </Layout.Row>
 )}
+
+export const TitleWithBadge = (props) => {
+    return (
+        <View style={{...LayoutStyles.screenTitle, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',}}>
+            <View style={{}}>
+                <Layout.ScreenTitle title={props.title} style={{paddingBottom: 0,}}/>
+            </View>
+            <View style={{}}>
+                <Badge size={28}>{props.badgeValue}</Badge>
+            </View>
+        </View>
+    )
+}

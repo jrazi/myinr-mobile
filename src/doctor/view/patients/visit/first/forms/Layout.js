@@ -32,7 +32,7 @@ export const FormSection = (props) => {
 
 export const ScreenTitle = (props) => {
     return (
-        <View style={styles.screenTitle}>
+        <View style={[styles.screenTitle, props.style]}>
             <Headline style={{color: currentTheme.colors.text}}>{props.title}</Headline>
             <ConditionalRender hidden={!hasValue(props.description)}>
                 <Caption>{props.description}</Caption>
@@ -260,3 +260,5 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
     }
 })
+
+export const LayoutStyles = styles;
