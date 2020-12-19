@@ -31,11 +31,11 @@ export class InrInfoStage extends React.Component {
     }
 
     componentDidMount() {
-
         this.setState({loaded: false}, () => {
             this.inrTestInfo = visitDao.getVisits(this.props.route.params.userId).inr;
             this.setState({latestInrAtHome: firstNonEmpty(this.inrTestInfo.testAtHome, false), loaded: true});
-        })}
+        })
+    }
 
     handleChange = (inputName, data, isValid) => {
         this.inrTestInfo[inputName] = data;

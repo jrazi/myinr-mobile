@@ -56,5 +56,20 @@ export const SHORT_TEXT = Yup.string()
     .nullable()
     .max(64, 'مقدار نباید از ۶۴ کاراکتر بیشتر باشد.')
 
+export const BLOOD_PRESSURE = Yup.number()
+    .nullable()
+    .min(0, 'مقدار ناصحیح')
+    .max(25, 'مقدار ناصحیح')
+
+export const HEARTBEAT = Yup.number()
+    .nullable()
+    .min(40, 'مقدار ناصحیح')
+    .max(200, 'مقدار ناصحیح')
+
+export const RESPIRATORY_RATE = Yup.number()
+    .nullable()
+    .min(1, 'مقدار ناصحیح')
+    .max(200, 'مقدار ناصحیح')
+
 export const NATIONAL_CODE = null;
 export const PASSWORD_REPEAT = null;
