@@ -12,19 +12,17 @@ import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
 import * as Validators from "../../../../../root/view/form/Validators";
 import {rootDao} from "../../../../../root/data/dao/RootDao";
 import {SHORT_TEXT} from "../../../../../root/view/form/Validators";
+import {FirstVisit} from "../../../../domain/visit/Visit";
 
 
 export class InrInfoStage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            latestInrAtHome: false,
-            inrResult: 0,
-            testLocation: '',
-            testDate: [],
-            targetRange: [0, 0],
+            loaded: false,
         }
-        this.inrTestInfo = {};
+        this.inrTestInfo = FirstVisit.createNew().inr;
+        this.formRef = React.createRef();
     }
 
     toggleLatestInrAtHome = () => {
@@ -33,25 +31,20 @@ export class InrInfoStage extends React.Component {
     }
 
     componentDidMount() {
-        this.inrTestInfo = visitDao.getVisits(this.props.route.params.userId).inr;
 
-        this.setState({latestInrAtHome: firstNonEmpty(this.inrTestInfo.testAtHome, false)});
-    }
+        this.setState({loaded: false}, () => {
+            this.inrTestInfo = visitDao.getVisits(this.props.route.params.userId).inr;
+            this.setState({latestInrAtHome: firstNonEmpty(this.inrTestInfo.testAtHome, false), loaded: true});
+        })}
 
-    handleChange = (inputName, data) => {
+    handleChange = (inputName, data, isValid) => {
         this.inrTestInfo[inputName] = data;
-        let stateChange = {};
-        stateChange[inputName] = data;
-        this.setState(stateChange);
     }
 
-    handleArrayChange = (inputName, index, data) => {
+    handleArrayChange = (inputName, index, data, isValid) => {
         this.inrTestInfo[inputName][index] = data;
-        let stateChange = {};
-        stateChange[inputName] = this.state[inputName];
-        stateChange[inputName][index] = data;
-        this.setState(stateChange);
     }
+
 
     render() {
         return (
@@ -60,13 +53,13 @@ export class InrInfoStage extends React.Component {
                 <Layout.ScreenTitle title={'آزمایش INR'} description={'اطلاعات مربوط به نتایج آخرین آزمایش INR'}/>
                 <Formik
                     initialValues={{
-                        inrResult: null,
-                        testLocation: null,
-                        testDateDay: null,
-                        testDateMonth: null,
-                        testDateYear: null,
-                        targetRangeFrom: null,
-                        targetRangeTo: null,
+                        inrResult: this.inrTestInfo.inrResult,
+                        testLocation: this.inrTestInfo.testLocation,
+                        testDateDay: this.inrTestInfo.testDate[2],
+                        testDateMonth: this.inrTestInfo.testDate[1],
+                        testDateYear: this.inrTestInfo.testDate[0],
+                        targetRangeFrom: this.inrTestInfo.targetRange[0],
+                        targetRangeTo: this.inrTestInfo.targetRange[1],
                     }}
                     validationSchema={Yup.object({
                         inrResult: Validators.INR,
@@ -79,12 +72,11 @@ export class InrInfoStage extends React.Component {
                     })}
                     validateOnChange={false}
                     validateOnBlur={true}
-                    validateOn
+                    key={this.state.loaded}
                     onSubmit={(values, { validate }) => {
-                        this.submitForm(values);
                     }}
                 >
-                    {({ handleChange, handleBlur, values, touched, errors, validateField }) => {
+                    {({ handleChange, handleBlur, values, touched, errors, validateField, isValid }) => {
                         return (
                             <Layout.FormSection>
                                 <SwitchRow
@@ -97,11 +89,15 @@ export class InrInfoStage extends React.Component {
                                 <Layout.InputTitle title={'میزان شاخص'}/>
                                 <DefaultTextInput
                                     placeholder={"INR"}
+                                    value={values.inrResult}
                                     numeric
                                     onChangeText={handleChange('inrResult')}
-                                    onBlur={handleBlur('inrResult')}
+                                    onBlur={(event) => {
+                                        handleBlur('inrResult')(event);
+                                        this.handleChange('inrResult', values.inrResult, true);
+                                    }}
                                 />
-                                <HelperText type="error" visible={errors.inrResult}>
+                                <HelperText type="error" visible={hasValue(errors.inrResult)}>
                                     {errors.inrResult}
                                 </HelperText>
                                 <Layout.IntraSectionInvisibleDivider sm/>
@@ -109,9 +105,13 @@ export class InrInfoStage extends React.Component {
                                     <Layout.InputTitle title={'محل آزمایش'} style={{}}/>
                                     <DefaultTextInput
                                         placeholder={"مثال: آزمایشگاه فارابی"}
+                                        value={values.testLocation}
                                         textContentType={'location'}
                                         onChangeText={handleChange('testLocation')}
-                                        onBlur={handleBlur('testLocation')}
+                                        onBlur={(event) => {
+                                            handleBlur('testLocation')(event);
+                                            this.handleChange('testLocation', values.testLocation, true);
+                                        }}
                                         style={{}}
                                     />
                                     <HelperText type="error" visible={errors.testLocation}>
@@ -126,8 +126,12 @@ export class InrInfoStage extends React.Component {
                                             placeholder={"روز"}
                                             style={{flexGrow: 0, paddingHorizontal: 25}}
                                             numeric
+                                            value={values.testDateDay}
                                             onChangeText={handleChange('testDateDay')}
-                                            onBlur={handleBlur('testDateDay')}
+                                            onBlur={(event) => {
+                                                handleBlur('testDateDay')(event);
+                                                this.handleArrayChange('testDate', 2, values.testDateDay, true);
+                                            }}
                                         />
                                         <HelperText type="error" visible={errors.testDateDay}>
                                             {errors.testDateDay}
@@ -139,7 +143,11 @@ export class InrInfoStage extends React.Component {
                                             style={{flexGrow: 0,marginHorizontal: 15,  paddingHorizontal: 25}}
                                             numeric
                                             onChangeText={handleChange('testDateMonth')}
-                                            onBlur={handleBlur('testDateMonth')}
+                                            value={values.testDateMonth}
+                                            onBlur={(event) => {
+                                                handleBlur('testDateMonth')(event);
+                                                this.handleArrayChange('testDate', 1, values.testDateMonth, true);
+                                            }}
                                         />
                                         <HelperText type="error" visible={errors.testDateMonth}>
                                             {errors.testDateMonth}
@@ -150,8 +158,12 @@ export class InrInfoStage extends React.Component {
                                             placeholder={"سال"}
                                             style={{flexGrow: 0, paddingHorizontal: 25}}
                                             numeric
+                                            value={values.testDateYear}
                                             onChangeText={handleChange('testDateYear')}
-                                            onBlur={handleBlur('testDateYear')}
+                                            onBlur={(event) => {
+                                                handleBlur('testDateYear')(event);
+                                                this.handleArrayChange('testDate', 0, values.testDateYear, true);
+                                            }}
                                         />
                                         <HelperText type="error" visible={errors.testDateYear}>
                                             {errors.testDateYear}
@@ -166,8 +178,12 @@ export class InrInfoStage extends React.Component {
                                             label={'از'}
                                             style={{flexGrow: 0, paddingHorizontal: 25}}
                                             numeric
+                                            value={values.targetRangeFrom}
                                             onChangeText={handleChange('targetRangeFrom')}
-                                            onBlur={handleBlur('targetRangeFrom')}
+                                            onBlur={(event) => {
+                                                handleBlur('targetRangeFrom')(event);
+                                                this.handleArrayChange('targetRange', 0, values.targetRangeFrom, true);
+                                            }}
                                         />
                                         <HelperText type="error" visible={hasValue(errors.targetRangeFrom)}>
                                             {'0-5.0'}
@@ -179,8 +195,12 @@ export class InrInfoStage extends React.Component {
                                             label={'تا'}
                                             style={{flexGrow: 0, paddingHorizontal: 25}}
                                             numeric
+                                            value={values.targetRangeTo}
                                             onChangeText={handleChange('targetRangeTo')}
-                                            onBlur={handleBlur('targetRangeTo')}
+                                            onBlur={(event) => {
+                                                handleBlur('targetRangeTo')(event);
+                                                this.handleArrayChange('targetRange', 1, values.targetRangeTo, true);
+                                            }}
                                         />
                                         <HelperText type="error" visible={hasValue(errors.targetRangeTo)}>
                                             {'0-5.0'}
