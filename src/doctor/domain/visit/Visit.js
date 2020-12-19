@@ -43,7 +43,8 @@ export class FirstVisit {
                 medicalHistory: {},
             },
             hasBledScore: {
-
+                totalScore: 0,
+                medicalConditions: {},
             },
             testResult: {
 

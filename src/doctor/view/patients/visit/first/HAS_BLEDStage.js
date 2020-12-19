@@ -7,16 +7,31 @@ import * as Layout from "./forms/Layout";
 import {SwitchRow} from "./InrInfoStage";
 import {IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
 import {firstNonEmpty} from "../../../../../root/domain/util/Util";
+import {visitDao} from "../../../../data/dao/VisitDao";
+import {FirstVisit} from "../../../../domain/visit/Visit";
 
 
 export class HAS_BLEDStage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loaded: false,
         }
+        this.hasBledInfo = FirstVisit.createNew().hasBledScore;
     }
 
     componentDidMount() {
+        this.setState({loaded: false}, () => {
+            this.hasBledInfo = visitDao.getVisits(this.props.route.params.userId).hasBledScore;
+            medicalConditions.forEach(
+                condition => condition['value'] = firstNonEmpty(this.hasBledInfo.medicalConditions[condition.id], false)
+            )
+            this.setState({loaded: true});
+        })
+    }
+
+    onValueChange = (id, value) => {
+        this.hasBledInfo.medicalConditions[id] = value;
     }
 
     render() {
@@ -24,7 +39,7 @@ export class HAS_BLEDStage extends React.Component {
             <Layout.VisitScreen>
                 <Layout.ScreenTitle title={'نمره' + ' HAS-BLED'}/>
                 <Layout.FormSection>
-                    <GenericScoreForm medicalConditions={medicalConditions}/>
+                    <GenericScoreForm medicalConditions={medicalConditions} onChange={this.onValueChange}/>
                 </Layout.FormSection>
             </Layout.VisitScreen>
         )
