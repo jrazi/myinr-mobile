@@ -71,7 +71,7 @@ class PatientsScreen extends React.Component {
                 <ScrollView
                     style={styles.container}
                     refreshControl={
-                        <RefreshControl refreshing={this.state.loading} onRefresh={this.refresh} colors={[currentTheme.colors.placeholder]} />
+                        <RefreshControl refreshing={this.state.loading} onRefresh={this.refresh} colors={[currentTheme.colors.primary]} />
                     }
                 >
                     <View style={styles.patientsListContainer}>
@@ -123,9 +123,9 @@ const PatientInfoCard = (props) => {
                                 <PatientCardDetails patientInfo={props.patientInfo}/>
                             </View>
                         </Card.Content>
+                        <IntraSectionDivider none borderWidth={0.1} style={{marginHorizontal: 20, marginTop: 10,}}/>
                     </View>
                 </TouchableRipple>
-                <IntraSectionDivider xs borderWidth={0.1}/>
             </Surface>
     );
 }

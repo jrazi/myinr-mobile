@@ -170,7 +170,7 @@ export const IntraSectionDivider = (props) => {
         <View style={{
             paddingVertical: props.none ? 0 : props.xs ? 5 : props.s ? 10 : props.sm ? 15 : props.m ? 20 : props.l ? 30 : props.xl ? 40 : 20,
         }}>
-            <Divider style={{borderWidth: props.borderWidth}}/>
+            <Divider style={[{borderWidth: props.borderWidth}, props.style]}/>
         </View>
     )
 }
