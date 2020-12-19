@@ -6,9 +6,10 @@ import {currentTheme} from "../../../../../../theme";
 import * as Layout from "./forms/Layout";
 import {SwitchRow} from "./InrInfoStage";
 import {IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
-import {firstNonEmpty} from "../../../../../root/domain/util/Util";
+import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {FirstVisit} from "../../../../domain/visit/Visit";
+import {TitleWithBadge} from "./forms/ContextSpecificComponents";
 
 
 export class HAS_BLEDStage extends React.Component {
@@ -16,6 +17,7 @@ export class HAS_BLEDStage extends React.Component {
         super(props);
         this.state = {
             loaded: false,
+            totalScore: 0,
         }
         this.hasBledInfo = FirstVisit.createNew().hasBledScore;
         this.medicalConditions = medicalConditions.map(c => c);
@@ -27,18 +29,35 @@ export class HAS_BLEDStage extends React.Component {
             this.medicalConditions.forEach(
                 condition => condition['value'] = firstNonEmpty(this.hasBledInfo.medicalConditions[condition.id], false)
             )
+            this.calcScore();
             this.setState({loaded: true});
         })
     }
 
     onValueChange = (id, value) => {
         this.hasBledInfo.medicalConditions[id] = value;
+        this.calcScore();
+    }
+
+    calcScore = () => {
+        let totalScore = 0;
+
+        for (const conditionId in this.hasBledInfo.medicalConditions) {
+            let scoreItem = getScoreItem(conditionId);
+            let hasCondition = this.hasBledInfo.medicalConditions[conditionId];
+            if (hasCondition) totalScore += scoreItem.yesScore;
+        }
+        this.hasBledInfo.totalScore = totalScore;
+        this.setState({totalScore: totalScore});
     }
 
     render() {
         return (
             <Layout.VisitScreen>
-                <Layout.ScreenTitle title={'نمره' + ' HAS-BLED'}/>
+                <TitleWithBadge
+                    title={'نمره' + ' HAS-BLED'}
+                    badgeValue={this.state.totalScore}
+                />
                 <Layout.FormSection>
                     <GenericScoreForm medicalConditions={this.medicalConditions} onChange={this.onValueChange} key={this.state.loaded}/>
                 </Layout.FormSection>
@@ -149,3 +168,7 @@ let medicalConditions = [
         yesScore: 1,
     },
 ]
+
+function getScoreItem(id) {
+    return medicalConditions.find(item => item.id == id);
+}
