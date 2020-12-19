@@ -12,6 +12,7 @@ import {firstNonEmpty} from "../../../../../root/domain/util/Util";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {ConditionalRender} from "./forms/Layout";
+import {LoadingScreen} from "../../../../../root/view/loading/Loading";
 
 
 export class FirstVisitScreen extends React.Component {
@@ -77,42 +78,44 @@ export class FirstVisitScreen extends React.Component {
 
     render() {
         return (
-            <ScreenLayout>
-                <CustomContentScreenHeader
-                    style={{elevation: 0}}
-                    onBack={() =>
-                        this.props.navigation.reset({
-                            index: 0,
-                            routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
-                        })
-                    }
-                >
-                    <View style={{flex: 1,  }}>
-                        <View style={{width: '50%', }}>
-                            {/*<ProgressBar progress={(1+this.state.currentStage)/stages.length} color={currentTheme.colors.primary} />*/}
-                            <StageProgressBar currentStage={this.state.currentStage}/>
+            <LoadingScreen loaded={this.state.loaded}>
+                <ScreenLayout>
+                    <CustomContentScreenHeader
+                        style={{elevation: 0}}
+                        onBack={() =>
+                            this.props.navigation.reset({
+                                index: 0,
+                                routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
+                            })
+                        }
+                    >
+                        <View style={{flex: 1,  }}>
+                            <View style={{width: '50%', }}>
+                                {/*<ProgressBar progress={(1+this.state.currentStage)/stages.length} color={currentTheme.colors.primary} />*/}
+                                <StageProgressBar currentStage={this.state.currentStage}/>
+                            </View>
                         </View>
+                    </CustomContentScreenHeader>
+                    <View style={styles.mainContainer}>
+                        <ConditionalRender hidden={!this.state.loaded}>
+                            <StageNavigator
+                                navigation={this.props.navigation}
+                                route={this.props.route}
+                                visitInfo={this.state.visitInfo}
+                                userId={this.props.route.params.userId}
+                                onNewStage={this.onNewStage}
+                                currentStage={this.state.currentStage}
+                                onFinish={() => this.setState({finishVisitDialogOpen: true})}
+                            />
+                        </ConditionalRender>
                     </View>
-                </CustomContentScreenHeader>
-                <View style={styles.mainContainer}>
-                    <ConditionalRender hidden={!this.state.loaded}>
-                        <StageNavigator
-                            navigation={this.props.navigation}
-                            route={this.props.route}
-                            visitInfo={this.state.visitInfo}
-                            userId={this.props.route.params.userId}
-                            onNewStage={this.onNewStage}
-                            currentStage={this.state.currentStage}
-                            onFinish={() => this.setState({finishVisitDialogOpen: true})}
-                        />
-                    </ConditionalRender>
-                </View>
-                <FinishVisitDialog
-                    visible={this.state.finishVisitDialogOpen}
-                    onDismiss={() => this.setState({finishVisitDialogOpen: false})}
-                    onFinish={this.finishVisit}
-                />
-            </ScreenLayout>
+                    <FinishVisitDialog
+                        visible={this.state.finishVisitDialogOpen}
+                        onDismiss={() => this.setState({finishVisitDialogOpen: false})}
+                        onFinish={this.finishVisit}
+                    />
+                </ScreenLayout>
+            </LoadingScreen>
         )
     }
 }
