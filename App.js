@@ -25,16 +25,23 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-        if(I18nManager.isRTL != true){
-            I18nManager.forceRTL(true);
-            RNRestart.Restart();
-        }
-        this.loadFontsAsync();
+        this.setState({ loaded: false}, () => {
+            if(I18nManager.isRTL != true){
+                I18nManager.forceRTL(true);
+                RNRestart.Restart();
+            }
+            this.loadFontsAsync();
+        });
     }
 
     loadFontsAsync = async () => {
         Font.loadAsync({
-            Yekan: require("./assets/fonts/Yekan.ttf")
+            IranSans: require("./assets/fonts/IRANSansMobile.ttf"),
+            IranSansBlack: require("./assets/fonts/IRANSansMobile_Black.ttf"),
+            IranSansBold: require("./assets/fonts/IRANSansMobile_Bold.ttf"),
+            IranSansMedium: require("./assets/fonts/IRANSansMobile_Medium.ttf"),
+            IranSansLight: require("./assets/fonts/IRANSansMobile_Light.ttf"),
+            IranSansUltraLight: require("./assets/fonts/IRANSansMobile_UltraLight.ttf"),
         }).then(() => {
             this.setState({ loaded: true });
         })

@@ -1,4 +1,4 @@
-import {DefaultTheme} from "react-native-paper";
+import {configureFonts, DefaultTheme} from "react-native-paper";
 
 export const theme = {
     ...DefaultTheme,
@@ -20,6 +20,35 @@ export const currentTheme = {
         background: '#fff',
         surface: '#fff',
     },
+    fonts: configureFonts({
+        ...DefaultTheme.fonts,
+        android: {
+            regular: {
+                fontFamily: 'IranSans',
+                fontWeight: 'normal',
+            },
+            bold: {
+                fontFamily: 'IranSansBold',
+                fontWeight: 'normal',
+            },
+            black: {
+                fontFamily: 'IranSansBlack',
+                fontWeight: 'normal',
+            },
+            medium: {
+                fontFamily: 'IranSansMedium',
+                fontWeight: 'normal',
+            },
+            light: {
+                fontFamily: 'IranSansLight',
+                fontWeight: 'normal',
+            },
+            thin: {
+                fontFamily: 'IranSansUltraLight',
+                fontWeight: 'normal',
+            },
+        }
+    }),
     // roundness: 16,
 }
 export const mostlyWhiteTheme = {

@@ -204,20 +204,13 @@ const Row = (props) => {return (
 
 const styles = StyleSheet.create({
     container: {
-        // paddingVertical: 10,
-        // paddingHorizontal: 30,
         flex: 1,
         backgroundColor: 'white',
     },
 
     patientsListContainer: {
-        // paddingVertical: 10,
-        // paddingHorizontal: 20,
     },
     patientInfoCardContainer: {
-        // elevation: 4,
-        // marginVertical: 10,
-        // borderRadius: currentTheme.roundness*2,
     },
     patientInfoCard: {
     },
