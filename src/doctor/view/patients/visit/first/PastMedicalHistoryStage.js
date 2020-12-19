@@ -1,10 +1,13 @@
 
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, View} from "react-native";
 import {Text} from "react-native-paper";
 import {currentTheme} from "../../../../../../theme";
 import * as Layout from "./forms/Layout";
 import {DefaultChip, IntraSectionDivider, IntraSectionInvisibleDivider, ItemsBox} from "./forms/Layout";
+import {visitDao} from "../../../../data/dao/VisitDao";
+import {firstNonEmpty} from "../../../../../root/domain/util/Util";
+import {ChipBox} from "./forms/ContextSpecificComponents";
 
 
 export class PastMedicalHistoryStage extends React.Component {
@@ -25,7 +28,7 @@ export class PastMedicalHistoryStage extends React.Component {
                 <Layout.FormSection>
                     <Layout.InputTitle title={'سوابق پزشکی بیمار'}/>
                     <IntraSectionInvisibleDivider xs/>
-                    <MedicalHistoryChipBox/>
+                    <MedicalHistoryChipBox userId={this.props.route.params.userId}/>
                 </Layout.FormSection>
                 <IntraSectionDivider m/>
                 <Layout.FormSection>
@@ -44,18 +47,30 @@ const styles = StyleSheet.create({
 })
 
 export const MedicalHistoryChipBox = (props) => {
-    let selectedStates = [];
-    let chips = medicalConditions
-        .sort((a, b) => a.title.length - b.title.length)
-        .map(condition => {
-        const [value, setValue] = useState(false);
-        selectedStates.push([value, setValue]);
-        return <Layout.DefaultChip selected={value} onPress={() => setValue(!value)} title={condition.title} key={condition.title}/>
-    })
+
+    medicalConditions.sort((a, b) => a.name.length - b.name.length);
+
+    let visit = useRef({});
+
+    let [loaded, setLoaded] = useState(false);
+    useEffect(() => {
+        visit.current = visitDao.getVisits(props.userId);
+        medicalConditions
+            .sort((a, b) => a.name.length - b.name.length)
+            .forEach(condition => {
+                condition['value'] = firstNonEmpty(visit.current.medicalHistory[condition.id], false);
+            });
+        setLoaded(true);
+    }, []);
+
+
+
+    const changeValue = (id, value) => {visit.current.medicalHistory[id] = value};
+    
     return (
         <Layout.InputArea>
             <Layout.ItemsBox>
-                {chips}
+                <ChipBox items={medicalConditions} onChange={changeValue}/>
             </Layout.ItemsBox>
         </Layout.InputArea>
     )
@@ -71,33 +86,43 @@ const DrugHistoryController = (props) => {
 
 let medicalConditions = [
     {
-        title: 'Hypertension',
+        id: 0,
+        name: 'Hypertension',
     },
     {
-        title: 'Diabetes Mellitus',
+        id: 1,
+        name: 'Diabetes Mellitus',
     },
     {
-        title: 'Hyperlipidemia',
+        id: 2,
+        name: 'Hyperlipidemia',
     },
     {
-        title: 'Coronary Artery Disease',
+        id: 3,
+        name: 'Coronary Artery Disease',
     },
     {
-        title: 'Stroke',
+        id: 4,
+        name: 'Stroke',
     },
     {
-        title: 'Systemic Embolism',
+        id: 5,
+        name: 'Systemic Embolism',
     },
     {
-        title: 'Major Trauma',
+        id: 6,
+        name: 'Major Trauma',
     },
     {
-        title: 'Permanent Pace Maker',
+        id: 7,
+        name: 'Permanent Pace Maker',
     },
     {
-        title: 'ICD',
+        id: 8,
+        name: 'ICD',
     },
     {
-        title: 'CRT',
+        id: 9,
+        name: 'CRT',
     },
 ]
