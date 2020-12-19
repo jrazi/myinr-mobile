@@ -37,7 +37,10 @@ export class FirstVisit {
 
             },
             cha2ds2Score: {
-
+                totalScore: 0,
+                ageGroup: null,
+                sex: null,
+                medicalHistory: {},
             },
             hasBledScore: {
 

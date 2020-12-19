@@ -1,11 +1,14 @@
-import React, {useState} from "react";
-import {StyleSheet, View, Picker} from "react-native";
+import React, {useEffect, useRef, useState} from "react";
+import {StyleSheet, View} from "react-native";
 import {currentTheme} from "../../../../../../theme";
 import {Text, Checkbox, RadioButton, Headline} from 'react-native-paper';
 import * as Layout from "./forms/Layout";
-import {e2p} from "../../../../../root/domain/util/Util";
+import {calcAge, e2p, firstNonEmpty, guessGender} from "../../../../../root/domain/util/Util";
 import {IntraSectionInvisibleDivider} from "./forms/Layout";
 import {GenericScoreForm} from "./HAS_BLEDStage";
+import {Picker} from "@react-native-community/picker";
+import {visitDao} from "../../../../data/dao/VisitDao";
+import {doctorDao} from "../../../../data/dao/DoctorDao";
 
 
 export class CHA2DS2_VAScStage extends React.Component {
@@ -33,7 +36,7 @@ export class CHA2DS2_VAScStage extends React.Component {
             <Layout.VisitScreen>
                 <Layout.ScreenTitle title={titleElement}/>
                 <Layout.FormSection>
-                    <ScoreForm/>
+                    <ScoreForm userId={this.props.route.params.userId}/>
                 </Layout.FormSection>
             </Layout.VisitScreen>
         )
@@ -55,74 +58,99 @@ const ScoreForm = (props) => {
 
     return (
         <View>
-            <ScoreRadioBox items={scoreRadios}/>
+            <ScoreRadioBox items={scoreRadios} userId={props.userId}/>
             <IntraSectionInvisibleDivider s/>
-            <ScoreChipBox items={scoreChips}/>
+            <ScoreChipBox items={scoreChips} userId={props.userId}/>
         </View>
     )
 }
 
 const ScoreRadioBox = (props) => {
-    let selectedStates = [];
-    let radiosRows = props.items
-        .map(item => {
-            const [value, setValue] = useState(item.options[0].id);
-            selectedStates.push([value, setValue]);
-            return (
-                <Layout.Row justifyBetween>
-                    <Layout.InputTitle title={item.name}/>
-                    <Picker
-                        selectedValue={value}
-                        style={{ height: 50, width: 150 }}
-                        mode={'dropdown'}
-                        onValueChange={(itemValue, itemIndex) => setValue(itemValue)}
-                        key={'ScoreRadioBox' + item.name}
+    let [gender, setGender] = useState(0);
+    let [ageGroup, setAgeGroup] = useState(0);
 
-                    >
-                        {
-                            item.options.map(option => <Picker.Item label={option.name} value={option.id} />)
-                        }
-                    </Picker>
-                </Layout.Row>
-            )
-        })
+    let visit = useRef({});
+
+    let [loaded, setLoaded] = useState(false);
+    let [ageItems, genderItems] = scoreItems;
+    useEffect(() => {
+        setLoaded(false);
+        visit.current = visitDao.getVisits(props.userId);
+        setLoaded(true);
+            doctorDao.getPatientInfo(props.userId)
+                .then(patient => {
+                    if (visit.current.cha2ds2Score.sex == null) {
+                        const gender = guessGender(patient);
+                        if (gender == 'M') visit.current.cha2ds2Score.sex = 0;
+                        else if (gender == 'F') visit.current.cha2ds2Score.sex = 1;
+                        setGender(visit.current.cha2ds2Score.sex);
+                    }
+                    if (visit.current.cha2ds2Score.ageGroup == null) {
+                        const age = calcAge(patient.birthDate);
+                        if (age < 65) visit.current.cha2ds2Score.ageGroup = 0;
+                        else if (65 <= age < 75) visit.current.cha2ds2Score.ageGroup = 1;
+                        else if (age >= 75) visit.current.cha2ds2Score.ageGroup = 2;
+                        setAgeGroup(visit.current.cha2ds2Score.ageGroup);
+                    }
+                })
+    }, []);
+
     return (
         <View>
-            {radiosRows}
+            <Layout.Row justifyBetween>
+                <Layout.InputTitle title={'گروه سنی'}/>
+                <Picker
+                    selectedValue={ageGroup}
+                    style={{ height: 50, width: 150 }}
+                    onValueChange={(itemValue, itemIndex) => setAgeGroup(itemValue)}
+                    key={'ScoreRadioBoxAgeGroup'}
+
+                >
+                    <Picker.Item label={scoreItems[0].options[0].name} value={0} />
+                    <Picker.Item label={scoreItems[0].options[1].name} value={1} />
+                    <Picker.Item label={scoreItems[0].options[2].name} value={2} />
+                </Picker>
+            </Layout.Row>
+            <Layout.Row justifyBetween>
+                <Layout.InputTitle title={'جنسیت'}/>
+                <Picker
+                    selectedValue={gender}
+                    style={{ height: 50, width: 150 }}
+                    onValueChange={(itemValue, itemIndex) => setGender(itemValue)}
+                    key={'ScoreRadioBoxGender'}
+
+                >
+                    <Picker.Item label={'مرد'} value={0} />
+                    <Picker.Item label={'زن'} value={1} />
+                </Picker>
+            </Layout.Row>
         </View>
     )
 }
 
 const ScoreChipBox = (props) => {
-    let selectedStates = [];
-    let chips = props.items
-        .sort((a, b) => a.name.length - b.name.length)
-        .map(item => {
-            const [value, setValue] = useState(false);
-            selectedStates.push([value, setValue]);
-            return (
-                <Layout.DefaultChip
-                    selected={value} title={item.title} onPress={() => setValue(!value)} key={item.title}
-                />
-            )
-        })
+    let visit = useRef({});
+
+    let [loaded, setLoaded] = useState(false);
+    let medicalConditions = useRef([]);
+    useEffect(() => {
+        setLoaded(false);
+        visit.current = visitDao.getVisits(props.userId);
+        props.items.forEach(condition => {
+            medicalConditions.current.push(condition);
+            medicalConditions.current.slice(-1)[0]['value'] = firstNonEmpty(visit.current.cha2ds2Score.medicalHistory[condition.id], false);
+        });
+        setLoaded(true);
+    }, []);
+
+    const changeValue = (id, value) => {visit.current.cha2ds2Score.medicalHistory[id] = value};
 
     return (
         <Layout.InputArea>
             <Layout.InputTitle title={'سوابق پزشکی'}/>
             <IntraSectionInvisibleDivider s/>
-            <GenericScoreForm medicalConditions={props.items}/>
-            {/*<IntraSectionInvisibleDivider xs/>*/}
-            {/*<Layout.ItemsBox>*/}
-            {/*    {chips}*/}
-            {/*</Layout.ItemsBox>*/}
+            <GenericScoreForm medicalConditions={medicalConditions.current} onChange={changeValue}/>
         </Layout.InputArea>
-    )
-}
-
-const ScoreRadioItem = (props) => {
-    return (
-        null
     )
 }
 
@@ -142,7 +170,7 @@ let scoreItems = [
             },
             {
                 id: 2,
-                name: e2p('۷۵و بیشتر'),
+                name: e2p('۷۵ و بیشتر'),
                 score: 2,
             },
         ],

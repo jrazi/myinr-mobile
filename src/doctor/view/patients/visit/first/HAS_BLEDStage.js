@@ -6,6 +6,7 @@ import {currentTheme} from "../../../../../../theme";
 import * as Layout from "./forms/Layout";
 import {SwitchRow} from "./InrInfoStage";
 import {IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
+import {firstNonEmpty} from "../../../../../root/domain/util/Util";
 
 
 export class HAS_BLEDStage extends React.Component {
@@ -40,7 +41,7 @@ export const GenericScoreForm = (props) => {
     let selectedStates = [];
     let conditionElements = props.medicalConditions
         .map(condition => {
-            const [value, setValue] = useState(false);
+            const [value, setValue] = useState(firstNonEmpty(condition.value, false));
             selectedStates.push([value, setValue]);
             return [
                 <Layout.Row
@@ -63,7 +64,7 @@ export const GenericScoreForm = (props) => {
                     <Switch
                         style={{}} value={value}
                         color={currentTheme.colors.primary}
-                        onValueChange={() => {setValue(!value)}}
+                        onValueChange={() => {{props.onChange(condition.id, !value); setValue(!value)}}}
                     />
                 </Layout.Row>,
                 <IntraSectionDivider s/>
