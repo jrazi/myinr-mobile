@@ -3,6 +3,7 @@ import {Appbar} from "react-native-paper";
 import {currentTheme, mostlyWhiteTheme} from "../../../../theme";
 import {StyleSheet, View} from "react-native";
 import {useNavigation} from '@react-navigation/native';
+import {hasValue} from "../../domain/util/Util";
 
 export const ScreenLayout = (props) => {
     return (
@@ -22,6 +23,7 @@ export const ScreenHeader = (props) => {
 
 export const CustomContentScreenHeader = (props) => {
     let navigation = useNavigation();
+    let goBackAction = hasValue(props.onBack) ? () => {props.onBack(navigation)} : () => {navigation.goBack()};
     return (
         <Appbar.Header
             style={{
@@ -35,7 +37,7 @@ export const CustomContentScreenHeader = (props) => {
             theme={mostlyWhiteTheme}
         >
             {props.children}
-            <Appbar.Action icon="arrow-left" onPress={() => navigation.goBack()} color={currentTheme.colors.placeholder}/>
+            <Appbar.Action icon="arrow-left" onPress={goBackAction} color={currentTheme.colors.placeholder}/>
         </Appbar.Header>
     );
 }

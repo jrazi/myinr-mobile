@@ -44,7 +44,7 @@ class DoctorDao {
     saveCachedVisit = (patientUserId, cachedVisit) => {
         return AsyncStorage.setItem(
             RecordIdentifier.cachedVisit(patientUserId),
-            cachedVisit
+            JSON.stringify(cachedVisit)
         );
     }
 

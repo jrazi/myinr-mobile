@@ -1,7 +1,7 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
 import {Text, ProgressBar, Badge, Appbar, Avatar, FAB, Portal, Dialog, Button, Subheading} from "react-native-paper";
-import {CustomContentScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
+import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {FirstVisit} from "../../../../domain/visit/Visit";
 import {doctorDao, VisitState} from "../../../../data/dao/DoctorDao";
 import {currentTheme} from "../../../../../../theme";
@@ -29,7 +29,12 @@ export class FirstVisitScreen extends React.Component {
         const {userId, useCache} = this.props.route.params;
 
         let visitInfo = visitDao.initVisit(userId);
-        if (useCache != true) return;
+
+        if (!useCache) {
+            doctorDao.saveCachedVisit(userId, {currentStage: 0, visitInfo: visitInfo});
+            this.setState({visitInfo: visitInfo, currentStage: 0, loaded: true});
+            return ;
+        }
 
         doctorDao.getCachedVisit(userId)
             .then(cachedVisit => {
@@ -37,25 +42,32 @@ export class FirstVisitScreen extends React.Component {
                 this.setState({visitInfo: visitInfo, currentStage: cachedVisit.currentStage, loaded: true});
             })
             .catch(err => {
+                doctorDao.saveCachedVisit(userId, {currentStage: 0, visitInfo: visitInfo});
                 this.setState({visitInfo: visitInfo, currentStage: 0, loaded: true});
             })
             .finally(() => {
             })
     }
 
-    cacheVisit = () => {
-        doctorDao.saveCachedVisit(
-            this.props.route.params.userId,
-            {currentStage: this.state.currentStage, visitInfo: this.state.visitInfo}
-        );
-    }
 
     onNewStage = (stageIndex) => {
         this.setState({currentStage: stageIndex}, () => {
+            const userId = this.props.route.params.userId;
+            let visit = visitDao.getVisits(userId);
+            const info = {
+                currentStage: this.state.currentStage,
+                visitInfo: visit,
+            }
+            doctorDao.saveCachedVisit(userId, info);
         });
     }
 
     finishVisit = () => {
+        const info = {
+            currentStage: this.state.currentStage,
+            visitInfo: visitDao.getVisits(this.props.route.params.userId),
+        }
+        doctorDao.saveCachedVisit(this.props.route.params.userId, info);
         this.setState({finishVisitDialogOpen: false});
         this.props.navigation.reset({
             index: 0,
@@ -66,7 +78,15 @@ export class FirstVisitScreen extends React.Component {
     render() {
         return (
             <ScreenLayout>
-                <CustomContentScreenHeader style={{elevation: 0}}>
+                <CustomContentScreenHeader
+                    style={{elevation: 0}}
+                    onBack={() =>
+                        this.props.navigation.reset({
+                            index: 0,
+                            routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
+                        })
+                    }
+                >
                     <View style={{flex: 1,  }}>
                         <View style={{width: '50%', }}>
                             {/*<ProgressBar progress={(1+this.state.currentStage)/stages.length} color={currentTheme.colors.primary} />*/}

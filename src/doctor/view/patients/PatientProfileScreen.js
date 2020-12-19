@@ -53,7 +53,9 @@ class PatientProfileScreen extends React.Component {
         )}
         return (
             <ScreenLayout>
-                <ScreenHeader title={this.state.patient.fullName} style={{elevation: 0}}/>
+                <ScreenHeader
+                    title={this.state.patient.fullName} style={{elevation: 0}}
+                />
                 <Tab.Navigator
                     initialRouteName={"Home"}
                     barStyle={{ backgroundColor: colors.background }}
@@ -112,7 +114,7 @@ class PatientProfileScreen extends React.Component {
                     onPress={() => this.setState({newVisitDialogOpen: true})}
                 />
                 <StartVisitDialog
-                    visitState={5 > 3 ? VisitState.INCOMPLETE_VISIT : this.state.visitState} // TODO temp values
+                    visitState={this.state.visitState == VisitState.FOLLOWUP_VISIT ? VisitState.FIRST_VISIT : this.state.visitState} // TODO temp values
                     visible={this.state.newVisitDialogOpen}
                     onDismiss={() => this.setState({newVisitDialogOpen: false})}
                     onBeginNew={() => this.startVisitSession(false)}
