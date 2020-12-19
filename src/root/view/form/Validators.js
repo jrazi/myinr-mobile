@@ -58,18 +58,28 @@ export const SHORT_TEXT = Yup.string()
 
 export const BLOOD_PRESSURE = Yup.number()
     .nullable()
-    .min(0, 'مقدار ناصحیح')
-    .max(25, 'مقدار ناصحیح')
+    .min(0, 'مقدار نادرست')
+    .max(25, 'مقدار نادرست')
 
 export const HEARTBEAT = Yup.number()
     .nullable()
-    .min(40, 'مقدار ناصحیح')
-    .max(200, 'مقدار ناصحیح')
+    .min(40, 'مقدار نادرست')
+    .max(200, 'مقدار نادرست')
 
 export const RESPIRATORY_RATE = Yup.number()
     .nullable()
-    .min(1, 'مقدار ناصحیح')
-    .max(200, 'مقدار ناصحیح')
+    .min(1, 'مقدار نادرست')
+    .max(200, 'مقدار نادرست')
+
+export const PERCENTAGE = Yup.number()
+    .nullable()
+    .min(0, 'درصد نادرست')
+    .max(100, 'درصد نادرست')
+
+export const USUAL_NUMBER = Yup.number()
+    .nullable()
+    .max(-100, 'عدد نادرست')
+    .max(1000, 'عدد نادرست')
 
 export const NATIONAL_CODE = null;
 export const PASSWORD_REPEAT = null;
