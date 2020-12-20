@@ -1,5 +1,5 @@
 import {configureFonts, DefaultTheme} from "react-native-paper";
-
+import color from 'color';
 export const theme = {
     ...DefaultTheme,
     colors: {
@@ -19,6 +19,7 @@ export const currentTheme = {
         // accent: '#0077b6',
         background: '#fff',
         surface: '#fff',
+        lightPrimary: color('#03045e').alpha(0.2).string(),
     },
     fonts: configureFonts({
         ...DefaultTheme.fonts,

@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, View} from "react-native";
 import {currentTheme} from "../../../../../../theme";
-import {Text, Checkbox, RadioButton, Headline, Badge} from 'react-native-paper';
+import {Text, Checkbox, RadioButton, Headline, Badge, Colors} from 'react-native-paper';
 import * as Layout from "./forms/Layout";
 import {calcAge, e2p, firstNonEmpty, guessGender, hasValue} from "../../../../../root/domain/util/Util";
 import {IntraSectionInvisibleDivider, LayoutStyles} from "./forms/Layout";
@@ -12,7 +12,7 @@ import {doctorDao} from "../../../../data/dao/DoctorDao";
 import {TitleWithBadge} from "./forms/ContextSpecificComponents";
 import {FirstVisit} from "../../../../domain/visit/Visit";
 import SegmentedControl from '@react-native-community/segmented-control';
-
+import color from 'color';
 
 export class CHA2DS2_VAScStage extends React.Component {
     constructor(props) {
@@ -137,33 +137,31 @@ const ScoreRadioBox = (props) => {
 
     return (
         <View>
-            <Layout.Row justifyBetween>
-                <Layout.InputTitle title={'گروه سنی'}/>
-                <Picker
-                    selectedValue={ageGroup}
-                    style={{ height: 50, width: 150 }}
-                    onValueChange={(itemValue, itemIndex) => changeAgeGroup(itemValue)}
-                    key={'ScoreRadioBoxAgeGroup'}
-
-                >
-                    <Picker.Item label={scoreItems[0].options[0].name} value={0} />
-                    <Picker.Item label={scoreItems[0].options[1].name} value={1} />
-                    <Picker.Item label={scoreItems[0].options[2].name} value={2} />
-                </Picker>
-            </Layout.Row>
-            <Layout.Row justifyBetween>
+            <View>
                 <Layout.InputTitle title={'جنسیت'}/>
-                <Picker
-                    selectedValue={gender}
-                    style={{ height: 50, width: 150 }}
-                    onValueChange={(itemValue, itemIndex) => changeGender(itemValue)}
-                    key={'ScoreRadioBoxGender'}
-
-                >
-                    <Picker.Item label={'مرد'} value={0} />
-                    <Picker.Item label={'زن'} value={1} />
-                </Picker>
-            </Layout.Row>
+                <IntraSectionInvisibleDivider xs/>
+                <SegmentedControl
+                    activeFontStyle={{color: currentTheme.colors.primary}}
+                    values={['مرد', 'زن']}
+                    selectedIndex={gender}
+                    onChange={(event) => {
+                        changeGender(event.nativeEvent.selectedSegmentIndex)
+                    }}
+                />
+            </View>
+            <IntraSectionInvisibleDivider s/>
+            <View>
+                <Layout.InputTitle title={'گروه سنی'}/>
+                <IntraSectionInvisibleDivider xs/>
+                <SegmentedControl
+                    activeFontStyle={{color: currentTheme.colors.primary}}
+                    values={scoreItems[0].options.map(o => o.name)}
+                    selectedIndex={ageGroup}
+                    onChange={(event) => {
+                        changeAgeGroup(event.nativeEvent.selectedSegmentIndex)
+                    }}
+                />
+            </View>
         </View>
     )
 }
