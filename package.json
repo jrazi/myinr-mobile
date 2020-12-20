@@ -31,6 +31,7 @@
     "react-native-indicators": "^0.17.0",
     "react-native-jalali-date-picker-rtl": "^1.0.1",
     "react-native-paper": "^4.4.1",
+    "react-native-radio-buttons": "^1.0.0",
     "react-native-reanimated": "~1.13.0",
     "react-native-restart": "0.0.17",
     "react-native-safe-area-context": "3.1.4",
@@ -41,7 +42,8 @@
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.13.12",
     "rn-range-slider": "^2.0.3",
-    "yup": "^0.31.0"
+    "yup": "^0.31.0",
+    "@react-native-community/segmented-control": "2.1.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

@@ -9,9 +9,9 @@ import {GenericScoreForm} from "./HAS_BLEDStage";
 import {Picker} from "@react-native-community/picker";
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {doctorDao} from "../../../../data/dao/DoctorDao";
-import {debugBorderBlue, debugBorderRed} from "../../../../../root/view/styles/borders";
 import {TitleWithBadge} from "./forms/ContextSpecificComponents";
 import {FirstVisit} from "../../../../domain/visit/Visit";
+import SegmentedControl from '@react-native-community/segmented-control';
 
 
 export class CHA2DS2_VAScStage extends React.Component {

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import * as Data from "../Data";
 import * as Layout from "./Layout";
 import {Badge, Chip, Switch} from "react-native-paper";
-import {currentTheme} from "../../../../../../../theme";
+import {Colors, currentTheme, theme} from "../../../../../../../theme";
 import {View} from "react-native";
 import {LayoutStyles} from "./Layout";
 
@@ -58,7 +58,7 @@ export const TitleWithBadge = (props) => {
                 <Layout.ScreenTitle title={props.title} style={{paddingBottom: 0,}}/>
             </View>
             <View style={{}}>
-                <Badge size={28}>{props.badgeValue}</Badge>
+                <Badge size={28} theme={theme} style={{backgroundColor: Colors.DEFAULT_RED}}>{props.badgeValue}</Badge>
             </View>
         </View>
     )

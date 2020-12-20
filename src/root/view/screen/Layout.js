@@ -45,5 +45,6 @@ export const CustomContentScreenHeader = (props) => {
 const styles = StyleSheet.create({
     screenWrapper: {
         flex: 1,
+        backgroundColor: currentTheme.colors.background,
     },
 })

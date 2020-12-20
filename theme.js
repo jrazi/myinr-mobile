@@ -62,3 +62,7 @@ export const mostlyWhiteTheme = {
         backdrop: '#fff',
     },
 };
+
+export const Colors = {
+    DEFAULT_RED: '#8D021F',
+}

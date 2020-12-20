@@ -116,7 +116,7 @@ const PatientInfoCard = (props) => {
                         <Card.Title
                             title={props.patientInfo.fullName}
                             subtitle={latestInrTestMessage}
-                            left={() => <Avatar.Text size={32} label={nameChunks[0][0] + '.' + nameChunks[1][0]} />}
+                            left={() => <Avatar.Text size={32} label={nameChunks[0][0] + '.' + nameChunks[1][0]} style={{}}/>}
                         />
                         <Card.Content>
                             <View >
@@ -205,7 +205,7 @@ const Row = (props) => {return (
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
     },
 
     patientsListContainer: {

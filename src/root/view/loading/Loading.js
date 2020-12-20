@@ -16,7 +16,7 @@ import {currentTheme} from "../../../../theme";
 export const LoadingScreen = (props) => {
     if (props.loaded == false) {
         return (
-            <ScreenLayout>
+            <ScreenLayout style={{backgroundColor: currentTheme.colors.background}}>
                 <LoadingIndicator/>
             </ScreenLayout>
         )
