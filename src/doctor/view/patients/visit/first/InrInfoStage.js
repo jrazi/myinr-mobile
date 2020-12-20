@@ -6,13 +6,11 @@ import {ConditionalRender, IntraSectionInvisibleDivider, PrimaryText} from "./fo
 import {Platform, PanResponder, View} from 'react-native';
 import {Formik} from "formik";
 import * as Yup from 'yup';
-import {debugBorderRed} from "../../../../../root/view/styles/borders";
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
 import * as Validators from "../../../../../root/view/form/Validators";
-import {rootDao} from "../../../../../root/data/dao/RootDao";
-import {SHORT_TEXT} from "../../../../../root/view/form/Validators";
 import {FirstVisit} from "../../../../domain/visit/Visit";
+
 
 
 export class InrInfoStage extends React.Component {

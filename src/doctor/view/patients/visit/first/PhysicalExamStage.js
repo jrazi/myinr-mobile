@@ -35,7 +35,7 @@ export class PhysicalExamStage extends React.Component {
     render() {
         return (
             <Layout.VisitScreen>
-                <Layout.ScreenTitle title={'معاینه بالینی'}/>
+                <Layout.ScreenTitle title={'معاینه بالینی'} />
                 <Formik
                     initialValues={{
                         bloodPressureSystolic: this.physicalExamInfo.bloodPressureSystolic,
@@ -125,14 +125,15 @@ const styles = StyleSheet.create({
 const TextInputRow = ({title, error, ...props}) => {
     return (
         <View>
-            <Layout.InputTitle title={title}/>
+            {/*<Layout.InputTitle title={title}/>*/}
             <DefaultTextInput
                 {...props}
+                label={title}
             />
             <HelperText type="error" visible={hasValue(error)}>
                 {error}
             </HelperText>
-            <IntraSectionInvisibleDivider m/>
+            <IntraSectionInvisibleDivider s/>
         </View>
     )
 }

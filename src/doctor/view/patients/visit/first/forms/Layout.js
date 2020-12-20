@@ -178,7 +178,7 @@ export const IntraSectionDivider = (props) => {
 export const IntraSectionInvisibleDivider = (props) => {
     return (
         <View style={{
-            paddingVertical: props.none ? 0 : props.xs ? 5 : props.s ? 10 : props.sm ? 15 : props.m ? 20 : props.l ? 30 : props.xl ? 40 : 20,
+            paddingVertical: props.none ? 0 : props.xxs ? 3 : props.xs ? 5 : props.s ? 10 : props.sm ? 15 : props.m ? 20 : props.l ? 30 : props.xl ? 40 : 20,
         }}>
         </View>
     )

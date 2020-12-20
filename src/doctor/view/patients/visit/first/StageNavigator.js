@@ -20,7 +20,11 @@ export default class StageNavigator extends React.Component {
     }
 
     componentDidMount() {
+        if (this.props.currentStage == stages.length - 1) {
+            this.state.routes[1].title = 'اتمام ویزیت';
+        }
         this.props.navigation.navigate(this.props.route.name, {screen: `VisitStage:${this.props.currentStage}`, visitInfo: this.props.visitInfo});
+        this.setState({routes: this.state.routes})
     }
 
     onIndexChange = (index) => {
