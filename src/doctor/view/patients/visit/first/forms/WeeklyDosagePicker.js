@@ -11,9 +11,10 @@ import {visitDao} from "../../../../../data/dao/VisitDao";
 export const WeeklyDosagePicker = (props) => {
     let dosageElements = [];
     let now = new Date(Date.now());
+    const increment = firstNonEmpty(props.increment, -1);
     for (let i = 0; i < 7; i++) {
         const date = new Date(firstNonEmpty(props.startingDate, now).getTime());
-        date.setDate(date.getDate() - i);
+        date.setDate(date.getDate() + i*increment);
         dosageElements.push(
             <DosageForDay
                 date={date}
@@ -37,7 +38,7 @@ export const WeeklyDosagePicker = (props) => {
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
-            duration: 250,
+            duration: 350,
             useNativeDriver: false,
         }).start();
     }, []);

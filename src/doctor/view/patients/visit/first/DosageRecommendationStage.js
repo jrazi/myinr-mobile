@@ -43,6 +43,7 @@ export class DosageRecommendationStage extends React.Component {
                         onDoseUpdate={this.onDosageUpdate}
                         initialData={this.recommendedDosage}
                         startingDate={startingDate}
+                        increment={1}
                     />
                 </Layout.FormSection>
             </Layout.VisitScreen>
