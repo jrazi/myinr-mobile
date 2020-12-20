@@ -183,3 +183,10 @@ export function getFormattedJalaliDate(date) {
     const dateStr = jDate.format('dddd DD MMMM');
     return e2p(dateStr);
 }
+
+export function getFormFormattedJalaliDate(date) {
+    if (!hasValue(date)) date = new Date(Date.now());
+    const jDate = new jd.default(date);
+    const dateStr = jDate.format('YYYY/MM/DD');
+    return dateStr;
+}

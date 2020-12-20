@@ -24,7 +24,7 @@ export class FirstVisit {
                 testAtHome: false,
                 inrResult: null,
                 testLocation: null,
-                testDate: [null, null, null],
+                testDate: null,
                 targetRange: [null, null]
             },
             bleedingOrClottingType: [],

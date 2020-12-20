@@ -1,15 +1,22 @@
 import React, {useCallback, useState} from "react";
 import * as Layout from "./forms/Layout";
-import {Text, Button, Divider, Switch, TextInput, HelperText} from "react-native-paper";
+import {Text, Button, Divider, Switch, TextInput, HelperText, Portal} from "react-native-paper";
 import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
 import {ConditionalRender, IntraSectionInvisibleDivider, PrimaryText} from "./forms/Layout";
 import {Platform, PanResponder, View} from 'react-native';
 import {Formik} from "formik";
 import * as Yup from 'yup';
 import {visitDao} from "../../../../data/dao/VisitDao";
-import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
+import {
+    firstNonEmpty,
+    getFormattedJalaliDate,
+    getFormFormattedJalaliDate,
+    hasValue, jalaliToGeorgian
+} from "../../../../../root/domain/util/Util";
 import * as Validators from "../../../../../root/view/form/Validators";
 import {FirstVisit} from "../../../../domain/visit/Visit";
+import DatePicker from '@mohamadkh75/react-native-jalali-datepicker';
+import {DefaultDatePicker} from "./forms/JalaliDatePicker";
 
 
 
@@ -53,18 +60,12 @@ export class InrInfoStage extends React.Component {
                     initialValues={{
                         inrResult: this.inrTestInfo.inrResult,
                         testLocation: this.inrTestInfo.testLocation,
-                        testDateDay: this.inrTestInfo.testDate[2],
-                        testDateMonth: this.inrTestInfo.testDate[1],
-                        testDateYear: this.inrTestInfo.testDate[0],
                         targetRangeFrom: this.inrTestInfo.targetRange[0],
                         targetRangeTo: this.inrTestInfo.targetRange[1],
                     }}
                     validationSchema={Yup.object({
                         inrResult: Validators.INR,
                         testLocation: Validators.SHORT_TEXT,
-                        testDateDay: Validators.DAY,
-                        testDateMonth: Validators.MONTH,
-                        testDateYear: Validators.YEAR,
                         targetRangeFrom: Validators.INR,
                         targetRangeTo: Validators.INR,
                     })}
@@ -118,56 +119,11 @@ export class InrInfoStage extends React.Component {
                                     <Layout.IntraSectionInvisibleDivider sm/>
                                 </ConditionalRender>
                                 <Layout.InputTitle title={'تاریخ آزمایش'}/>
-                                <Layout.Row justifyCenter>
-                                    <View>
-                                        <DefaultTextInput
-                                            placeholder={"روز"}
-                                            style={{flexGrow: 0, paddingHorizontal: 25}}
-                                            numeric
-                                            value={values.testDateDay}
-                                            onChangeText={handleChange('testDateDay')}
-                                            onBlur={(event) => {
-                                                handleBlur('testDateDay')(event);
-                                                this.handleArrayChange('testDate', 2, values.testDateDay, true);
-                                            }}
-                                        />
-                                        <HelperText type="error" visible={errors.testDateDay}>
-                                            {errors.testDateDay}
-                                        </HelperText>
-                                    </View>
-                                    <View>
-                                        <DefaultTextInput
-                                            placeholder={"ماه"}
-                                            style={{flexGrow: 0,marginHorizontal: 15,  paddingHorizontal: 25}}
-                                            numeric
-                                            onChangeText={handleChange('testDateMonth')}
-                                            value={values.testDateMonth}
-                                            onBlur={(event) => {
-                                                handleBlur('testDateMonth')(event);
-                                                this.handleArrayChange('testDate', 1, values.testDateMonth, true);
-                                            }}
-                                        />
-                                        <HelperText type="error" visible={errors.testDateMonth}>
-                                            {errors.testDateMonth}
-                                        </HelperText>
-                                    </View>
-                                    <View>
-                                        <DefaultTextInput
-                                            placeholder={"سال"}
-                                            style={{flexGrow: 0, paddingHorizontal: 25}}
-                                            numeric
-                                            value={values.testDateYear}
-                                            onChangeText={handleChange('testDateYear')}
-                                            onBlur={(event) => {
-                                                handleBlur('testDateYear')(event);
-                                                this.handleArrayChange('testDate', 0, values.testDateYear, true);
-                                            }}
-                                        />
-                                        <HelperText type="error" visible={errors.testDateYear}>
-                                            {errors.testDateYear}
-                                        </HelperText>
-                                    </View>
-                                </Layout.Row>
+                                <DateInput
+                                    placeholder={"تاریخ آزمایش"}
+                                    onDateChange={(date) => this.handleChange('testDate', date, true)}
+                                    initialValue={this.inrTestInfo.testDate}
+                                />
                                 <Layout.IntraSectionInvisibleDivider sm/>
                                 <Layout.InputTitle title={'بازه هدف'}/>
                                 <Layout.Row justifyCenter>
@@ -210,6 +166,7 @@ export class InrInfoStage extends React.Component {
                     }}
                 </Formik>
                 <IntraSectionInvisibleDivider xl/>
+                {/*<DefaultDatePicker/>*/}
             </Layout.VisitScreen>
         );
     }
@@ -239,6 +196,7 @@ const DefaultTextInput = (props) => {
                 onChangeText={props.onChangeText}
                 onBlur={props.onBlur}
                 autoCompleteType={'off'}
+                returnKeyType={'next'}
                 keyboardType={props.numeric ? 'numeric' : 'default'}
                 textContentType={props.textContentType}
                 autoCorrect={false}
@@ -253,3 +211,44 @@ const DefaultTextInput = (props) => {
             />
     )
 }
+
+const DateInput = (props) => {
+    const [datePickerVisible, setDatePickerVisible] = useState(false);
+    const [dateValue, setDateValue] = useState(firstNonEmpty(props.initialValue, getFormFormattedJalaliDate(new Date())));
+    const onDateChange = (date) => {
+        setDateValue(date);
+        setDatePickerVisible(false);
+        props.onDateChange(date);
+    }
+    return (
+        <View>
+            <TextInput
+                label={props.label}
+                // value={}
+                value={getFormattedJalaliDate(jalaliToGeorgian(dateValue))}
+
+                placeholder={props.placeholder}
+                onChangeText={props.onChangeText}
+                // onBlur={() => setDatePickerVisible(false)}
+                onFocus={() => setDatePickerVisible(true)}
+                autoCompleteType={'off'}
+                returnKeyType={'next'}
+                keyboardType={null}
+                showSoftInputOnFocus={false}
+                textContentType={props.textContentType}
+                autoCorrect={false}
+                style={{
+                    backgroundColor: currentTheme.colors.surface,
+                    fontSize: 14,
+                    flexGrow: 0,
+                    paddingHorizontal: 0,
+
+                    ...props.style
+                }}
+            />
+            <DefaultDatePicker visible={datePickerVisible} onDateChange={onDateChange} selectedDate={dateValue}/>
+        </View>
+    )
+}
+
+
