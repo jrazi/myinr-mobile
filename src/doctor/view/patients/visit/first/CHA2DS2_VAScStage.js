@@ -109,16 +109,14 @@ const ScoreRadioBox = (props) => {
                 .then(patient => {
                     if (visit.current.cha2ds2Score.sex == null) {
                         const gender = guessGender(patient);
-                        if (gender == 'M') visit.current.cha2ds2Score.sex = 0;
-                        else if (gender == 'F') visit.current.cha2ds2Score.sex = 1;
-                        setGender(visit.current.cha2ds2Score.sex);
+                        if (gender == 'M') changeGender(0);
+                        else if (gender == 'F') changeGender(1);
                     }
                     if (visit.current.cha2ds2Score.ageGroup == null) {
                         const age = calcAge(patient.birthDate);
-                        if (age < 65) visit.current.cha2ds2Score.ageGroup = 0;
-                        else if (65 <= age < 75) visit.current.cha2ds2Score.ageGroup = 1;
-                        else if (age >= 75) visit.current.cha2ds2Score.ageGroup = 2;
-                        setAgeGroup(visit.current.cha2ds2Score.ageGroup);
+                        if (age < 65) changeAgeGroup(0);
+                        else if (65 <= age < 75) changeAgeGroup(1);
+                        else if (age >= 75) changeAgeGroup(2);
                     }
                 })
     }, []);
