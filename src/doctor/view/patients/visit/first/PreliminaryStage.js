@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, View, ScrollView} from "react-native";
 import * as Layout from './forms/Layout';
-import {ConditionalRender, IntraSectionInvisibleDivider} from "./forms/Layout";
+import {ConditionalRender, IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
 import * as Data from './Data';
 import {ChipBox, DefaultSwitchRow} from "./forms/ContextSpecificComponents";
 import {WeeklyDosagePicker} from "./forms/WeeklyDosagePicker";
@@ -133,7 +133,8 @@ const FirstTimeWarfarinForm = (props) => {
             />
             <ConditionalRender hidden={firstTimeWarfarin || !loaded}>
                 <Layout.FormSection>
-                    <Layout.SectionTitle title={'اطلاعات آخرین دوز مصرفی'} description={'در صورت استفاده از وارفارین،‌ لطفا دوز مصرفی بیمار در هفته اخیر را وارد کنید.'}/>
+                    <IntraSectionDivider s/>
+                    <Layout.InputTitle title={'Last Warfarin Dosage'} description={'Please specify the last dosage that patient used.'}/>
                     <WeeklyDosagePicker initialData={loaded ? visit.current.firstWarfarin.weeklyDosage : []} doseData={[]} onDoseUpdate={onDoseUpdate}/>
                 </Layout.FormSection>
             </ConditionalRender>
