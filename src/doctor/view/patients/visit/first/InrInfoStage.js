@@ -55,7 +55,7 @@ export class InrInfoStage extends React.Component {
         return (
             <Layout.VisitScreen
             >
-                <Layout.ScreenTitle title={'آزمایش INR'} description={'اطلاعات مربوط به نتایج آخرین آزمایش INR'}/>
+                <Layout.ScreenTitle title={'INR Test'} description={'Results of the latest INR test'}/>
                 <Formik
                     initialValues={{
                         inrResult: this.inrTestInfo.inrResult,
@@ -79,13 +79,13 @@ export class InrInfoStage extends React.Component {
                         return (
                             <Layout.FormSection>
                                 <SwitchRow
-                                    title={'آزمایش خانگی'}
-                                    description={'آیا آزمایش در خانه انجام شده؟'}
+                                    title={'Self-Test'}
+                                    description={'Did the test taken place at home?'}
                                     value={this.state.latestInrAtHome}
                                     onChange={this.toggleLatestInrAtHome}
                                 />
                                 <Layout.IntraSectionInvisibleDivider sm/>
-                                <Layout.InputTitle title={'میزان شاخص'}/>
+                                <Layout.InputTitle title={'Test Result'}/>
                                 <DefaultTextInput
                                     placeholder={"INR"}
                                     value={values.inrResult}
@@ -101,7 +101,7 @@ export class InrInfoStage extends React.Component {
                                 </HelperText>
                                 <Layout.IntraSectionInvisibleDivider sm/>
                                 <ConditionalRender hidden={this.state.latestInrAtHome}>
-                                    <Layout.InputTitle title={'محل آزمایش'} style={{}}/>
+                                    <Layout.InputTitle title={'Test Location'} style={{}}/>
                                     <DefaultTextInput
                                         placeholder={"مثال: آزمایشگاه فارابی"}
                                         value={values.testLocation}
@@ -118,19 +118,19 @@ export class InrInfoStage extends React.Component {
                                     </HelperText>
                                     <Layout.IntraSectionInvisibleDivider sm/>
                                 </ConditionalRender>
-                                <Layout.InputTitle title={'تاریخ آزمایش'}/>
+                                <Layout.InputTitle title={'Test Date'}/>
                                 <DateInput
-                                    placeholder={"تاریخ آزمایش"}
+                                    placeholder={"Date of INR Test"}
                                     onDateChange={(date) => this.handleChange('testDate', date, true)}
                                     initialValue={this.inrTestInfo.testDate}
                                 />
                                 <Layout.IntraSectionInvisibleDivider sm/>
-                                <Layout.InputTitle title={'بازه هدف'}/>
+                                <Layout.InputTitle title={'Target Range'} description={"Target range for patient's INR"}/>
                                 <Layout.Row justifyCenter>
                                     <View>
                                         <DefaultTextInput
-                                            label={'از'}
-                                            style={{flexGrow: 0, paddingHorizontal: 25}}
+                                            label={'From'}
+                                            style={{flexGrow: 0, width: 75}}
                                             numeric
                                             value={values.targetRangeFrom}
                                             onChangeText={handleChange('targetRangeFrom')}
@@ -143,11 +143,11 @@ export class InrInfoStage extends React.Component {
                                             {'0-5.0'}
                                         </HelperText>
                                     </View>
-                                    <View style={{flexGrow: 0, marginHorizontal: 15,  paddingHorizontal: 30}}></View>
+                                    <View style={{flexGrow: 0, marginHorizontal: 15,  paddingHorizontal: 30,}}></View>
                                     <View>
                                         <DefaultTextInput
-                                            label={'تا'}
-                                            style={{flexGrow: 0, paddingHorizontal: 25}}
+                                            label={'To'}
+                                            style={{flexGrow: 0, width: 75}}
                                             numeric
                                             value={values.targetRangeTo}
                                             onChangeText={handleChange('targetRangeTo')}
@@ -242,6 +242,7 @@ const DateInput = (props) => {
                     fontSize: 14,
                     flexGrow: 0,
                     paddingHorizontal: 0,
+                    textAlign: 'right',
 
                     ...props.style
                 }}

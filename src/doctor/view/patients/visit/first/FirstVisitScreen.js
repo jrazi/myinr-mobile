@@ -26,7 +26,8 @@ export class FirstVisitScreen extends React.Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        // await I18nManager.forceRTL(false);
         const {userId, useCache} = this.props.route.params;
 
         let visitInfo = visitDao.initVisit(userId);
