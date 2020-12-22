@@ -24,15 +24,14 @@ export class PastMedicalHistoryStage extends React.Component {
         return (
             <Layout.VisitScreen
             >
-                <Layout.ScreenTitle title={'سوابق پزشکی و دارویی'}/>
+                <Layout.ScreenTitle title={'Medical History'}/>
                 <Layout.FormSection>
-                    <Layout.InputTitle title={'سوابق پزشکی بیمار'}/>
-                    <IntraSectionInvisibleDivider xs/>
+                    <Layout.InputTitle title={'Past Medical Conditions'}/>
                     <MedicalHistoryChipBox userId={this.props.route.params.userId}/>
                 </Layout.FormSection>
                 <IntraSectionDivider m/>
                 <Layout.FormSection>
-                    <Layout.InputTitle title={'سوابق دارویی'}/>
+                    <Layout.InputTitle title={'Drug History'}/>
                     <DrugHistoryController/>
                 </Layout.FormSection>
             </Layout.VisitScreen>

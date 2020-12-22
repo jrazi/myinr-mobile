@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from "react";
 import * as Layout from "./forms/Layout";
-import {Text, Button, Divider, Switch, TextInput, HelperText, Portal} from "react-native-paper";
+import {Text, Button, Divider, Switch, TextInput, Portal} from "react-native-paper";
 import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
 import {ConditionalRender, IntraSectionInvisibleDivider, PrimaryText} from "./forms/Layout";
 import {Platform, PanResponder, View} from 'react-native';
@@ -96,9 +96,9 @@ export class InrInfoStage extends React.Component {
                                         this.handleChange('inrResult', values.inrResult, true);
                                     }}
                                 />
-                                <HelperText type="error" visible={hasValue(errors.inrResult)}>
+                                <Layout.TextInputHelperText type="error" visible={hasValue(errors.inrResult)}>
                                     {errors.inrResult}
-                                </HelperText>
+                                </Layout.TextInputHelperText>
                                 <Layout.IntraSectionInvisibleDivider sm/>
                                 <ConditionalRender hidden={this.state.latestInrAtHome}>
                                     <Layout.InputTitle title={'Test Location'} style={{}}/>
@@ -113,9 +113,9 @@ export class InrInfoStage extends React.Component {
                                         }}
                                         style={{}}
                                     />
-                                    <HelperText type="error" visible={errors.testLocation}>
+                                    <Layout.TextInputHelperText type="error" visible={errors.testLocation}>
                                         {errors.testLocation}
-                                    </HelperText>
+                                    </Layout.TextInputHelperText>
                                     <Layout.IntraSectionInvisibleDivider sm/>
                                 </ConditionalRender>
                                 <Layout.InputTitle title={'Test Date'}/>
@@ -126,6 +126,7 @@ export class InrInfoStage extends React.Component {
                                 />
                                 <Layout.IntraSectionInvisibleDivider sm/>
                                 <Layout.InputTitle title={'Target Range'} description={"Target range for patient's INR"}/>
+                                <Layout.IntraSectionInvisibleDivider xs/>
                                 <Layout.Row justifyCenter>
                                     <View>
                                         <DefaultTextInput
@@ -139,9 +140,9 @@ export class InrInfoStage extends React.Component {
                                                 this.handleArrayChange('targetRange', 0, values.targetRangeFrom, true);
                                             }}
                                         />
-                                        <HelperText type="error" visible={hasValue(errors.targetRangeFrom)}>
+                                        <Layout.TextInputHelperText type="error" visible={hasValue(errors.targetRangeFrom)}>
                                             {'0-5.0'}
-                                        </HelperText>
+                                        </Layout.TextInputHelperText>
                                     </View>
                                     <View style={{flexGrow: 0, marginHorizontal: 15,  paddingHorizontal: 30,}}></View>
                                     <View>
@@ -156,9 +157,9 @@ export class InrInfoStage extends React.Component {
                                                 this.handleArrayChange('targetRange', 1, values.targetRangeTo, true);
                                             }}
                                         />
-                                        <HelperText type="error" visible={hasValue(errors.targetRangeTo)}>
+                                        <Layout.TextInputHelperText type="error" visible={hasValue(errors.targetRangeTo)}>
                                             {'0-5.0'}
-                                        </HelperText>
+                                        </Layout.TextInputHelperText>
                                     </View>
                                 </Layout.Row>
                             </Layout.FormSection>
@@ -209,6 +210,7 @@ const DefaultTextInput = (props) => {
 
                     ...props.style
                 }}
+                dense={true}
             />
     )
 }
@@ -247,6 +249,7 @@ const DateInput = (props) => {
 
                     ...props.style
                 }}
+                dense={true}
             />
             <DefaultDatePicker visible={datePickerVisible} onDateChange={onDateChange} selectedDate={dateValue}/>
         </View>

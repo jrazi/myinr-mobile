@@ -10,6 +10,7 @@ import {FirstVisit} from "../../../../domain/visit/Visit";
 import {Formik} from "formik";
 import * as Yup from "yup";
 import * as Validators from "../../../../../root/view/form/Validators";
+import {debugBorderRed} from "../../../../../root/view/styles/borders";
 
 
 export class PhysicalExamStage extends React.Component {
@@ -35,7 +36,7 @@ export class PhysicalExamStage extends React.Component {
     render() {
         return (
             <Layout.VisitScreen>
-                <Layout.ScreenTitle title={'معاینه بالینی'} />
+                <Layout.ScreenTitle title={'Physical Exam'} />
                 <Formik
                     initialValues={{
                         bloodPressureSystolic: this.physicalExamInfo.bloodPressureSystolic,
@@ -60,7 +61,7 @@ export class PhysicalExamStage extends React.Component {
                         return (
                             <Layout.FormSection>
                                 <TextInputRow
-                                    title={'فشار خون' + ' (Systolic)'}
+                                    title={'Blood Pressure' + ' (Systolic)'}
                                     placeholder={'mmHg'}
                                     numeric
                                     value={values.bloodPressureSystolic}
@@ -72,7 +73,7 @@ export class PhysicalExamStage extends React.Component {
                                     error={errors.bloodPressureSystolic}
                                 />
                                 <TextInputRow
-                                    title={'فشار خون'  + ' (Diastolic)'}
+                                    title={'Blood Pressure'  + ' (Diastolic)'}
                                     placeholder={'mmHg'}
                                     numeric
                                     value={values.bloodPressureDiastolic}
@@ -84,7 +85,7 @@ export class PhysicalExamStage extends React.Component {
                                     error={errors.bloodPressureDiastolic}
                                 />
                                 <TextInputRow
-                                    title={'ضربان قلب'}
+                                    title={'Heart Rate'}
                                     placeholder={'BPM'}
                                     numeric
                                     value={values.heartBeat}
@@ -96,7 +97,7 @@ export class PhysicalExamStage extends React.Component {
                                     error={errors.heartBeat}
                                 />
                                 <TextInputRow
-                                    title={'نرخ تنفسی'}
+                                    title={'Respiratory Rate'}
                                     placeholder={'BPM'}
                                     numeric
                                     value={values.respiratoryRate}
@@ -130,9 +131,9 @@ const TextInputRow = ({title, error, ...props}) => {
                 {...props}
                 label={title}
             />
-            <HelperText type="error" visible={hasValue(error)}>
+            <Layout.TextInputHelperText type="error" visible={hasValue(error)}>
                 {error}
-            </HelperText>
+            </Layout.TextInputHelperText>
             <IntraSectionInvisibleDivider s/>
         </View>
     )
@@ -140,25 +141,28 @@ const TextInputRow = ({title, error, ...props}) => {
 
 const DefaultTextInput = (props) => {
     return (
-        <TextInput
-            label={props.label}
-            value={props.value}
-            placeholder={props.placeholder}
-            onChangeText={props.onChangeText}
-            onBlur={props.onBlur}
-            autoCompleteType={'off'}
-            keyboardType={props.numeric ? 'numeric' : 'default'}
-            textContentType={props.textContentType}
-            autoCorrect={false}
-            style={{
-                backgroundColor: currentTheme.colors.surface,
-                fontSize: 14,
-                flexGrow: 0,
-                paddingHorizontal: 0,
-
-                ...props.style
-            }}
-            // dense={true}
-        />
+        <View>
+            <Layout.InputOutlineLabel title={props.label}/>
+            <TextInput
+                value={props.value}
+                placeholder={props.placeholder}
+                onChangeText={props.onChangeText}
+                onBlur={props.onBlur}
+                autoCompleteType={'off'}
+                keyboardType={props.numeric ? 'numeric' : 'default'}
+                textContentType={props.textContentType}
+                autoCorrect={false}
+                style={{
+                    backgroundColor: currentTheme.colors.surface,
+                    // ...debugBorderRed,
+                    fontSize: 14,
+                    flexGrow: 0,
+                    paddingHorizontal: 0,
+                    textAlign: 'left',
+                    ...props.style
+                }}
+                dense={true}
+            />
+        </View>
     )
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import {currentTheme, mostlyWhiteTheme} from "../../../../../../../theme";
 import {StyleSheet, View, ScrollView} from "react-native";
-import {Title as _Title, Caption as _Caption, Headline as _Headline, Divider, Text as _Text, Chip} from "react-native-paper";
+import {Title as _Title, Caption as _Caption, Headline as _Headline, Divider, Text as _Text, Chip, HelperText as _HelperText} from "react-native-paper";
 import {hasValue, removeWhiteSpace} from "../../../../../../root/domain/util/Util";
 import {fullWidth} from "../../../../../../root/view/styles/containers";
 import {debugBorderBlue} from "../../../../../../root/view/styles/borders";
@@ -10,6 +10,7 @@ const Headline = ({style, ...props}) => <_Headline style={[WrapperStyles.headlin
 const Title = ({style, ...props}) => <_Title style={[WrapperStyles.title, style]} {...props}/>;
 const Caption = ({style, ...props}) => <_Caption style={[WrapperStyles.caption, style]} {...props}/>;
 const Text = ({style, ...props}) => <_Text style={[WrapperStyles.text, style]} {...props}/>;
+export const TextInputHelperText = ({style, ...props}) => <_HelperText style={[WrapperStyles.helper, style]} {...props}/>;
 
 export const VisitScreen = (props) => {
     return (
@@ -67,6 +68,14 @@ export const InputTitle = (props) => {
                 !hasValue(props.description) || removeWhiteSpace(props.description) == "" ? null :
                     <Caption style={styles.inputTitleDescription}>{props.description}</Caption>
             }
+        </View>
+    )
+}
+
+export const InputOutlineLabel = (props) => {
+    return (
+        <View style={[props.style]}>
+            <Text style={{color: currentTheme.colors.primary}}>{props.title}</Text>
         </View>
     )
 }
@@ -282,4 +291,7 @@ const WrapperStyles = {
     title: {
         textAlign: 'right',
     },
+    helper: {
+        textAlign: 'right',
+    }
 }
