@@ -37,7 +37,7 @@ export class DosageRecommendationStage extends React.Component {
         startingDate.setDate(startingDate.getDate() + 1);
         return (
             <Layout.VisitScreen>
-                <Layout.ScreenTitle title={'برنامه دارویی'} description={'لطفا دوز مصرفی هفته آتی بیمار را مشخص کنید.'}/>
+                <Layout.ScreenTitle title={'Recommended Dosage'} description={'Please specify Warfarin dosage for the next week.'}/>
                 <Layout.FormSection>
                     <WeeklyDosagePicker
                         onDoseUpdate={this.onDosageUpdate}

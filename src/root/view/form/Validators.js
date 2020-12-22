@@ -33,53 +33,38 @@ export const PASSWORD = {
 
 export const INR = Yup.number()
     .nullable()
-    .min(0.1, 'مقدار در بازه صحیح قرار ندارد.')
-    .max(5.0, 'مقدار در بازه صحیح قرار ندارد.')
-
-export const YEAR = Yup.number()
-    .nullable()
-    .min(98, '۹۸-۹۹')
-    .max(99, '۹۸-۹۹')
-
-export const MONTH = Yup.number()
-    .nullable()
-    .min(1, '۱-۱۲')
-    .max(12, '۱-۱۲')
-
-export const DAY = Yup.number()
-    .nullable()
-    .min(1, '۱-۳۱')
-    .max(31, '۱-۳۱')
+    .min(0.1, 'Not in the valid range')
+    .max(5.0, 'Not in the valid range')
 
 
 export const SHORT_TEXT = Yup.string()
     .nullable()
-    .max(64, 'مقدار نباید از ۶۴ کاراکتر بیشتر باشد.')
+    .max(64, 'Input must not contain more than 64 characters.')
 
 export const BLOOD_PRESSURE = Yup.number()
     .nullable()
-    .min(0, 'مقدار نادرست')
-    .max(25, 'مقدار نادرست')
+    .min(0, 'Invalid Value')
+    .max(25, 'Invalid Value')
 
 export const HEARTBEAT = Yup.number()
     .nullable()
-    .min(40, 'مقدار نادرست')
-    .max(200, 'مقدار نادرست')
+    .min(40, 'Invalid Value')
+    .max(200, 'Invalid Value')
 
 export const RESPIRATORY_RATE = Yup.number()
     .nullable()
-    .min(1, 'مقدار نادرست')
-    .max(200, 'مقدار نادرست')
+    .min(1, 'Invalid Value')
+    .max(200, 'Invalid Value')
 
 export const PERCENTAGE = Yup.number()
     .nullable()
-    .min(0, 'درصد نادرست')
-    .max(100, 'درصد نادرست')
+    .min(0, 'Must be a valid percentage')
+    .max(100, 'Must be a valid percentage')
 
 export const USUAL_NUMBER = Yup.number()
     .nullable()
-    .max(-100, 'عدد نادرست')
-    .max(1000, 'عدد نادرست')
+    .max(-100, 'Must be a valid number')
+    .max(1000, 'Must be a valid number')
 
 export const NATIONAL_CODE = null;
 export const PASSWORD_REPEAT = null;

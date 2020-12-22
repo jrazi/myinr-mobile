@@ -26,7 +26,7 @@ export class Echocardiography extends React.Component {
     render() {
         return (
             <Layout.VisitScreen>
-                <Layout.ScreenTitle title={'اکوکاردیوگرافی'}/>
+                <Layout.ScreenTitle title={'Echocardiography'}/>
                 <Layout.FormSection>
                     <ECForm userId={this.props.route.params.userId}/>
                 </Layout.FormSection>
@@ -104,7 +104,7 @@ export class ECForm extends React.Component {
                                 error={errors.LAVI}
                             />
                             <DefaultTextInput
-                                label={'توضیحات'}
+                                label={'Comments'}
                                 multiline={true} numberOfLines={10}
                                 value={values.comment}
                                 onChangeText={handleChange('comment')}
@@ -124,9 +124,9 @@ const LabTestField = ({name, unit, error, ...props}) => {
     return (
         <View style={{}}>
             <DefaultTextInput label={name} placeholder={unit} {...props} numeric/>
-            <HelperText type="error" visible={hasValue(error)}>
+            <Layout.TextInputHelperText type="error" visible={hasValue(error)}>
                 {error}
-            </HelperText>
+            </Layout.TextInputHelperText>
             <IntraSectionInvisibleDivider s/>
         </View>
     )
@@ -134,29 +134,29 @@ const LabTestField = ({name, unit, error, ...props}) => {
 
 const DefaultTextInput = (props) => {
     return (
-        <TextInput
-            label={props.label}
-            value={props.value}
-            placeholder={props.placeholder}
-            onChangeText={props.onChangeText}
-            onBlur={props.onBlur}
-            autoCompleteType={'off'}
-            keyboardType={props.numeric ? 'numeric' : 'default'}
-            textContentType={props.textContentType}
-            autoCorrect={false}
-            style={{
-                backgroundColor: currentTheme.colors.surface,
-                fontSize: 14,
-                // width: '50%',
-                // flex: 1,
-                // paddingLeft: '50%',
-                paddingHorizontal: 0,
-                // alignSelf: 'center',
-                ...props.style
-            }}
-            multiline={props.multiline}
-            numberOfLines={props.numberOfLines}
-            // dense={true}
-        />
+        <View>
+            <Layout.InputOutlineLabel title={props.label}/>
+            <TextInput
+                // label={props.label}
+                value={props.value}
+                placeholder={props.placeholder}
+                onChangeText={props.onChangeText}
+                onBlur={props.onBlur}
+                autoCompleteType={'off'}
+                keyboardType={props.numeric ? 'numeric' : 'default'}
+                textContentType={props.textContentType}
+                autoCorrect={false}
+                style={{
+                    backgroundColor: currentTheme.colors.surface,
+                    fontSize: 14,
+                    paddingHorizontal: 0,
+                    textAlign: 'left',
+                    ...props.style
+                }}
+                multiline={props.multiline}
+                numberOfLines={props.numberOfLines}
+                dense={true}
+            />
+        </View>
     )
 }
