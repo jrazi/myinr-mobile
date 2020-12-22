@@ -1,9 +1,15 @@
 import React from "react";
 import {currentTheme, mostlyWhiteTheme} from "../../../../../../../theme";
 import {StyleSheet, View, ScrollView} from "react-native";
-import {Title, Caption, Headline, Divider, Text, Chip} from "react-native-paper";
+import {Title as _Title, Caption as _Caption, Headline as _Headline, Divider, Text as _Text, Chip} from "react-native-paper";
 import {hasValue, removeWhiteSpace} from "../../../../../../root/domain/util/Util";
 import {fullWidth} from "../../../../../../root/view/styles/containers";
+import {debugBorderBlue} from "../../../../../../root/view/styles/borders";
+
+const Headline = ({style, ...props}) => <_Headline style={[WrapperStyles.headline, style]} {...props}/>;
+const Title = ({style, ...props}) => <_Title style={[WrapperStyles.title, style]} {...props}/>;
+const Caption = ({style, ...props}) => <_Caption style={[WrapperStyles.caption, style]} {...props}/>;
+const Text = ({style, ...props}) => <_Text style={[WrapperStyles.text, style]} {...props}/>;
 
 export const VisitScreen = (props) => {
     return (
@@ -33,7 +39,7 @@ export const FormSection = (props) => {
 export const ScreenTitle = (props) => {
     return (
         <View style={[styles.screenTitle, props.style]}>
-            <Headline style={{color: currentTheme.colors.text}}>{props.title}</Headline>
+            <Headline style={{color: currentTheme.colors.text, direction: 'left'}}>{props.title}</Headline>
             <ConditionalRender hidden={!hasValue(props.description)}>
                 <Caption>{props.description}</Caption>
             </ConditionalRender>
@@ -245,13 +251,13 @@ const styles = StyleSheet.create({
     inputArea: {
     },
     row: {
-        flexDirection: 'row',
+        flexDirection: 'row-reverse',
         alignItems: 'center',
         // paddingVertical: 10,
         flexWrap: 'nowrap'
     },
     itemsBox: {
-        flexDirection: 'row',
+        flexDirection: 'row-reverse',
         flexWrap: 'wrap',
         paddingTop: 10,
     },
@@ -262,3 +268,18 @@ const styles = StyleSheet.create({
 })
 
 export const LayoutStyles = styles;
+
+const WrapperStyles = {
+    headline: {
+        textAlign: 'right',
+    },
+    text: {
+        textAlign: 'right',
+    },
+    caption: {
+        textAlign: 'right',
+    },
+    title: {
+        textAlign: 'right',
+    },
+}

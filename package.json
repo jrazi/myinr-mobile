@@ -34,7 +34,7 @@
     "react-native-indicators": "^0.17.0",
     "react-native-paper": "^4.4.1",
     "react-native-reanimated": "~1.13.0",
-    "react-native-restart": "0.0.17",
+    "react-native-restart": "0.0.20",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
     "react-native-svg": "12.1.0",

@@ -25,7 +25,7 @@ export class PreliminaryStage extends React.Component {
         return (
             <Layout.VisitScreen
             >
-                <Layout.ScreenTitle title={'اطلاعات اولیه'}/>
+                <Layout.ScreenTitle title={'Warfarin Usage'}/>
                 <ReasonForWarfarinPicker userId={this.props.route.params.userId}/>
 
                 <Layout.IntraSectionDivider m/>
@@ -61,7 +61,7 @@ const ReasonForWarfarinPicker = (props) => {
 
     return (
         <View>
-            <Layout.InputTitle title={'دلیل مصرف وارفارین'} description={'لطفا دلایل مصرف وارفارین توسط بیمار را مشخص کنید.'}/>
+            <Layout.InputTitle title={'Reason for Using Warfarin'} description={null}/>
             <Layout.InputArea>
                 <ConditionalRender hidden={false}>
                     <ChipBox items={medicalConditions} onChange={changeValue}/>
@@ -94,7 +94,11 @@ const HeartValveReplacementConditions = (props) => {
 
     return (
         <View>
-            <DefaultSwitchRow value={value} onFlip={(val) => {visit.current.heartValveReplacementCondition.replaced = val; setValue(val)}} title={'تعویض دریچه قلب'}/>
+            <DefaultSwitchRow
+                value={value}
+                onFlip={(val) => {visit.current.heartValveReplacementCondition.replaced = val; setValue(val)}}
+                title={'Cardiac Valve Replacement'}
+            />
             <ConditionalRender hidden={!value || !loaded}>
                 <Layout.InputArea>
                     <ChipBox items={medicalConditions.current} onChange={changeConditionStatus}/>
@@ -124,8 +128,8 @@ const FirstTimeWarfarinForm = (props) => {
             <DefaultSwitchRow
                 value={firstTimeWarfarin}
                 onFlip={() => {visit.current.firstWarfarin.isFirstTime= !firstTimeWarfarin; setFirstTimeWarfarin(!firstTimeWarfarin)}}
-                title={'نخستین تجویز وارفارین'}
-                description={'آیا این نخستین تجربه مصرف وارفارین است؟'}
+                title={'No Prior Warfarin Usage'}
+                description={'Is this the first time for using warfarin?'}
             />
             <ConditionalRender hidden={firstTimeWarfarin || !loaded}>
                 <Layout.FormSection>

@@ -1,5 +1,5 @@
 import React from "react";
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, View, I18nManager} from "react-native";
 import {Text, ProgressBar, Badge, Appbar, Avatar, FAB, Portal, Dialog, Button, Subheading} from "react-native-paper";
 import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {FirstVisit} from "../../../../domain/visit/Visit";
@@ -13,7 +13,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {ConditionalRender} from "./forms/Layout";
 import {LoadingScreen} from "../../../../../root/view/loading/Loading";
-
+// import RNRestart from 'react-native-restart';
 
 export class FirstVisitScreen extends React.Component {
     constructor(props) {
