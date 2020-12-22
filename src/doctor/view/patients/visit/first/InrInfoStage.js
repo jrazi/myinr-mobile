@@ -103,7 +103,7 @@ export class InrInfoStage extends React.Component {
                                 <ConditionalRender hidden={this.state.latestInrAtHome}>
                                     <Layout.InputTitle title={'Test Location'} style={{}}/>
                                     <DefaultTextInput
-                                        placeholder={"مثال: آزمایشگاه فارابی"}
+                                        placeholder={"Eg. Farabi Lab"}
                                         value={values.testLocation}
                                         textContentType={'location'}
                                         onChangeText={handleChange('testLocation')}
@@ -129,8 +129,8 @@ export class InrInfoStage extends React.Component {
                                 <Layout.Row justifyCenter>
                                     <View>
                                         <DefaultTextInput
-                                            label={'From'}
-                                            style={{flexGrow: 0, width: 75}}
+                                            placeholder={'From'}
+                                            style={{textAlign: 'center', paddingHorizontal: 25}}
                                             numeric
                                             value={values.targetRangeFrom}
                                             onChangeText={handleChange('targetRangeFrom')}
@@ -146,8 +146,8 @@ export class InrInfoStage extends React.Component {
                                     <View style={{flexGrow: 0, marginHorizontal: 15,  paddingHorizontal: 30,}}></View>
                                     <View>
                                         <DefaultTextInput
-                                            label={'To'}
-                                            style={{flexGrow: 0, width: 75}}
+                                            placeholder={'To'}
+                                            style={{textAlign: 'center', paddingHorizontal: 25}}
                                             numeric
                                             value={values.targetRangeTo}
                                             onChangeText={handleChange('targetRangeTo')}
@@ -205,6 +205,7 @@ const DefaultTextInput = (props) => {
                     fontSize: 14,
                     flexGrow: 0,
                     paddingHorizontal: 0,
+                    textAlign: 'left',
 
                     ...props.style
                 }}
