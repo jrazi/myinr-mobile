@@ -55,7 +55,7 @@ export class HAS_BLEDStage extends React.Component {
         return (
             <Layout.VisitScreen>
                 <TitleWithBadge
-                    title={'نمره' + ' HAS-BLED'}
+                    title={'HAS-BLED Score'}
                     badgeValue={this.state.totalScore}
                 />
                 <Layout.FormSection>

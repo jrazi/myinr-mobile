@@ -28,7 +28,7 @@ export class LabTestStage extends React.Component {
     render() {
         return (
             <Layout.VisitScreen>
-                <Layout.ScreenTitle title={'آزمایش کراتینین خون'}/>
+                <Layout.ScreenTitle title={'Lab Test'}/>
                 <Layout.FormSection>
                     <LabTestResultForm userId={this.props.route.params.userId}/>
                 </Layout.FormSection>
@@ -113,14 +113,10 @@ const LabTestField = ({name, unit, error, ...props}) => {
     return (
         <View style={{width: '100%'}}>
             <DefaultTextInput {...props} label={name} placeholder={unit} />
-            <HelperText
-                style={{
-                    width: '50%',
-                    alignSelf: 'center',
-                }}
+            <Layout.TextInputHelperText
                 type="error" visible={hasValue(error)} >
                 {error}
-            </HelperText>
+            </Layout.TextInputHelperText>
             <IntraSectionInvisibleDivider s/>
         </View>
     )
@@ -128,27 +124,30 @@ const LabTestField = ({name, unit, error, ...props}) => {
 
 const DefaultTextInput = (props) => {
     return (
-        <TextInput
-            label={props.label}
-            placeholder={props.placeholder}
-            onChangeText={props.onChangeText}
-            onBlur={props.onBlur}
-            value={props.value}
-            autoCompleteType={'off'}
-            keyboardType={'numeric'}
-            textContentType={props.textContentType}
-            autoCorrect={false}
-            style={{
-                backgroundColor: currentTheme.colors.surface,
-                fontSize: 14,
-                width: '50%',
-                // flex: 1,
-                // paddingLeft: '50%',
-                alignSelf: 'center',
-                ...props.style
-            }}
-            // dense={true}
-        />
+        <View>
+            <Layout.InputOutlineLabel title={props.label}/>
+            <TextInput
+                placeholder={props.placeholder}
+                onChangeText={props.onChangeText}
+                onBlur={props.onBlur}
+                value={props.value}
+                autoCompleteType={'off'}
+                keyboardType={'numeric'}
+                textContentType={props.textContentType}
+                autoCorrect={false}
+                style={{
+                    backgroundColor: currentTheme.colors.surface,
+                    paddingHorizontal: 0,
+                    // fontSize: 14,
+                    // width: '50%',
+                    // flex: 1,
+                    // paddingLeft: '50%',
+                    textAlign: 'left',
+                    ...props.style
+                }}
+                dense={true}
+            />
+        </View>
     )
 }
 
@@ -192,7 +191,7 @@ let fields = [
     {
         id: 6,
         name: 'Na',
-        unit: '',
+        unit: 'Na',
         validation: Validators.USUAL_NUMBER,
     },
     {
