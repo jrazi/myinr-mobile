@@ -293,5 +293,6 @@ const WrapperStyles = {
     },
     helper: {
         textAlign: 'right',
+        paddingHorizontal: 0,
     }
 }
