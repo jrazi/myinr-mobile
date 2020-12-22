@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 export const GenericScoreForm = (props) => {
     let selectedStates = [];
     let conditionElements = props.medicalConditions
-        .map(condition => {
+        .map((condition, index) => {
             const [value, setValue] = useState(firstNonEmpty(condition.value, false));
             selectedStates.push([value, setValue]);
             return [
@@ -102,7 +102,7 @@ export const GenericScoreForm = (props) => {
                         onValueChange={() => {{props.onChange(condition.id, !value); setValue(!value)}}}
                     />
                 </Layout.Row>,
-                <IntraSectionDivider key={'hasBledDivider' + condition.id} s/>
+                index == props.medicalConditions.length - 1 ? null : <IntraSectionDivider key={'hasBledDivider' + condition.id} s/>
             ]
         })
     return (

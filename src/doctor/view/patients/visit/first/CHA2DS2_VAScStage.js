@@ -54,7 +54,7 @@ export class CHA2DS2_VAScStage extends React.Component {
                     <Headline style={{}}>DS</Headline>
                     <Text style={{fontSize: 14, paddingTop: 15}}>2</Text>
                     <Headline style={{ }}>–VASc</Headline>
-                    <Headline style={{}}>نمره </Headline>
+                    <Headline style={{}}> Score</Headline>
                 </View>
         );
         return (
@@ -136,20 +136,20 @@ const ScoreRadioBox = (props) => {
     return (
         <View>
             <View>
-                <Layout.InputTitle title={'جنسیت'}/>
+                <Layout.InputTitle title={'Gender'}/>
                 <IntraSectionInvisibleDivider xs/>
                 <SegmentedControl
                     activeFontStyle={{color: currentTheme.colors.primary}}
-                    values={['مرد', 'زن']}
+                    values={['Male', 'Female']}
                     selectedIndex={gender}
                     onChange={(event) => {
                         changeGender(event.nativeEvent.selectedSegmentIndex)
                     }}
                 />
             </View>
-            <IntraSectionInvisibleDivider s/>
+            <IntraSectionInvisibleDivider sm/>
             <View>
-                <Layout.InputTitle title={'گروه سنی'}/>
+                <Layout.InputTitle title={'Age Group'}/>
                 <IntraSectionInvisibleDivider xs/>
                 <SegmentedControl
                     activeFontStyle={{color: currentTheme.colors.primary}}
@@ -186,8 +186,9 @@ const ScoreChipBox = (props) => {
 
     return (
         <Layout.InputArea>
-            <Layout.InputTitle title={'سوابق پزشکی'}/>
-            <IntraSectionInvisibleDivider s/>
+            <IntraSectionInvisibleDivider xs/>
+            <Layout.InputTitle title={'Medical History'}/>
+            <IntraSectionInvisibleDivider xs/>
             <GenericScoreForm medicalConditions={medicalConditions.current} onChange={changeValue}/>
         </Layout.InputArea>
     )
@@ -200,18 +201,18 @@ let scoreItems = [
         options: [
             {
                 id: 0,
-                name: e2p('کم‌تر از ۶۵'),
-                score: 0,
+                name: '> 75',
+                score: 2,
             },
             {
                 id: 1,
-                name: e2p('۶۵ تا ۷۴'),
+                name: '65-74',
                 score: 1,
             },
             {
                 id: 2,
-                name: e2p('۷۵ و بیشتر'),
-                score: 2,
+                name: '< 65',
+                score: 0,
             },
         ],
     },

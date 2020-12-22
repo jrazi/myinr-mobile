@@ -53,7 +53,7 @@ export const DefaultSwitchRow = (props) => {return (
 
 export const TitleWithBadge = (props) => {
     return (
-        <View style={{...LayoutStyles.screenTitle, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',}}>
+        <View style={{...LayoutStyles.screenTitle, flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between',}}>
             <View style={{}}>
                 <Layout.ScreenTitle title={props.title} style={{paddingBottom: 0,}}/>
             </View>
