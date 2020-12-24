@@ -34,3 +34,20 @@ export const PreliminaryStage = {
         },
     ]
 }
+
+export const DrugHistoryStageData = {
+    DRUG_LIST: [
+        {
+            id: 0,
+            name: 'Acetaminphone',
+        },
+        {
+            id: 1,
+            name: 'Novafen',
+        },
+        {
+            id: 2,
+            name: 'Gelofen',
+        },
+    ]
+}

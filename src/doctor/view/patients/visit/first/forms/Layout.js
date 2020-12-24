@@ -11,6 +11,10 @@ const Title = ({style, ...props}) => <_Title style={[WrapperStyles.title, style]
 const Caption = ({style, ...props}) => <_Caption style={[WrapperStyles.caption, style]} {...props}/>;
 const Text = ({style, ...props}) => <_Text style={[WrapperStyles.text, style]} {...props}/>;
 export const TextInputHelperText = ({style, ...props}) => <_HelperText style={[WrapperStyles.helper, style]} {...props}/>;
+export const LayoutText = Text;
+export const LayoutTitle = Title;
+export const LayoutCaption = Caption;
+export const LayoutHeadline = Headline;
 
 export const VisitScreen = (props) => {
     return (
@@ -183,7 +187,7 @@ export const PrimaryText = (props) => {
 export const IntraSectionDivider = (props) => {
     return (
         <View style={{
-            paddingVertical: props.none ? 0 : props.xs ? 5 : props.s ? 10 : props.sm ? 15 : props.m ? 20 : props.l ? 30 : props.xl ? 40 : 20,
+            paddingVertical: props.none ? 0 : props.xxs ? 3 : props.xs ? 5 : props.s ? 10 : props.sm ? 15 : props.m ? 20 : props.l ? 30 : props.xl ? 40 : 20,
         }}>
             <Divider style={[{borderWidth: props.borderWidth}, props.style]}/>
         </View>
@@ -268,7 +272,7 @@ const styles = StyleSheet.create({
     itemsBox: {
         flexDirection: 'row-reverse',
         flexWrap: 'wrap',
-        paddingTop: 10,
+        paddingTop: 5,
     },
     basicElement: {
         paddingHorizontal: 5,

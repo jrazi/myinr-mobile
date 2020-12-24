@@ -1,10 +1,8 @@
-
 import React, {useEffect, useRef, useState} from "react";
-import {StyleSheet, View} from "react-native";
-import {Text} from "react-native-paper";
+import {StyleSheet} from "react-native";
 import {currentTheme} from "../../../../../../theme";
 import * as Layout from "./forms/Layout";
-import {DefaultChip, IntraSectionDivider, IntraSectionInvisibleDivider, ItemsBox} from "./forms/Layout";
+import {IntraSectionDivider} from "./forms/Layout";
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {firstNonEmpty} from "../../../../../root/domain/util/Util";
 import {ChipBox} from "./forms/ContextSpecificComponents";
@@ -29,21 +27,11 @@ export class PastMedicalHistoryStage extends React.Component {
                     <Layout.InputTitle title={'Past Medical Conditions'}/>
                     <MedicalHistoryChipBox userId={this.props.route.params.userId}/>
                 </Layout.FormSection>
-                <IntraSectionDivider m/>
-                <Layout.FormSection>
-                    <Layout.InputTitle title={'Drug History'}/>
-                    <DrugHistoryController/>
-                </Layout.FormSection>
+                {/*<IntraSectionDivider s/>*/}
             </Layout.VisitScreen>
         );
     }
 }
-const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        backgroundColor: currentTheme.colors.surface,
-    }
-})
 
 export const MedicalHistoryChipBox = (props) => {
 
@@ -72,14 +60,6 @@ export const MedicalHistoryChipBox = (props) => {
                 <ChipBox items={medicalConditions} onChange={changeValue}/>
             </Layout.ItemsBox>
         </Layout.InputArea>
-    )
-}
-
-const DrugHistoryController = (props) => {
-    return (
-        <View>
-
-        </View>
     )
 }
 

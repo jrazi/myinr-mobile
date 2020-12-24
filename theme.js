@@ -10,12 +10,18 @@ export const theme = {
         surface: '#fff',
     },
 };
+
+export const Colors = {
+    DEFAULT_RED: '#8D021F',
+}
+
 export const currentTheme = {
     ...DefaultTheme,
     colors: {
         ...DefaultTheme.colors,
         primary: '#03045e',
         accent: '#03045e',
+        secondary: Colors.DEFAULT_RED,
         // accent: '#0077b6',
         background: '#fff',
         surface: '#fff',
@@ -63,7 +69,3 @@ export const mostlyWhiteTheme = {
         backdrop: '#fff',
     },
 };
-
-export const Colors = {
-    DEFAULT_RED: '#8D021F',
-}
