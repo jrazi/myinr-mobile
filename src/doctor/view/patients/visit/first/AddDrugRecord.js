@@ -2,12 +2,13 @@ import React, {useRef, useState} from "react";
 import * as Layout from "./forms/Layout";
 import * as MainLayout from '../../../../../root/view/layout/Layout';
 import {Caption, Searchbar, Appbar, Portal, Text, List, TouchableRipple} from "react-native-paper";
-import {View, ScrollView, FlatList, Animated} from 'react-native';
+import {View, ScrollView, FlatList, Animated, RefreshControl} from 'react-native';
 import {ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {debugBorderRed} from "../../../../../root/view/styles/borders";
 import {IntraSectionDivider} from "./forms/Layout";
 import {DrugHistoryStageData} from "./Data";
 import {drugDao} from "../../../../data/dao/DrugDao";
+import {currentTheme} from "../../../../../../theme";
 
 
 export class AddDrugRecord extends React.Component {
@@ -16,25 +17,33 @@ export class AddDrugRecord extends React.Component {
         this.state = {
             loaded: false,
             drugGroups: {},
+            searching: false,
         }
+        this.latestSearchId = 0;
     }
 
     componentDidMount() {
     }
 
 
-    updateDrugs = (drugGroups) => {
-        this.setState({drugGroups: drugGroups});
+    updateDrugs = (drugGroups, callback = ()=>{}) => {
+        this.setState({drugGroups: drugGroups}, callback);
     }
 
     searchDrugs = (query) => {
-        drugDao.aggregateSearchByRouteOfAdmin(query)
-            .then(drugs => {
-                this.updateDrugs(drugs);
-            })
-            .catch(err => {
-                // TODO
-            })
+        const timestamp = new Date().getTime();
+        const initialSearchId = timestamp;
+        this.latestSearchId = timestamp;
+        this.setState({searching: true}, () => {
+            drugDao.aggregateSearchByRouteOfAdmin(query)
+                .then(drugs => {
+                    if (initialSearchId < this.latestSearchId) return;
+                    this.updateDrugs(drugs, () => this.setState({searching: false}));
+                })
+                .catch(err => {
+                    // TODO
+                })
+        })
     }
     render() {
         return (
@@ -45,7 +54,7 @@ export class AddDrugRecord extends React.Component {
                     >
                         <SearchBox searchDrugs={this.searchDrugs}/>
                         <IntraSectionDivider none/>
-                        <DrugList drugGroups={this.state.drugGroups}/>
+                        <DrugList drugGroups={this.state.drugGroups} refreshing={this.state.searching}/>
                     </Wrapper>
                 </ScreenLayout>
             </Portal>
@@ -71,12 +80,13 @@ const SearchBox = (props) => {
 
     const onChangeSearch = query => {
         setSearchQuery(query);
-        const initialSearchId = latestSearchId.current+1;
-        latestSearchId.current += 1;
+        const timestamp = new Date().getTime();
+        const initialSearchId = timestamp;
+        latestSearchId.current = timestamp;
         setTimeout(() => {
             if (initialSearchId < latestSearchId.current) return;
             props.searchDrugs(query);
-        }, 1500);
+        }, 1000);
     }
 
     return (
@@ -84,6 +94,7 @@ const SearchBox = (props) => {
             placeholder="Search Drugs"
             onChangeText={onChangeSearch}
             value={searchQuery}
+            autoFocus={true}
             style={{
                 flexDirection: 'row-reverse',
                 marginHorizontal: 0,
@@ -117,6 +128,9 @@ const DrugList = (props) => {
                     opacity: fadeAnim,
                     marginBottom: 30
                 }}
+                refreshControl={
+                    <RefreshControl refreshing={props.refreshing} colors={[currentTheme.colors.primary]} />
+                }
             >
             {
                 Object.entries(props.drugGroups)
