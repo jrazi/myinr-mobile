@@ -6,6 +6,7 @@ import {stages} from "./FirstVisitProperties";
 import {createStackNavigator} from "@react-navigation/stack";
 import {StyleSheet, View} from "react-native";
 import {fullSize} from "../../../../../root/view/styles/containers";
+import {AddDrugRecord} from "./AddDrugRecord";
 
 export default class StageNavigator extends React.Component {
     constructor(props) {
@@ -99,6 +100,15 @@ const StageNavStack = (props) => {
                 )
             })
         }
+        {[
+            <Stack.Screen
+                name={`Secondary:AddDrugRecord`}
+                component={AddDrugRecord}
+                options={{ headerShown: false , headerTitle: props => null }}
+                initialParams={{visitInfo: props.visitInfo, userId: props.userId}}
+                key={`Secondary:AddDrugRecord`}
+            />
+        ]}
 
     </Stack.Navigator>
 )}

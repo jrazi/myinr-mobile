@@ -13,6 +13,8 @@ import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {ConditionalRender} from "./forms/Layout";
 import {LoadingScreen} from "../../../../../root/view/loading/Loading";
+import {AddDrugRecord} from "./AddDrugRecord";
+import {createStackNavigator} from "@react-navigation/stack";
 // import RNRestart from 'react-native-restart';
 
 export class FirstVisitScreen extends React.Component {
