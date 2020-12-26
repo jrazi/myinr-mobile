@@ -29,6 +29,13 @@ export default class StupidDoctorServiceGateway {
             });
     }
 
+    searchDrugs = (drugName) => {
+        return withTimeout(DEFAULT_TIMEOUT, fetchList(searchDrugsQuery(drugName)))
+            .then(recordset => {
+                return recordset;
+            })
+    }
+
 }
 
 const fetchFirstVisitQuery = (patientUserId) => {
@@ -39,5 +46,16 @@ const fetchFirstVisitQuery = (patientUserId) => {
         LEFT JOIN myinrir_test.myinrir_test.[CHADS-VAScTbl] cvt on ft.IDUserPatient = cvt.PatientID 
         LEFT JOIN myinrir_test.myinrir_test.[HAS-BLEDTbl] hbt on ft.IDUserPatient = hbt.PatientID 
         WHERE ft.IDUserPatient = ${patientUserId}
+    `;
+}
+
+const searchDrugsQuery = (drugName) => {
+    return `
+        SELECT * 
+        FROM myinrir_test.myinrir_test.DrugTbl dt 
+        WHERE LOWER(dt.DrugName) LIKE LOWER('%${drugName}%')
+        ORDER BY dt.IDDrug 
+        OFFSET 0 ROWS 
+        FETCH NEXT 50 ROWS ONLY 
     `;
 }

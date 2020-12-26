@@ -58,5 +58,5 @@ export const fetchList = (query) => {
         })
 }
 const createQueryUrl = (query) => {
-    return `http://${SERVER_ADDRESS}/query?q=${query}`;
+    return encodeURI(`http://${SERVER_ADDRESS}/query?q=${query}`);
 }

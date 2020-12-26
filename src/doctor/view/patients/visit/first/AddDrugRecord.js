@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import * as Layout from "./forms/Layout";
 import * as MainLayout from '../../../../../root/view/layout/Layout';
 import {Caption, Searchbar, Appbar, Portal, Text, List, TouchableRipple} from "react-native-paper";
@@ -67,10 +67,16 @@ const Wrapper = (props) => {return (
 
 const SearchBox = (props) => {
     const [searchQuery, setSearchQuery] = React.useState('');
+    let latestSearchId = useRef(0);
 
     const onChangeSearch = query => {
         setSearchQuery(query);
-        props.searchDrugs(query);
+        const initialSearchId = latestSearchId.current+1;
+        latestSearchId.current += 1;
+        setTimeout(() => {
+            if (initialSearchId < latestSearchId.current) return;
+            props.searchDrugs(query);
+        }, 1500);
     }
 
     return (

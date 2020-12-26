@@ -1,3 +1,4 @@
+import {doctorService} from "../server/DoctorServiceGateway";
 
 
 class DrugDao {
@@ -6,7 +7,8 @@ class DrugDao {
     }
 
     searchDrugs = (drugName) => {
-        return DRUG_LIST;
+        return doctorService.searchDrugs(drugName)
+            .then(drugList => drugList);
     }
 
     aggregateSearchByRouteOfAdmin = async (drugName) => {
