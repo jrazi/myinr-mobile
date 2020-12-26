@@ -1,14 +1,17 @@
 import React, {useRef, useState} from "react";
 import * as Layout from "./forms/Layout";
 import * as MainLayout from '../../../../../root/view/layout/Layout';
-import {Caption, Searchbar, Appbar, Portal, Text, List, TouchableRipple} from "react-native-paper";
-import {View, ScrollView, FlatList, Animated, RefreshControl} from 'react-native';
-import {ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
+import {Caption, Searchbar, Appbar, Portal, Text, List, TouchableRipple, Surface, Title} from "react-native-paper";
+import {View, ScrollView, FlatList, Animated, RefreshControl, StyleSheet} from 'react-native';
+import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {debugBorderRed} from "../../../../../root/view/styles/borders";
 import {IntraSectionDivider} from "./forms/Layout";
 import {DrugHistoryStageData} from "./Data";
 import {drugDao} from "../../../../data/dao/DrugDao";
-import {currentTheme} from "../../../../../../theme";
+import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
+import {hasValue} from "../../../../../root/domain/util/Util";
+import {useNavigation} from "@react-navigation/native";
+import {fullSize} from "../../../../../root/view/styles/containers";
 
 
 export class AddDrugRecord extends React.Component {
@@ -27,6 +30,7 @@ export class AddDrugRecord extends React.Component {
 
 
     updateDrugs = (drugGroups, callback = ()=>{}) => {
+
         this.setState({drugGroups: drugGroups}, callback);
     }
 
@@ -50,10 +54,14 @@ export class AddDrugRecord extends React.Component {
             <Portal>
                 <ScreenLayout
                 >
+                    <SearchBoxContainer
+                        navigation={this.props.navigation}
+                    >
+                        <SearchBox searchDrugs={this.searchDrugs} />
+                    </SearchBoxContainer>
+
                     <Wrapper
                     >
-                        <SearchBox searchDrugs={this.searchDrugs}/>
-                        <IntraSectionDivider none/>
                         <DrugList drugGroups={this.state.drugGroups} refreshing={this.state.searching}/>
                     </Wrapper>
                 </ScreenLayout>
@@ -65,7 +73,7 @@ export class AddDrugRecord extends React.Component {
 const Wrapper = (props) => {return (
     <View
         style={{
-            paddingVertical: 40,
+            // paddingVertical: 40,
             // paddingHorizontal: 10,
             borderBottomWidth: 0,
         }}
@@ -86,7 +94,7 @@ const SearchBox = (props) => {
         setTimeout(() => {
             if (initialSearchId < latestSearchId.current) return;
             props.searchDrugs(query);
-        }, 1000);
+        }, 200);
     }
 
     return (
@@ -101,11 +109,14 @@ const SearchBox = (props) => {
                 paddingHorizontal: 0,
                 borderWidth: 0,
                 elevation: 0,
+                paddingTop: 20,
+                paddingBottom: 20,
+                fontSize: 20,
                 // paddingVertical: 20,
             }}
             inputStyle={{
                 textAlign: 'left',
-                paddingVertical: 20,
+                fontSize: 20,
             }}
         />
     );
@@ -195,3 +206,59 @@ const styles = {
         textAlign: 'right',
     }
 }
+
+export const SearchBoxContainer = (props) => {
+    return (
+        <Surface style={searchBoxStyles.appBarHeader}>
+            <View style={searchBoxStyles.appBarHeaderWrapper}>
+                <View style={searchBoxStyles.headerOfHeader}>
+                    <Appbar.Action icon="arrow-left" onPress={() => props.navigation.goBack()} color={currentTheme.colors.placeholder}/>
+                </View>
+                <View style={searchBoxStyles.bodyOfHeader}>
+                    {props.children}
+                </View>
+            </View>
+        </Surface>
+    )
+}
+
+const searchBoxStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
+        ...fullSize,
+    },
+    appBarHeader: {
+        elevation: 4,
+        paddingLeft: 15,
+        paddingRight: 10,
+        paddingTop: 40,
+    },
+    appBarHeaderWrapper: {
+        flexGrow: 1,
+    },
+    headerOfHeader: {
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    bodyOfHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        // paddingVertical: 20,
+    },
+    avatar: {
+        backgroundColor: currentTheme.colors.primary,
+    },
+    containerBody: {
+        padding: 20,
+    },
+    profileMenuItemContainer: {
+        elevation: 4,
+        marginVertical: 10,
+    },
+    profileMenuItem: {
+    }
+});

@@ -13,16 +13,20 @@ export const ScreenLayout = (props) => {
     )
 }
 
-export const ScreenHeader = (props) => {
+export const ScreenHeader = ({style, title, navigation, ...props}) => {
     return (
-        <CustomContentScreenHeader style={props.style}>
-            <Appbar.Content color={currentTheme.colors.primary} title={props.title}  />
+        <CustomContentScreenHeader style={style} navigation={navigation}>
+            <Appbar.Content color={currentTheme.colors.primary}  title={title}/>
         </CustomContentScreenHeader>
     );
 }
 
 export const CustomContentScreenHeader = (props) => {
-    let navigation = useNavigation();
+    let navigation = null;
+    if (hasValue(props.navigation))
+        navigation = props.navigation;
+    else navigation = useNavigation();
+
     let goBackAction = hasValue(props.onBack) ? () => {props.onBack(navigation)} : () => {navigation.goBack()};
     return (
         <Appbar.Header
