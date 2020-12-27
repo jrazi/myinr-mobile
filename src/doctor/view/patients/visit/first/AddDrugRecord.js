@@ -1,16 +1,11 @@
 import React, {useRef, useState} from "react";
 import * as Layout from "./forms/Layout";
-import * as MainLayout from '../../../../../root/view/layout/Layout';
 import {Caption, Searchbar, Appbar, Portal, Text, List, TouchableRipple, Surface, Title} from "react-native-paper";
 import {View, ScrollView, FlatList, Animated, RefreshControl, StyleSheet} from 'react-native';
 import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
-import {debugBorderRed} from "../../../../../root/view/styles/borders";
 import {IntraSectionDivider} from "./forms/Layout";
-import {DrugHistoryStageData} from "./Data";
 import {drugDao} from "../../../../data/dao/DrugDao";
 import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
-import {hasValue} from "../../../../../root/domain/util/Util";
-import {useNavigation} from "@react-navigation/native";
 import {fullSize} from "../../../../../root/view/styles/containers";
 
 
@@ -21,6 +16,7 @@ export class AddDrugRecord extends React.Component {
             loaded: false,
             drugGroups: {},
             searching: false,
+            beganToSearch: false,
         }
         this.latestSearchId = 0;
     }
@@ -28,6 +24,8 @@ export class AddDrugRecord extends React.Component {
     componentDidMount() {
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+    }
 
     updateDrugs = (drugGroups, callback = ()=>{}) => {
 
@@ -42,7 +40,7 @@ export class AddDrugRecord extends React.Component {
             drugDao.aggregateSearchByRouteOfAdmin(query)
                 .then(drugs => {
                     if (initialSearchId < this.latestSearchId) return;
-                    this.updateDrugs(drugs, () => this.setState({searching: false}));
+                    this.updateDrugs(drugs, () => this.setState({searching: false, beganToSearch: true}));
                 })
                 .catch(err => {
                     // TODO
@@ -62,7 +60,11 @@ export class AddDrugRecord extends React.Component {
 
                     <Wrapper
                     >
-                        <DrugList drugGroups={this.state.drugGroups} refreshing={this.state.searching}/>
+                        <DrugList
+                            drugGroups={this.state.drugGroups}
+                            refreshing={this.state.searching}
+                            beganToSearch={this.state.beganToSearch}
+                        />
                     </Wrapper>
                 </ScreenLayout>
             </Portal>
@@ -94,7 +96,7 @@ const SearchBox = (props) => {
         setTimeout(() => {
             if (initialSearchId < latestSearchId.current) return;
             props.searchDrugs(query);
-        }, 200);
+        }, 500);
     }
 
     return (
@@ -144,6 +146,15 @@ const DrugList = (props) => {
                 }
             >
             {
+                Object.keys(props.drugGroups).length == 0 && !props.refreshing ?
+                    (
+                        <View style={{paddingTop: 20, alignItems: 'center'}}>
+                            <Caption style={{paddingVertical: 10,fontSize: 16}}>
+                                {props.beganToSearch ? 'No Result' : 'Search the name of the drug.'}
+                            </Caption>
+                        </View>
+                    )
+                :
                 Object.entries(props.drugGroups)
                     .map( ([key, drugList]) => {
                         return (
