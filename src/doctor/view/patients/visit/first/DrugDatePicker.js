@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Button, Dialog, List, Portal, Subheading, Surface, Text, TouchableRipple} from "react-native-paper";
 import {View} from 'react-native';
 import {ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
@@ -8,15 +8,35 @@ import {IntraSectionDivider} from "./forms/Layout";
 import {FormSubmissionStatus} from "../../../../../root/view/FormSubmissionStatus";
 import {currentTheme} from "../../../../../../theme";
 import * as Locale from "../../../../../login/view/Locale";
+import {DefaultDatePicker} from "./forms/JalaliDatePicker";
+import {visitDao} from "../../../../data/dao/VisitDao";
 
 export class DrugDatePicker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            sinceDate: null,
+            untilDate: null,
         }
+        this.drugHistory = [];
     }
 
     componentDidMount() {
+        this.drugHistory = visitDao.getVisits(this.props.userId).drugHistory;
+    }
+
+    setSinceDate = (date) => this.setState({sinceDate: date});
+    setUntilDate = (date) => this.setState({untilDate: date});
+
+    addDrug = () => {
+        this.drugHistory.push(
+            {
+                drugInfo: this.props.drugInfo,
+                since: this.state.sinceDate,
+                until: this.state.untilDate,
+            }
+        );
+        this.props.navigation.goBack();
     }
 
     render() {
@@ -28,18 +48,23 @@ export class DrugDatePicker extends React.Component {
                                 elevation: 4,
                             }}
                         >
-                            <Layout.InputTitle
-                                title={'Consumption Period'}
-                                style={{paddingHorizontal: 10, paddingTop: 20}}
-                            />
+                            <Dialog.Title
+                                style={{textAlign: 'right'}}
+                            >
+                                Consumption Period
+                            </Dialog.Title>
                             <DateInput
                                 title={'Since'}
+                                value={this.state.sinceDate}
+                                onDateChange={this.setSinceDate}
                             />
                             <View style={{paddingHorizontal: 20}}>
                                 <IntraSectionDivider none/>
                             </View>
                             <DateInput
-                                title={'Until'}
+                                title={'Until '}
+                                value={this.state.untilDate}
+                                onDateChange={this.setUntilDate}
                             />
                             <Button
                                 style={styles.addDrugButton}
@@ -47,7 +72,7 @@ export class DrugDatePicker extends React.Component {
                                 mode={'contained'}
                                 loading={false}
                                 disabled={false}
-                                onPress={() => {}}
+                                onPress={this.addDrug}
                             >
                                 <Subheading style={{color: currentTheme.colors.background}}>Add Drug</Subheading>
                             </Button>
@@ -59,19 +84,27 @@ export class DrugDatePicker extends React.Component {
 }
 
 const DateInput = (props) => {
+    const [modalVisible, setModalVisible] = useState(false);
     return (
         <Surface style={styles.dateInput.surface}>
             <TouchableRipple
-                onPress={props.onPress != undefined ? props.onPress : (() => {})}
+                onPress={() => setModalVisible(true)}
                 rippleColor="rgba(0, 0, 0, .2)"
             >
                 <List.Item
-                    title={props.title}
+                    title={`${props.title} ${props.value || ''}`}
                     titleStyle={{...styles.alignRight}}
-                    right={() => <List.Icon icon="calendar-month-outline"/>}
-                    left={props => <List.Icon icon="arrow-right"/>}
+                    right={() => <List.Icon icon="calendar-month-outline" color={currentTheme.colors.primary}/>}
+                    left={props => <List.Icon icon="chevron-right" color={currentTheme.colors.backdrop}/>}
                 />
             </TouchableRipple>
+            <DatePickerModal
+                visible={modalVisible}
+                onDateChange={(date) => {
+                    setModalVisible(false);
+                    props.onDateChange(date);
+                }}
+            />
         </Surface>
     );
 }
@@ -92,4 +125,13 @@ const styles = {
     addDrugButtonContent: {
 
     }
+}
+
+const DatePickerModal = (props) => {
+    return (
+        <DefaultDatePicker
+            visible={props.visible}
+            onDateChange={props.onDateChange}
+        />
+    )
 }

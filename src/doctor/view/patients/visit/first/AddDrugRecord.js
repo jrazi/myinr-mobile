@@ -86,6 +86,8 @@ export class AddDrugRecord extends React.Component {
                         visible={this.state.datePickerOpen}
                         onDismiss={this.closeDatePicker}
                         drugInfo={this.drugBeingAdded}
+                        navigation={this.props.navigation}
+                        userId={this.props.route.params.userId}
                     />
                 </ScreenLayout>
             </Portal>

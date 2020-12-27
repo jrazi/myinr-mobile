@@ -109,13 +109,6 @@ const StageNavStack = (props) => {
                 initialParams={{visitInfo: props.visitInfo, userId: props.userId}}
                 key={`Secondary:AddDrugRecord`}
             />,
-            <Stack.Screen
-                name={`Secondary:DrugDatePicker`}
-                component={DrugDatePicker}
-                options={{ headerShown: false , headerTitle: props => null }}
-                initialParams={{userId: props.userId, drugInfo: {}}}
-                key={`Secondary:DrugDatePicker`}
-            />
         ]}
 
     </Stack.Navigator>

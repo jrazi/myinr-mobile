@@ -1,6 +1,6 @@
 import {View, FlatList} from "react-native";
 import React from "react";
-import {Avatar, Button, Text, List, IconButton} from "react-native-paper";
+import {Avatar, Button, Text, List, IconButton, Caption} from "react-native-paper";
 import * as Layout from "./forms/Layout";
 import {Colors, currentTheme} from "../../../../../../theme";
 import {IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
@@ -19,9 +19,18 @@ export class DrugHistoryStage extends React.Component {
     }
 
     componentDidMount() {
+        this.refreshRecords();
+        this.props.navigation.addListener(
+            'focus',
+            payload => {
+                this.refreshRecords();
+            }
+        );
+    }
+
+    refreshRecords = () => {
         this.setState({loaded: false}, () => {
             this.state.drugHistory = visitDao.getVisits(this.props.route.params.userId).drugHistory;
-            this.state.drugHistory = tempDrugList;
             this.setState({loaded: true});
         })
     }
@@ -59,14 +68,24 @@ const DrugRecords = (props) => {
     return (
         <List.Section>
             {
+                props.records.length == 0 ?
+                    (
+                        <View style={{paddingTop: 20, alignItems: 'center'}}>
+                            <Caption style={{paddingVertical: 10,fontSize: 16}}>
+                                No records have been added
+                            </Caption>
+                        </View>
+                    )
+                :
                 props.records.map((item, index) => {
+                    let drugInfo = item.drugInfo;
                     return (
-                        <View key={`DrugRecord${item.id}`}>
+                        <View key={`DrugRecord${drugInfo.IDDrug}`}>
                             <SingleDrugRecord
-                                name={item.name}
+                                name={drugInfo.DrugName}
                                 since={item.since}
                                 until={item.until}
-                                onDelete={() => props.onDelete(item.id)}
+                                onDelete={() => props.onDelete(drugInfo.IDDrug)}
                             />
                             {index == props.records.length-1 ? null : <IntraSectionDivider s/>}
                         </View>
@@ -82,7 +101,7 @@ const SingleDrugRecord = (props) => {
         <Layout.Row justifyBetween>
             <View>
                 <Layout.InputTitle title={props.name}/>
-                <Layout.LayoutCaption>{props.since} - {props.until}</Layout.LayoutCaption>
+                <Layout.LayoutCaption>{firstNonEmpty(props.since, 'NA')} - {firstNonEmpty(props.until, 'NA')}</Layout.LayoutCaption>
             </View>
             <View>
                 <IconButton
@@ -99,30 +118,8 @@ const SingleDrugRecord = (props) => {
 }
 
 let deleteItem = (list, id) => {
-    let deleted = null;
-    let index = list.findIndex(item => item.id == id);
+    let index = list.findIndex(item => item.drugInfo.IDDrug == id);
     if (index == -1) return null;
 
-    list.splice(index, 1);
+    return list.splice(index, 1);
 }
-
-let tempDrugList = [
-    {
-        id: 0,
-        name: 'Acetaminphone',
-        since: '1399-06-07',
-        until: '1399-11-22',
-    },
-    {
-        id: 1,
-        name: 'Novafen',
-        since: '1399-06-07',
-        until: '1399-11-22',
-    },
-    {
-        id: 2,
-        name: 'Gelofen',
-        since: '1399-06-07',
-        until: '1399-11-22',
-    },
-]
