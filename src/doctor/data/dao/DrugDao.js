@@ -1,7 +1,7 @@
 import {doctorService} from "../server/DoctorServiceGateway";
 
 
-class DrugDao {
+export class DrugDao {
 
     constructor() {
     }

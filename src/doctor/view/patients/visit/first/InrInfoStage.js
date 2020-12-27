@@ -85,7 +85,7 @@ export class InrInfoStage extends React.Component {
                             <Layout.FormSection>
                                 <SwitchRow
                                     title={'Self-Test'}
-                                    description={'Did the test taken place at home?'}
+                                    description={'Did the test take place at home?'}
                                     value={this.state.latestInrAtHome}
                                     onChange={this.toggleLatestInrAtHome}
                                 />
@@ -171,7 +171,6 @@ export class InrInfoStage extends React.Component {
                         )
                     }}
                 </Formik>
-                <IntraSectionInvisibleDivider xl/>
                 {/*<DefaultDatePicker/>*/}
             </Layout.VisitScreen>
         );
@@ -233,7 +232,7 @@ const DateInput = (props) => {
             <TextInput
                 label={props.label}
                 // value={}
-                value={getFormattedJalaliDate(jalaliToGeorgian(dateValue))}
+                value={dateValue}
 
                 placeholder={props.placeholder}
                 onChangeText={props.onChangeText}
@@ -250,7 +249,7 @@ const DateInput = (props) => {
                     fontSize: 14,
                     flexGrow: 0,
                     paddingHorizontal: 0,
-                    textAlign: 'right',
+                    textAlign: 'left',
 
                     ...props.style
                 }}

@@ -4,11 +4,12 @@ import {Caption, Searchbar, Appbar, Portal, Text, List, TouchableRipple, Surface
 import {View, ScrollView, FlatList, Animated, RefreshControl, StyleSheet} from 'react-native';
 import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {IntraSectionDivider} from "./forms/Layout";
-import {drugDao} from "../../../../data/dao/DrugDao";
+import {DrugDao, drugDao} from "../../../../data/dao/DrugDao";
 import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
 import {fullSize} from "../../../../../root/view/styles/containers";
 import {DefaultDatePicker} from "./forms/JalaliDatePicker";
 import {DrugDatePicker} from "./DrugDatePicker";
+import {hasValue, removeWhiteSpace} from "../../../../../root/domain/util/Util";
 
 
 export class AddDrugRecord extends React.Component {
@@ -46,19 +47,26 @@ export class AddDrugRecord extends React.Component {
         this.setState({datePickerOpen: false});
     }
 
-    searchDrugs = (query) => {
+    searchDrugs = async (query) => {
         const timestamp = new Date().getTime();
         const initialSearchId = timestamp;
         this.latestSearchId = timestamp;
+        if (!hasValue(query) || removeWhiteSpace(query) == '') {
+            this.setState({searching: false});
+            return;
+        }
         this.setState({searching: true}, () => {
-            drugDao.aggregateSearchByRouteOfAdmin(query)
-                .then(drugs => {
-                    if (initialSearchId < this.latestSearchId) return;
-                    this.updateDrugs(drugs, () => this.setState({searching: false, beganToSearch: true}));
-                })
-                .catch(err => {
-                    // TODO
-                })
+            setTimeout(() => {
+                if (initialSearchId < this.latestSearchId) return;
+                new DrugDao().aggregateSearchByRouteOfAdmin(query)
+                    .then(drugs => {
+                        if (initialSearchId < this.latestSearchId) return;
+                        this.updateDrugs(drugs, () => this.setState({searching: false, beganToSearch: true}));
+                    })
+                    .catch(err => {
+                        // TODO
+                    })
+            }, 500)
         })
     }
     render() {
@@ -98,8 +106,6 @@ export class AddDrugRecord extends React.Component {
 const Wrapper = (props) => {return (
     <View
         style={{
-            // paddingVertical: 40,
-            // paddingHorizontal: 10,
             borderBottomWidth: 0,
         }}
     >
@@ -113,13 +119,11 @@ const SearchBox = (props) => {
 
     const onChangeSearch = query => {
         setSearchQuery(query);
-        const timestamp = new Date().getTime();
-        const initialSearchId = timestamp;
-        latestSearchId.current = timestamp;
-        setTimeout(() => {
-            if (initialSearchId < latestSearchId.current) return;
-            props.searchDrugs(query);
-        }, 500);
+        // const timestamp = new Date().getTime();
+        // const initialSearchId = timestamp;
+        // latestSearchId.current = timestamp;
+        // if (initialSearchId < latestSearchId.current) return;
+        props.searchDrugs(query);
     }
 
     return (
@@ -148,24 +152,14 @@ const SearchBox = (props) => {
 };
 
 const DrugList = (props) => {
-    const [fadeAnim] = useState(new Animated.Value(0));
-
-    React.useEffect(() => {
-        Animated.timing(fadeAnim, {
-            toValue: 1,
-            duration: 350,
-            useNativeDriver: false,
-        }).start();
-    }, [props.drugGroups]);
 
     const pickDatesForDrug = (drugInfo) => {
         props.pickDateForDrug(drugInfo);
     }
 
     return (
-            <Animated.ScrollView
+            <ScrollView
                 style={{
-                    opacity: fadeAnim,
                     marginBottom: 30
                 }}
                 refreshControl={
@@ -205,7 +199,7 @@ const DrugList = (props) => {
                         )
                     })
             }
-            </Animated.ScrollView>
+            </ScrollView>
     )
 }
 
