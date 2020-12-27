@@ -13,10 +13,15 @@ export const ScreenLayout = (props) => {
     )
 }
 
-export const ScreenHeader = ({style, title, navigation, ...props}) => {
+export const ScreenHeader = ({style, title, navigation, reverse, contentStyle, ...props}) => {
+    const reverseContentStyle = {alignItems: 'flex-end'};
+    let _contentStyle = [
+        reverse ? reverseContentStyle : null,
+        contentStyle
+    ];
     return (
-        <CustomContentScreenHeader style={style} navigation={navigation}>
-            <Appbar.Content color={currentTheme.colors.primary}  title={title}/>
+        <CustomContentScreenHeader style={style} navigation={navigation} reverse={reverse}>
+            <Appbar.Content color={currentTheme.colors.primary} title={title} style={_contentStyle}/>
         </CustomContentScreenHeader>
     );
 }
@@ -40,8 +45,16 @@ export const CustomContentScreenHeader = (props) => {
             }}
             theme={mostlyWhiteTheme}
         >
-            {props.children}
-            <Appbar.Action icon="arrow-left" onPress={goBackAction} color={currentTheme.colors.placeholder}/>
+            {
+                props.reverse ? [
+                        <Appbar.Action icon="arrow-right" onPress={goBackAction} color={currentTheme.colors.placeholder}/>,
+                        props.children,
+                ] :
+                [
+                    props.children,
+                    <Appbar.Action icon="arrow-left" onPress={goBackAction} color={currentTheme.colors.placeholder}/>
+                ]
+            }
         </Appbar.Header>
     );
 }

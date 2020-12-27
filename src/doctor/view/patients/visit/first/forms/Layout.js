@@ -3,8 +3,6 @@ import {currentTheme, mostlyWhiteTheme} from "../../../../../../../theme";
 import {StyleSheet, View, ScrollView} from "react-native";
 import {Title as _Title, Caption as _Caption, Headline as _Headline, Divider, Text as _Text, Chip, HelperText as _HelperText} from "react-native-paper";
 import {hasValue, removeWhiteSpace} from "../../../../../../root/domain/util/Util";
-import {fullWidth} from "../../../../../../root/view/styles/containers";
-import {debugBorderBlue} from "../../../../../../root/view/styles/borders";
 
 const Headline = ({style, ...props}) => <_Headline style={[WrapperStyles.headline, style]} {...props}/>;
 const Title = ({style, ...props}) => <_Title style={[WrapperStyles.title, style]} {...props}/>;
@@ -24,6 +22,17 @@ export const VisitScreen = (props) => {
             {props.children}
             <IntraSectionInvisibleDivider s/>
         </ScrollView>
+    )
+}
+
+export const ViewScreen = (props) => {
+    return (
+        <View
+            style={[styles.screenWrapper, props.style]}
+        >
+            {props.children}
+            <IntraSectionInvisibleDivider s/>
+        </View>
     )
 }
 

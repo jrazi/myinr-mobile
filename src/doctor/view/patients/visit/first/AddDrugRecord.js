@@ -7,6 +7,8 @@ import {IntraSectionDivider} from "./forms/Layout";
 import {drugDao} from "../../../../data/dao/DrugDao";
 import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
 import {fullSize} from "../../../../../root/view/styles/containers";
+import {DefaultDatePicker} from "./forms/JalaliDatePicker";
+import {DrugDatePicker} from "./DrugDatePicker";
 
 
 export class AddDrugRecord extends React.Component {
@@ -17,8 +19,10 @@ export class AddDrugRecord extends React.Component {
             drugGroups: {},
             searching: false,
             beganToSearch: false,
+            datePickerOpen: false,
         }
         this.latestSearchId = 0;
+        this.drugBeingAdded = null;
     }
 
     componentDidMount() {
@@ -30,6 +34,16 @@ export class AddDrugRecord extends React.Component {
     updateDrugs = (drugGroups, callback = ()=>{}) => {
 
         this.setState({drugGroups: drugGroups}, callback);
+    }
+
+    openDatePicker = (drugInfo) => {
+        this.drugBeingAdded = drugInfo;
+        this.setState({datePickerOpen: true});
+    }
+
+    closeDatePicker = () => {
+        this.drugBeingAdded = null;
+        this.setState({datePickerOpen: false});
     }
 
     searchDrugs = (query) => {
@@ -64,8 +78,15 @@ export class AddDrugRecord extends React.Component {
                             drugGroups={this.state.drugGroups}
                             refreshing={this.state.searching}
                             beganToSearch={this.state.beganToSearch}
+                            navigation={this.props.navigation}
+                            pickDateForDrug={this.openDatePicker}
                         />
                     </Wrapper>
+                    <DrugDatePicker
+                        visible={this.state.datePickerOpen}
+                        onDismiss={this.closeDatePicker}
+                        drugInfo={this.drugBeingAdded}
+                    />
                 </ScreenLayout>
             </Portal>
         );
@@ -135,6 +156,10 @@ const DrugList = (props) => {
         }).start();
     }, [props.drugGroups]);
 
+    const pickDatesForDrug = (drugInfo) => {
+        props.pickDateForDrug(drugInfo);
+    }
+
     return (
             <Animated.ScrollView
                 style={{
@@ -169,6 +194,7 @@ const DrugList = (props) => {
                                                 isLast={index == drugList.length-1}
                                                 dosageForm={drug.DosageForm}
                                                 strength={drug.Strengh}
+                                                onPress={() => pickDatesForDrug(drug)}
                                             />
                                         )
                                     })
@@ -192,7 +218,10 @@ const DrugInfo = (props) => {
         )
     }
     return (
-        <TouchableRipple onPress={() => {}} delayPressIn={ 100 }>
+        <TouchableRipple
+            onPress={() => {}} onPressOut={props.onPress} delayPressIn={ 100 } delayPressOut={ 50 }
+            pressRetentionOffset={100}
+        >
             <View key={`DrugSearch${props.id}`} style={{paddingHorizontal: 10}}>
                 <List.Item
                     title={props.name} titleStyle={styles.drugListItem.title}
@@ -223,7 +252,7 @@ export const SearchBoxContainer = (props) => {
         <Surface style={searchBoxStyles.appBarHeader}>
             <View style={searchBoxStyles.appBarHeaderWrapper}>
                 <View style={searchBoxStyles.headerOfHeader}>
-                    <Appbar.Action icon="arrow-left" onPress={() => props.navigation.goBack()} color={currentTheme.colors.placeholder}/>
+                    <Appbar.Action icon="arrow-right" onPress={() => props.navigation.goBack()} color={currentTheme.colors.placeholder}/>
                 </View>
                 <View style={searchBoxStyles.bodyOfHeader}>
                     {props.children}
@@ -250,7 +279,7 @@ const searchBoxStyles = StyleSheet.create({
         flexGrow: 1,
     },
     headerOfHeader: {
-        flexDirection: 'row-reverse',
+        flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
     },
@@ -260,16 +289,4 @@ const searchBoxStyles = StyleSheet.create({
         alignItems: 'center',
         // paddingVertical: 20,
     },
-    avatar: {
-        backgroundColor: currentTheme.colors.primary,
-    },
-    containerBody: {
-        padding: 20,
-    },
-    profileMenuItemContainer: {
-        elevation: 4,
-        marginVertical: 10,
-    },
-    profileMenuItem: {
-    }
 });
