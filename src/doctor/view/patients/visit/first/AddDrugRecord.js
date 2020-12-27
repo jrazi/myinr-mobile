@@ -177,7 +177,7 @@ const DrugList = (props) => {
                     (
                         <View style={{paddingTop: 20, alignItems: 'center'}}>
                             <Caption style={{paddingVertical: 10,fontSize: 16}}>
-                                {props.beganToSearch ? 'No Result' : 'Search the name of the drug.'}
+                                {props.beganToSearch ? 'No Results' : 'Search the name of the drug.'}
                             </Caption>
                         </View>
                     )

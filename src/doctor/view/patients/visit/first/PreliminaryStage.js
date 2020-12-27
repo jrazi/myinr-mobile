@@ -1,7 +1,12 @@
 import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, View, ScrollView} from "react-native";
 import * as Layout from './forms/Layout';
-import {ConditionalRender, IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
+import {
+    ConditionalCollapsibleRender,
+    ConditionalRender,
+    IntraSectionDivider,
+    IntraSectionInvisibleDivider
+} from "./forms/Layout";
 import * as Data from './Data';
 import {ChipBox, DefaultSwitchRow} from "./forms/ContextSpecificComponents";
 import {WeeklyDosagePicker} from "./forms/WeeklyDosagePicker";
@@ -99,11 +104,11 @@ const HeartValveReplacementConditions = (props) => {
                 onFlip={(val) => {visit.current.heartValveReplacementCondition.replaced = val; setValue(val)}}
                 title={'Cardiac Valve Replacement'}
             />
-            <ConditionalRender hidden={!value || !loaded}>
+            <ConditionalCollapsibleRender hidden={!value || !loaded}>
                 <Layout.InputArea>
                     <ChipBox items={medicalConditions.current} onChange={changeConditionStatus}/>
                 </Layout.InputArea>
-            </ConditionalRender>
+            </ConditionalCollapsibleRender>
         </View>
     );
 }
@@ -131,13 +136,13 @@ const FirstTimeWarfarinForm = (props) => {
                 title={'No Prior Warfarin Usage'}
                 description={'Is this the first time for using warfarin?'}
             />
-            <ConditionalRender hidden={firstTimeWarfarin || !loaded}>
+            <ConditionalCollapsibleRender hidden={firstTimeWarfarin || !loaded}>
                 <Layout.FormSection>
                     <IntraSectionDivider s/>
                     <Layout.InputTitle title={'Last Warfarin Dosage'} description={'Please specify the last dosage that patient used.'}/>
                     <WeeklyDosagePicker initialData={loaded ? visit.current.firstWarfarin.weeklyDosage : []} doseData={[]} onDoseUpdate={onDoseUpdate}/>
                 </Layout.FormSection>
-            </ConditionalRender>
+            </ConditionalCollapsibleRender>
         </View>
     );
 }

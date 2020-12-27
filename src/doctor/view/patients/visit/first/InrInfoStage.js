@@ -2,7 +2,12 @@ import React, {useCallback, useState} from "react";
 import * as Layout from "./forms/Layout";
 import {Text, Button, Divider, Switch, TextInput, Portal} from "react-native-paper";
 import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
-import {ConditionalRender, IntraSectionInvisibleDivider, PrimaryText} from "./forms/Layout";
+import {
+    ConditionalCollapsibleRender,
+    ConditionalRender,
+    IntraSectionInvisibleDivider,
+    PrimaryText
+} from "./forms/Layout";
 import {Platform, PanResponder, View} from 'react-native';
 import {Formik} from "formik";
 import * as Yup from 'yup';
@@ -100,7 +105,7 @@ export class InrInfoStage extends React.Component {
                                     {errors.inrResult}
                                 </Layout.TextInputHelperText>
                                 <Layout.IntraSectionInvisibleDivider sm/>
-                                <ConditionalRender hidden={this.state.latestInrAtHome}>
+                                <ConditionalCollapsibleRender hidden={this.state.latestInrAtHome}>
                                     <Layout.InputTitle title={'Test Location'} style={{}}/>
                                     <DefaultTextInput
                                         placeholder={"Eg. Farabi Lab"}
@@ -117,7 +122,7 @@ export class InrInfoStage extends React.Component {
                                         {errors.testLocation}
                                     </Layout.TextInputHelperText>
                                     <Layout.IntraSectionInvisibleDivider sm/>
-                                </ConditionalRender>
+                                </ConditionalCollapsibleRender>
                                 <Layout.InputTitle title={'Test Date'}/>
                                 <DateInput
                                     placeholder={"Date of INR Test"}

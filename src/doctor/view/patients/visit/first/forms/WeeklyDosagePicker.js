@@ -5,7 +5,7 @@ import {firstNonEmpty, getFormattedJalaliDate} from "../../../../../../root/doma
 import CircularPicker from "react-native-circular-picker";
 import {currentTheme} from "../../../../../../../theme";
 import {Text} from "react-native-paper";
-import {Animated} from 'react-native';
+import {Animated, View} from 'react-native';
 import {visitDao} from "../../../../../data/dao/VisitDao";
 
 export const WeeklyDosagePicker = (props) => {
@@ -35,26 +35,15 @@ export const WeeklyDosagePicker = (props) => {
 
     const [fadeAnim] = useState(new Animated.Value(0));
 
-    React.useEffect(() => {
-        Animated.timing(fadeAnim, {
-            toValue: 1,
-            duration: 350,
-            useNativeDriver: false,
-        }).start();
-    }, []);
-
     return (
         <Layout.FormSection>
-            <Animated.View
-                style={{
-                    opacity: fadeAnim,
-                }}
+            <View
             >
                 <DosageElemRow items={dosageElements.slice(0, 2)} key={`DosageElemRow:0`}/>
                 <DosageElemRow items={dosageElements.slice(2, 4)} key={`DosageElemRow:1`}/>
                 <DosageElemRow items={dosageElements.slice(4, 6)} key={`DosageElemRow:2`}/>
                 <DosageElemRow items={dosageElements.slice(6, 7)} key={`DosageElemRow:3`}/>
-            </Animated.View>
+            </View>
         </Layout.FormSection>
     );
 }

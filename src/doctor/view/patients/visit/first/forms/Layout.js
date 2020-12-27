@@ -3,6 +3,7 @@ import {currentTheme, mostlyWhiteTheme} from "../../../../../../../theme";
 import {StyleSheet, View, ScrollView} from "react-native";
 import {Title as _Title, Caption as _Caption, Headline as _Headline, Divider, Text as _Text, Chip, HelperText as _HelperText} from "react-native-paper";
 import {hasValue, removeWhiteSpace} from "../../../../../../root/domain/util/Util";
+import Collapsible from 'react-native-collapsible';
 
 const Headline = ({style, ...props}) => <_Headline style={[WrapperStyles.headline, style]} {...props}/>;
 const Title = ({style, ...props}) => <_Title style={[WrapperStyles.title, style]} {...props}/>;
@@ -217,6 +218,14 @@ export const ConditionalRender = (props) => {
     else return props.children;
 }
 
+export const ConditionalCollapsibleRender = (props) => {
+    return (
+        <Collapsible collapsed={props.hidden}>
+            {props.children}
+        </Collapsible>
+    )
+
+}
 export const FormContainer = (props) => {
     return props.children;
 }

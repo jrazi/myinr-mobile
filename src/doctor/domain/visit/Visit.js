@@ -29,7 +29,21 @@ export class FirstVisit {
             },
             bleedingOrClottingType: [],
             medicalHistory: {
+                majorSurgery: {
+                    active: false,
+                    info: null,
+                },
+                minorSurgery: {
+                    active: false,
+                    info: null,
+                },
+                hospitalAdmission: {
+                    active: false,
+                    info: null,
+                },
+                pastConditions: {
 
+                }
             },
             drugHistory: [],
             habit: [],
