@@ -15,15 +15,15 @@ export default class StageNavigator extends React.Component {
         this.state = {
             index: 0,
             routes: [
-                { key: 'prev', title: 'قبلی', icon: 'chevron-right' },
-                { key: 'next', title: 'بعدی', icon: 'chevron-left' },
+                { key: 'next', title: 'Next', icon: 'chevron-right' },
+                { key: 'prev', title: 'Previous', icon: 'chevron-left' },
             ],
         }
     }
 
     componentDidMount() {
         if (this.props.currentStage == stages.length - 1) {
-            this.state.routes[1].title = 'اتمام ویزیت';
+            this.state.routes[0].title = 'Finish';
         }
         this.props.navigation.navigate(this.props.route.name, {screen: `VisitStage:${this.props.currentStage}`, visitInfo: this.props.visitInfo});
         this.setState({routes: this.state.routes})
@@ -42,10 +42,10 @@ export default class StageNavigator extends React.Component {
         }
 
         if (index == 1 && this.props.currentStage == stages.length - 2) {
-            this.state.routes[1].title = 'اتمام ویزیت';
+            this.state.routes[0].title = 'Finish';
         }
         else if (index == 0 && this.props.currentStage == stages.length-1) {
-            this.state.routes[1].title = 'بعدی';
+            this.state.routes[0].title = 'Next';
         }
 
         const inc = index == 0 ? -1 : index == 1 ? 1 : 0;

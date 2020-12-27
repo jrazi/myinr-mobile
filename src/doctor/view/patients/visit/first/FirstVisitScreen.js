@@ -90,9 +90,11 @@ export class FirstVisitScreen extends React.Component {
                                 index: 0,
                                 routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
                             })
+
                         }
+                        reverse
                     >
-                        <View style={{flex: 1,  }}>
+                        <View style={{flex: 1, alignItems: 'flex-end'}}>
                             <View style={{width: '50%', }}>
                                 {/*<ProgressBar progress={(1+this.state.currentStage)/stages.length} color={currentTheme.colors.primary} />*/}
                                 <StageProgressBar currentStage={this.state.currentStage}/>
@@ -150,7 +152,7 @@ const StageProgressBar = (props) => {
     return (
         <View
             style={{
-                flexDirection: 'row',
+                flexDirection: 'row-reverse',
                 // ...debugBorderRed,
                 alignItems: 'center',
             }}
