@@ -29,13 +29,23 @@ export class DrugDatePicker extends React.Component {
     setUntilDate = (date) => this.setState({untilDate: date});
 
     addDrug = () => {
-        this.drugHistory.push(
-            {
+        let index = this.drugHistory.findIndex(item => item.drugInfo.IDDrug == this.props.drugInfo.IDDrug);
+        if (index < 0) {
+            this.drugHistory.push(
+                {
+                    drugInfo: this.props.drugInfo,
+                    since: this.state.sinceDate,
+                    until: this.state.untilDate,
+                }
+            );
+        }
+        else {
+            this.drugHistory[index] = {
                 drugInfo: this.props.drugInfo,
                 since: this.state.sinceDate,
                 until: this.state.untilDate,
             }
-        );
+        }
         this.props.navigation.goBack();
     }
 
