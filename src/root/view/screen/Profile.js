@@ -108,7 +108,7 @@ export const Screen = (props) => {
     return (
         <Wrapper>
             <Header
-                avatar={<SimpleLineIcons style={{}} name={props.gender == 'F' ? 'user-female' : 'user'} size={40} color={'white'}/>}
+                avatar={<SimpleLineIcons style={{}} name={props.gender == 'F' ? 'user-female' : 'user'} size={40} color={theme.colors.surface}/>}
                 title={props.title}
                 caption={props.caption}
             />

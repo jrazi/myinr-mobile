@@ -99,6 +99,7 @@ const blueGrey = {
 }
 
 const darkThemePrimary = color('#03045e').alpha(0.2).string();
+const darkReallyDisabled = color('#FFFFFF').alpha(0.30).string();
 const darkDisabled = color('#FFFFFF').alpha(0.38).string();
 const darkMediumEmphasis = color('#FFFFFF').alpha(0.6).string();
 const darkHighEmphasis = color('#FFFFFF').alpha(0.87).string();
@@ -118,6 +119,7 @@ export const darkTheme = {
         // accent: '#0077b6',
         backdrop: darkDisabled,
         placeholder: darkDisabled,
+        disabled: darkReallyDisabled,
         background: darkGrey,
         surface: darkGrey,
         onBackground: darkHighEmphasis,

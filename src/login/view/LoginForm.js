@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Alert} from "react-native";
-import {Spacing, Theme} from "../../root/view/styles";
+import {Spacing} from "../../root/view/styles";
 import {debugBorderBlue, debugBorderRed} from "../../root/view/styles/borders";
 import {Formik} from "formik";
 import * as Yup from 'yup';
@@ -13,11 +13,11 @@ import {serverGateway} from "../../root/data/server/ServerGateway";
 import {UserRole} from "../../root/domain/Role";
 import {Screen} from "../../root/view/Screen";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
-import {TextInput, Button, Text, Title, Headline, HelperText, Snackbar, Portal} from 'react-native-paper';
+import {TextInput, Button, Text, Title, Headline, HelperText, Snackbar, Portal, withTheme} from 'react-native-paper';
 import {fullSize} from "../../root/view/styles/containers";
 import {ErrorType, getErrorType} from "../../root/data/server/errors";
 
-export default class LoginForm extends React.Component {
+class LoginForm extends React.Component {
 
     constructor(props) {
         super(props);
@@ -60,6 +60,7 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
+        const theme = this.props.theme;
         return (
             <View style={styles.container}>
                 <Formik
@@ -143,6 +144,7 @@ export default class LoginForm extends React.Component {
     }
 }
 
+export default withTheme(LoginForm);
 
 const styles = StyleSheet.create({
     container: {

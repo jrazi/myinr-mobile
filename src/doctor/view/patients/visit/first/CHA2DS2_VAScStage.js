@@ -137,12 +137,13 @@ const ScoreRadioBox = (props) => {
                 <IntraSectionInvisibleDivider xs/>
                 <SegmentedControl
                     activeFontStyle={{color: theme.colors.primary}}
+                    fontStyle={{color: theme.dark ? null : theme.colors.backdrop}}
                     values={['Male', 'Female']}
                     selectedIndex={gender}
                     onChange={(event) => {
                         changeGender(event.nativeEvent.selectedSegmentIndex)
                     }}
-                    backgroundColor={theme.colors.backdrop}
+                    backgroundColor={theme.dark ? theme.colors.backdrop : null}
                     tintColor={theme.colors.surface}
                 />
             </View>
@@ -152,12 +153,13 @@ const ScoreRadioBox = (props) => {
                 <IntraSectionInvisibleDivider xs/>
                 <SegmentedControl
                     activeFontStyle={{color: theme.colors.primary}}
+                    fontStyle={{color: theme.dark ? null : theme.colors.backdrop}}
                     values={scoreItems[0].options.map(o => o.name)}
                     selectedIndex={ageGroup}
                     onChange={(event) => {
                         changeAgeGroup(event.nativeEvent.selectedSegmentIndex)
                     }}
-                    backgroundColor={theme.colors.backdrop}
+                    backgroundColor={theme.dark ? theme.colors.backdrop : null}
                     tintColor={theme.colors.surface}
                 />
             </View>
