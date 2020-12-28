@@ -71,7 +71,12 @@ class PatientsScreen extends React.Component {
                 <ScrollView
                     style={styles.container}
                     refreshControl={
-                        <RefreshControl refreshing={this.state.loading} onRefresh={this.refresh} colors={[currentTheme.colors.primary]} />
+                        <RefreshControl
+                            refreshing={this.state.loading}
+                            onRefresh={this.refresh}
+                            colors={[currentTheme.colors.primary]}
+                            progressBackgroundColor={currentTheme.colors.surface}
+                        />
                     }
                 >
                     <View style={styles.patientsListContainer}>

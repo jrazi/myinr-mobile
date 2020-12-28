@@ -72,6 +72,7 @@ const actionColors = {
 const lightTheme = {
     ...DefaultTheme,
         // dark: true,
+    dark: false,
     colors: {
         ...DefaultTheme.colors,
         primary: '#03045e',
@@ -134,8 +135,27 @@ const darkTheme = {
     // roundness: 16,
 }
 
-export const currentTheme = darkTheme;
-export const mostlyWhiteTheme = darkTheme;
+export const currentTheme = () => appThemes.currentTheme;
+export const mostlyWhiteTheme = () => appThemes.mostlyWhiteTheme;
+
+export const appThemes = {
+    currentTheme: darkTheme,
+    mostlyWhiteTheme: darkTheme,
+}
+
+export const changeToLightTheme = () => {
+    appThemes.currentTheme = lightTheme;
+    appThemes.mostlyWhiteTheme = _mostlyWhiteTheme;
+}
+export const changeToDarkTheme = () => {
+    appThemes.currentTheme = darkTheme;
+    appThemes.mostlyWhiteTheme = darkTheme;
+}
+
+export const changeTheme = (darkMode) => {
+    if (darkMode) changeToDarkTheme();
+    else changeToLightTheme();
+}
 // surface: #121212
 // That’s why Google Material design recommends using a slightly darker white:
 //     High-emphasis text should have an opacity of 87%
