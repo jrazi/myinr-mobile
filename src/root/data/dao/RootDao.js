@@ -75,7 +75,7 @@ class RootDao {
 
     getDarkMode() {
         return AsyncStorage.getItem('DARK_MODE')
-            .then(darkMode => darkMode == 'true');
+            .then(darkMode => !(darkMode == 'false'));
     }
 
 

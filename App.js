@@ -9,7 +9,7 @@ import {lightTheme, darkTheme} from "./theme";
 import RNRestart from 'react-native-restart';
 import {LoadingScreen} from "./src/root/view/loading/Loading";
 
-export const ThemeContext = React.createContext((theme) => {});
+export const ThemeContext = React.createContext({changeTheme: (theme) => {}});
 
 export default class App extends React.Component {
 
@@ -57,7 +57,7 @@ export default class App extends React.Component {
         return (
             <LoadingScreen loaded={this.state.loaded}>
                 <PaperProvider theme={this.state.theme} >
-                    <ThemeContext.Provider value={(theme) => this.changeTheme(theme)}>
+                    <ThemeContext.Provider value={{changeTheme: (theme) => this.changeTheme(theme)}}>
                         <Portal.Host >
                             <Navigator/>
                         </Portal.Host>
