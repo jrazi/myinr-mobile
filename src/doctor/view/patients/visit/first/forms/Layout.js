@@ -77,7 +77,7 @@ export const SectionTitle = (props) => {
 export const InputTitle = (props) => {
     return (
         <View style={[styles.inputTitle, props.style]}>
-            <Text style={{fontSize: 16, color: currentTheme.colors.primary}}>{props.title}</Text>
+            <Text style={[{fontSize: 16, color: currentTheme.colors.primary}, props.titleStyle]}>{props.title}</Text>
             {
                 !hasValue(props.description) || removeWhiteSpace(props.description) == "" ? null :
                     <Caption style={styles.inputTitleDescription}>{props.description}</Caption>

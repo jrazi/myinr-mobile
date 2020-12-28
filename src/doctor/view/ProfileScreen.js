@@ -37,6 +37,9 @@ class ProfileScreen extends React.Component {
         });
     }
 
+    goToSettings = () => {
+        this.props.navigation.navigate('SettingsScreen', {userInfo: this.state.userInfo});
+    }
     render() {
         return (
             <>
@@ -52,6 +55,7 @@ class ProfileScreen extends React.Component {
                         {
                             title: 'تنظیمات',
                             iconId: 'tune',
+                            onPress: () => this.goToSettings(),
                         },
                         {
                             title: 'خروج',

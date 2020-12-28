@@ -44,7 +44,7 @@ export default class DoctorAppNavigator extends React.Component {
                     name={'SettingsScreen'}
                     component={SettingsScreen}
                     options={{ headerShown: false , headerTitle: props => null }}
-                    initialParams={{ userId: null }}
+                    initialParams={{ userId: null, userInfo: {} }}
                 />
             </Stack.Navigator>
         );

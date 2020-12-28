@@ -47,12 +47,12 @@ export const CustomContentScreenHeader = (props) => {
         >
             {
                 props.reverse ? [
-                        <Appbar.Action icon="arrow-right" onPress={goBackAction} color={currentTheme.colors.placeholder}/>,
+                        <Appbar.Action icon="arrow-right" size={28} onPress={goBackAction} color={currentTheme.colors.placeholder}/>,
                         props.children,
                 ] :
                 [
                     props.children,
-                    <Appbar.Action icon="arrow-left" onPress={goBackAction} color={currentTheme.colors.placeholder}/>
+                    <Appbar.Action icon="arrow-left" size={28} onPress={goBackAction} color={currentTheme.colors.placeholder}/>
                 ]
             }
         </Appbar.Header>

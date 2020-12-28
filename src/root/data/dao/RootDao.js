@@ -2,6 +2,7 @@ import RootRepository from "../repository/RootRepository";
 import {Locale} from "../../domain/Locale";
 import {serverGateway} from "../server/ServerGateway";
 import {sleep} from "../../domain/util/Util";
+import {AsyncStorage} from "react-native";
 
 class RootDao {
 
@@ -65,6 +66,19 @@ class RootDao {
     getLocale() {
         return Locale.FA;
     }
+
+    setDarkMode(value) {
+        return AsyncStorage.setItem(
+            'DARK_MODE',
+            String(value)
+        );
+    }
+
+    getDarkMode() {
+        return AsyncStorage.getItem('DARK_MODE')
+            .then(darkMode => darkMode=='true');
+    }
+
 
     tempNewDate() {
         this.tempLastUpdate = new Date().getTime()/1000;

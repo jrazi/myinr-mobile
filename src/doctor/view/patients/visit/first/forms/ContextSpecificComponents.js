@@ -41,8 +41,8 @@ const ConditionSelectChip = (props) => {return (
 )}
 
 export const DefaultSwitchRow = (props) => {return (
-    <Layout.Row justifyBetween>
-        <Layout.InputTitle title={props.title} description={props.description}/>
+    <Layout.Row justifyBetween style={props.rowStyle}>
+        <Layout.InputTitle title={props.title} description={props.description} titleStyle={props.titleStyle}/>
         <Switch
             style={{}} value={props.value}
             color={currentTheme.colors.primary}
