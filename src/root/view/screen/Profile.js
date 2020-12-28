@@ -155,6 +155,8 @@ const styles = StyleSheet.create({
     },
     containerBody: {
         padding: 20,
+        backgroundColor: currentTheme.colors.background,
+        flexGrow: 1,
     },
     profileMenuItemContainer: {
         elevation: 4,

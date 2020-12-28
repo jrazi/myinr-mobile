@@ -5,7 +5,7 @@ import {DefaultSwitchRow} from "./patients/visit/first/forms/ContextSpecificComp
 import {View} from 'react-native';
 import {currentTheme} from "../../../theme";
 import {rootDao} from "../../root/data/dao/RootDao";
-import {ConditionalCollapsibleRender} from "./patients/visit/first/forms/Layout";
+import {ConditionalCollapsibleRender, ConditionalRender} from "./patients/visit/first/forms/Layout";
 
 export class SettingsScreen extends React.Component {
     constructor(props) {
@@ -34,7 +34,7 @@ export class SettingsScreen extends React.Component {
                     title={'تنظیمات'} style={{elevation: 0}}
                 />
                 <View style={{paddingHorizontal: 20,}}>
-                    <ConditionalCollapsibleRender hidden={!this.state.loaded}>
+                    <ConditionalRender hidden={!this.state.loaded}>
                         <Layout.IntraSectionInvisibleDivider s/>
                         <DefaultSwitchRow
                             rowStyle={{
@@ -47,7 +47,7 @@ export class SettingsScreen extends React.Component {
                             value={this.state.darkModeOn}
                             onFlip={this.toggleDarkMode}
                         />
-                    </ConditionalCollapsibleRender>
+                    </ConditionalRender>
                 </View>
             </ScreenLayout>
         )

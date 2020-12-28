@@ -116,7 +116,10 @@ const PatientInfoCard = (props) => {
                         <Card.Title
                             title={props.patientInfo.fullName}
                             subtitle={latestInrTestMessage}
-                            left={() => <Avatar.Text size={32} label={nameChunks[0][0] + '.' + nameChunks[1][0]} style={{}}/>}
+                            left={() => <Avatar.Text
+                                size={32} label={nameChunks[0][0] + '.' + nameChunks[1][0]}
+                                style={{backgroundColor: currentTheme.colors.accent}}
+                            />}
                         />
                         <Card.Content>
                             <View >

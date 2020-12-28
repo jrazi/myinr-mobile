@@ -41,8 +41,8 @@ class DoctorApp extends React.Component {
                 barStyle={{ backgroundColor: currentTheme.colors.background,}}
                 shifting={false}
                 backBehavior={'history'}
-                activeColor={currentTheme.colors.primary}
-                inactiveColor={currentTheme.colors.placeholder}
+                activeColor={currentTheme.colors.accent}
+                inactiveColor={currentTheme.colors.backdrop}
                 lazy={false}
             >
                 <Tab.Screen

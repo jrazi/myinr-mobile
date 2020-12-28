@@ -49,7 +49,9 @@ class PatientProfileScreen extends React.Component {
     render() {
         const colors = currentTheme.colors;
         const NoData = (props) => {return (
-            <View style={{backgroundColor: 'white', flex: 1, justifyContent: 'center', alignItems: 'center'}}><Title style={{fontWeight: 'bold'}}>داده‌ای موجود نیست.</Title></View>
+            <View style={{backgroundColor: colors.background, flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                <Title style={{}}>داده‌ای موجود نیست.</Title>
+            </View>
         )}
         return (
             <ScreenLayout>
@@ -59,6 +61,8 @@ class PatientProfileScreen extends React.Component {
                 <Tab.Navigator
                     initialRouteName={"Home"}
                     barStyle={{ backgroundColor: colors.background }}
+                    style={{ backgroundColor: colors.background }}
+                    sceneContainerStyle={{ backgroundColor: colors.background }}
                     shifting={false}
                     backBehavior={'history'}
                     activeColor={currentTheme.colors.primary}
@@ -68,11 +72,16 @@ class PatientProfileScreen extends React.Component {
                         // activeTintColor: currentTheme.colors.primary,
                         indicatorStyle: {
                             borderBottomWidth: 2,
-                            borderColor: currentTheme.colors.primary,
+                            borderColor: currentTheme.colors.accent,
                         },
                         labelStyle: {
-                            fontSize: 14,
+                            fontFamily: 'IranSans',
                         },
+                        tabStyle: {
+                            backgroundColor: colors.background
+                        },
+                        activeTintColor: currentTheme.colors.primary,
+                        inactiveTintColor: currentTheme.colors.backdrop,
                     }}
                 >
                     <Tab.Screen
@@ -80,9 +89,6 @@ class PatientProfileScreen extends React.Component {
                         component={NoData}
                         options={{
                             tabBarLabel: 'مشخصات',
-                            tabBarIcon: ({ color }) => (
-                                <MaterialCommunityIcons name="home-outline" color={color} size={26} />
-                            ),
                         }}
                     />
                     <Tab.Screen
@@ -90,9 +96,6 @@ class PatientProfileScreen extends React.Component {
                         component={NoData}
                         options={{
                             tabBarLabel: 'ویزیت‌ها',
-                            tabBarIcon: ({ color }) => (
-                                <MaterialCommunityIcons name="clipboard-pulse-outline" color={color} size={26} />
-                            ),
                         }}
 
                     />
@@ -101,9 +104,6 @@ class PatientProfileScreen extends React.Component {
                         component={NoData}
                         options={{
                             tabBarLabel: 'آزمایش‌ها',
-                            tabBarIcon: ({ color }) => (
-                                <MaterialCommunityIcons name="clipboard-pulse-outline" color={color} size={26} />
-                            ),
                         }}
 
                     />
