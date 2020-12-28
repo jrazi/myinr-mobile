@@ -1,6 +1,19 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import {DefaultTheme, Appbar, Surface, Title, Caption, List, TouchableRipple, Portal, Dialog, Paragraph, Button} from 'react-native-paper';
+import {
+    DefaultTheme,
+    Appbar,
+    Surface,
+    Title,
+    Caption,
+    List,
+    TouchableRipple,
+    Portal,
+    Dialog,
+    Paragraph,
+    Button,
+    Text, Subheading
+} from 'react-native-paper';
 import {fullSize} from "../styles/containers";
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {currentTheme} from "../../../../theme";
@@ -74,9 +87,11 @@ export const MenuItem = (props) => {
 export const LogoutDialog = (props) => {
     return (
         <Portal>
-            <Dialog visible={props.visible} onDismiss={props.onDismiss} style={{paddingBottom: 10}} dismissable={false}>
-                <Dialog.Title color={currentTheme.colors.placeholder}>آیا می‌خواهید خارج شوید؟</Dialog.Title>
-                <Dialog.Actions >
+            <Dialog visible={props.visible} onDismiss={props.onDismiss} style={{paddingBottom: 10}} dismissable={true}>
+                <Dialog.Content color={currentTheme.colors.placeholder}>
+                    <Subheading style={{textAlign: 'center'}}>آیا می‌خواهید خارج شوید؟</Subheading>
+                </Dialog.Content>
+                <Dialog.Actions style={{alignItems: 'center', justifyContent: 'space-around',}}>
                     <Button style={{width: 70, }} mode="text" loading={props.logoutButtonLoading} onPress={props.onLogout} >بله</Button>
                     <Button disabled={!props.dismissable} style={{width: 50, }} mode="text" onPress={props.onDismiss} >خیر</Button>
                 </Dialog.Actions>
