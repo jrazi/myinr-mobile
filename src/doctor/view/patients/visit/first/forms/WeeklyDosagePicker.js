@@ -3,7 +3,7 @@ import * as Layout from "./Layout";
 import {IntraSectionInvisibleDivider} from "./Layout";
 import {firstNonEmpty, getFormattedJalaliDate} from "../../../../../../root/domain/util/Util";
 import CircularPicker from "react-native-circular-picker";
-import {Surface, Text} from "react-native-paper";
+import {Surface, Text, useTheme} from "react-native-paper";
 import {Animated, View, Dimensions} from 'react-native';
 import {visitDao} from "../../../../../data/dao/VisitDao";
 
@@ -67,6 +67,7 @@ const DosageForDay = (props) => {
     }, []);
 
     const screenWidth = Math.round(Dimensions.get('window').width);
+    const theme = useTheme();
     return (
         <View
         >

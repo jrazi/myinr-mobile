@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from "react";
 import * as Layout from "./forms/Layout";
-import {Text, Button, Divider, Switch, TextInput, Portal} from "react-native-paper";
+import {Text, Button, Divider, Switch, TextInput, Portal, useTheme} from "react-native-paper";
 import {
     ConditionalCollapsibleRender,
     ConditionalRender,
@@ -177,12 +177,13 @@ export class InrInfoStage extends React.Component {
 }
 
 export const SwitchRow = (props) => {
+    const theme = useTheme();
     return (
         <Layout.Row justifyBetween>
             <Layout.InputTitle title={props.title} description={props.description}/>
             <Switch
                 style={{}} value={props.value}
-                color={theme.colors.primary}
+                color={theme.colors.accent}
                 onValueChange={() => props.onChange()}
             />
         </Layout.Row>
@@ -191,6 +192,7 @@ export const SwitchRow = (props) => {
 
 
 const DefaultTextInput = (props) => {
+    const theme = useTheme();
     return (
             <TextInput
                 label={props.label}
@@ -226,6 +228,7 @@ const DateInput = (props) => {
         setDatePickerVisible(false);
         props.onDateChange(date);
     }
+    const theme = useTheme();
     return (
         <View>
             <TextInput

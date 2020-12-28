@@ -83,13 +83,15 @@ class PatientProfileScreen extends React.Component {
                     tabBarOptions={{
                         indicatorStyle: {
                             borderBottomWidth: 2,
-                            borderColor: theme.colors.accent,
+                            borderBottomColor: theme.colors.accent,
+                            backgroundColor: theme.colors.accent,
                         },
                         labelStyle: {
                             fontFamily: 'IranSans',
+                            // color: theme.dark ? theme.colors.backdrop : theme.colors.primary,
                         },
                         tabStyle: {
-                            backgroundColor: colors.background
+                            backgroundColor: theme.dark ? theme.colors.surface : null,
                         },
                         activeTintColor: theme.colors.primary,
                         inactiveTintColor: theme.colors.backdrop,

@@ -11,7 +11,7 @@ import {
     Dialog,
     Button,
     Subheading,
-    withTheme
+    withTheme, useTheme
 } from "react-native-paper";
 import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {FirstVisit} from "../../../../domain/visit/Visit";
@@ -142,6 +142,7 @@ class FirstVisitScreen extends React.Component {
 export default withTheme(FirstVisitScreen);
 
 const StageProgressBar = (props) => {
+    const theme = useTheme();
     let progressDots = [];
     for (let i = 0; i < firstNonEmpty(stages.length, 0); i++) {
         progressDots.push(
@@ -187,7 +188,7 @@ const FinishVisitDialog = (props) => {
 }
 
 const DialogMessage = (props) => {return (
-    <Dialog.Content color={theme.colors.placeholder} style={{paddingTop: 20}}>
+    <Dialog.Content color={useTheme().colors.placeholder} style={{paddingTop: 20}}>
         <Subheading style={{textAlign: 'center'}}>{props.children}</Subheading>
     </Dialog.Content>
 )}

@@ -1,11 +1,12 @@
 import React from "react";
-import {Portal} from "react-native-paper";
+import {Portal, useTheme} from "react-native-paper";
 import {View} from "react-native";
 import DatePicker from "@mohamadkh75/react-native-jalali-datepicker";
 import {firstNonEmpty, getFormFormattedJalaliDate} from "../../../../../../root/domain/util/Util";
 import {ConditionalRender} from "./Layout";
 
 export const DefaultDatePicker = (props) => {
+    const theme = useTheme();
     return (
         <Portal>
             <ConditionalRender hidden={!props.visible}>

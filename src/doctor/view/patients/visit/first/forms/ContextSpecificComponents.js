@@ -35,15 +35,13 @@ const ConditionSelectChip = (props) => {
     const theme = useTheme();
     const selectedBackgroundColor = color(theme.colors.backdrop).alpha(0.1).string();
     const backgroundColor = theme.colors.backdrop;
+    let style = theme.dark ? {backgroundColor: props.selected ? selectedBackgroundColor : backgroundColor,} : null;
     return (
     <Layout.BasicElement>
         <Chip
             selected={props.selected}
             icon="information" onPress={() => props.onPress(props.id)}
-            // mode={'outlined'}
-            style={{
-                backgroundColor: props.selected ? selectedBackgroundColor : backgroundColor,
-            }}
+            style={style}
         >
             {props.title}
         </Chip>
@@ -56,9 +54,11 @@ export const DefaultSwitchRow = (props) => {
         <Layout.Row justifyBetween style={props.rowStyle}>
             <Layout.InputTitle title={props.title} description={props.description} titleStyle={props.titleStyle}/>
             <Switch
-                style={{}} value={props.value}
-                color={theme.colors.accent}
+                style={{
+                }}
+                value={props.value}
                 onValueChange={props.onFlip}
+                color={theme.colors.accent}
             />
         </Layout.Row>
     )
@@ -72,7 +72,7 @@ export const TitleWithBadge = (props) => {
                 <Layout.ScreenTitle title={props.title} style={{paddingBottom: 0,}}/>
             </View>
             <View style={{}}>
-                <Badge size={28} theme={theme} style={{backgroundColor: theme.colors.actionColors.remove, }}>{props.badgeValue}</Badge>
+                <Badge size={32} theme={theme} style={{backgroundColor: theme.colors.actionColors.remove, }}>{props.badgeValue}</Badge>
             </View>
         </View>
     )

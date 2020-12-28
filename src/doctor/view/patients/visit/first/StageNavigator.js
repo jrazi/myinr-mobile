@@ -72,7 +72,7 @@ class StageNavigator extends React.Component {
                     shifting={false}
                     activeColor={theme.colors.primary}
                     inactiveColor={theme.colors.primary}
-                    theme={theme}
+                    theme={theme.mostlyWhiteTheme}
                     onTabPress={this.onTabPress}
                 />
             </View>

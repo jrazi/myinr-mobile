@@ -4,11 +4,11 @@ import {DosageRecommendationStage} from "./DosageRecommendationStage";
 import React from "react";
 import {InrInfoStage} from "./InrInfoStage";
 import {PhysicalExamStage} from "./PhysicalExamStage";
-import {CHA2DS2_VAScStage} from "./CHA2DS2_VAScStage";
+import CHA2DS2_VAScStage from "./CHA2DS2_VAScStage";
 import {HAS_BLEDStage} from "./HAS_BLEDStage";
 import {LabTestStage} from "./LabTestStage";
 import {Echocardiography} from "./Echocardiography";
-import {DrugHistoryStage} from "./DrugHistoryStage";
+import DrugHistoryStage from "./DrugHistoryStage";
 
 export const stages = [
     (props) => <PreliminaryStage {...props}/>,

@@ -1,13 +1,23 @@
 import React, {useRef, useState} from "react";
 import * as Layout from "./forms/Layout";
-import {Caption, Searchbar, Appbar, Portal, Text, List, TouchableRipple, Surface, Title} from "react-native-paper";
+import {
+    Caption,
+    Searchbar,
+    Appbar,
+    Portal,
+    Text,
+    List,
+    TouchableRipple,
+    Surface,
+    Title,
+    useTheme
+} from "react-native-paper";
 import {View, ScrollView, FlatList, Animated, RefreshControl, StyleSheet} from 'react-native';
 import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {IntraSectionDivider} from "./forms/Layout";
 import {DrugDao, drugDao} from "../../../../data/dao/DrugDao";
 import {fullSize} from "../../../../../root/view/styles/containers";
-import {DefaultDatePicker} from "./forms/JalaliDatePicker";
-import {DrugDatePicker} from "./DrugDatePicker";
+import DrugDatePicker from "./DrugDatePicker";
 import {hasValue, removeWhiteSpace} from "../../../../../root/domain/util/Util";
 
 
@@ -125,6 +135,7 @@ const SearchBox = (props) => {
         // if (initialSearchId < latestSearchId.current) return;
         props.searchDrugs(query);
     }
+    const theme = useTheme();
 
     return (
         <Searchbar
@@ -141,6 +152,7 @@ const SearchBox = (props) => {
                 paddingTop: 20,
                 paddingBottom: 20,
                 fontSize: 20,
+                backgroundColor: theme.dark ? theme.colors.accent : null,
                 // paddingVertical: 20,
             }}
             inputStyle={{
@@ -156,6 +168,7 @@ const DrugList = (props) => {
     const pickDatesForDrug = (drugInfo) => {
         props.pickDateForDrug(drugInfo);
     }
+    const theme = useTheme();
 
     return (
             <ScrollView
@@ -249,8 +262,9 @@ const styles = {
 }
 
 export const SearchBoxContainer = (props) => {
+    const theme = useTheme();
     return (
-        <Surface style={searchBoxStyles.appBarHeader}>
+        <Surface style={[searchBoxStyles.appBarHeader, {backgroundColor: theme.dark ? theme.colors.accent : null,}]}>
             <View style={searchBoxStyles.appBarHeaderWrapper}>
                 <View style={searchBoxStyles.headerOfHeader}>
                     <Appbar.Action icon="arrow-right" onPress={() => props.navigation.goBack()} color={theme.colors.placeholder}/>

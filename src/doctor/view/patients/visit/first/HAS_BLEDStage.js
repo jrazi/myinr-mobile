@@ -64,7 +64,6 @@ export class HAS_BLEDStage extends React.Component {
 }
 
 export const GenericScoreForm = (props) => {
-    const theme = useTheme();
     let selectedStates = [];
     let conditionElements = props.medicalConditions
         .map((condition, index) => {
@@ -90,7 +89,7 @@ export const GenericScoreForm = (props) => {
                     />
                     <Switch
                         style={{}} value={value}
-                        color={theme.colors.accent}
+                        color={useTheme().colors.accent}
                         onValueChange={() => {{props.onChange(condition.id, !value); setValue(!value)}}}
                     />
                 </Layout.Row>,

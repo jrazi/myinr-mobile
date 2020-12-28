@@ -1,5 +1,16 @@
 import React, {useState} from "react";
-import {Button, Dialog, List, Portal, Subheading, Surface, Text, TouchableRipple} from "react-native-paper";
+import {
+    Button,
+    Dialog,
+    List,
+    Portal,
+    Subheading,
+    Surface,
+    Text,
+    TouchableRipple,
+    useTheme,
+    withTheme
+} from "react-native-paper";
 import {View} from 'react-native';
 import {ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {debugBorderRed} from "../../../../../root/view/styles/borders";
@@ -10,7 +21,7 @@ import * as Locale from "../../../../../login/view/Locale";
 import {DefaultDatePicker} from "./forms/JalaliDatePicker";
 import {visitDao} from "../../../../data/dao/VisitDao";
 
-export class DrugDatePicker extends React.Component {
+class DrugDatePicker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -49,6 +60,7 @@ export class DrugDatePicker extends React.Component {
     }
 
     render() {
+        const theme = this.props.theme;
         return (
             <Portal>
                 <Dialog visible={this.props.visible} onDismiss={this.props.onDismiss} style={{elevation: 4}} dismissable={true}>
@@ -92,7 +104,10 @@ export class DrugDatePicker extends React.Component {
     }
 }
 
+export default withTheme(DrugDatePicker);
+
 const DateInput = (props) => {
+    const theme = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
     return (
         <Surface style={styles.dateInput.surface}>

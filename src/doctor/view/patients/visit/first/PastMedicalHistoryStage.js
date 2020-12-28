@@ -9,7 +9,7 @@ import {
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
 import {ChipBox, DefaultSwitchRow} from "./forms/ContextSpecificComponents";
-import {TextInput} from "react-native-paper";
+import {TextInput, useTheme} from "react-native-paper";
 import {View} from 'react-native';
 import {Formik} from "formik";
 import * as Yup from "yup";
@@ -155,6 +155,7 @@ export const MedicalHistoryChipBox = (props) => {
 }
 
 const MedicalInfoInput = (props) => {
+    const theme = useTheme();
     const [enabled, setEnabled] = useState(props.initialSwitchValue);
     const onSwitchFlipped = () => {
         props.onChangeSwitch(!enabled);
