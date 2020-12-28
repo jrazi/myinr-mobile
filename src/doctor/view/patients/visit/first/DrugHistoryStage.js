@@ -2,7 +2,6 @@ import {View, FlatList} from "react-native";
 import React from "react";
 import {Avatar, Button, Text, List, IconButton, Caption} from "react-native-paper";
 import * as Layout from "./forms/Layout";
-import {Colors, currentTheme} from "../../../../../../theme";
 import {IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
 import {FirstVisit} from "../../../../domain/visit/Visit";
 import {visitDao} from "../../../../data/dao/VisitDao";
@@ -49,7 +48,7 @@ export class DrugHistoryStage extends React.Component {
                         <Layout.ScreenTitle title={'Drug History'} style={{ paddingBottom: 0}}/>
                         <View>
                             <Button
-                                color={currentTheme.colors.actionColors.primary}
+                                color={theme.colors.actionColors.primary}
                                 compact mode="contained"
                                 onPress={() => this.props.navigation.navigate('Secondary:AddDrugRecord')}
                                 labelStyle={{fontSize: 12}}
@@ -111,7 +110,7 @@ const SingleDrugRecord = (props) => {
                     mode="contained"
                     compact
                     size={26}
-                    color={currentTheme.colors.actionColors.remove}
+                    color={theme.colors.actionColors.remove}
                     onPress={() => props.onDelete()}
                 />
             </View>

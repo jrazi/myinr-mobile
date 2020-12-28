@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {StyleSheet, View} from "react-native";
 import {Text} from "react-native-paper";
 import {ScreenLayout} from "../../../../../root/view/screen/Layout";
-import {currentTheme} from "../../../../../../theme";
 import * as Layout from "./forms/Layout";
 import {IntraSectionInvisibleDivider} from "./forms/Layout";
 import {firstNonEmpty, getFormattedJalaliDate} from "../../../../../root/domain/util/Util";
@@ -50,9 +49,3 @@ export class DosageRecommendationStage extends React.Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        backgroundColor: currentTheme.colors.surface,
-    }
-})

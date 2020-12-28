@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, View} from "react-native";
-import {currentTheme} from "../../../../../../theme";
-import {Text, Checkbox, RadioButton, Headline, Badge, Colors} from 'react-native-paper';
+import {withTheme, Text, Checkbox, RadioButton, Headline, Badge, Colors, useTheme} from 'react-native-paper';
 import * as Layout from "./forms/Layout";
 import {calcAge, e2p, firstNonEmpty, guessGender, hasValue} from "../../../../../root/domain/util/Util";
 import {IntraSectionInvisibleDivider, LayoutStyles} from "./forms/Layout";
@@ -14,7 +13,7 @@ import {FirstVisit} from "../../../../domain/visit/Visit";
 import SegmentedControl from '@react-native-community/segmented-control';
 import color from 'color';
 
-export class CHA2DS2_VAScStage extends React.Component {
+class CHA2DS2_VAScStage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -47,7 +46,7 @@ export class CHA2DS2_VAScStage extends React.Component {
     }
 
     render() {
-        const textColor = {color: currentTheme.colors.text};
+        const textColor = {color: this.props.theme.colors.text};
         let titleElement = (
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Headline style={textColor}>CHA</Headline>
@@ -71,12 +70,8 @@ export class CHA2DS2_VAScStage extends React.Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        backgroundColor: currentTheme.colors.surface,
-    }
-})
+
+export default withTheme(CHA2DS2_VAScStage);
 
 const ScoreForm = (props) => {
     let scoreRadios = scoreItems
@@ -134,20 +129,21 @@ const ScoreRadioBox = (props) => {
         if (hasValue(props.onChange)) props.onChange(scoreItems[0].id, ageGroupId);
     }
 
+    const theme = useTheme();
     return (
         <View>
             <View>
                 <Layout.InputTitle title={'Gender'}/>
                 <IntraSectionInvisibleDivider xs/>
                 <SegmentedControl
-                    activeFontStyle={{color: currentTheme.colors.primary}}
+                    activeFontStyle={{color: theme.colors.primary}}
                     values={['Male', 'Female']}
                     selectedIndex={gender}
                     onChange={(event) => {
                         changeGender(event.nativeEvent.selectedSegmentIndex)
                     }}
-                    backgroundColor={currentTheme.colors.backdrop}
-                    tintColor={currentTheme.colors.surface}
+                    backgroundColor={theme.colors.backdrop}
+                    tintColor={theme.colors.surface}
                 />
             </View>
             <IntraSectionInvisibleDivider sm/>
@@ -155,14 +151,14 @@ const ScoreRadioBox = (props) => {
                 <Layout.InputTitle title={'Age Group'}/>
                 <IntraSectionInvisibleDivider xs/>
                 <SegmentedControl
-                    activeFontStyle={{color: currentTheme.colors.primary}}
+                    activeFontStyle={{color: theme.colors.primary}}
                     values={scoreItems[0].options.map(o => o.name)}
                     selectedIndex={ageGroup}
                     onChange={(event) => {
                         changeAgeGroup(event.nativeEvent.selectedSegmentIndex)
                     }}
-                    backgroundColor={currentTheme.colors.backdrop}
-                    tintColor={currentTheme.colors.surface}
+                    backgroundColor={theme.colors.backdrop}
+                    tintColor={theme.colors.surface}
                 />
             </View>
         </View>

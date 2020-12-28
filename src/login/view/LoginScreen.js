@@ -8,10 +8,9 @@ import * as Locale from "./Locale";
 import LoginForm from "./LoginForm";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
 import {UserRole} from "../../root/domain/Role";
-import {Button, Subheading, Title} from 'react-native-paper';
-import {currentTheme} from "../../../theme";
+import {Button, Subheading, Title, withTheme} from 'react-native-paper';
 
-export default class LoginScreen extends React.Component {
+class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -47,9 +46,13 @@ export default class LoginScreen extends React.Component {
     }
 
     render() {
+        const theme = this.props.theme;
         return (
             <Layout>
-                <View style={styles.container}>
+                <View style={{
+                    flex: 1,
+                    backgroundColor: theme.colors.background,
+                }}>
                     <View style={styles.bodyContainer}>
                         <LoginForm
                             navigation={this.props.navigation}
@@ -66,7 +69,7 @@ export default class LoginScreen extends React.Component {
                             disabled={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
                             onPress={() => {this.onFormSubmit()}}
                         >
-                            <Subheading style={{color: currentTheme.colors.background}}>{Locale[this.locale].text.button.LOGIN}</Subheading>
+                            <Subheading style={{color: theme.colors.background}}>{Locale[this.locale].text.button.LOGIN}</Subheading>
                         </Button>
                     </View>
                 </View>
@@ -75,10 +78,10 @@ export default class LoginScreen extends React.Component {
     }
 }
 
+export default withTheme(LoginScreen);
+
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: currentTheme.colors.background,
     },
     bodyContainer: {
         flexGrow: 1,

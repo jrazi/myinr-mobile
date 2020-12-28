@@ -1,7 +1,6 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
 import {
-    DefaultTheme,
     Appbar,
     Surface,
     Title,
@@ -12,11 +11,10 @@ import {
     Dialog,
     Paragraph,
     Button,
-    Text, Subheading
+    Text, Subheading, useTheme
 } from 'react-native-paper';
 import {fullSize} from "../styles/containers";
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import {currentTheme} from "../../../../theme";
 import {useNavigation} from '@react-navigation/native';
 
 export const Wrapper = (props) => {return (
@@ -27,18 +25,19 @@ export const Wrapper = (props) => {return (
 )}
 
 export const Header = (props) => {
+    const theme = useTheme();
     let navigation = useNavigation();
     return (
     <Surface style={styles.appBarHeader}>
         <View style={styles.appBarHeaderWrapper}>
             <View style={styles.headerOfHeader}>
-                <Title style={{color: currentTheme.colors.primary}}>پروفایل کاربری</Title>
-                <Appbar.Action icon="arrow-left" onPress={() => navigation.goBack()} color={currentTheme.colors.placeholder}/>
+                <Title style={{color: theme.colors.primary}}>پروفایل کاربری</Title>
+                <Appbar.Action icon="arrow-left" onPress={() => navigation.goBack()} color={theme.colors.placeholder}/>
             </View>
             <View style={styles.bodyOfHeader}>
                 <View
                     style = {{
-                        backgroundColor: currentTheme.colors.primary,
+                        backgroundColor: theme.colors.primary,
                         borderRadius: 100,
                         padding: 25,
                     }}
@@ -58,13 +57,16 @@ export const Header = (props) => {
     </Surface>
 )}
 
-export const Options = (props) => {return (
-    <View style={styles.containerBody}>
-        <List.Section>
-            {props.children}
-        </List.Section>
-    </View>
-)}
+export const Options = (props) => {
+    const theme = useTheme();
+    return (
+        <View style={{padding: 20, backgroundColor: theme.colors.background, flexGrow: 1,}}>
+            <List.Section>
+                {props.children}
+            </List.Section>
+        </View>
+    )
+}
 
 export const MenuItem = (props) => {
     return (
@@ -85,10 +87,11 @@ export const MenuItem = (props) => {
 }
 
 export const LogoutDialog = (props) => {
+    const theme = useTheme();
     return (
         <Portal>
             <Dialog visible={props.visible} onDismiss={props.onDismiss} style={{paddingBottom: 10}} dismissable={true}>
-                <Dialog.Content color={currentTheme.colors.placeholder}>
+                <Dialog.Content color={theme.colors.placeholder}>
                     <Subheading style={{textAlign: 'center'}}>آیا می‌خواهید خارج شوید؟</Subheading>
                 </Dialog.Content>
                 <Dialog.Actions style={{alignItems: 'center', justifyContent: 'space-around',}}>
@@ -100,27 +103,30 @@ export const LogoutDialog = (props) => {
     );
 }
 
-export const Screen = (props) => {return (
-    <Wrapper>
-        <Header
-            avatar={<SimpleLineIcons style={{}} name={props.gender == 'F' ? 'user-female' : 'user'} size={40} color={'white'}/>}
-            title={props.title}
-            caption={props.caption}
-        />
-        <Options>
-            {
-                props.menu.map(item => {return (
-                    <MenuItem
-                        title={item.title}
-                        left={(props) => <List.Icon icon={item.iconId} color={currentTheme.colors.primary}/>}
-                        onPress={item.onPress}
-                        key={item.title}
-                    />
-                )})
-            }
-        </Options>
-    </Wrapper>
-)}
+export const Screen = (props) => {
+    const theme = useTheme();
+    return (
+        <Wrapper>
+            <Header
+                avatar={<SimpleLineIcons style={{}} name={props.gender == 'F' ? 'user-female' : 'user'} size={40} color={'white'}/>}
+                title={props.title}
+                caption={props.caption}
+            />
+            <Options>
+                {
+                    props.menu.map(item => {return (
+                        <MenuItem
+                            title={item.title}
+                            left={(props) => <List.Icon icon={item.iconId} color={theme.colors.primary}/>}
+                            onPress={item.onPress}
+                            key={item.title}
+                        />
+                    )})
+                }
+            </Options>
+        </Wrapper>
+    )
+}
 
 
 const styles = StyleSheet.create({
@@ -149,14 +155,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center',
         paddingVertical: 20,
-    },
-    avatar: {
-        backgroundColor: currentTheme.colors.primary,
-    },
-    containerBody: {
-        padding: 20,
-        backgroundColor: currentTheme.colors.background,
-        flexGrow: 1,
     },
     profileMenuItemContainer: {
         elevation: 4,

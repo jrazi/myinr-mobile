@@ -1,6 +1,4 @@
 import React, {useEffect, useRef, useState} from "react";
-import {StyleSheet} from "react-native";
-import {currentTheme} from "../../../../../../theme";
 import * as Layout from "./forms/Layout";
 import {
     ConditionalCollapsibleRender,
@@ -183,7 +181,7 @@ const MedicalInfoInput = (props) => {
                     textContentType={props.textContentType}
                     autoCorrect={false}
                     style={{
-                        backgroundColor: currentTheme.colors.surface,
+                        backgroundColor: theme.colors.surface,
                         fontSize: 14,
                         flexGrow: 0,
                         paddingHorizontal: 0,

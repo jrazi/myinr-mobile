@@ -3,12 +3,15 @@ import {ScreenHeader, ScreenLayout} from "../../root/view/screen/Layout";
 import * as Layout from "./patients/visit/first/forms/Layout";
 import {DefaultSwitchRow} from "./patients/visit/first/forms/ContextSpecificComponents";
 import {View} from 'react-native';
-import {changeTheme, changeToLightTheme, currentTheme} from "../../../theme";
 import {rootDao} from "../../root/data/dao/RootDao";
 import {ConditionalCollapsibleRender, ConditionalRender} from "./patients/visit/first/forms/Layout";
-import {useChangeTheme} from "../../../App";
+import RNRestart from "react-native-restart";
+import Updates from "expo-updates";
+import NativeDevSettings from "react-native/Libraries/NativeModules/specs/NativeDevSettings";
+import {withTheme} from "react-native-paper";
 
-export class SettingsScreen extends React.Component {
+
+class SettingsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,18 +26,14 @@ export class SettingsScreen extends React.Component {
     }
 
     toggleDarkMode = () => {
-        this.setState({darkModeOn: !this.state.darkModeOn}, () => {
-            rootDao.setDarkMode(this.state.darkModeOn);
-            changeTheme(this.state.darkModeOn);
-            useChangeTheme(this.state.darkModeOn);
-            this.props.navigation.reset({
-                index: 0,
-                routes: [{name: 'SettingsScreen'}, {name: 'DoctorApp'}],
-            });
+        this.setState({darkModeOn: !this.state.darkModeOn}, async () => {
+            await rootDao.setDarkMode(this.state.darkModeOn);
+            NativeDevSettings.reload();
         });
     }
 
     render() {
+        const theme = this.props.theme;
         return (
             <ScreenLayout>
                 <ScreenHeader
@@ -48,7 +47,7 @@ export class SettingsScreen extends React.Component {
                                 flexDirection: 'row',
                             }}
                             titleStyle={{
-                                color: currentTheme.colors.text,
+                                color: theme.colors.text,
                             }}
                             title={'حالت تاریک'}
                             value={this.state.darkModeOn}
@@ -60,4 +59,6 @@ export class SettingsScreen extends React.Component {
         )
     }
 }
+
+export default withTheme(SettingsScreen);
 

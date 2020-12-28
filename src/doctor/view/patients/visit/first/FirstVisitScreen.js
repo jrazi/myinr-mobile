@@ -1,10 +1,21 @@
 import React from "react";
 import {StyleSheet, View, I18nManager} from "react-native";
-import {Text, ProgressBar, Badge, Appbar, Avatar, FAB, Portal, Dialog, Button, Subheading} from "react-native-paper";
+import {
+    Text,
+    ProgressBar,
+    Badge,
+    Appbar,
+    Avatar,
+    FAB,
+    Portal,
+    Dialog,
+    Button,
+    Subheading,
+    withTheme
+} from "react-native-paper";
 import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {FirstVisit} from "../../../../domain/visit/Visit";
 import {doctorDao, VisitState} from "../../../../data/dao/DoctorDao";
-import {currentTheme} from "../../../../../../theme";
 import StageNavigator from "./StageNavigator";
 import {stages} from "./FirstVisitProperties";
 import {debugBorderRed} from "../../../../../root/view/styles/borders";
@@ -17,7 +28,7 @@ import {AddDrugRecord} from "./AddDrugRecord";
 import {createStackNavigator} from "@react-navigation/stack";
 // import RNRestart from 'react-native-restart';
 
-export class FirstVisitScreen extends React.Component {
+class FirstVisitScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -80,6 +91,7 @@ export class FirstVisitScreen extends React.Component {
     }
 
     render() {
+        const theme = this.props.theme;
         return (
             <LoadingScreen loaded={this.state.loaded}>
                 <ScreenLayout>
@@ -96,12 +108,14 @@ export class FirstVisitScreen extends React.Component {
                     >
                         <View style={{flex: 1, alignItems: 'flex-end'}}>
                             <View style={{width: '50%', }}>
-                                {/*<ProgressBar progress={(1+this.state.currentStage)/stages.length} color={currentTheme.colors.primary} />*/}
                                 <StageProgressBar currentStage={this.state.currentStage}/>
                             </View>
                         </View>
                     </CustomContentScreenHeader>
-                    <View style={styles.mainContainer}>
+                    <View style={{
+                        flex: 1,
+                        backgroundColor: theme.colors.surface,
+                    }}>
                         <ConditionalRender hidden={!this.state.loaded}>
                             <StageNavigator
                                 navigation={this.props.navigation}
@@ -124,13 +138,8 @@ export class FirstVisitScreen extends React.Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        backgroundColor: currentTheme.colors.surface,
-    }
-})
 
+export default withTheme(FirstVisitScreen);
 
 const StageProgressBar = (props) => {
     let progressDots = [];
@@ -143,7 +152,7 @@ const StageProgressBar = (props) => {
                 }}
                 size={16}
                 name={"circle"}
-                color={props.currentStage == i ? currentTheme.colors.primary : currentTheme.colors.placeholder}
+                color={props.currentStage == i ? theme.colors.primary : theme.colors.placeholder}
                 key={i}
             />
         )
@@ -178,7 +187,7 @@ const FinishVisitDialog = (props) => {
 }
 
 const DialogMessage = (props) => {return (
-    <Dialog.Content color={currentTheme.colors.placeholder} style={{paddingTop: 20}}>
+    <Dialog.Content color={theme.colors.placeholder} style={{paddingTop: 20}}>
         <Subheading style={{textAlign: 'center'}}>{props.children}</Subheading>
     </Dialog.Content>
 )}

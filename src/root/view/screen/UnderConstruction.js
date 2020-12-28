@@ -1,9 +1,9 @@
 import React from "react";
 import {StyleSheet, Text, View} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {currentTheme} from "../../../../theme";
+import {withTheme} from "react-native-paper";
 
-export default class UnderConstruction extends React.Component {
+class UnderConstruction extends React.Component {
     constructor(props) {
         super(props);
         this.state = {}
@@ -13,19 +13,21 @@ export default class UnderConstruction extends React.Component {
     }
 
     render() {
+        const theme = this.props.theme;
+        const styles = StyleSheet.create({
+            container: {
+                flex: 1,
+                backgroundColor: theme.colors.background,
+                alignItems: 'center',
+                justifyContent: 'center',
+            },
+        });
         return (
             <View style={styles.container}>
-                <Icon name={'build'} size={100} color={currentTheme.colors.onBackground}></Icon>
+                <Icon name={'build'} size={100} color={theme.colors.onBackground}></Icon>
             </View>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: currentTheme.colors.background,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
+export default withTheme(UnderConstruction);

@@ -1,8 +1,7 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import {HelperText, Text, TextInput} from "react-native-paper";
+import {HelperText, Text, TextInput, useTheme} from "react-native-paper";
 import * as Layout from './forms/Layout';
-import {currentTheme} from "../../../../../../theme";
 import {IntraSectionInvisibleDivider} from "./forms/Layout";
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
@@ -116,12 +115,6 @@ export class PhysicalExamStage extends React.Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        backgroundColor: currentTheme.colors.surface,
-    }
-})
 
 const TextInputRow = ({title, error, ...props}) => {
     return (
@@ -153,7 +146,7 @@ const DefaultTextInput = (props) => {
                 textContentType={props.textContentType}
                 autoCorrect={false}
                 style={{
-                    backgroundColor: currentTheme.colors.surface,
+                    backgroundColor: useTheme().colors.surface,
                     // ...debugBorderRed,
                     fontSize: 14,
                     flexGrow: 0,

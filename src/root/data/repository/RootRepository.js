@@ -1,5 +1,4 @@
 import {AsyncStorage} from "react-native";
-import UserFactory from "../../domain/UserFactory";
 
 const USER_META_KEY = 'USER_METADATA';
 

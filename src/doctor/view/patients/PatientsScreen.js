@@ -5,11 +5,10 @@ import {
     Surface,
     Card,
     Text,
-    Avatar, TouchableRipple,
+    Avatar, TouchableRipple, withTheme, useTheme,
 } from "react-native-paper";
 import Icons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {currentTheme, mostlyWhiteTheme} from "../../../../theme";
 import {rootDao} from "../../../root/data/dao/RootDao";
 import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../../root/domain/util/Util";
 import {ScreenHeader, ScreenLayout} from "../../../root/view/screen/Layout";
@@ -62,6 +61,7 @@ class PatientsScreen extends React.Component {
 
             ]);
         }
+        const theme = this.props.theme;
         return (
             <ScreenLayout>
                 <ScreenHeader
@@ -74,8 +74,8 @@ class PatientsScreen extends React.Component {
                         <RefreshControl
                             refreshing={this.state.loading}
                             onRefresh={this.refresh}
-                            colors={[currentTheme.colors.primary]}
-                            progressBackgroundColor={currentTheme.colors.surface}
+                            colors={[theme.colors.primary]}
+                            progressBackgroundColor={theme.colors.surface}
                         />
                     }
                 >
@@ -90,7 +90,7 @@ class PatientsScreen extends React.Component {
     }
 }
 
-export default PatientsScreen;
+export default withTheme(PatientsScreen);
 
 const PatientInfoCard = (props) => {
     // TODO Refactor
@@ -106,6 +106,7 @@ const PatientInfoCard = (props) => {
     if (timePast == null) {
         latestInrTestMessage = 'عدم ثبت شاخص INR';
     }
+    const theme = useTheme();
     return (
             <View style={[{
                 // elevation: 4,
@@ -123,7 +124,7 @@ const PatientInfoCard = (props) => {
                             subtitle={latestInrTestMessage}
                             left={() => <Avatar.Text
                                 size={32} label={nameChunks[0][0] + '.' + nameChunks[1][0]}
-                                style={{backgroundColor: currentTheme.colors.accent}}
+                                style={{backgroundColor: theme.colors.accent}}
                             />}
                         />
                         <Card.Content>
@@ -139,31 +140,32 @@ const PatientInfoCard = (props) => {
 }
 
 const PatientCardDetails = (props) => {
+    const theme = useTheme();
     return ([
         <Row key={'first'}>
             <InfoItem
                 title={props.patientInfo.medicalCondition}
-                customIcon={<MaterialCommunityIcons name="stethoscope" size={20} color={currentTheme.colors.placeholder}/>}
+                customIcon={<MaterialCommunityIcons name="stethoscope" size={20} color={theme.colors.placeholder}/>}
             />
             <InfoItem
                 wrapperStyle={{
                     paddingLeft: 40,
                 }}
                 title={props.patientInfo.age != 'نامشخص' ?  `${props.patientInfo.age} سال ` : 'نامشخص'}
-                customIcon={<MaterialCommunityIcons name={'calendar-account'} size={20} color={currentTheme.colors.placeholder}/>}
+                customIcon={<MaterialCommunityIcons name={'calendar-account'} size={20} color={theme.colors.placeholder}/>}
             />
         </Row>,
         <Row key={'second'}>
             <InfoItem
                 title={props.patientInfo.mobile}
-                customIcon={<MaterialCommunityIcons name="cellphone" size={20} color={currentTheme.colors.placeholder}/>}
+                customIcon={<MaterialCommunityIcons name="cellphone" size={20} color={theme.colors.placeholder}/>}
             />
             <InfoItem
                 wrapperStyle={{
                     paddingLeft: 40,
                 }}
                 title={props.patientInfo.birthPlace}
-                customIcon={<MaterialCommunityIcons name={'map-marker-outline'} size={20} color={currentTheme.colors.placeholder}/>}
+                customIcon={<MaterialCommunityIcons name={'map-marker-outline'} size={20} color={theme.colors.placeholder}/>}
             />
         </Row>
     ]);
@@ -225,3 +227,4 @@ const styles = StyleSheet.create({
     patientCardDetails: {
     }
 });
+

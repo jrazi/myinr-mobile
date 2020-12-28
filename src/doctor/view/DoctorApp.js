@@ -1,5 +1,5 @@
 import React from 'react';
-import {BottomNavigation, useTheme} from "react-native-paper";
+import {BottomNavigation, useTheme, withTheme} from "react-native-paper";
 import HomeScreen from "./HomeScreen";
 import VisitsScreen from "./VisitsScreen";
 import ProfileScreen from "./ProfileScreen";
@@ -7,8 +7,6 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {rootDao} from "../../root/data/dao/RootDao";
 import {UserRole} from "../../root/domain/Role";
-import {currentTheme, theme} from "../../../theme";
-import {PatientsTab} from "./patients/PatientsTab";
 import PatientsScreen from "./patients/PatientsScreen";
 
 const Tab = createMaterialBottomTabNavigator();
@@ -34,15 +32,15 @@ class DoctorApp extends React.Component {
     }
 
     render() {
-        const colors = this.props.defaultTheme.colors;
+        const theme = this.props.theme;
         return (
             <Tab.Navigator
                 initialRouteName={"Home"}
-                barStyle={{ backgroundColor: currentTheme.colors.surface,}}
+                barStyle={{ backgroundColor: theme.colors.surface,}}
                 shifting={false}
                 backBehavior={'history'}
-                activeColor={currentTheme.colors.accent}
-                inactiveColor={currentTheme.colors.backdrop}
+                activeColor={theme.colors.accent}
+                inactiveColor={theme.colors.backdrop}
                 lazy={false}
             >
                 <Tab.Screen
@@ -90,11 +88,6 @@ class DoctorApp extends React.Component {
     }
 };
 
-export default function(props) {
-    // const navigation = useNavigation();
-    const defaultTheme = useTheme();
-
-    return <DoctorApp {...props} defaultTheme={defaultTheme}/>;
-}
+export default withTheme(DoctorApp);
 
 

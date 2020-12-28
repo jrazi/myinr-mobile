@@ -1,11 +1,16 @@
 import React from "react";
-import {Appbar} from "react-native-paper";
-import {currentTheme, mostlyWhiteTheme} from "../../../../theme";
+import {Appbar, useTheme} from "react-native-paper";
 import {StyleSheet, View} from "react-native";
 import {useNavigation} from '@react-navigation/native';
 import {hasValue} from "../../domain/util/Util";
 
 export const ScreenLayout = (props) => {
+    const styles = StyleSheet.create({
+        screenWrapper: {
+            flex: 1,
+            backgroundColor: useTheme().colors.background,
+        },
+    })
     return (
         <View style={[styles.screenWrapper, props.style]}>
             {props.children}
@@ -21,7 +26,7 @@ export const ScreenHeader = ({style, title, navigation, reverse, contentStyle, .
     ];
     return (
         <CustomContentScreenHeader style={style} navigation={navigation} reverse={reverse}>
-            <Appbar.Content color={currentTheme.colors.primary} title={title} style={_contentStyle}/>
+            <Appbar.Content color={useTheme().colors.primary} title={title} style={_contentStyle}/>
         </CustomContentScreenHeader>
     );
 }
@@ -33,6 +38,7 @@ export const CustomContentScreenHeader = (props) => {
     else navigation = useNavigation();
 
     let goBackAction = hasValue(props.onBack) ? () => {props.onBack(navigation)} : () => {navigation.goBack()};
+    const theme = useTheme();
     return (
         <Appbar.Header
             style={{
@@ -43,25 +49,18 @@ export const CustomContentScreenHeader = (props) => {
                 // flexDirection: 'row',
                 // justifyContent: 'space-around',
             }}
-            theme={mostlyWhiteTheme}
+            theme={theme.mostlyWhiteTheme}
         >
             {
                 props.reverse ? [
-                        <Appbar.Action icon="arrow-right" size={28} onPress={goBackAction} color={currentTheme.colors.placeholder}/>,
+                        <Appbar.Action icon="arrow-right" size={28} onPress={goBackAction} color={theme.colors.placeholder}/>,
                         props.children,
                 ] :
                 [
                     props.children,
-                    <Appbar.Action icon="arrow-left" size={28} onPress={goBackAction} color={currentTheme.colors.placeholder}/>
+                    <Appbar.Action icon="arrow-left" size={28} onPress={goBackAction} color={theme.colors.placeholder}/>
                 ]
             }
         </Appbar.Header>
     );
 }
-
-const styles = StyleSheet.create({
-    screenWrapper: {
-        flex: 1,
-        backgroundColor: currentTheme.colors.background,
-    },
-})

@@ -11,12 +11,13 @@ import {
     UIActivityIndicator,
     WaveIndicator,
 } from 'react-native-indicators';
-import {currentTheme} from "../../../../theme";
+import {useTheme} from "react-native-paper";
 
 export const LoadingScreen = (props) => {
+    const theme = useTheme();
     if (props.loaded == false) {
         return (
-            <ScreenLayout style={{backgroundColor: currentTheme.colors.background}}>
+            <ScreenLayout style={{backgroundColor: theme.colors.background}}>
                 <LoadingIndicator/>
             </ScreenLayout>
         )
@@ -25,7 +26,8 @@ export const LoadingScreen = (props) => {
 }
 
 export const LoadingIndicator = (props) => {
+    const theme = useTheme();
     return (
-        <DotIndicator color={currentTheme.colors.primary} />
+        <DotIndicator color={theme.colors.primary} />
     );
 }

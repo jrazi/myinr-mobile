@@ -6,7 +6,6 @@ import {debugBorderRed} from "../../../../../root/view/styles/borders";
 import * as Layout from "./forms/Layout";
 import {IntraSectionDivider} from "./forms/Layout";
 import {FormSubmissionStatus} from "../../../../../root/view/FormSubmissionStatus";
-import {currentTheme} from "../../../../../../theme";
 import * as Locale from "../../../../../login/view/Locale";
 import {DefaultDatePicker} from "./forms/JalaliDatePicker";
 import {visitDao} from "../../../../data/dao/VisitDao";
@@ -84,7 +83,7 @@ export class DrugDatePicker extends React.Component {
                                 disabled={false}
                                 onPress={this.addDrug}
                             >
-                                <Subheading style={{color: currentTheme.colors.background}}>Add Drug</Subheading>
+                                <Subheading style={{color: theme.colors.background}}>Add Drug</Subheading>
                             </Button>
                         </Surface>
                 </Dialog>
@@ -104,8 +103,8 @@ const DateInput = (props) => {
                 <List.Item
                     title={`${props.title} ${props.value || ''}`}
                     titleStyle={{...styles.alignRight}}
-                    right={() => <List.Icon icon="calendar-month-outline" color={currentTheme.colors.primary}/>}
-                    left={props => <List.Icon icon="chevron-right" color={currentTheme.colors.backdrop}/>}
+                    right={() => <List.Icon icon="calendar-month-outline" color={theme.colors.primary}/>}
+                    left={props => <List.Icon icon="chevron-right" color={theme.colors.backdrop}/>}
                 />
             </TouchableRipple>
             <DatePickerModal

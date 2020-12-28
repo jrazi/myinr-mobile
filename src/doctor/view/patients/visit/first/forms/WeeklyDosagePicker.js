@@ -3,7 +3,6 @@ import * as Layout from "./Layout";
 import {IntraSectionInvisibleDivider} from "./Layout";
 import {firstNonEmpty, getFormattedJalaliDate} from "../../../../../../root/domain/util/Util";
 import CircularPicker from "react-native-circular-picker";
-import {currentTheme} from "../../../../../../../theme";
 import {Surface, Text} from "react-native-paper";
 import {Animated, View, Dimensions} from 'react-native';
 import {visitDao} from "../../../../../data/dao/VisitDao";
@@ -76,8 +75,8 @@ const DosageForDay = (props) => {
                 strokeWidth={18}
                 steps={steps}
                 gradients={{
-                    0: [currentTheme.colors.accent, currentTheme.colors.accent],
-                    100: [currentTheme.colors.accent, currentTheme.colors.accent],
+                    0: [theme.colors.accent, theme.colors.accent],
+                    100: [theme.colors.accent, theme.colors.accent],
                 }}
                 perc={percentage}
                 onChange={handleChange}

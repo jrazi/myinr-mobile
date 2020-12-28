@@ -1,7 +1,6 @@
 import React, {useCallback, useState} from "react";
 import * as Layout from "./forms/Layout";
 import {Text, Button, Divider, Switch, TextInput, Portal} from "react-native-paper";
-import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
 import {
     ConditionalCollapsibleRender,
     ConditionalRender,
@@ -183,7 +182,7 @@ export const SwitchRow = (props) => {
             <Layout.InputTitle title={props.title} description={props.description}/>
             <Switch
                 style={{}} value={props.value}
-                color={currentTheme.colors.primary}
+                color={theme.colors.primary}
                 onValueChange={() => props.onChange()}
             />
         </Layout.Row>
@@ -206,7 +205,7 @@ const DefaultTextInput = (props) => {
                 textContentType={props.textContentType}
                 autoCorrect={false}
                 style={{
-                    backgroundColor: currentTheme.colors.surface,
+                    backgroundColor: theme.colors.surface,
                     fontSize: 14,
                     flexGrow: 0,
                     paddingHorizontal: 0,
@@ -245,7 +244,7 @@ const DateInput = (props) => {
                 textContentType={props.textContentType}
                 autoCorrect={false}
                 style={{
-                    backgroundColor: currentTheme.colors.surface,
+                    backgroundColor: theme.colors.surface,
                     fontSize: 14,
                     flexGrow: 0,
                     paddingHorizontal: 0,

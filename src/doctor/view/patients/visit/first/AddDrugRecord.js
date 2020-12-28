@@ -5,7 +5,6 @@ import {View, ScrollView, FlatList, Animated, RefreshControl, StyleSheet} from '
 import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {IntraSectionDivider} from "./forms/Layout";
 import {DrugDao, drugDao} from "../../../../data/dao/DrugDao";
-import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
 import {fullSize} from "../../../../../root/view/styles/containers";
 import {DefaultDatePicker} from "./forms/JalaliDatePicker";
 import {DrugDatePicker} from "./DrugDatePicker";
@@ -167,8 +166,8 @@ const DrugList = (props) => {
                 refreshControl={
                     <RefreshControl
                         refreshing={props.refreshing}
-                        colors={[currentTheme.colors.primary]}
-                        progressBackgroundColor={currentTheme.colors.surface}
+                        colors={[theme.colors.primary]}
+                        progressBackgroundColor={theme.colors.surface}
                     />
                 }
             >
@@ -254,7 +253,7 @@ export const SearchBoxContainer = (props) => {
         <Surface style={searchBoxStyles.appBarHeader}>
             <View style={searchBoxStyles.appBarHeaderWrapper}>
                 <View style={searchBoxStyles.headerOfHeader}>
-                    <Appbar.Action icon="arrow-right" onPress={() => props.navigation.goBack()} color={currentTheme.colors.placeholder}/>
+                    <Appbar.Action icon="arrow-right" onPress={() => props.navigation.goBack()} color={theme.colors.placeholder}/>
                 </View>
                 <View style={searchBoxStyles.bodyOfHeader}>
                     {props.children}

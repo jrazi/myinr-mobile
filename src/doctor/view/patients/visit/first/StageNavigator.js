@@ -1,6 +1,5 @@
 import React from 'react';
-import {BottomNavigation, useTheme} from "react-native-paper";
-import {currentTheme, mostlyWhiteTheme} from "../../../../../../theme";
+import {BottomNavigation, useTheme, withTheme} from "react-native-paper";
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
 import {stages} from "./FirstVisitProperties";
 import {createStackNavigator} from "@react-navigation/stack";
@@ -9,7 +8,7 @@ import {fullSize} from "../../../../../root/view/styles/containers";
 import {AddDrugRecord} from "./AddDrugRecord";
 import {DrugDatePicker} from "./DrugDatePicker";
 
-export default class StageNavigator extends React.Component {
+class StageNavigator extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -59,11 +58,10 @@ export default class StageNavigator extends React.Component {
     }
 
     render() {
-
+        const theme = this.props.theme;
         const renderScene = ({ route, jumpTo }) => {
             return <StageNavStack visitInfo={this.props.visitInfo} userId={this.props.userId} currentStage={this.props.currentStage}/>;
         }
-
 
         return (
             <View style={{...fullSize}}>
@@ -72,15 +70,18 @@ export default class StageNavigator extends React.Component {
                     onIndexChange={this.onIndexChange}
                     renderScene={renderScene}
                     shifting={false}
-                    activeColor={currentTheme.colors.primary}
-                    inactiveColor={currentTheme.colors.primary}
-                    theme={mostlyWhiteTheme}
+                    activeColor={theme.colors.primary}
+                    inactiveColor={theme.colors.primary}
+                    theme={theme}
                     onTabPress={this.onTabPress}
                 />
             </View>
         )
     }
 };
+
+export default withTheme(StageNavigator);
+
 const Stack = createStackNavigator();
 
 const StageNavStack = (props) => {

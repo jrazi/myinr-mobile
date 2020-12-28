@@ -1,8 +1,6 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import {HelperText, Text, TextInput} from "react-native-paper";
-import {ScreenLayout} from "../../../../../root/view/screen/Layout";
-import {currentTheme} from "../../../../../../theme";
+import {HelperText, Text, TextInput, useTheme} from "react-native-paper";
 import * as Layout from "./forms/Layout";
 import {IntraSectionInvisibleDivider} from "./forms/Layout";
 import {Formik} from "formik";
@@ -34,12 +32,6 @@ export class Echocardiography extends React.Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        backgroundColor: currentTheme.colors.surface,
-    }
-})
 
 export class ECForm extends React.Component {
     constructor(props) {
@@ -133,6 +125,7 @@ const LabTestField = ({name, unit, error, ...props}) => {
 }
 
 const DefaultTextInput = (props) => {
+    const theme = useTheme();
     return (
         <View>
             <Layout.InputOutlineLabel title={props.label}/>
@@ -147,7 +140,7 @@ const DefaultTextInput = (props) => {
                 textContentType={props.textContentType}
                 autoCorrect={false}
                 style={{
-                    backgroundColor: currentTheme.colors.surface,
+                    backgroundColor: theme.colors.surface,
                     fontSize: 14,
                     paddingHorizontal: 0,
                     textAlign: 'left',

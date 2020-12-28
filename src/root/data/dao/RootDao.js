@@ -1,7 +1,6 @@
 import RootRepository from "../repository/RootRepository";
 import {Locale} from "../../domain/Locale";
 import {serverGateway} from "../server/ServerGateway";
-import {sleep} from "../../domain/util/Util";
 import {AsyncStorage} from "react-native";
 
 class RootDao {
@@ -76,7 +75,7 @@ class RootDao {
 
     getDarkMode() {
         return AsyncStorage.getItem('DARK_MODE')
-            .then(darkMode => darkMode=='true');
+            .then(darkMode => darkMode == 'true');
     }
 
 

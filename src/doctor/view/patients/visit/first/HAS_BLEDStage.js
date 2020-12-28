@@ -1,10 +1,7 @@
 import React, {useState} from "react";
 import {StyleSheet, View} from "react-native";
-import {Switch, Text} from "react-native-paper";
-import {ScreenLayout} from "../../../../../root/view/screen/Layout";
-import {currentTheme} from "../../../../../../theme";
+import {Switch, Text, useTheme} from "react-native-paper";
 import * as Layout from "./forms/Layout";
-import {SwitchRow} from "./InrInfoStage";
 import {IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
 import {visitDao} from "../../../../data/dao/VisitDao";
@@ -65,14 +62,9 @@ export class HAS_BLEDStage extends React.Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        backgroundColor: currentTheme.colors.surface,
-    }
-})
 
 export const GenericScoreForm = (props) => {
+    const theme = useTheme();
     let selectedStates = [];
     let conditionElements = props.medicalConditions
         .map((condition, index) => {
@@ -98,7 +90,7 @@ export const GenericScoreForm = (props) => {
                     />
                     <Switch
                         style={{}} value={value}
-                        color={currentTheme.colors.accent}
+                        color={theme.colors.accent}
                         onValueChange={() => {{props.onChange(condition.id, !value); setValue(!value)}}}
                     />
                 </Layout.Row>,

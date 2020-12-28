@@ -2,7 +2,6 @@ import React from "react";
 import {Portal} from "react-native-paper";
 import {View} from "react-native";
 import DatePicker from "@mohamadkh75/react-native-jalali-datepicker";
-import {currentTheme} from "../../../../../../../theme";
 import {firstNonEmpty, getFormFormattedJalaliDate} from "../../../../../../root/domain/util/Util";
 import {ConditionalRender} from "./Layout";
 
@@ -16,9 +15,9 @@ export const DefaultDatePicker = (props) => {
                         width: '80%',
                         height: '50%',
                         alignSelf: 'center',
-                        backgroundColor: currentTheme.colors.background,
+                        backgroundColor: theme.colors.background,
                         borderWidth: 0.2,
-                        borderColor: currentTheme.colors.placeholder,
+                        borderColor: theme.colors.placeholder,
                         elevation: 4,
                     }}
                     selected={firstNonEmpty(props.selectedDate, getFormFormattedJalaliDate(new Date(Date.now())))}
@@ -33,26 +32,26 @@ export const DefaultDatePicker = (props) => {
                         alignItems: 'center',
                         borderWidth: 0,
                     }}
-                    yearMonthTextStyle={{ fontSize: 24, color: currentTheme.colors.primary, fontFamily: 'IranSans' }}
+                    yearMonthTextStyle={{ fontSize: 24, color: theme.colors.primary, fontFamily: 'IranSans' }}
                     iconContainerStyle={{ width: `${100 / 7}%` }}
                     backIconStyle={{
                         width: 20,
                         height: 20,
                         resizeMode: 'center',
-                        tintColor: currentTheme.colors.placeholder,
+                        tintColor: theme.colors.placeholder,
                     }}
                     nextIconStyle={{
                         width: 20,
                         height: 20,
                         resizeMode: 'center',
-                        tintColor: currentTheme.colors.placeholder
+                        tintColor: theme.colors.placeholder
                     }}
                     eachYearStyle={{
                         // width: 110,
                         height: 70,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        backgroundColor: currentTheme.colors.background,
+                        backgroundColor: theme.colors.background,
                         marginTop: '1.5%',
                         marginBottom: 5,
                         flexWrap: 'wrap',
@@ -65,7 +64,7 @@ export const DefaultDatePicker = (props) => {
                     }}
                     eachYearTextStyle={{
                         fontSize: 16,
-                        color: currentTheme.colors.primary,
+                        color: theme.colors.primary,
                         fontFamily: 'IranSans'
                     }}
                     eachMonthStyle={{
@@ -73,27 +72,27 @@ export const DefaultDatePicker = (props) => {
                         height: `${88 / 4}%`,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        backgroundColor: currentTheme.colors.background,
+                        backgroundColor: theme.colors.background,
                         marginBottom: '3%',
                         // borderRadius: 10,
                         borderWidth: 0,
                         elevation: 0,
                     }}
-                    eachMonthTextStyle={{ fontSize: 16, color: currentTheme.colors.primary, fontFamily: 'IranSans' }}
+                    eachMonthTextStyle={{ fontSize: 16, color: theme.colors.primary, fontFamily: 'IranSans' }}
                     weekdaysContainerStyle={{ height: '10%' }}
                     weekdayStyle={{
                         flex: 1,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        borderBottomColor: currentTheme.colors.placeholder,
+                        borderBottomColor: theme.colors.placeholder,
                     }}
                     weekdayTextStyle={{
                         fontSize: 16,
-                        color: currentTheme.colors.primary,
+                        color: theme.colors.primary,
                         marginBottom: 5,
                         fontFamily: 'IranSans'
                     }}
-                    // borderColor={currentTheme.colors.primary}
+                    // borderColor={theme.colors.primary}
                     dayStyle={{
                         width: `${100 / 7}%`,
                         justifyContent: 'center',
@@ -107,11 +106,11 @@ export const DefaultDatePicker = (props) => {
                         alignItems: 'center',
                         borderRadius: 100,
                     }}
-                    selectedDayColor={currentTheme.colors.primary}
+                    selectedDayColor={theme.colors.primary}
                     dayTextStyle={{ fontSize: 18, fontWeight: 'normal', fontFamily: 'IranSans', }}
                     selectedDayTextColor='white'
-                    dayTextColor={currentTheme.colors.text}
-                    disabledTextColor={currentTheme.colors.disabled}
+                    dayTextColor={theme.colors.text}
+                    disabledTextColor={theme.colors.disabled}
                     onDateChange={props.onDateChange}
                 />
             </View>

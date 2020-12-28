@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import * as Data from "../Data";
 import * as Layout from "./Layout";
-import {Badge, Chip, Switch} from "react-native-paper";
-import {Colors, currentTheme, theme} from "../../../../../../../theme";
+import {Badge, Chip, Switch, useTheme} from "react-native-paper";
 import {View} from "react-native";
 import {LayoutStyles} from "./Layout";
 import color from 'color';
@@ -33,8 +32,9 @@ export const ChipBox = (props) => {
 }
 
 const ConditionSelectChip = (props) => {
-    const selectedBackgroundColor = color(currentTheme.colors.backdrop).alpha(0.1).string();
-    const backgroundColor = currentTheme.colors.backdrop;
+    const theme = useTheme();
+    const selectedBackgroundColor = color(theme.colors.backdrop).alpha(0.1).string();
+    const backgroundColor = theme.colors.backdrop;
     return (
     <Layout.BasicElement>
         <Chip
@@ -50,25 +50,29 @@ const ConditionSelectChip = (props) => {
     </Layout.BasicElement>
 )}
 
-export const DefaultSwitchRow = (props) => {return (
-    <Layout.Row justifyBetween style={props.rowStyle}>
-        <Layout.InputTitle title={props.title} description={props.description} titleStyle={props.titleStyle}/>
-        <Switch
-            style={{}} value={props.value}
-            color={currentTheme.colors.accent}
-            onValueChange={props.onFlip}
-        />
-    </Layout.Row>
-)}
+export const DefaultSwitchRow = (props) => {
+    const theme = useTheme();
+    return (
+        <Layout.Row justifyBetween style={props.rowStyle}>
+            <Layout.InputTitle title={props.title} description={props.description} titleStyle={props.titleStyle}/>
+            <Switch
+                style={{}} value={props.value}
+                color={theme.colors.accent}
+                onValueChange={props.onFlip}
+            />
+        </Layout.Row>
+    )
+}
 
 export const TitleWithBadge = (props) => {
+    const theme = useTheme();
     return (
         <View style={{...LayoutStyles.screenTitle, flexDirection: 'row-reverse', alignItems: 'flex-start', justifyContent: 'space-between',}}>
             <View style={{}}>
                 <Layout.ScreenTitle title={props.title} style={{paddingBottom: 0,}}/>
             </View>
             <View style={{}}>
-                <Badge size={28} theme={theme} style={{backgroundColor: currentTheme.colors.actionColors.remove, }}>{props.badgeValue}</Badge>
+                <Badge size={28} theme={theme} style={{backgroundColor: theme.colors.actionColors.remove, }}>{props.badgeValue}</Badge>
             </View>
         </View>
     )

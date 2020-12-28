@@ -4,11 +4,22 @@ import {StyleSheet, View} from "react-native";
 import {ScreenHeader, ScreenLayout} from "../../../root/view/screen/Layout";
 import {doctorDao, VisitState} from "../../data/dao/DoctorDao";
 import {hasValue} from "../../../root/domain/util/Util";
-import {currentTheme} from "../../../../theme";
 import HomeScreen from "../HomeScreen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
-import {Button, Dialog, FAB, Headline, Paragraph, Portal, Subheading, Text, Title} from 'react-native-paper';
+import {
+    Button,
+    Dialog,
+    FAB,
+    Headline,
+    Paragraph,
+    Portal,
+    Subheading,
+    Text,
+    Title,
+    useTheme,
+    withTheme
+} from 'react-native-paper';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -47,7 +58,8 @@ class PatientProfileScreen extends React.Component {
         })
     }
     render() {
-        const colors = currentTheme.colors;
+        const theme = this.props.theme;
+        const colors = theme.colors;
         const NoData = (props) => {return (
             <View style={{backgroundColor: colors.background, flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                 <Title style={{}}>داده‌ای موجود نیست.</Title>
@@ -65,14 +77,13 @@ class PatientProfileScreen extends React.Component {
                     sceneContainerStyle={{ backgroundColor: colors.background }}
                     shifting={false}
                     backBehavior={'history'}
-                    activeColor={currentTheme.colors.primary}
-                    inactiveColor={currentTheme.colors.placeholder}
+                    activeColor={theme.colors.primary}
+                    inactiveColor={theme.colors.placeholder}
                     lazy={false}
                     tabBarOptions={{
-                        // activeTintColor: currentTheme.colors.primary,
                         indicatorStyle: {
                             borderBottomWidth: 2,
-                            borderColor: currentTheme.colors.accent,
+                            borderColor: theme.colors.accent,
                         },
                         labelStyle: {
                             fontFamily: 'IranSans',
@@ -80,8 +91,8 @@ class PatientProfileScreen extends React.Component {
                         tabStyle: {
                             backgroundColor: colors.background
                         },
-                        activeTintColor: currentTheme.colors.primary,
-                        inactiveTintColor: currentTheme.colors.backdrop,
+                        activeTintColor: theme.colors.primary,
+                        inactiveTintColor: theme.colors.backdrop,
                     }}
                 >
                     <Tab.Screen
@@ -125,7 +136,7 @@ class PatientProfileScreen extends React.Component {
     }
 }
 
-export default PatientProfileScreen;
+export default withTheme(PatientProfileScreen);
 
 const styles = StyleSheet.create({
     fab: {
@@ -201,10 +212,12 @@ const FollowupVisitNotImplementedDialog = (props) => {
     )
 }
 
-const DialogMessage = (props) => {return (
-    <Dialog.Content color={currentTheme.colors.placeholder} style={{paddingTop: 20}}>
-        <Subheading style={{textAlign: 'center'}}>{props.children}</Subheading>
-    </Dialog.Content>
+const DialogMessage = (props) => {
+    const theme = useTheme();
+    return (
+        <Dialog.Content color={theme.colors.placeholder} style={{paddingTop: 20}}>
+            <Subheading style={{textAlign: 'center'}}>{props.children}</Subheading>
+        </Dialog.Content>
 )}
 
 const visitDialogStyles = {

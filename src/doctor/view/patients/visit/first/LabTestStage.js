@@ -1,8 +1,6 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import {HelperText, Text, TextInput} from "react-native-paper";
-import {ScreenLayout} from "../../../../../root/view/screen/Layout";
-import {currentTheme} from "../../../../../../theme";
+import {HelperText, Text, TextInput, useTheme} from "react-native-paper";
 import * as Layout from "./forms/Layout";
 import {DefaultText} from "../../../../../root/view/basic/Text";
 import {IntraSectionInvisibleDivider} from "./forms/Layout";
@@ -36,12 +34,6 @@ export class LabTestStage extends React.Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        backgroundColor: currentTheme.colors.surface,
-    }
-})
 
 class LabTestResultForm extends React.Component {
     constructor(props) {
@@ -123,6 +115,7 @@ const LabTestField = ({name, unit, error, ...props}) => {
 }
 
 const DefaultTextInput = (props) => {
+    const theme = useTheme();
     return (
         <View>
             <Layout.InputOutlineLabel title={props.label}/>
@@ -136,7 +129,7 @@ const DefaultTextInput = (props) => {
                 textContentType={props.textContentType}
                 autoCorrect={false}
                 style={{
-                    backgroundColor: currentTheme.colors.surface,
+                    backgroundColor: theme.colors.surface,
                     paddingHorizontal: 0,
                     // fontSize: 14,
                     // width: '50%',
