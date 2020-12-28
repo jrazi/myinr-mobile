@@ -98,7 +98,7 @@ export const GenericScoreForm = (props) => {
                     />
                     <Switch
                         style={{}} value={value}
-                        color={currentTheme.colors.primary}
+                        color={currentTheme.colors.accent}
                         onValueChange={() => {{props.onChange(condition.id, !value); setValue(!value)}}}
                     />
                 </Layout.Row>,

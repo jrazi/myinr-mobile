@@ -133,7 +133,7 @@ const styles = {
         borderRadius: 0,
     },
     addDrugButtonContent: {
-
+        paddingVertical: 5,
     }
 }
 

@@ -49,10 +49,12 @@ export class DrugHistoryStage extends React.Component {
                         <Layout.ScreenTitle title={'Drug History'} style={{ paddingBottom: 0}}/>
                         <View>
                             <Button
-                                color={currentTheme.colors.secondary}
+                                color={currentTheme.colors.actionColors.primary}
                                 compact mode="contained"
-                                onPress={() => this.props.navigation.navigate('Secondary:AddDrugRecord')}>
-                                <Text style={{fontSize: 12, color: currentTheme.colors.surface}}>Add Record</Text>
+                                onPress={() => this.props.navigation.navigate('Secondary:AddDrugRecord')}
+                                labelStyle={{fontSize: 12}}
+                            >
+                                Add Record
                             </Button>
                         </View>
                     </Layout.Row>
@@ -99,7 +101,7 @@ const DrugRecords = (props) => {
 const SingleDrugRecord = (props) => {
     return (
         <Layout.Row justifyBetween>
-            <View>
+            <View style={{flexGrow: 0, flexShrink: 1}}>
                 <Layout.InputTitle title={props.name}/>
                 <Layout.LayoutCaption>{firstNonEmpty(props.since, 'NA')} - {firstNonEmpty(props.until, 'NA')}</Layout.LayoutCaption>
             </View>
@@ -109,7 +111,7 @@ const SingleDrugRecord = (props) => {
                     mode="contained"
                     compact
                     size={26}
-                    color={Colors.DEFAULT_RED}
+                    color={currentTheme.colors.actionColors.remove}
                     onPress={() => props.onDelete()}
                 />
             </View>

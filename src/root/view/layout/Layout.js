@@ -12,6 +12,5 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         ...Containers.fullSize,
-        ...Theme.bgDefault
     },
 });

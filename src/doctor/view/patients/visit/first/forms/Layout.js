@@ -234,7 +234,8 @@ export const DefaultChip = (props) => {
     return (
         <BasicElement>
             <Chip
-                selected={props.selected} icon="information" onPress={() => props.onPress()}
+                selected={props.selected}
+                icon="information" onPress={() => props.onPress()}
             >
                 {props.title}
             </Chip>
@@ -316,5 +317,6 @@ const WrapperStyles = {
     helper: {
         textAlign: 'right',
         paddingHorizontal: 0,
+        color: currentTheme.colors.actionColors.remove,
     }
 }

@@ -58,6 +58,17 @@ const defaultFonts = configureFonts({
     }
 );
 
+const actionColors = {
+    primary: Colors.DEFAULT_RED,
+    primaryBlue: '#303F9F',
+    secondary: '#bdbdbd',
+    confirm: '#00897b',
+    warning: '#303f9f',
+    remove: Colors.DEFAULT_RED,
+    removeRed: '#c62828',
+    help: '#673ab7',
+}
+
 const lightTheme = {
     ...DefaultTheme,
         // dark: true,
@@ -65,11 +76,10 @@ const lightTheme = {
         ...DefaultTheme.colors,
         primary: '#03045e',
         accent: '#03045e',
-        secondary: Colors.DEFAULT_RED,
-        // accent: '#0077b6',
         background: '#fff',
         surface: '#fff',
         lightPrimary: color('#03045e').alpha(0.2).string(),
+        actionColors: actionColors,
     },
     fonts: defaultFonts,
     // roundness: 16,
@@ -86,15 +96,6 @@ const blueGrey = {
     900: '#102a43',
 }
 
-const actionColors = {
-    primary: '#3303F9F',
-    secondary: '#3303F9F',
-    confirm: '#00897b',
-    warning: '#303f9f',
-    remove: '#c62828',
-    help: '#673ab7',
-}
-
 const darkThemePrimary = color('#03045e').alpha(0.2).string();
 const darkDisabled = color('#FFFFFF').alpha(0.38).string();
 const darkMediumEmphasis = color('#FFFFFF').alpha(0.6).string();
@@ -102,7 +103,7 @@ const darkHighEmphasis = color('#FFFFFF').alpha(0.87).string();
 
 const darkGrey = '#121212';
 const darkPrimary = darkHighEmphasis;
-const darkAccent = blueGrey[900];
+const darkAccent = blueGrey[500];
 
 const darkTheme = {
     ...DefaultTheme,
@@ -112,7 +113,6 @@ const darkTheme = {
         ...DefaultTheme.colors,
         primary: darkPrimary,
         accent: darkAccent,
-        secondary: Colors.DEFAULT_RED,
         // accent: '#0077b6',
         backdrop: darkDisabled,
         placeholder: darkDisabled,
@@ -121,7 +121,14 @@ const darkTheme = {
         onBackground: darkHighEmphasis,
         onSurface: darkHighEmphasis,
         text: darkMediumEmphasis,
+        // disabled: darkDisabled,
         lightPrimary: color(darkThemePrimary).alpha(0.2).string(),
+        actionColors: {
+            ...actionColors,
+            remove: '#ef9a9a',
+            secondary: '#ef9a9a',
+            primary: darkAccent,
+        },
     },
     fonts: defaultFonts,
     // roundness: 16,

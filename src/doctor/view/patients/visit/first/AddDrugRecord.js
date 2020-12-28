@@ -165,7 +165,11 @@ const DrugList = (props) => {
                     minHeight: 100,
                 }}
                 refreshControl={
-                    <RefreshControl refreshing={props.refreshing} colors={[currentTheme.colors.primary]} />
+                    <RefreshControl
+                        refreshing={props.refreshing}
+                        colors={[currentTheme.colors.primary]}
+                        progressBackgroundColor={currentTheme.colors.surface}
+                    />
                 }
             >
             {
@@ -268,7 +272,7 @@ const searchBoxStyles = StyleSheet.create({
         ...fullSize,
     },
     appBarHeader: {
-        elevation: 4,
+        elevation: 0,
         paddingLeft: 15,
         paddingRight: 10,
         paddingTop: 40,

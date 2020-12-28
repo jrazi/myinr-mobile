@@ -102,7 +102,7 @@ const PatientInfoCard = (props) => {
         latestInrTestMessage = 'عدم ثبت شاخص INR';
     }
     return (
-            <Surface style={[{
+            <View style={[{
                 // elevation: 4,
             }, styles.patientInfoCardContainer]}>
                 <TouchableRipple
@@ -129,7 +129,7 @@ const PatientInfoCard = (props) => {
                         <IntraSectionDivider none borderWidth={0.1} style={{marginHorizontal: 20, marginTop: 10,}}/>
                     </View>
                 </TouchableRipple>
-            </Surface>
+            </View>
     );
 }
 

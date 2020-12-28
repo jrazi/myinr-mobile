@@ -5,6 +5,8 @@ import {Badge, Chip, Switch} from "react-native-paper";
 import {Colors, currentTheme, theme} from "../../../../../../../theme";
 import {View} from "react-native";
 import {LayoutStyles} from "./Layout";
+import color from 'color';
+import {debugBorderRed} from "../../../../../../root/view/styles/borders";
 
 
 export const ChipBox = (props) => {
@@ -30,10 +32,18 @@ export const ChipBox = (props) => {
     );
 }
 
-const ConditionSelectChip = (props) => {return (
+const ConditionSelectChip = (props) => {
+    const selectedBackgroundColor = color(currentTheme.colors.backdrop).alpha(0.1).string();
+    const backgroundColor = currentTheme.colors.backdrop;
+    return (
     <Layout.BasicElement>
         <Chip
-            selected={props.selected} icon="information" onPress={() => props.onPress(props.id)}
+            selected={props.selected}
+            icon="information" onPress={() => props.onPress(props.id)}
+            // mode={'outlined'}
+            style={{
+                backgroundColor: props.selected ? selectedBackgroundColor : backgroundColor,
+            }}
         >
             {props.title}
         </Chip>
@@ -45,7 +55,7 @@ export const DefaultSwitchRow = (props) => {return (
         <Layout.InputTitle title={props.title} description={props.description} titleStyle={props.titleStyle}/>
         <Switch
             style={{}} value={props.value}
-            color={currentTheme.colors.primary}
+            color={currentTheme.colors.accent}
             onValueChange={props.onFlip}
         />
     </Layout.Row>
@@ -53,12 +63,12 @@ export const DefaultSwitchRow = (props) => {return (
 
 export const TitleWithBadge = (props) => {
     return (
-        <View style={{...LayoutStyles.screenTitle, flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between',}}>
+        <View style={{...LayoutStyles.screenTitle, flexDirection: 'row-reverse', alignItems: 'flex-start', justifyContent: 'space-between',}}>
             <View style={{}}>
                 <Layout.ScreenTitle title={props.title} style={{paddingBottom: 0,}}/>
             </View>
             <View style={{}}>
-                <Badge size={28} theme={theme} style={{backgroundColor: Colors.DEFAULT_RED}}>{props.badgeValue}</Badge>
+                <Badge size={28} theme={theme} style={{backgroundColor: currentTheme.colors.actionColors.remove, }}>{props.badgeValue}</Badge>
             </View>
         </View>
     )

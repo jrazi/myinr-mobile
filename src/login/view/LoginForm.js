@@ -16,6 +16,7 @@ import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
 import {TextInput, Button, Text, Title, Headline, HelperText, Snackbar, Portal} from 'react-native-paper';
 import {fullSize} from "../../root/view/styles/containers";
 import {ErrorType, getErrorType} from "../../root/data/server/errors";
+import {currentTheme} from "../../../theme";
 
 export default class LoginForm extends React.Component {
 
@@ -95,7 +96,7 @@ export default class LoginForm extends React.Component {
                                         autoCorrect={false}
                                         onBlur={handleBlur('username')}
                                     />
-                                    <HelperText type="error" visible={true}>
+                                    <HelperText type="error" visible={true} style={{color: currentTheme.colors.actionColors.remove}}>
                                         {errors.username}
                                     </HelperText>
                                 </View>
@@ -109,7 +110,7 @@ export default class LoginForm extends React.Component {
                                         autoCompleteType={'password'}
                                         onBlur={handleBlur('password')}
                                     />
-                                    <HelperText type="error" visible={true}>
+                                    <HelperText type="error" visible={true} style={{color: currentTheme.colors.actionColors.remove}}>
                                         {errors.password}
                                     </HelperText>
                                     <Portal>

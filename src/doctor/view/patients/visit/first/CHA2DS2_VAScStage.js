@@ -47,14 +47,15 @@ export class CHA2DS2_VAScStage extends React.Component {
     }
 
     render() {
+        const textColor = {color: currentTheme.colors.text};
         let titleElement = (
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Headline style={{}}>CHA</Headline>
-                    <Text style={{fontSize: 14, paddingTop: 15}}>2</Text>
-                    <Headline style={{}}>DS</Headline>
-                    <Text style={{fontSize: 14, paddingTop: 15}}>2</Text>
-                    <Headline style={{ }}>–VASc</Headline>
-                    <Headline style={{}}> Score</Headline>
+                    <Headline style={textColor}>CHA</Headline>
+                    <Text style={{...textColor, fontSize: 14, paddingTop: 15}}>2</Text>
+                    <Headline style={textColor}>DS</Headline>
+                    <Text style={{...textColor, fontSize: 14, paddingTop: 15}}>2</Text>
+                    <Headline style={textColor}>–VASc</Headline>
+                    <Headline style={textColor}> Score</Headline>
                 </View>
         );
         return (
@@ -145,6 +146,8 @@ const ScoreRadioBox = (props) => {
                     onChange={(event) => {
                         changeGender(event.nativeEvent.selectedSegmentIndex)
                     }}
+                    backgroundColor={currentTheme.colors.backdrop}
+                    tintColor={currentTheme.colors.surface}
                 />
             </View>
             <IntraSectionInvisibleDivider sm/>
@@ -158,6 +161,8 @@ const ScoreRadioBox = (props) => {
                     onChange={(event) => {
                         changeAgeGroup(event.nativeEvent.selectedSegmentIndex)
                     }}
+                    backgroundColor={currentTheme.colors.backdrop}
+                    tintColor={currentTheme.colors.surface}
                 />
             </View>
         </View>

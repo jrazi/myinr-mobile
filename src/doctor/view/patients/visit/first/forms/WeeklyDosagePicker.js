@@ -4,8 +4,8 @@ import {IntraSectionInvisibleDivider} from "./Layout";
 import {firstNonEmpty, getFormattedJalaliDate} from "../../../../../../root/domain/util/Util";
 import CircularPicker from "react-native-circular-picker";
 import {currentTheme} from "../../../../../../../theme";
-import {Text} from "react-native-paper";
-import {Animated, View} from 'react-native';
+import {Surface, Text} from "react-native-paper";
+import {Animated, View, Dimensions} from 'react-native';
 import {visitDao} from "../../../../../data/dao/VisitDao";
 
 export const WeeklyDosagePicker = (props) => {
@@ -67,23 +67,27 @@ const DosageForDay = (props) => {
         setPercentage(firstNonEmpty(props.initialDose*2.5, 0));
     }, []);
 
+    const screenWidth = Math.round(Dimensions.get('window').width);
     return (
-        <CircularPicker
-            size={140}
-            strokeWidth={15}
-            steps={steps}
-            gradients={{
-                0: [currentTheme.colors.primary, currentTheme.colors.primary],
-                100: [currentTheme.colors.primary, currentTheme.colors.primary],
-            }}
-            perc={percentage}
-            onChange={handleChange}
+        <View
         >
-            <>
-                <Text style={{ textAlign: 'center', fontSize: 12, fontWeight: 'bold', marginBottom: 8 }}>{`${(percentage/2.5).toFixed(2)} mg`}</Text>
-                <Text style={{ textAlign: 'center' , fontSize: 12}}>{getFormattedJalaliDate(props.date)}</Text>
-            </>
-        </CircularPicker>
+            <CircularPicker
+                size={screenWidth*(150/360)}
+                strokeWidth={18}
+                steps={steps}
+                gradients={{
+                    0: [currentTheme.colors.accent, currentTheme.colors.accent],
+                    100: [currentTheme.colors.accent, currentTheme.colors.accent],
+                }}
+                perc={percentage}
+                onChange={handleChange}
+            >
+                <View>
+                    <Text style={{ textAlign: 'center', fontSize: 12, fontWeight: 'bold', marginBottom: 8 }}>{`${(percentage/2.5).toFixed(2)} mg`}</Text>
+                    <Text style={{ textAlign: 'center' , fontSize: 12}}>{getFormattedJalaliDate(props.date)}</Text>
+                </View>
+            </CircularPicker>
+        </View>
     )
 }
 
