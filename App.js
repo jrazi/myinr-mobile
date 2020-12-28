@@ -9,6 +9,8 @@ import {lightTheme, darkTheme} from "./theme";
 import RNRestart from 'react-native-restart';
 import {LoadingScreen} from "./src/root/view/loading/Loading";
 
+export const ThemeContext = React.createContext((theme) => {});
+
 export default class App extends React.Component {
 
     constructor(props) {
@@ -47,13 +49,19 @@ export default class App extends React.Component {
         });
     };
 
+    changeTheme = (theme) => {
+        this.setState({theme: theme});
+    }
+
     render() {
         return (
             <LoadingScreen loaded={this.state.loaded}>
                 <PaperProvider theme={this.state.theme} >
-                    <Portal.Host >
-                        <Navigator/>
-                    </Portal.Host>
+                    <ThemeContext.Provider value={(theme) => this.changeTheme(theme)}>
+                        <Portal.Host >
+                            <Navigator/>
+                        </Portal.Host>
+                    </ThemeContext.Provider>
                 </PaperProvider>
             </LoadingScreen>
         );

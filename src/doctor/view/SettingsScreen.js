@@ -9,6 +9,8 @@ import RNRestart from "react-native-restart";
 import Updates from "expo-updates";
 import NativeDevSettings from "react-native/Libraries/NativeModules/specs/NativeDevSettings";
 import {withTheme} from "react-native-paper";
+import {ThemeContext} from "../../../App";
+import {darkTheme, lightTheme} from "../../../theme";
 
 
 class SettingsScreen extends React.Component {
@@ -20,6 +22,8 @@ class SettingsScreen extends React.Component {
         }
     }
 
+    static contextType = ThemeContext;
+
     componentDidMount() {
         rootDao.getDarkMode()
             .then(darkMode => this.setState({darkModeOn: darkMode, loaded: true}));
@@ -28,7 +32,8 @@ class SettingsScreen extends React.Component {
     toggleDarkMode = () => {
         this.setState({darkModeOn: !this.state.darkModeOn}, async () => {
             await rootDao.setDarkMode(this.state.darkModeOn);
-            NativeDevSettings.reload();
+            this.context(this.state.darkModeOn ? darkTheme : lightTheme);
+            // NativeDevSettings.reload();
         });
     }
 
