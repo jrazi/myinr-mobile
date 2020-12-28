@@ -64,6 +64,7 @@ export class AddDrugRecord extends React.Component {
                         this.updateDrugs(drugs, () => this.setState({searching: false, beganToSearch: true}));
                     })
                     .catch(err => {
+                        this.setState({searching: false});
                         // TODO
                     })
             }, 500)
@@ -160,7 +161,8 @@ const DrugList = (props) => {
     return (
             <ScrollView
                 style={{
-                    marginBottom: 30
+                    marginBottom: 30,
+                    minHeight: 100,
                 }}
                 refreshControl={
                     <RefreshControl refreshing={props.refreshing} colors={[currentTheme.colors.primary]} />
