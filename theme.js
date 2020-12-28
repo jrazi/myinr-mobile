@@ -133,9 +133,22 @@ export const darkTheme = {
         },
     },
     fonts: defaultFonts,
+    mostlyWhiteTheme: {
+        ...DefaultTheme.colors,
+        primary: darkPrimary,
+        accent: darkAccent,
+        // accent: '#0077b6',
+        backdrop: darkDisabled,
+        placeholder: darkDisabled,
+        background: darkGrey,
+        surface: darkGrey,
+        onBackground: darkHighEmphasis,
+        onSurface: darkHighEmphasis,
+        text: darkMediumEmphasis,
+    }
     // roundness: 16,
 }
-darkTheme.mostlyWhiteTheme = darkTheme;
+// darkTheme.mostlyWhiteTheme = darkTheme;
 
 
 // surface: #121212
