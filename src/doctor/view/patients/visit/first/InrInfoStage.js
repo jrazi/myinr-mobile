@@ -145,7 +145,7 @@ export class InrInfoStage extends React.Component {
                                             }}
                                         />
                                         <Layout.TextInputHelperText type="error" visible={hasValue(errors.targetRangeFrom)}>
-                                            {'0-5.0'}
+                                            {'0-30.0'}
                                         </Layout.TextInputHelperText>
                                     </View>
                                     <View style={{flexGrow: 0, marginHorizontal: 15,  paddingHorizontal: 30,}}></View>
@@ -162,7 +162,7 @@ export class InrInfoStage extends React.Component {
                                             }}
                                         />
                                         <Layout.TextInputHelperText type="error" visible={hasValue(errors.targetRangeTo)}>
-                                            {'0-5.0'}
+                                            {'0-30.0'}
                                         </Layout.TextInputHelperText>
                                     </View>
                                 </Layout.Row>

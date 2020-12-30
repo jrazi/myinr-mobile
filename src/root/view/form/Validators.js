@@ -33,23 +33,23 @@ export const PASSWORD = {
 
 export const INR = Yup.number()
     .nullable()
-    .min(0.1, 'Not in the valid range')
-    .max(5.0, 'Not in the valid range')
+    .min(0.01, 'Not in the valid range')
+    .max(30.0, 'Not in the valid range')
 
 
 export const SHORT_TEXT = Yup.string()
     .nullable()
     .max(64, 'Input must not contain more than 64 characters.')
 
-export const BLOOD_PRESSURE = Yup.number()
+export const BLOOD_PRESSURE = Yup.string()
     .nullable()
-    .min(0, 'Invalid Value')
-    .max(25, 'Invalid Value')
+    .min(3, 'Invalid value')
+    .max(64, 'Too many characters')
 
 export const HEARTBEAT = Yup.number()
     .nullable()
-    .min(40, 'Invalid Value')
-    .max(200, 'Invalid Value')
+    .min(30, 'Invalid Value')
+    .max(400, 'Invalid Value')
 
 export const RESPIRATORY_RATE = Yup.number()
     .nullable()
