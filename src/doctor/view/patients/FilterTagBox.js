@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef, useState} from "react";
 import {Surface} from "react-native-paper";
 import {ChipBox} from "./visit/first/forms/ContextSpecificComponents";
 import {View} from 'react-native';
@@ -37,8 +37,23 @@ export const PatientsListFilterBox = (props) => {
             },
         ]
     ];
+
+
+    const searchCriteria = useRef({
+        'VISITED': false,
+        'NOT_VISITED': false,
+        'VALVULAR_AF': false,
+        'MVR': false,
+        'AVR': false,
+    });
+
+    const onChange = (id, value) => {
+        searchCriteria.current[id] = value;
+        {firstNonEmpty(props.onNewQuery, noop)}(searchCriteria.current);
+    }
+
     return (
-        <FilterTagBox filters={filters} onChange={props.onChange}/>
+        <FilterTagBox filters={filters} onChange={onChange}/>
     )
 }
 
