@@ -1,6 +1,7 @@
 
 import * as jd from 'jalali-date';
 
+export const noop = (...params) => {};
 
 export function guessGender(info) {
     if (hasValue(info.gender)) return info.gender;

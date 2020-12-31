@@ -25,7 +25,7 @@ export const ChipBox = (props) => {
             )
         })
     return (
-        <Layout.ItemsBox>
+        <Layout.ItemsBox style={props.itemBoxStyle}>
             {chips}
         </Layout.ItemsBox>
     );

@@ -13,6 +13,7 @@ import {rootDao} from "../../../root/data/dao/RootDao";
 import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../../root/domain/util/Util";
 import {ScreenHeader, ScreenLayout} from "../../../root/view/screen/Layout";
 import {IntraSectionDivider} from "./visit/first/forms/Layout";
+import {FilterTagBox, PatientsListFilterBox} from "./FilterTagBox";
 
 class PatientsScreen extends React.Component {
     constructor(props) {
@@ -68,6 +69,7 @@ class PatientsScreen extends React.Component {
                     title="فهرست بیماران"
                     style={{elevation: 0}}
                 />
+                <PatientsListFilterBox/>
                 <ScrollView
                     style={styles.container}
                     refreshControl={

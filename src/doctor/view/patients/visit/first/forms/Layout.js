@@ -166,7 +166,7 @@ export const Row = (props) => {return (
 )}
 export const ItemsBox = (props) => {
     return (
-        <View style={styles.itemsBox}>
+        <View style={[styles.itemsBox, props.style]}>
             {props.children}
         </View>
     )
