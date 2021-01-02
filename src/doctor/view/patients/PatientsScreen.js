@@ -10,7 +10,14 @@ import {
 import Icons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {rootDao} from "../../../root/data/dao/RootDao";
-import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../../root/domain/util/Util";
+import {
+    calcAge,
+    e2p,
+    firstNonEmpty,
+    hasValue,
+    jalaliTimePastInFarsi, noop,
+    normalizeDictForDisplay, removeWhiteSpace
+} from "../../../root/domain/util/Util";
 import {
     DefaultMaterialIcon,
     DoubleIconScreenHeader,
@@ -31,6 +38,7 @@ class PatientsScreen extends React.Component {
             loading: true,
         }
         this.searchCriteria = {};
+        this.searchQuery = null;
     }
 
     async componentDidMount() {
@@ -42,11 +50,7 @@ class PatientsScreen extends React.Component {
             rootDao.withRefresh()
                 .getUser()
                 .then(user => {
-                    this.setState({
-                        allPatients: user.patients,
-                        patients: this.filterPatients(user.patients, this.searchCriteria),
-                        loading: false,
-                    })
+                    this.setPatients(user.patients, {loading: false,});
                 })
                 .catch(err => {
                     this.setState({
@@ -56,9 +60,50 @@ class PatientsScreen extends React.Component {
         })
     }
 
-    searchPatients = (searchCriteria) => {
-        this.searchCriteria = searchCriteria;
+    setPatients = (allPatients, additionalState={}) => {
+        let filteredPatients = this.filterPatients(allPatients, this.searchCriteria);
+        let searchedPatients = this.searchPatients(filteredPatients, this.searchQuery);
+
+        this.setState({
+            allPatients: allPatients,
+            patients: searchedPatients,
+            ...additionalState
+        })
+    }
+
+    applyFilters = (filters) => {
+        this.searchCriteria = filters;
         this.refresh();
+    }
+
+    applySearchQuery = (query) => {
+        this.searchQuery = query;
+        this.setPatients(this.state.allPatients)
+    }
+
+    cancelSearch = () => this.applySearchQuery(null);
+
+    searchPatients = (patients, query) => {
+        if (!hasValue(query) || removeWhiteSpace(query).length == 0) return patients;
+        let safeIncludes = (str, substr) => {
+            if (!hasValue(str)) return false;
+            return str.toString().includes(substr);
+        }
+        let filteredList = patients
+            .filter(p => {
+                return safeIncludes(p.fullName, query) ||
+                    safeIncludes(p.username, query) ||
+                    (
+                        query.length > 3 &&
+                        (
+                            safeIncludes(p.nationalId, query) ||
+                            safeIncludes(p.phone, query) ||
+                            safeIncludes(p.mobile, query) ||
+                            safeIncludes(p.emergencyPhone, query)
+                        )
+                    )
+            })
+        return filteredList;
     }
 
     filterPatients = (patients, filters) => {
@@ -97,7 +142,9 @@ class PatientsScreen extends React.Component {
         return (
             <ScreenLayout>
                 <ControlHeader
-                    onNewQuery={this.searchPatients}
+                    onNewFilterSet={this.applyFilters}
+                    onNewSearchQuery={this.applySearchQuery}
+                    onSearchCancel={this.cancelSearch}
                 />
                 <ScrollView
                     style={styles.container}
@@ -128,6 +175,15 @@ const ControlHeader = (props) => {
     const [searchBoxOpen, setSearchBoxOpen] = useState(false);
     const theme = useTheme();
     const [searchQuery, setSearchQuery] = useState(null);
+    const onChangeText = (query) => {
+        setSearchQuery(query);
+        props.onNewSearchQuery(query);
+    }
+    const onIconPress = () => {
+        setSearchBoxOpen(false);
+        setSearchQuery(null);
+        props.onSearchCancel();
+    }
     return (
         <View>
             <ConditionalRender hidden={searchBoxOpen}>
@@ -144,21 +200,17 @@ const ControlHeader = (props) => {
                 <EmptyHeader>
                     <Searchbar
                         placeholder="جستجو"
-                        onChangeText={setSearchQuery}
+                        onChangeText={onChangeText}
                         value={searchQuery}
                         autoFocus={true}
                         // onBlur={() => setSearchBoxOpen(false)}
                         icon={(props) => <DefaultMaterialIcon iconName={'arrow-right'}/>}
-                        onIconPress={() => setSearchBoxOpen(false)}
+                        onIconPress={onIconPress}
                         style={{
                             marginHorizontal: 0,
                             paddingHorizontal: 0,
                             borderWidth: 0,
                             elevation: 0,
-                            // paddingTop: 20,
-                            // paddingBottom: 20,
-                            // backgroundColor: theme.dark ? theme.colors.accent : null,
-                            // paddingVertical: 20,
                         }}
                         inputStyle={{
                         }}
@@ -168,7 +220,7 @@ const ControlHeader = (props) => {
                 {/*<Surface style={{elevation: 0}}><IntraSectionDivider xs/></Surface>*/}
             </ConditionalRender>
             <ConditionalCollapsibleRender hidden={!filterBoxOpen && !searchBoxOpen}>
-                <PatientsListFilterBox onNewQuery={props.onNewQuery}/>
+                <PatientsListFilterBox onNewQuery={props.onNewFilterSet}/>
             </ConditionalCollapsibleRender>
         </View>
     )
