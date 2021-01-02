@@ -11,8 +11,8 @@ import Icons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {rootDao} from "../../../root/data/dao/RootDao";
 import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../../root/domain/util/Util";
-import {ScreenHeader, ScreenLayout} from "../../../root/view/screen/Layout";
-import {IntraSectionDivider} from "./visit/first/forms/Layout";
+import {AppBarHeaderWithIcon, ScreenHeader, ScreenLayout} from "../../../root/view/screen/Layout";
+import {ConditionalCollapsibleRender, IntraSectionDivider} from "./visit/first/forms/Layout";
 import {FilterTagBox, PatientsListFilterBox} from "./FilterTagBox";
 
 class PatientsScreen extends React.Component {
@@ -23,6 +23,7 @@ class PatientsScreen extends React.Component {
             allPatients: [],
             patients: [],
             loading: true,
+            filterBoxOpen: false,
         }
         this.searchCriteria = {};
     }
@@ -90,11 +91,15 @@ class PatientsScreen extends React.Component {
         const theme = this.props.theme;
         return (
             <ScreenLayout>
-                <ScreenHeader
+                <AppBarHeaderWithIcon
                     title="فهرست بیماران"
                     style={{elevation: 0}}
+                    iconName={"filter"}
+                    onPress={() => this.setState({filterBoxOpen: !this.state.filterBoxOpen})}
                 />
-                <PatientsListFilterBox onNewQuery={this.searchPatients}/>
+                <ConditionalCollapsibleRender hidden={!this.state.filterBoxOpen}>
+                    <PatientsListFilterBox onNewQuery={this.searchPatients}/>
+                </ConditionalCollapsibleRender>
                 <ScrollView
                     style={styles.container}
                     refreshControl={

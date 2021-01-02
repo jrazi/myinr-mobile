@@ -2,7 +2,7 @@ import React from "react";
 import {Appbar, useTheme} from "react-native-paper";
 import {StyleSheet, View} from "react-native";
 import {useNavigation} from '@react-navigation/native';
-import {hasValue} from "../../domain/util/Util";
+import {firstNonEmpty, hasValue, noop} from "../../domain/util/Util";
 
 export const ScreenLayout = (props) => {
     const styles = StyleSheet.create({
@@ -63,4 +63,22 @@ export const CustomContentScreenHeader = (props) => {
             }
         </Appbar.Header>
     );
+}
+
+export const AppBarHeaderWithIcon = (props) => {
+    const theme = useTheme();
+    return (
+        <Appbar.Header
+            style={{
+                paddingVertical: 40,
+                paddingHorizontal: 10,
+                borderBottomWidth: 0,
+                ...props.style,
+            }}
+            theme={theme.mostlyWhiteTheme}
+        >
+            <Appbar.Content color={theme.colors.primary} title={props.title} style={props.contentStyle}/>
+            <Appbar.Action icon={props.iconName} size={28} onPress={firstNonEmpty(props.onPress, noop)} color={theme.colors.placeholder}/>
+        </Appbar.Header>
+    )
 }
