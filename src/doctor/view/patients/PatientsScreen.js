@@ -1,18 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 import {StyleSheet, View, ScrollView, RefreshControl} from "react-native";
 import {
     List,
     Surface,
     Card,
     Text,
-    Avatar, TouchableRipple, withTheme, useTheme,
+    Avatar, TouchableRipple, withTheme, useTheme, Searchbar, Divider, TextInput
 } from "react-native-paper";
 import Icons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {rootDao} from "../../../root/data/dao/RootDao";
 import {calcAge, e2p, hasValue, jalaliTimePastInFarsi, normalizeDictForDisplay} from "../../../root/domain/util/Util";
-import {DoubleIconScreenHeader, ScreenHeader, ScreenLayout} from "../../../root/view/screen/Layout";
-import {ConditionalCollapsibleRender, IntraSectionDivider} from "./visit/first/forms/Layout";
+import {
+    DefaultMaterialIcon,
+    DoubleIconScreenHeader,
+    EmptyHeader,
+    ScreenHeader,
+    ScreenLayout
+} from "../../../root/view/screen/Layout";
+import {ConditionalCollapsibleRender, ConditionalRender, IntraSectionDivider} from "./visit/first/forms/Layout";
 import {FilterTagBox, PatientsListFilterBox} from "./FilterTagBox";
 
 class PatientsScreen extends React.Component {
@@ -23,7 +29,6 @@ class PatientsScreen extends React.Component {
             allPatients: [],
             patients: [],
             loading: true,
-            filterBoxOpen: false,
         }
         this.searchCriteria = {};
     }
@@ -91,16 +96,9 @@ class PatientsScreen extends React.Component {
         const theme = this.props.theme;
         return (
             <ScreenLayout>
-                <DoubleIconScreenHeader
-                    title="فهرست بیماران"
-                    style={{elevation: 0}}
-                    right={"filter"}
-                    left={"magnify"}
-                    onRightPress={() => this.setState({filterBoxOpen: !this.state.filterBoxOpen})}
+                <ControlHeader
+                    onNewQuery={this.searchPatients}
                 />
-                <ConditionalCollapsibleRender hidden={!this.state.filterBoxOpen}>
-                    <PatientsListFilterBox onNewQuery={this.searchPatients}/>
-                </ConditionalCollapsibleRender>
                 <ScrollView
                     style={styles.container}
                     refreshControl={
@@ -125,6 +123,56 @@ class PatientsScreen extends React.Component {
 
 export default withTheme(PatientsScreen);
 
+const ControlHeader = (props) => {
+    const [filterBoxOpen, setFilterBoxOpen] = useState(false);
+    const [searchBoxOpen, setSearchBoxOpen] = useState(false);
+    const theme = useTheme();
+    const [searchQuery, setSearchQuery] = useState(null);
+    return (
+        <View>
+            <ConditionalRender hidden={searchBoxOpen}>
+                <DoubleIconScreenHeader
+                    title="فهرست بیماران"
+                    style={{elevation: 0}}
+                    right={"filter"}
+                    left={"magnify"}
+                    onRightPress={() => setFilterBoxOpen(!filterBoxOpen)}
+                    onLeftPress={() => setSearchBoxOpen(!searchBoxOpen)}
+                />
+            </ConditionalRender>
+            <ConditionalRender hidden={!searchBoxOpen}>
+                <EmptyHeader>
+                    <Searchbar
+                        placeholder="جستجو"
+                        onChangeText={setSearchQuery}
+                        value={searchQuery}
+                        autoFocus={true}
+                        // onBlur={() => setSearchBoxOpen(false)}
+                        icon={(props) => <DefaultMaterialIcon iconName={'arrow-right'}/>}
+                        onIconPress={() => setSearchBoxOpen(false)}
+                        style={{
+                            marginHorizontal: 0,
+                            paddingHorizontal: 0,
+                            borderWidth: 0,
+                            elevation: 0,
+                            // paddingTop: 20,
+                            // paddingBottom: 20,
+                            // backgroundColor: theme.dark ? theme.colors.accent : null,
+                            // paddingVertical: 20,
+                        }}
+                        inputStyle={{
+                        }}
+                    />
+                </EmptyHeader>
+                {/*<Divider/>*/}
+                {/*<Surface style={{elevation: 0}}><IntraSectionDivider xs/></Surface>*/}
+            </ConditionalRender>
+            <ConditionalCollapsibleRender hidden={!filterBoxOpen && !searchBoxOpen}>
+                <PatientsListFilterBox onNewQuery={props.onNewQuery}/>
+            </ConditionalCollapsibleRender>
+        </View>
+    )
+}
 const PatientInfoCard = (props) => {
     // TODO Refactor
     const nameSplitted = props.patientInfo.fullName.split(/\s+/);

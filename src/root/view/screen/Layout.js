@@ -83,3 +83,31 @@ export const DoubleIconScreenHeader = (props) => {
         </Appbar.Header>
     )
 }
+
+export const EmptyHeader = (props) => {
+    const theme = useTheme();
+    return (
+        <Appbar.Header
+            style={{
+                paddingVertical: 40,
+                paddingHorizontal: 10,
+                borderBottomWidth: 0,
+                elevation: 0,
+                ...props.style,
+            }}
+            theme={theme.mostlyWhiteTheme}
+        >
+            {props.children}
+        </Appbar.Header>
+    )
+}
+
+export const DefaultMaterialIcon = (props) => {
+    const theme = useTheme();
+    return (
+        <Appbar.Action
+            icon={props.iconName} size={28} onPress={props.onPress}
+            color={firstNonEmpty(props.color, theme.colors.placeholder)}
+        />
+    )
+}
