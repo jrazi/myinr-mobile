@@ -5,7 +5,7 @@ import {
     Surface,
     Card,
     Text,
-    Avatar, TouchableRipple, withTheme, useTheme, Searchbar, Divider, TextInput
+    Avatar, TouchableRipple, withTheme, useTheme, Searchbar, Divider, TextInput, Caption
 } from "react-native-paper";
 import Icons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -27,6 +27,7 @@ import {
 } from "../../../root/view/screen/Layout";
 import {ConditionalCollapsibleRender, ConditionalRender, IntraSectionDivider} from "./visit/first/forms/Layout";
 import {FilterTagBox, PatientsListFilterBox} from "./FilterTagBox";
+import {EmptyList} from "../../../root/view/list/EmptyListMessage";
 
 class PatientsScreen extends React.Component {
     constructor(props) {
@@ -157,6 +158,10 @@ class PatientsScreen extends React.Component {
                         />
                     }
                 >
+                    <EmptyList
+                        hidden={this.state.patients.length > 0 || this.state.loading}
+                        message={'بیماری وجود ندارد'}
+                    />
                     <View style={styles.patientsListContainer}>
                         <List.Section>
                             {patientInfoCards}

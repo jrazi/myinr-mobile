@@ -32,7 +32,7 @@ export const Header = (props) => {
         <View style={styles.appBarHeaderWrapper}>
             <View style={styles.headerOfHeader}>
                 <Title style={{color: theme.colors.primary}}>پروفایل کاربری</Title>
-                <Appbar.Action icon="arrow-left" onPress={() => navigation.goBack()} color={theme.colors.placeholder}/>
+                <Appbar.Action icon="arrow-left" size={28} onPress={() => navigation.goBack()} color={theme.colors.placeholder}/>
             </View>
             <View style={styles.bodyOfHeader}>
                 <View
