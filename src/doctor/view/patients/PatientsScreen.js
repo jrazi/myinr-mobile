@@ -28,6 +28,8 @@ import {
 import {ConditionalCollapsibleRender, ConditionalRender, IntraSectionDivider} from "./visit/first/forms/Layout";
 import {FilterTagBox, PatientsListFilterBox} from "./FilterTagBox";
 import {EmptyList} from "../../../root/view/list/EmptyListMessage";
+import {VisitRedirect} from "./VisitRedirect";
+import {doctorDao, VisitState} from "../../data/dao/DoctorDao";
 
 class PatientsScreen extends React.Component {
     constructor(props) {
@@ -37,6 +39,10 @@ class PatientsScreen extends React.Component {
             allPatients: [],
             patients: [],
             loading: true,
+            visitRedirect: {
+                visible: false,
+                activePatient: {},
+            }
         }
         this.searchCriteria = {};
         this.searchQuery = null;
@@ -125,6 +131,24 @@ class PatientsScreen extends React.Component {
         return filteredList;
     }
 
+    onPatientCardPress = (patient) => {
+        if (patient.visited) {
+            this.props.navigation.navigate('PatientProfileScreen', {userId: patient.userId});
+        }
+        else {
+            doctorDao.getVisitState(patient.userId)
+                .then(visitState => {
+                    patient.unfinishedVisit = visitState == VisitState.INCOMPLETE_VISIT;
+                    this.setState({visitRedirect: {visible: true, activePatient: patient}});
+                })
+                .catch(err => {})
+        }
+    }
+
+    dismissVisitRedirect = () => {
+        this.setState({visitRedirect: {visible: false, activePatient: {}}});
+    }
+
     render() {
         const patientInfoCards = [];
         for (let patient of this.state.patients) {
@@ -134,7 +158,7 @@ class PatientsScreen extends React.Component {
                 <PatientInfoCard
                     key={patient.nationalId + patient.username}
                     patientInfo={displayPatient}
-                    onPress={() => this.props.navigation.navigate('PatientProfileScreen', {userId: patient.userId})}
+                    onPress={() => this.onPatientCardPress(patient)}
                 />,
 
             ]);
@@ -168,6 +192,11 @@ class PatientsScreen extends React.Component {
                         </List.Section>
                     </View>
                 </ScrollView>
+                <VisitRedirect
+                    onDismiss={this.dismissVisitRedirect}
+                    visible={this.state.visitRedirect.visible}
+                    patient={this.state.visitRedirect.activePatient}
+                />
             </ScreenLayout>
         );
     }
@@ -189,6 +218,10 @@ const ControlHeader = (props) => {
         setSearchQuery(null);
         props.onSearchCancel();
     }
+    const cancelIfEmpty = () => {
+        if(!hasValue(searchQuery) || removeWhiteSpace(searchQuery) == null)
+            onIconPress();
+    }
     return (
         <View>
             <ConditionalRender hidden={searchBoxOpen}>
@@ -208,7 +241,6 @@ const ControlHeader = (props) => {
                         onChangeText={onChangeText}
                         value={searchQuery}
                         autoFocus={true}
-                        // onBlur={() => setSearchBoxOpen(false)}
                         icon={(props) => <DefaultMaterialIcon iconName={'arrow-right'}/>}
                         onIconPress={onIconPress}
                         style={{
@@ -221,8 +253,6 @@ const ControlHeader = (props) => {
                         }}
                     />
                 </EmptyHeader>
-                {/*<Divider/>*/}
-                {/*<Surface style={{elevation: 0}}><IntraSectionDivider xs/></Surface>*/}
             </ConditionalRender>
             <ConditionalCollapsibleRender hidden={!filterBoxOpen && !searchBoxOpen}>
                 <PatientsListFilterBox onNewQuery={props.onNewFilterSet}/>

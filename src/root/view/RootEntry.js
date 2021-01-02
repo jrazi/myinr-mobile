@@ -17,6 +17,12 @@ export default class RootEntry extends React.Component {
 
     componentDidMount = () => {
         this.refresh();
+        this.props.navigation.addListener(
+            'focus',
+            payload => {
+                this.refresh();
+            }
+        );
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
