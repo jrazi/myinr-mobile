@@ -15,16 +15,16 @@ export const Colors = {
     DEFAULT_RED: '#8D021F',
 }
 
-
+const defaultSurface = DefaultTheme.colors.surface;
 const _mostlyWhiteTheme = {
     ...DefaultTheme,
     colors: {
         ...DefaultTheme.colors,
-        primary: '#fff',
-        accent: '#fff',
-        background: '#fff',
-        surface: '#fff',
-        backdrop: '#fff',
+        primary: defaultSurface,
+        accent: defaultSurface,
+        background: defaultSurface,
+        surface: defaultSurface,
+        backdrop: defaultSurface,
     },
 };
 const defaultFonts = configureFonts({
@@ -77,8 +77,10 @@ export const lightTheme = {
         ...DefaultTheme.colors,
         primary: '#03045e',
         accent: '#03045e',
-        background: '#fff',
-        surface: '#fff',
+        // background: DefaultTheme.colors.background,
+        // surface: DefaultTheme.colors.background,
+        // background: '#ffffff',
+        // surface: '#f7f7f7',
         lightPrimary: color('#03045e').alpha(0.2).string(),
         actionColors: actionColors,
     },

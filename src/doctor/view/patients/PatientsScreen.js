@@ -184,7 +184,7 @@ class PatientsScreen extends React.Component {
                 >
                     <EmptyList
                         hidden={this.state.patients.length > 0 || this.state.loading}
-                        message={'بیماری وجود ندارد'}
+                        message={'رکوردی یافت نشد'}
                     />
                     <View style={styles.patientsListContainer}>
                         <List.Section>
@@ -223,7 +223,7 @@ const ControlHeader = (props) => {
             onIconPress();
     }
     return (
-        <View>
+        <Surface style={{elevation: 4}}>
             <ConditionalRender hidden={searchBoxOpen}>
                 <DoubleIconScreenHeader
                     title="فهرست بیماران"
@@ -257,7 +257,7 @@ const ControlHeader = (props) => {
             <ConditionalCollapsibleRender hidden={!filterBoxOpen && !searchBoxOpen}>
                 <PatientsListFilterBox onNewQuery={props.onNewFilterSet}/>
             </ConditionalCollapsibleRender>
-        </View>
+        </Surface>
     )
 }
 const PatientInfoCard = (props) => {
