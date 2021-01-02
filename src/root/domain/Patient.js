@@ -26,6 +26,8 @@ export default class Patient {
             testTime: normalize(info.TimeofINRTest),
             testResult: normalize(info.NewINR),
         }
+        patient.visited = Number(normalize(info.visitCount)) > 0;
+        patient.visitCount = Number(normalize(info.visitCount));
         patient.role = UserRole.PATIENT;
         patient.doctorInfo = {};
         return patient;

@@ -100,10 +100,18 @@ const fetchPatientsOfDoctorQuery = (userId) => {
         SELECT * FROM 
         (
             SELECT *, ROW_NUMBER() OVER(PARTITION BY pt.IDPatient ORDER BY inr.DateofINRTest DESC) rn FROM myinrir_test.dbo.PatientTbl pt 
+            JOIN myinrir_test.dbo.UserTbl u on pt.IDUserPatient = u.IDUser 
             LEFT JOIN myinrir_test.myinrir_test.INRTestTbl inr on pt.IDUserPatient = inr.UserIDPatient 
             WHERE pt.IDPhysicianPatient = ${userId}
-        ) l
+        ) patients
+        LEFT JOIN (
+            SELECT COUNT(*) as visitCount, ptTable.IDUserPatient 
+            FROM myinrir_test.dbo.PatientTbl ptTable  
+            JOIN myinrir_test.myinrir_test.FirstTbl firstVisit on ptTable.IDUserPatient = firstVisit.IDUserPatient
+            GROUP BY ptTable.IDUserPatient
+        ) pnn on patients.IDUserPatient = pnn.IDUserPatient
         WHERE rn = 1
-    `;
+    `
+    ;
 }
 

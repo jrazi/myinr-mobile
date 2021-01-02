@@ -59,7 +59,6 @@ class PatientsScreen extends React.Component {
         const visitFilterEnabled = filters.VISITED ^ filters.NOT_VISITED;
         const medicalConditionFilterEnabled = (filters.MVR ^ filters.AVR) || (filters.MVR ^ filters.VALVULAR_AF);
 
-        console.log('going to filter', visitFilterEnabled, medicalConditionFilterEnabled, patients[0].medicalCondition);
         let filteredList = patients
             .filter(p => !visitFilterEnabled || (filters.VISITED && p.visited) || (filters.NOT_VISITED && !p.visited))
             .filter(p =>
