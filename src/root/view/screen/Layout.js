@@ -65,7 +65,7 @@ export const CustomContentScreenHeader = (props) => {
     );
 }
 
-export const AppBarHeaderWithIcon = (props) => {
+export const DoubleIconScreenHeader = (props) => {
     const theme = useTheme();
     return (
         <Appbar.Header
@@ -78,7 +78,8 @@ export const AppBarHeaderWithIcon = (props) => {
             theme={theme.mostlyWhiteTheme}
         >
             <Appbar.Content color={theme.colors.primary} title={props.title} style={props.contentStyle}/>
-            <Appbar.Action icon={props.iconName} size={28} onPress={firstNonEmpty(props.onPress, noop)} color={theme.colors.placeholder}/>
+            <Appbar.Action icon={props.right} size={28} onPress={firstNonEmpty(props.onRightPress, noop)} color={theme.colors.placeholder}/>
+            <Appbar.Action icon={props.left} size={28} onPress={firstNonEmpty(props.onLeftPress, noop)} color={theme.colors.placeholder}/>
         </Appbar.Header>
     )
 }

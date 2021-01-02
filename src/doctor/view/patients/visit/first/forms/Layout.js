@@ -213,7 +213,7 @@ export const ConditionalRender = (props) => {
 
 export const ConditionalCollapsibleRender = (props) => {
     return (
-        <Collapsible collapsed={props.hidden}>
+        <Collapsible collapsed={props.hidden} duration={props.duration}>
             {props.children}
         </Collapsible>
     )
