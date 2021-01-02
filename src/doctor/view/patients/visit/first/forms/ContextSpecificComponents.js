@@ -33,8 +33,8 @@ export const ChipBox = (props) => {
 
 const ConditionSelectChip = (props) => {
     const theme = useTheme();
-    const selectedBackgroundColor = color(theme.colors.backdrop).alpha(0.1).string();
-    const backgroundColor = theme.colors.backdrop;
+    const backgroundColor = color(theme.colors.backdrop).alpha(0.1).string();
+    const selectedBackgroundColor = theme.colors.backdrop;
     let style = theme.dark ? {backgroundColor: props.selected ? selectedBackgroundColor : backgroundColor,} : null;
     return (
     <Layout.BasicElement>
