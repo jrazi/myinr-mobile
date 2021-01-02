@@ -11,45 +11,45 @@ export const PatientsListFilterBox = (props) => {
             {
                 id: 'VISITED',
                 name: 'ویزیت شده',
-                value: 'false',
+                value: false,
             },
             {
                 id: 'NOT_VISITED',
                 name: 'ویزیت نشده',
-                value: 'false',
+                value: false,
             },
         ],
         [
             {
                 id: 'MVR',
                 name: 'MVR',
-                value: 'false',
+                value: false,
             },
             {
                 id: 'AVR',
                 name: 'AVR',
-                value: 'false',
+                value: false,
             },
             {
                 id: 'VALVULAR_AF',
                 name: 'Valvular AF',
-                value: 'false',
+                value: false,
             },
         ]
     ];
 
 
     const searchCriteria = useRef({
-        'VISITED': false,
-        'NOT_VISITED': false,
-        'VALVULAR_AF': false,
-        'MVR': false,
-        'AVR': false,
+        VISITED: false,
+        NOT_VISITED: false,
+        VALVULAR_AF: false,
+        MVR: false,
+        AVR: false,
     });
 
     const onChange = (id, value) => {
         searchCriteria.current[id] = value;
-        {firstNonEmpty(props.onNewQuery, noop)}(searchCriteria.current);
+        props.onNewQuery(searchCriteria.current);
     }
 
     return (

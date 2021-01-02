@@ -20,9 +20,11 @@ class PatientsScreen extends React.Component {
         super(props);
         this.user = {};
         this.state = {
+            allPatients: [],
             patients: [],
             loading: true,
         }
+        this.searchCriteria = {};
     }
 
     async componentDidMount() {
@@ -35,7 +37,8 @@ class PatientsScreen extends React.Component {
                 .getUser()
                 .then(user => {
                     this.setState({
-                        patients: user.patients,
+                        allPatients: user.patients,
+                        patients: this.filterPatients(user.patients, this.searchCriteria),
                         loading: false,
                     })
                 })
@@ -47,6 +50,29 @@ class PatientsScreen extends React.Component {
         })
     }
 
+    searchPatients = (searchCriteria) => {
+        this.searchCriteria = searchCriteria;
+        this.refresh();
+    }
+
+    filterPatients = (patients, filters) => {
+        const visitFilterEnabled = filters.VISITED ^ filters.NOT_VISITED;
+        const medicalConditionFilterEnabled = (filters.MVR ^ filters.AVR) || (filters.MVR ^ filters.VALVULAR_AF);
+
+        console.log('going to filter', visitFilterEnabled, medicalConditionFilterEnabled, patients[0].medicalCondition);
+        let filteredList = patients
+            .filter(p => !visitFilterEnabled || (filters.VISITED && p.visited) || (filters.NOT_VISITED && !p.visited))
+            .filter(p =>
+                !medicalConditionFilterEnabled || (
+                    hasValue(p.medicalCondition) && (
+                        (filters.MVR && p.medicalCondition.includes('MVR')) ||
+                        (filters.AVR && p.medicalCondition.includes('AVR')) ||
+                        (filters.VALVULAR_AF && p.medicalCondition.includes('Valvular AF'))
+                    )
+                )
+            );
+        return filteredList;
+    }
 
     render() {
         const patientInfoCards = [];
@@ -69,7 +95,7 @@ class PatientsScreen extends React.Component {
                     title="فهرست بیماران"
                     style={{elevation: 0}}
                 />
-                <PatientsListFilterBox/>
+                <PatientsListFilterBox onNewQuery={this.searchPatients}/>
                 <ScrollView
                     style={styles.container}
                     refreshControl={
