@@ -60,18 +60,6 @@ class LoginScreen extends React.Component {
                             onSubmissionUpdate={this.changeSubmissionStatus}
                         />
                     </View>
-                    <View style={styles.buttonContainer}>
-                        <Button
-                            style={styles.loginButton}
-                            contentStyle={styles.loginButtonContent}
-                            mode={'contained'}
-                            loading={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
-                            disabled={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
-                            onPress={() => {this.onFormSubmit()}}
-                        >
-                            <Subheading style={{color: theme.colors.background}}>{Locale[this.locale].text.button.LOGIN}</Subheading>
-                        </Button>
-                    </View>
                 </View>
             </Layout>
         );

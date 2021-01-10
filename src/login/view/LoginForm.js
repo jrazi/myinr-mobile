@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Alert} from "react-native";
+import {StyleSheet, View, Alert, Image} from "react-native";
 import {Spacing} from "../../root/view/styles";
 import {debugBorderBlue, debugBorderRed} from "../../root/view/styles/borders";
 import {Formik} from "formik";
@@ -13,7 +13,18 @@ import {serverGateway} from "../../root/data/server/ServerGateway";
 import {UserRole} from "../../root/domain/Role";
 import {Screen} from "../../root/view/Screen";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
-import {TextInput, Button, Text, Title, Headline, HelperText, Snackbar, Portal, withTheme} from 'react-native-paper';
+import {
+    TextInput,
+    Button,
+    Text,
+    Title,
+    Headline,
+    HelperText,
+    Snackbar,
+    Portal,
+    withTheme,
+    Subheading
+} from 'react-native-paper';
 import {fullSize} from "../../root/view/styles/containers";
 import {ErrorType, getErrorType} from "../../root/data/server/errors";
 
@@ -150,11 +161,44 @@ class LoginForm extends React.Component {
                                             </View>
                                         </Portal>
                                     </View>
+                                    <View style={styles.buttonContainer}>
+                                        <Button
+                                            style={styles.loginButton}
+                                            contentStyle={styles.loginButtonContent}
+                                            mode={'contained'}
+                                            loading={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
+                                            disabled={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
+                                            onPress={() => {this.onFormSubmit()}}
+                                            // theme={{...theme, roundness: 8}}
+                                        >
+                                            <Subheading style={{color: theme.colors.background,}}>ورود</Subheading>
+                                        </Button>
+                                    </View>
                                 </View>
+
                             </View>
                         )}
                     }
                 </Formik>
+                <View
+                    style={{
+                        zIndex: -1,
+                        paddingTop: 10,
+                        width: '100%',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        flexShrink: 1,
+                    }}
+                >
+                    <Image
+                        source={require('../../../assets/inrDeviceMd-nobg.png')}
+                        resizeMode={'contain'}
+                        style={{
+                            height: '100%',
+                            aspectRatio: 1,
+                        }}
+                    />
+                </View>
             </View>
         )
     }
@@ -166,11 +210,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         // justifyContent: 'center',
-        paddingVertical: 40,
+        paddingTop: 40,
     },
     formContainer: {
-        ...Spacing.py2P,
-
+        // ...Spacing.py2P,
+        paddingTop: '8%',
     },
     formTitle: {
         alignSelf: 'center',
@@ -188,5 +232,18 @@ const styles = StyleSheet.create({
     },
     formRow: {
         ...Spacing.py1F,
-    }
+    },
+    buttonContainer: {
+        // ...Spacing.px3P,
+        paddingHorizontal: 20,
+        ...Spacing.py1F,
+        // borderRadius: 3,
+        // ...Spacing.py2,
+    },
+    loginButton: {
+        // borderRadius: 0,
+    },
+    loginButtonContent: {
+        paddingVertical: 5,
+    },
 });
