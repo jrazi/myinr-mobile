@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import * as Data from "../Data";
 import * as Layout from "./Layout";
 import {Badge, Chip, Switch, useTheme} from "react-native-paper";
@@ -10,6 +10,7 @@ import {debugBorderRed} from "../../../../../../root/view/styles/borders";
 
 export const ChipBox = (props) => {
     let states = [];
+
     let chips = props.items
         .map(condition => {
             let [value, setValue] = useState(condition.value);
@@ -31,6 +32,54 @@ export const ChipBox = (props) => {
     );
 }
 
+export class RadioChipBox extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            chipValues: [],
+        }
+    }
+
+    changeChipValue = (index, value) => {
+        const newChipValues = [...this.state.chipValues];
+        this.state.chipValues.forEach((chipValue, chipIndex) => {
+            if (chipIndex == index) {
+                newChipValues[chipIndex] = value;
+            } else {
+                newChipValues[chipIndex] = false;
+            }
+        })
+        this.setState({chipValues: newChipValues});
+    }
+
+    componentDidMount = () => {
+        let newChipValues = [];
+        this.props.items.forEach((item, index) => {
+            newChipValues[index] = item.value;
+        });
+        this.setState({chipValues: newChipValues});
+    }
+
+    render() {
+        let chips = this.props.items
+            .map((condition, index) => {
+                return (
+                    <ConditionSelectChip
+                        title={condition.name}
+                        id={condition.id}
+                        onPress={() => {this.props.onChange(condition.id, !this.state.chipValues[index]); this.changeChipValue(index, !this.state.chipValues[index])}}
+                        selected={this.state.chipValues[index]}
+                        key={condition.id}
+                    />
+                )
+            })
+        return (
+            <Layout.ItemsBox style={this.props.itemBoxStyle}>
+                {chips}
+            </Layout.ItemsBox>
+        );
+    }
+}
 const ConditionSelectChip = (props) => {
     const theme = useTheme();
     const backgroundColor = color(theme.colors.backdrop).alpha(0.1).string();

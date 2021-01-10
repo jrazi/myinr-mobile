@@ -44,16 +44,6 @@ class DoctorApp extends React.Component {
                 lazy={false}
             >
                 <Tab.Screen
-                    name="Home"
-                    component={HomeScreen}
-                    options={{
-                        tabBarLabel: 'خانه',
-                        tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons name="home-outline" color={color} size={26} />
-                        ),
-                    }}
-                />
-                <Tab.Screen
                     name="PatientsScreen"
                     component={PatientsScreen}
                     options={{

@@ -1,43 +1,50 @@
 import React, {useRef, useState} from "react";
 import {Surface} from "react-native-paper";
-import {ChipBox} from "./visit/first/forms/ContextSpecificComponents";
+import {ChipBox, RadioChipBox} from "./visit/first/forms/ContextSpecificComponents";
 import {View} from 'react-native';
-import {IntraSectionInvisibleDivider} from "./visit/first/forms/Layout";
+import {ConditionalCollapsibleRender, IntraSectionInvisibleDivider} from "./visit/first/forms/Layout";
 import {firstNonEmpty, noop} from "../../../root/domain/util/Util";
 
 export const PatientsListFilterBox = (props) => {
-    const filters = [
-        [
-            {
-                id: 'VISITED',
-                name: 'ویزیت شده',
-                value: false,
-            },
-            {
-                id: 'NOT_VISITED',
-                name: 'ویزیت نشده',
-                value: false,
-            },
-        ],
-        [
-            {
-                id: 'MVR',
-                name: 'MVR',
-                value: false,
-            },
-            {
-                id: 'AVR',
-                name: 'AVR',
-                value: false,
-            },
-            {
-                id: 'VALVULAR_AF',
-                name: 'Valvular AF',
-                value: false,
-            },
-        ]
+    const filterRows = [
+        {
+            radio: true,
+            filters: [
+                {
+                    id: 'NOT_VISITED',
+                    name: 'ویزیت اول',
+                    value: false,
+                },
+                {
+                    id: 'VISITED',
+                    name: 'ویزیت شده',
+                    value: false,
+                },
+            ],
+        },
+        {
+            radio: false,
+            filters: [
+                {
+                    id: 'MVR',
+                    name: 'MVR',
+                    value: false,
+                },
+                {
+                    id: 'AVR',
+                    name: 'AVR',
+                    value: false,
+                },
+                {
+                    id: 'VALVULAR_AF',
+                    name: 'Valvular AF',
+                    value: false,
+                },
+            ]
+        }
     ];
 
+    const [rowsVisibility, setRowsVisibility] = useState([true, false]);
 
     const searchCriteria = useRef({
         VISITED: false,
@@ -49,11 +56,21 @@ export const PatientsListFilterBox = (props) => {
 
     const onChange = (id, value) => {
         searchCriteria.current[id] = value;
+        if (id == 'VISITED' && value == true)
+            searchCriteria.current.NOT_VISITED = false;
+        else if (id == 'NOT_VISITED' && value == true) {
+            searchCriteria.current.VISITED = false;
+            searchCriteria.current.VALVULAR_AF = false;
+            searchCriteria.current.MVR = false;
+            searchCriteria.current.AVR = false;
+        }
+        setRowsVisibility([true, searchCriteria.current.VISITED])
+
         props.onNewQuery(searchCriteria.current);
     }
 
     return (
-        <FilterTagBox filters={filters} onChange={onChange}/>
+        <FilterTagBox filters={filterRows} onChange={onChange} rowsVisibility={rowsVisibility}/>
     )
 }
 
@@ -65,11 +82,18 @@ export class FilterTagBox extends React.Component {
 
     render() {
         const chipRows = [];
-        for (const filterRow of this.props.filters) {
+        this.props.filters.forEach((filterRow, index) => {
             chipRows.push(
-                <ChipRow items={filterRow} onChange={firstNonEmpty(this.props.onChange, noop)}/>
+                <ConditionalCollapsibleRender hidden={!this.props.rowsVisibility[index]}>
+                    <ChipRow
+                        items={filterRow.filters}
+                        radio={filterRow.radio}
+                        onChange={firstNonEmpty(this.props.onChange, noop)}
+                        key={`ChipRowFilterTagBox${index}${this.props.rowsVisibility[index]}`}
+                    />
+                </ConditionalCollapsibleRender>
             )
-        }
+        })
         return (
             <Surface style={{elevation: 0}}>
                 {
@@ -82,7 +106,16 @@ export class FilterTagBox extends React.Component {
 }
 
 const ChipRow = (props) => {
-    return <ChipBox
+    if (props.radio) {
+        return <RadioChipBox
+            items={props.items}
+            itemBoxStyle={{
+                flexDirection: 'row',
+            }}
+            onChange={props.onChange}
+        />
+    }
+    else return <ChipBox
         items={props.items}
         itemBoxStyle={{
             flexDirection: 'row',
