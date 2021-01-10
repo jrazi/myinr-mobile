@@ -53,7 +53,7 @@ class PatientProfileScreen extends React.Component {
                         title={this.state.patient.fullName} style={{elevation: 0}}
                     />
                     <Tab.Navigator
-                        initialRouteName={"Home"}
+                        initialRouteName={"FirstVisit"}
                         barStyle={{ backgroundColor: colors.background }}
                         style={{ backgroundColor: colors.background }}
                         sceneContainerStyle={{ backgroundColor: colors.background }}
@@ -80,7 +80,7 @@ class PatientProfileScreen extends React.Component {
                         }}
                     >
                         <Tab.Screen
-                            name="Home"
+                            name="PatientInfo"
                             component={NoData}
                             options={{
                                 tabBarLabel: 'مشخصات',
