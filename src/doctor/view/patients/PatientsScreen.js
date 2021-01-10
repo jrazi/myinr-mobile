@@ -25,11 +25,17 @@ import {
     ScreenHeader,
     ScreenLayout
 } from "../../../root/view/screen/Layout";
-import {ConditionalCollapsibleRender, ConditionalRender, IntraSectionDivider} from "./visit/first/forms/Layout";
+import {
+    ConditionalCollapsibleRender,
+    ConditionalRender,
+    IntraSectionDivider,
+    IntraSectionInvisibleDivider
+} from "./visit/first/forms/Layout";
 import {FilterTagBox, PatientsListFilterBox} from "./FilterTagBox";
 import {EmptyList} from "../../../root/view/list/EmptyListMessage";
 import {VisitRedirect} from "./VisitRedirect";
 import {doctorDao, VisitState} from "../../data/dao/DoctorDao";
+import {debugBorderBlue, debugBorderRed} from "../../../root/view/styles/borders";
 
 class PatientsScreen extends React.Component {
     constructor(props) {
@@ -155,17 +161,20 @@ class PatientsScreen extends React.Component {
 
     render() {
         const patientInfoCards = [];
+        let index = 0;
         for (let patient of this.state.patients) {
             patient.age = calcAge(patient.birthDate);
             const displayPatient = normalizeDictForDisplay(patient, 'FA');
             patientInfoCards.push([
                 <PatientInfoCard
                     key={patient.nationalId + patient.username}
+                    index={index}
                     patientInfo={displayPatient}
                     onPress={() => this.onPatientCardPress(patient)}
                 />,
 
             ]);
+            index++;
         }
         const theme = this.props.theme;
         return (
@@ -190,8 +199,8 @@ class PatientsScreen extends React.Component {
                         hidden={this.state.patients.length > 0 || this.state.loading}
                         message={'رکوردی یافت نشد'}
                     />
-                    <View style={styles.patientsListContainer}>
-                        <List.Section>
+                    <View style={[styles.patientsListContainer] }>
+                        <List.Section style={{marginTop: 0,}}>
                             {patientInfoCards}
                         </List.Section>
                     </View>
@@ -279,10 +288,22 @@ const PatientInfoCard = (props) => {
         latestInrTestMessage = 'عدم ثبت شاخص INR';
     }
     const theme = useTheme();
+    const CardContainer = ({index, style, ...props}) => {
+        if (index % 2 == 0) {
+            return <View style={[{}, style]}>
+                {props.children}
+            </View>
+        }
+        else return <Surface style={[{elevation: 0, debugBorderBlue}, style]}>
+            {props.children}
+        </Surface>
+    }
     return (
-            <View style={[{
-                // elevation: 4,
-            }, styles.patientInfoCardContainer]}>
+            <CardContainer index={props.index}
+               style={[{
+                    // elevation: 4,
+                }, styles.patientInfoCardContainer]}
+            >
                 <TouchableRipple
                     onPress={props.onPress}
                     rippleColor="rgba(0, 0, 0, .1)"
@@ -290,6 +311,7 @@ const PatientInfoCard = (props) => {
                 >
                     <View style={{
                         // paddingBottom: 10,
+                        paddingVertical: 5,
                     }}>
                         <Card.Title
                             title={props.patientInfo.fullName}
@@ -304,10 +326,10 @@ const PatientInfoCard = (props) => {
                                 <PatientCardDetails patientInfo={props.patientInfo}/>
                             </View>
                         </Card.Content>
-                        <IntraSectionDivider none borderWidth={0.1} style={{marginHorizontal: 20, marginTop: 10,}}/>
+                        <IntraSectionInvisibleDivider none borderWidth={0.1} style={{marginHorizontal: 20, marginTop: 10,}}/>
                     </View>
                 </TouchableRipple>
-            </View>
+            </CardContainer>
     );
 }
 
@@ -391,6 +413,7 @@ const styles = StyleSheet.create({
     },
 
     patientsListContainer: {
+
     },
     patientInfoCardContainer: {
     },
