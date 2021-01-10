@@ -25,7 +25,7 @@ export default class App extends React.Component {
         this.setState({ loaded: false}, () => {
             rootDao.getDarkMode()
                 .then(darkMode => {
-                    this.setState({ theme: darkMode ? darkTheme : lightTheme });
+                    this.setState({ theme: darkMode ? lightTheme : lightTheme });
                 })
             if(I18nManager.isRTL != true){
                 I18nManager.forceRTL(true);

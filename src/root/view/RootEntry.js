@@ -30,10 +30,17 @@ export default class RootEntry extends React.Component {
     }
 
     refresh = () => {
+        const reset = (routeName) => {
+            this.props.navigation.reset({
+                index: 0,
+                routes: [{name: routeName}],
+            });
+        }
+
         rootDao.getUser().then(user => {
-            if (user == null) this.props.navigation.navigate(Screen.LOGIN);
-            else if (user.role === UserRole.PATIENT) this.props.navigation.navigate(Screen.PATIENT);
-            else if (user.role === UserRole.DOCTOR) this.props.navigation.navigate(Screen.DOCTOR);
+            if (user == null) reset(Screen.LOGIN);
+            else if (user.role === UserRole.PATIENT) reset(Screen.PATIENT);
+            else if (user.role === UserRole.DOCTOR) reset(Screen.DOCTOR);
         }).catch(err => {
 
         });

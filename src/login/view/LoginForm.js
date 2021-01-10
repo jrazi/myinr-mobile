@@ -30,12 +30,18 @@ class LoginForm extends React.Component {
 
 
     submitForm = (credentials) => {
+        const reset = (routeName) => {
+            this.props.navigation.reset({
+                index: 0,
+                routes: [{name: routeName}],
+            });
+        }
         this.props.onSubmissionUpdate(FormSubmissionStatus.SUBMITTING, () => {
             serverGateway.fetchUserDataWithLogin(credentials.username, credentials.password).then(user => {
                 rootDao.saveUser(user).then(() => {
                     this.props.onSubmissionUpdate(FormSubmissionStatus.NOT_SUBMITTING, () => {
-                        if (user.role === UserRole.PATIENT) this.props.navigation.navigate(Screen.PATIENT);
-                        else if (user.role === UserRole.DOCTOR) this.props.navigation.navigate(Screen.DOCTOR);
+                        if (user.role === UserRole.PATIENT) reset(Screen.PATIENT);
+                        else if (user.role === UserRole.DOCTOR) reset(Screen.DOCTOR);
                     });
                 });
             }).catch(error => {
@@ -84,56 +90,66 @@ class LoginForm extends React.Component {
                         ({ handleChange, handleBlur, values, touched, errors }) => {return (
                             <View style={styles.formContainer}>
                                 <View style={styles.formTitle}>
-                                    <Title>{Locale[rootDao.getLocale()].text.title.LOGIN_FORM}</Title>
+                                    <Title>سیستم مدیریت یکپارچه داده‌های INR</Title>
                                     {/*<DefaultText style={styles.titleText} minimumFontScale={3}>{Locale[rootDao.getLocale()].text.title.LOGIN_FORM}</DefaultText>*/}
                                 </View>
-                                <View style={styles.formRow}>
-                                    <TextInput
-                                        label="نام کاربری"
-                                        value={values.username}
-                                        onChangeText={handleChange('username')}
-                                        autoCompleteType={'username'}
-                                        autoCorrect={false}
-                                        onBlur={handleBlur('username')}
-                                    />
-                                    <HelperText type="error" visible={true} style={{color: theme.colors.actionColors.remove}}>
-                                        {errors.username}
-                                    </HelperText>
-                                </View>
-                                <View style={styles.formRow}>
-                                    <TextInput
-                                        label="رمز عبور"
-                                        value={values.password}
-                                        onChangeText={handleChange('password')}
-                                        autoCorrect={false}
-                                        secureTextEntry={true}
-                                        autoCompleteType={'password'}
-                                        onBlur={handleBlur('password')}
-                                    />
-                                    <HelperText type="error" visible={true} style={{color: theme.colors.actionColors.remove}}>
-                                        {errors.password}
-                                    </HelperText>
-                                    <Portal>
-                                        <View
+                                <View style={styles.formBody}>
+                                    <View style={styles.formRow}>
+                                        <TextInput
+                                            label="نام کاربری"
+                                            value={values.username}
+                                            onChangeText={handleChange('username')}
+                                            autoCompleteType={'username'}
+                                            autoCorrect={false}
+                                            onBlur={handleBlur('username')}
                                             style={{
-                                                marginBottom: 80,
-                                                flex: 1,
                                                 paddingHorizontal: 20,
+                                                backgroundColor: theme.colors.background,
                                             }}
-                                        >
-                                            <Snackbar
+                                        />
+                                        <HelperText type="error" visible={true} style={{color: theme.colors.actionColors.remove}}>
+                                            {errors.username}
+                                        </HelperText>
+                                    </View>
+                                    <View style={styles.formRow}>
+                                        <TextInput
+                                            label="رمز عبور"
+                                            value={values.password}
+                                            onChangeText={handleChange('password')}
+                                            autoCorrect={false}
+                                            secureTextEntry={true}
+                                            autoCompleteType={'password'}
+                                            onBlur={handleBlur('password')}
+                                            style={{
+                                                paddingHorizontal: 20,
+                                                backgroundColor: theme.colors.background,
+                                            }}
+                                        />
+                                        <HelperText type="error" visible={true} style={{color: theme.colors.actionColors.remove}}>
+                                            {errors.password}
+                                        </HelperText>
+                                        <Portal>
+                                            <View
                                                 style={{
+                                                    marginBottom: 80,
+                                                    flex: 1,
+                                                    paddingHorizontal: 20,
                                                 }}
-                                                visible={this.state.errorDialogOpen}
-                                                onDismiss={() => {this.setState({errorDialogOpen: false})}}
-                                                action={{
-                                                    label: 'بستن',
-                                                    onPress: () => {this.setState({errorDialogOpen: false})},
-                                                }}>
-                                                {this.state.errorMessage}
-                                            </Snackbar>
-                                        </View>
-                                    </Portal>
+                                            >
+                                                <Snackbar
+                                                    style={{
+                                                    }}
+                                                    visible={this.state.errorDialogOpen}
+                                                    onDismiss={() => {this.setState({errorDialogOpen: false})}}
+                                                    action={{
+                                                        label: 'بستن',
+                                                        onPress: () => {this.setState({errorDialogOpen: false})},
+                                                    }}>
+                                                    {this.state.errorMessage}
+                                                </Snackbar>
+                                            </View>
+                                        </Portal>
+                                    </View>
                                 </View>
                             </View>
                         )}
@@ -153,12 +169,17 @@ const styles = StyleSheet.create({
         paddingVertical: 40,
     },
     formContainer: {
-        ...Spacing.px3P,
         ...Spacing.py2P,
+
     },
     formTitle: {
         alignSelf: 'center',
         ...Spacing.py2F,
+        paddingHorizontal: 10,
+    },
+    formBody: {
+        // ...Spacing.px3P,
+
     },
     titleText: {
         fontWeight: 'bold',
@@ -166,6 +187,6 @@ const styles = StyleSheet.create({
         textAlign: 'right',
     },
     formRow: {
-        ...Spacing.py2F,
+        ...Spacing.py1F,
     }
 });
