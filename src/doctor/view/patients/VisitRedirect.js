@@ -45,7 +45,7 @@ export const StartVisitDialog = (props) => {
         />
     } else return null;
 }
-const ContinueCachedVisitDialog = (props) => {
+export const ContinueCachedVisitDialog = (props) => {
     return (
         <Portal>
             <Dialog visible={props.visible} onDismiss={props.onDismiss} style={{paddingBottom: 10}} dismissable={false}>
@@ -62,7 +62,7 @@ const ContinueCachedVisitDialog = (props) => {
         </Portal>
     )
 }
-const StartFirstVisitDialog = (props) => {
+export const StartFirstVisitDialog = (props) => {
     return (
         <Portal>
             <Dialog visible={props.visible} onDismiss={props.onDismiss} style={{paddingBottom: 5}} dismissable={false}>
@@ -77,20 +77,20 @@ const StartFirstVisitDialog = (props) => {
         </Portal>
     )
 }
-const FollowupVisitNotImplementedDialog = (props) => {
+export const FollowupVisitNotImplementedDialog = (props) => {
     return (
         <Portal>
             <Dialog visible={props.visible} onDismiss={props.onDismiss} style={{paddingBottom: 5}} dismissable={false}>
                 <DialogMessage>در حال حاضر فقط یکبار می‌توانید بیمار را ویزیت کنید.</DialogMessage>
                 <Dialog.Actions style={visitDialogStyles.notImplemented.dialogActions}>
                     <Button disabled={false} style={{}} labelStyle={{padding: 5}} mode="text"
-                            onPress={props.onDismiss}>باشه</Button>
+                            onPress={props.onDismiss}>قبول</Button>
                 </Dialog.Actions>
             </Dialog>
         </Portal>
     )
 }
-const DialogMessage = (props) => {
+export const DialogMessage = (props) => {
     const theme = useTheme();
     return (
         <Dialog.Content color={theme.colors.placeholder} style={{paddingTop: 20}}>
@@ -98,7 +98,7 @@ const DialogMessage = (props) => {
         </Dialog.Content>
     )
 }
-const visitDialogStyles = {
+export const visitDialogStyles = {
     notImplemented: {
         dialogActions: {
             alignItems: 'center',
@@ -110,6 +110,10 @@ const visitDialogStyles = {
             alignItems: 'center',
             justifyContent: 'space-around',
         }
+    },
+    dialogActions: {
+        alignItems: 'center',
+        justifyContent: 'space-around',
     },
     continueCached: {
         dialogActions: {

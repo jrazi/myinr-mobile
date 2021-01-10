@@ -3,7 +3,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 
 import DoctorApp from "../../doctor/view/DoctorApp";
-import PatientProfileScreen from "../../doctor/view/patients/PatientProfileScreen";
+import PatientProfileScreen from "./patients/profile/PatientProfileScreen";
 import FirstVisitScreen from "./patients/visit/first/FirstVisitScreen";
 import {AddDrugRecord} from "./patients/visit/first/AddDrugRecord";
 import SettingsScreen from "./SettingsScreen";
