@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Alert, Image} from "react-native";
+import {StyleSheet, View, Alert, Image, KeyboardAvoidingView} from "react-native";
 import {Spacing} from "../../root/view/styles";
 import {debugBorderBlue, debugBorderRed} from "../../root/view/styles/borders";
 import {Formik} from "formik";
@@ -27,6 +27,7 @@ import {
 } from 'react-native-paper';
 import {fullSize} from "../../root/view/styles/containers";
 import {ErrorType, getErrorType} from "../../root/data/server/errors";
+
 
 class LoginForm extends React.Component {
 
@@ -169,7 +170,6 @@ class LoginForm extends React.Component {
                                         <Button
                                             style={{
                                                 ...styles.loginButton,
-                                                backgroundColor: theme.colors.accent,
                                             }}
                                             contentStyle={{
                                                 ...styles.loginButtonContent,
@@ -178,7 +178,6 @@ class LoginForm extends React.Component {
                                             loading={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
                                             disabled={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
                                             onPress={handleSubmit}
-                                            // theme={{...theme, roundness: 8}}
                                         >
                                             <Subheading style={{color: theme.colors.onAccentBackground,}}>ورود</Subheading>
                                         </Button>
