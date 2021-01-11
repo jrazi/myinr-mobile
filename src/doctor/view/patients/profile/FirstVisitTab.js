@@ -1,21 +1,57 @@
 import React from "react";
 import {PatientProfileContext} from "./PatientProfileScreen";
-import {VisitState} from "../../../data/dao/DoctorDao";
+import {doctorDao, VisitState} from "../../../data/dao/DoctorDao";
 import {ScreenLayout} from "../../../../root/view/screen/Layout";
-import {Button, Dialog, FAB, Portal, withTheme} from "react-native-paper";
+import {
+    Button,
+    Dialog,
+    FAB,
+    Portal,
+    withTheme,
+    Title,
+    Caption,
+    Headline,
+    Subheading,
+    Paragraph,
+    List,
+    TouchableRipple,
+    Surface,
+    Text,
+} from "react-native-paper";
 import {DialogMessage, FollowupVisitNotImplementedDialog, visitDialogStyles} from "../VisitRedirect";
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, View, ScrollView} from "react-native";
 import {ConditionalRender} from "../visit/first/forms/Layout";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import {visitDao} from "../../../data/dao/VisitDao";
+import {FirstVisit} from "../../../domain/visit/Visit";
+import {
+    firstNonEmpty,
+    getFormattedJalaliDate,
+    getFormattedJalaliDateTime,
+    hasValue
+} from "../../../../root/domain/util/Util";
+import {debugBorderRed} from "../../../../root/view/styles/borders";
 
 class _FirstVisitTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             certifyVisitDialogOpen: false,
+            visitInfo: FirstVisit.createNew(),
+            loaded: false,
         }
     }
 
+    async componentDidMount() {
+        const {userId,} = this.props.route.params;
+
+        doctorDao.getCachedVisit(userId)
+            .then(cachedVisit => {
+                this.setState({visitInfo: cachedVisit.visitInfo});
+            })
+            .catch(err => {
+            })
+    }
 
     navigateToFirstVisit = (patient) => {
         this.props.navigation.navigate(
@@ -35,6 +71,7 @@ class _FirstVisitTab extends React.Component {
                             : value.patient.visitCount > 1 && value.visitState == VisitState.FOLLOWUP_VISIT
                     return (
                         <ScreenLayout>
+                            <FirstVisitInfo visitInfo={this.state.visitInfo}/>
                             <View style={styles.fabContainer}>
                                 <ConditionalRender hidden={value.firstVisit.finished == false}>
                                     <View style={styles.fabWrapper}>
@@ -78,6 +115,94 @@ class _FirstVisitTab extends React.Component {
 }
 
 export const FirstVisitTab = withTheme(_FirstVisitTab);
+
+const FirstVisitInfo = (props) => {
+    return (
+        <View style={{paddingTop: 10,}}>
+            {/*<Title>مشخصات ویزیت اول</Title>*/}
+            <FirstVisitInfoContainer>
+                <FirstVisitInfoRow>
+                    <FirstVisitInfoItem
+                        title={'وضعیت'}
+                        value={props.visitInfo.finished ? 'به اتمام رسیده' : 'تایید نشده'}
+                        itemIcon={props.visitInfo.finished ? 'check-all' : 'timer-sand'}
+                    />
+                    <FirstVisitInfoItem
+                        title={'تاریخ شروع'}
+                        value={hasValue(props.visitInfo.startDate) ? getFormattedJalaliDateTime(props.visitInfo.startDate) : 'نامشخص'}
+                        itemIcon={'calendar'}
+                    />
+                </FirstVisitInfoRow>
+                <FirstVisitInfoRow>
+                    <FirstVisitInfoItem
+                        title={'آخرین ویرایش'}
+                        value={hasValue(props.visitInfo.lastEditedDate) ? getFormattedJalaliDateTime(props.visitInfo.lastEditedDate) : 'نامشخص'}
+                        itemIcon={'calendar-edit'}
+                    />
+                    <ConditionalRender hidden={!props.visitInfo.finished}>
+                        <FirstVisitInfoItem
+                            title={'تاریخ اتمام'}
+                            value={hasValue(props.visitInfo.finishDate) ? getFormattedJalaliDateTime(props.visitInfo.finishDate) : 'نامشخص'}
+                            itemIcon={'calendar-check'}
+                        />
+                    </ConditionalRender>
+                </FirstVisitInfoRow>
+            </FirstVisitInfoContainer>
+        </View>
+    )
+}
+
+const FirstVisitInfoContainer = (props) => {
+    return (
+        <ScrollView
+            // style={{marginBottom: 0,}}
+        >
+            <List.Section
+                style={{
+                    // flexDirection: 'row',
+                    // flexWrap: 'wrap',
+                }}
+            >
+                {props.children}
+            </List.Section>
+        </ScrollView>
+    )
+}
+
+const FirstVisitInfoRow = (props) => {
+    return props.children
+}
+const FirstVisitInfoItem = (props) => {
+    return (
+        <View
+            style={{
+                paddingHorizontal: 10,
+                marginVertical: 8,
+            }}
+        >
+            <Surface
+                style={{
+                    // paddingHorizontal: 10,
+                    // paddingBottom: 10,
+                    elevation: 0,
+                }}
+            >
+                <List.Subheader
+                    style={{marginVertical: 0, paddingVertical: 0,}}
+                >
+                    {props.title}
+                </List.Subheader>
+                <List.Item
+                    title={props.value}
+                    style={{
+                        paddingVertical: 0,
+                    }}
+                    left={() => <List.Icon icon={props.itemIcon}/>}
+                />
+            </Surface>
+        </View>
+    )
+}
 
 const CertifyVisitDialog = (props) => {
     return (

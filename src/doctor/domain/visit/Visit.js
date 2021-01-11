@@ -7,9 +7,12 @@ export class FirstVisit {
 
     static createNew() {
         return {
+            startDate: null,
+            lastEditedDate: null,
+            finished: false,
+            finishDate: null,
             id: null,
             patientUserId: null,
-
             reasonForWarfarin: {},
             heartValveReplacementCondition: {
                 replaced: false,

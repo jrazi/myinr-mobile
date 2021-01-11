@@ -185,6 +185,15 @@ export function getFormattedJalaliDate(date) {
     return e2p(dateStr);
 }
 
+export function getFormattedJalaliDateTime(date) {
+    if (!hasValue(date)) date = new Date(Date.now());
+    let dateTime = getFormattedJalaliDate(date);
+    let time = (date.getHours() % 12 || 12) + ':' + date.getMinutes() + ' ' + (date.getHours() < 12 ? 'ق.ظ' : 'ب.ظ');
+    dateTime = time + ' ' + dateTime;
+    return e2p(dateTime);
+}
+
+
 export function getFormFormattedJalaliDate(date) {
     if (!hasValue(date)) date = new Date(Date.now());
     const jDate = new jd.default(date);
