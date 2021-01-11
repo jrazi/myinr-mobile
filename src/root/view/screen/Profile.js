@@ -17,7 +17,7 @@ import {fullSize} from "../styles/containers";
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useNavigation} from '@react-navigation/native';
 import {debugBorderRed} from "../styles/borders";
-import {e2p} from "../../domain/util/Util";
+import {e2p, firstNonEmpty} from "../../domain/util/Util";
 import AppConfig from "../../../../AppConfig";
 
 export const Wrapper = (props) => {return (
@@ -106,9 +106,10 @@ export const LogoutDialog = (props) => {
     );
 }
 
-const ApplicationVersion = (props) => {
+export const ApplicationVersion = (props) => {
     const theme = useTheme();
     const version = AppConfig.version;
+    const versionPrefix = firstNonEmpty(props.versionPrefix, 'نسخه برنامه: ' );
     return (
         <View
             style={{
@@ -117,9 +118,10 @@ const ApplicationVersion = (props) => {
                 elevation: 0,
                 backgroundColor: theme.colors.background,
                 paddingVertical: 20,
+                ...props.style,
             }}
         >
-            <Caption style={{fontSize: 16}}>{'نسخه برنامه: ' + e2p(version)}</Caption>
+            <Caption style={{fontSize: 16, ...props.contentStyle}}>{versionPrefix + e2p(version)}</Caption>
         </View>
     )
 }

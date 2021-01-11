@@ -15,6 +15,7 @@ import {Screen} from "../../root/view/Screen";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
 import {
     TextInput,
+    Caption,
     Button,
     Text,
     Title,
@@ -27,6 +28,7 @@ import {
 } from 'react-native-paper';
 import {fullSize} from "../../root/view/styles/containers";
 import {ErrorType, getErrorType} from "../../root/data/server/errors";
+import {ApplicationVersion} from "../../root/view/screen/Profile";
 
 
 class LoginForm extends React.Component {
@@ -204,6 +206,22 @@ class LoginForm extends React.Component {
                         style={{
                             height: '100%',
                             aspectRatio: 1,
+                        }}
+                    />
+                </View>
+                <View>
+                    <ApplicationVersion
+                        versionPrefix={'نسخه '}
+                        style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            paddingTop: 0,
+                            paddingBottom: 5,
+                            alignItems: 'flex-start',
+                            paddingHorizontal: 15,
+                        }}
+                        contentStyle={{
+                            fontSize: 14,
                         }}
                     />
                 </View>
