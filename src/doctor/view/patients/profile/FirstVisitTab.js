@@ -60,6 +60,10 @@ class _FirstVisitTab extends React.Component {
         );
     }
 
+    navigateToFirstNonModifiableVisit = (patient) => {
+        this.navigateToFirstVisit(patient);
+    }
+
     render() {
         const theme = this.props.theme;
         return (
@@ -73,24 +77,25 @@ class _FirstVisitTab extends React.Component {
                         <ScreenLayout>
                             <FirstVisitInfo visitInfo={this.state.visitInfo}/>
                             <View style={styles.fabContainer}>
-                                <ConditionalRender hidden={value.firstVisit.finished == false}>
+                                <ConditionalRender hidden={value.firstVisit.finished != true}>
                                     <View style={styles.fabWrapper}>
                                         <FAB
-                                            style={[styles.fab, {
-                                                // width: 40,
-                                                // height: 40,
-                                            }]}
-                                            // icon={() => <MaterialIcon
-                                            //     name={'circle-edit-outline'}
-                                            //     color={'white'} size={20}
-                                            //     // style={{position: 'absolute', right: 2, top: 2}}
-                                            // />}
+                                            style={[styles.fab,]}
+                                            icon={'file-eye-outline'}
+                                            onPress={() => this.navigateToFirstNonModifiableVisit(value.patient)}
+                                        />
+                                    </View>
+                                </ConditionalRender>
+                                <ConditionalRender hidden={value.firstVisit.finished == true}>
+                                    <View style={styles.fabWrapper}>
+                                        <FAB
+                                            style={[styles.fab,]}
                                             icon={'circle-edit-outline'}
                                             onPress={() => this.navigateToFirstVisit(value.patient)}
                                         />
                                     </View>
                                 </ConditionalRender>
-                                <ConditionalRender hidden={value.firstVisit.finished == false}>
+                                <ConditionalRender hidden={value.firstVisit.finished == true}>
                                     <View style={styles.fabWrapper}>
                                         <FAB
                                             style={[styles.fab, {
@@ -134,11 +139,13 @@ const FirstVisitInfo = (props) => {
                     />
                 </FirstVisitInfoRow>
                 <FirstVisitInfoRow>
-                    <FirstVisitInfoItem
-                        title={'آخرین ویرایش'}
-                        value={hasValue(props.visitInfo.lastEditedDate) ? getFormattedJalaliDateTime(props.visitInfo.lastEditedDate) : 'نامشخص'}
-                        itemIcon={'calendar-edit'}
-                    />
+                    <ConditionalRender hidden={props.visitInfo.finished}>
+                        <FirstVisitInfoItem
+                            title={'آخرین ویرایش'}
+                            value={hasValue(props.visitInfo.lastEditedDate) ? getFormattedJalaliDateTime(props.visitInfo.lastEditedDate) : 'نامشخص'}
+                            itemIcon={'calendar-edit'}
+                        />
+                    </ConditionalRender>
                     <ConditionalRender hidden={!props.visitInfo.finished}>
                         <FirstVisitInfoItem
                             title={'تاریخ اتمام'}
