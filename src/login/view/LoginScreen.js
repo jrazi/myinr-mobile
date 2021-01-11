@@ -14,10 +14,8 @@ class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            submissionStatus: FormSubmissionStatus.NOT_SUBMITTING,
         };
         this.locale = rootDao.getLocale();
-        this.containerRef = React.createRef();
     }
 
     componentDidMount() {
@@ -38,12 +36,6 @@ class LoginScreen extends React.Component {
         });
     }
 
-    changeSubmissionStatus = (newStatus, callback) => {
-        this.setState({submissionStatus: newStatus}, callback);
-    }
-    onFormSubmit = (credentials) => {
-        this.containerRef.current.handleSubmit();
-    }
 
     render() {
         const theme = this.props.theme;
@@ -56,8 +48,6 @@ class LoginScreen extends React.Component {
                     <View style={styles.bodyContainer}>
                         <LoginForm
                             navigation={this.props.navigation}
-                            containerRef={this.containerRef}
-                            onSubmissionUpdate={this.changeSubmissionStatus}
                         />
                     </View>
                 </View>

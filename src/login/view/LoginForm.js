@@ -40,6 +40,10 @@ class LoginForm extends React.Component {
     }
 
 
+    changeSubmissionStatus = (newStatus, callback) => {
+        this.setState({submissionStatus: newStatus}, callback);
+    }
+
     submitForm = (credentials) => {
         const reset = (routeName) => {
             this.props.navigation.reset({
@@ -47,16 +51,16 @@ class LoginForm extends React.Component {
                 routes: [{name: routeName}],
             });
         }
-        this.props.onSubmissionUpdate(FormSubmissionStatus.SUBMITTING, () => {
+        this.changeSubmissionStatus(FormSubmissionStatus.SUBMITTING, () => {
             serverGateway.fetchUserDataWithLogin(credentials.username, credentials.password).then(user => {
                 rootDao.saveUser(user).then(() => {
-                    this.props.onSubmissionUpdate(FormSubmissionStatus.NOT_SUBMITTING, () => {
+                    this.changeSubmissionStatus(FormSubmissionStatus.NOT_SUBMITTING, () => {
                         if (user.role === UserRole.PATIENT) reset(Screen.PATIENT);
                         else if (user.role === UserRole.DOCTOR) reset(Screen.DOCTOR);
                     });
                 });
             }).catch(error => {
-                this.props.onSubmissionUpdate(FormSubmissionStatus.NOT_SUBMITTING, () => {
+                this.changeSubmissionStatus(FormSubmissionStatus.NOT_SUBMITTING, () => {
                     const serverErrorType = getErrorType(error);
                     let message = '';
                     switch (serverErrorType) {
@@ -89,16 +93,16 @@ class LoginForm extends React.Component {
                         username: Validators.USERNAME[rootDao.getLocale()],
                         password: Validators.PASSWORD[rootDao.getLocale()],
                     })}
-                    innerRef={this.props.containerRef}
+                    // innerRef={this.props.containerRef}
                     validateOnChange={false}
                     validateOnBlur={false}
-                    validateOn
+                    validateOnSubmit={true}
                     onSubmit={(values, { validate }) => {
                         this.submitForm(values);
                     }}
                 >
                     {
-                        ({ handleChange, handleBlur, values, touched, errors }) => {return (
+                        ({ handleChange, handleBlur, handleSubmit, values, touched, errors }) => {return (
                             <View style={styles.formContainer}>
                                 <View style={styles.formTitle}>
                                     <Title>سیستم مدیریت یکپارچه داده‌های INR</Title>
@@ -163,15 +167,20 @@ class LoginForm extends React.Component {
                                     </View>
                                     <View style={styles.buttonContainer}>
                                         <Button
-                                            style={styles.loginButton}
-                                            contentStyle={styles.loginButtonContent}
+                                            style={{
+                                                ...styles.loginButton,
+                                                backgroundColor: theme.colors.accent,
+                                            }}
+                                            contentStyle={{
+                                                ...styles.loginButtonContent,
+                                            }}
                                             mode={'contained'}
                                             loading={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
                                             disabled={this.state.submissionStatus == FormSubmissionStatus.SUBMITTING}
-                                            onPress={() => {this.onFormSubmit()}}
+                                            onPress={handleSubmit}
                                             // theme={{...theme, roundness: 8}}
                                         >
-                                            <Subheading style={{color: theme.colors.background,}}>ورود</Subheading>
+                                            <Subheading style={{color: theme.colors.onAccentBackground,}}>ورود</Subheading>
                                         </Button>
                                     </View>
                                 </View>
