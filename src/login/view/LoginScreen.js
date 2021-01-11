@@ -8,7 +8,8 @@ import * as Locale from "./Locale";
 import LoginForm from "./LoginForm";
 import {FormSubmissionStatus} from "../../root/view/FormSubmissionStatus";
 import {UserRole} from "../../root/domain/Role";
-import {Button, Subheading, Title, withTheme} from 'react-native-paper';
+import {Button, Provider as PaperProvider, Subheading, Title, withTheme} from 'react-native-paper';
+import {lightTheme} from "../../../theme";
 
 class LoginScreen extends React.Component {
     constructor(props) {
@@ -38,20 +39,22 @@ class LoginScreen extends React.Component {
 
 
     render() {
-        const theme = this.props.theme;
+        const theme = lightTheme;
         return (
-            <Layout>
-                <View style={{
-                    flex: 1,
-                    backgroundColor: theme.colors.background,
-                }}>
-                    <View style={styles.bodyContainer}>
-                        <LoginForm
-                            navigation={this.props.navigation}
-                        />
+            <PaperProvider theme={theme} >
+                <Layout>
+                    <View style={{
+                        flex: 1,
+                        backgroundColor: theme.colors.background,
+                    }}>
+                        <View style={styles.bodyContainer}>
+                            <LoginForm
+                                navigation={this.props.navigation}
+                            />
+                        </View>
                     </View>
-                </View>
-            </Layout>
+                </Layout>
+            </PaperProvider>
         );
     }
 }
