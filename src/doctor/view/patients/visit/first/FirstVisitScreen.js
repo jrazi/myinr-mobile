@@ -69,6 +69,7 @@ class FirstVisitScreen extends React.Component {
         this.setState({currentStage: stageIndex}, () => {
             const userId = this.props.route.params.userId;
             let visit = visitDao.getVisits(userId);
+            visit.lastEditDate = new Date().toString();
             const info = {
                 currentStage: this.state.currentStage,
                 visitInfo: visit,
@@ -78,9 +79,11 @@ class FirstVisitScreen extends React.Component {
     }
 
     finishVisit = () => {
+        const visit = visitDao.getVisits(this.props.route.params.userId);
+        visit.lastEditDate = new Date().toString();
         const info = {
             currentStage: this.state.currentStage,
-            visitInfo: visitDao.getVisits(this.props.route.params.userId),
+            visitInfo: visit,
         }
         doctorDao.saveCachedVisit(this.props.route.params.userId, info);
         this.setState({finishVisitDialogOpen: false});

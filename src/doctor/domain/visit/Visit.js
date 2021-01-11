@@ -8,7 +8,7 @@ export class FirstVisit {
     static createNew() {
         return {
             startDate: null,
-            lastEditedDate: null,
+            lastEditDate: null,
             finished: false,
             finishDate: null,
             id: null,
