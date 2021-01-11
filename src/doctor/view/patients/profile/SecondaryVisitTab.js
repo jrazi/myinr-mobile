@@ -1,12 +1,13 @@
 import React from "react";
 import {View} from "react-native";
-import {FAB, Text} from "react-native-paper";
+import {FAB, Text, Subheading} from "react-native-paper";
 import {FollowupVisitNotImplementedDialog, StartVisitDialog} from "../VisitRedirect";
 import {doctorDao, VisitState} from "../../../data/dao/DoctorDao";
 import {ScreenLayout} from "../../../../root/view/screen/Layout";
 import {StyleSheet} from "react-native";
 import {hasValue} from "../../../../root/domain/util/Util";
 import {PatientProfileContext} from "./PatientProfileScreen";
+import {EmptyList} from "../../../../root/view/list/EmptyListMessage";
 
 export class SecondaryVisitTab extends React.Component {
     constructor(props) {
@@ -35,6 +36,9 @@ export class SecondaryVisitTab extends React.Component {
                             : value.patient.visitCount > 1 && value.visitState == VisitState.FOLLOWUP_VISIT
                     return (
                         <ScreenLayout>
+                            <View>
+                                <EmptyList hidden={false} message={'ویزیتی تا کنون انجام نشده‌است.'}/>
+                            </View>
                             <FAB
                                 style={styles.fab}
                                 icon={'note-plus'}
