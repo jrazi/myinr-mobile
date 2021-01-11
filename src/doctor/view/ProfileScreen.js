@@ -26,7 +26,7 @@ class ProfileScreen extends React.Component {
                 .then(res => {
                     rootDao.deleteUser()
                         .then(user => {
-                            this.setState({isLoggingOut: true}, () => {
+                            this.setState({isLoggingOut: true, logoutDialogVisible: false}, () => {
                                 this.props.navigation.reset({
                                     index: 0,
                                     routes: [{name: 'LOGIN'}],
