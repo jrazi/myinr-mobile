@@ -34,20 +34,23 @@ class StageNavigator extends React.Component {
 
     onTabPress = ({route}) => {
         const index = route.key == 'prev' ? 0 : 1;
-        if (index == 0 && this.props.currentStage == 0) return;
+        // if (index == 0 && this.props.currentStage == 0) return;
         if (index == 1 && this.props.currentStage == stages.length-1) {
             if (hasValue(this.props.onFinish)) this.props.onFinish();
             return;
         }
 
-        if (index == 1 && this.props.currentStage == stages.length - 2) {
+        if (
+            (index == 1 && this.props.currentStage == stages.length - 2)
+            || (index == 0 && this.props.currentStage == 0)
+        ) {
             this.state.routes[0].title = 'Finish';
         }
         else if (index == 0 && this.props.currentStage == stages.length-1) {
             this.state.routes[0].title = 'Next';
         }
 
-        const inc = index == 0 ? -1 : index == 1 ? 1 : 0;
+        const inc = index == 0 ? this.props.currentStage == 0 ? stages.length-1 : -1 : index == 1 ? 1 : 0;
         const newStage = this.props.currentStage + inc;
 
         if (hasValue(this.props.onNewStage) && inc != 0) this.props.onNewStage(newStage);
