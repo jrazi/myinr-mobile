@@ -63,7 +63,7 @@ class DrugHistoryStage extends React.Component {
                     </Layout.Row>
                 </View>
                 <IntraSectionInvisibleDivider s/>
-                <DrugRecords records={this.state.drugHistory} onDelete={this.deleteRecord}/>
+                <DrugRecords records={this.state.drugHistory} onDelete={this.deleteRecord} readonly={readonly}/>
             </Layout.VisitScreen>
         );
     }
@@ -92,6 +92,7 @@ const DrugRecords = (props) => {
                                 since={item.since}
                                 until={item.until}
                                 onDelete={() => props.onDelete(drugInfo.IDDrug)}
+                                readonly={props.readonly}
                             />
                             {index == props.records.length-1 ? null : <IntraSectionDivider s/>}
                         </View>
@@ -110,16 +111,18 @@ const SingleDrugRecord = (props) => {
                 <Layout.InputTitle title={props.name}/>
                 <Layout.LayoutCaption>{firstNonEmpty(props.since, 'NA')} - {firstNonEmpty(props.until, 'NA')}</Layout.LayoutCaption>
             </View>
-            <View>
-                <IconButton
-                    icon={"delete-outline"}
-                    mode="contained"
-                    compact
-                    size={26}
-                    color={theme.colors.actionColors.remove}
-                    onPress={() => props.onDelete()}
-                />
-            </View>
+            <ConditionalRender hidden={props.readonly}>
+                <View>
+                    <IconButton
+                        icon={"delete-outline"}
+                        mode="contained"
+                        compact
+                        size={26}
+                        color={theme.colors.actionColors.remove}
+                        onPress={props.readonly ? null : () => props.onDelete()}
+                    />
+                </View>
+            </ConditionalRender>
         </Layout.Row>
     )
 }

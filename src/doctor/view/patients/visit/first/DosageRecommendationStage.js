@@ -17,12 +17,14 @@ export class DosageRecommendationStage extends React.Component {
         this.state = {
             loaded: false,
         }
-        this.recommendedDosage = FirstVisit.createNew().recommendedDosage;
+        this.visitInfo = FirstVisit.createNew();
+        this.recommendedDosage = this.visitInfo.recommendedDosage;
     }
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
-            this.recommendedDosage = visitDao.getVisits(this.props.route.params.userId).recommendedDosage;
+            this.visitInfo = visitDao.getVisits(this.props.route.params.userId);
+            this.recommendedDosage = this.visitInfo.recommendedDosage;
             this.setState({loaded: true});
         })
     }
@@ -32,7 +34,7 @@ export class DosageRecommendationStage extends React.Component {
     }
 
     render() {
-        const startingDate = new Date(Date.now());
+        const startingDate = this.visitInfo.finished ? new Date(this.visitInfo.finishDate) : new Date(Date.now());
         const readonly = this.props.route.params.readonly;
         startingDate.setDate(startingDate.getDate() + 1);
         return (

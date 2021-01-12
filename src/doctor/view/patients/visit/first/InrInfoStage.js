@@ -3,9 +3,6 @@ import * as Layout from "./forms/Layout";
 import {Text, Button, Divider, Switch, TextInput, Portal, useTheme} from "react-native-paper";
 import {
     ConditionalCollapsibleRender,
-    ConditionalRender,
-    IntraSectionInvisibleDivider,
-    PrimaryText
 } from "./forms/Layout";
 import {Platform, PanResponder, View} from 'react-native';
 import {Formik} from "formik";
@@ -19,9 +16,8 @@ import {
 } from "../../../../../root/domain/util/Util";
 import * as Validators from "../../../../../root/view/form/Validators";
 import {FirstVisit} from "../../../../domain/visit/Visit";
-import DatePicker from '@mohamadkh75/react-native-jalali-datepicker';
 import {DefaultDatePicker} from "./forms/JalaliDatePicker";
-import {DefaultSwitchRow} from "./forms/ContextSpecificComponents";
+import { DefaultSwitchRow} from "./forms/ContextSpecificComponents";
 
 
 
@@ -60,7 +56,6 @@ export class InrInfoStage extends React.Component {
         const readonly = this.props.route.params.readonly;
         const DefaultTextInput = (props) => <_DefaultTextInput {...props} disabled={readonly}/>
         const DateInput = (props) => <_DateInput {...props} disabled={readonly}/>
-        const SwitchRow = (props) => <DefaultSwitchRow {...props} disabled={readonly}/>
         return (
             <Layout.VisitScreen
             >
@@ -87,11 +82,12 @@ export class InrInfoStage extends React.Component {
                     {({ handleChange, handleBlur, values, touched, errors, validateField, isValid }) => {
                         return (
                             <Layout.FormSection>
-                                <SwitchRow
+                                <DefaultSwitchRow
                                     title={'Self-Test'}
                                     description={'Did the test take place at home?'}
                                     value={this.state.latestInrAtHome}
-                                    onChange={this.toggleLatestInrAtHome}
+                                    onFlip={this.toggleLatestInrAtHome}
+                                    disabled={readonly}
                                 />
                                 <Layout.IntraSectionInvisibleDivider sm/>
                                 <Layout.InputTitle title={'Test Result'}/>
