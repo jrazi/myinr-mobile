@@ -22,6 +22,7 @@ export const ChipBox = (props) => {
                     onPress={() => {props.onChange(condition.id, !value); setValue(!value)}}
                     selected={value}
                     key={condition.id}
+                    disabled={props.disableAll}
                 />
             )
         })
@@ -70,6 +71,7 @@ export class RadioChipBox extends React.Component {
                         onPress={() => {this.props.onChange(condition.id, !this.state.chipValues[index]); this.changeChipValue(index, !this.state.chipValues[index])}}
                         selected={this.state.chipValues[index]}
                         key={condition.id}
+                        disabled={this.props.disableAll}
                     />
                 )
             })
@@ -89,8 +91,11 @@ const ConditionSelectChip = (props) => {
     <Layout.BasicElement>
         <Chip
             selected={props.selected}
-            icon="information" onPress={() => props.onPress(props.id)}
+            icon="information"
+            onPress={props.disabled ? null : () => props.onPress(props.id)}
             style={style}
+
+            // disabled={true}
         >
             {props.title}
         </Chip>
@@ -98,19 +103,26 @@ const ConditionSelectChip = (props) => {
 )}
 
 export const DefaultSwitchRow = (props) => {
-    const theme = useTheme();
     return (
         <Layout.Row justifyBetween style={props.rowStyle}>
             <Layout.InputTitle title={props.title} description={props.description} titleStyle={props.titleStyle}/>
-            <Switch
-                style={{
-                }}
+            <DefaultSwitch
                 value={props.value}
                 onValueChange={props.onFlip}
-                color={theme.colors.accent}
+                disabled={props.disabled}
             />
         </Layout.Row>
     )
+}
+
+export const DefaultSwitch = ({disabled, value, onValueChange, ...props}) => {
+    const theme = useTheme();
+    return <Switch
+        value={value}
+        onValueChange={disabled ? null : onValueChange}
+        color={theme.colors.accent}
+        {...props}
+    />
 }
 
 export const TitleWithBadge = (props) => {

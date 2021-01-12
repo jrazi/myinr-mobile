@@ -42,13 +42,15 @@ export class PastMedicalHistoryStage extends React.Component {
     }
 
     render() {
+        const readonly = this.props.route.params.readonly;
+        const MedicalInfoInput = (props) => <_MedicalInfoInput {...props} disabled={readonly}/>
         return (
             <Layout.VisitScreen
             >
                 <Layout.ScreenTitle title={'Medical History'}/>
                 <Layout.FormSection>
                     <Layout.InputTitle title={'Past Medical Conditions'}/>
-                    <MedicalHistoryChipBox userId={this.props.route.params.userId}/>
+                    <MedicalHistoryChipBox userId={this.props.route.params.userId} readonly={readonly}/>
                 </Layout.FormSection>
                 <IntraSectionDivider s/>
                 <Layout.FormSection>
@@ -148,13 +150,13 @@ export const MedicalHistoryChipBox = (props) => {
     return (
         <Layout.InputArea>
             <Layout.ItemsBox>
-                <ChipBox items={medicalConditions} onChange={changeValue}/>
+                <ChipBox items={medicalConditions} onChange={changeValue} disableAll={props.readonly}/>
             </Layout.ItemsBox>
         </Layout.InputArea>
     )
 }
 
-const MedicalInfoInput = (props) => {
+const _MedicalInfoInput = (props) => {
     const theme = useTheme();
     const [enabled, setEnabled] = useState(props.initialSwitchValue);
     const onSwitchFlipped = () => {
@@ -167,6 +169,7 @@ const MedicalInfoInput = (props) => {
                 title={props.title}
                 description={props.description}
                 value={enabled}
+                disabled={props.disabled}
                 onFlip={onSwitchFlipped}
             />
             <ConditionalCollapsibleRender hidden={!enabled}>
@@ -174,6 +177,7 @@ const MedicalInfoInput = (props) => {
                 <TextInput
                     value={props.value}
                     placeholder={props.placeholder}
+                    disabled={props.disabled}
                     onChangeText={props.onChangeText}
                     onBlur={props.onBlur}
                     autoCompleteType={'off'}

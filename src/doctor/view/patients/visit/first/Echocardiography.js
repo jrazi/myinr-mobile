@@ -26,7 +26,7 @@ export class Echocardiography extends React.Component {
             <Layout.VisitScreen>
                 <Layout.ScreenTitle title={'Echocardiography'}/>
                 <Layout.FormSection>
-                    <ECForm userId={this.props.route.params.userId}/>
+                    <ECForm {...this.props.route.params}/>
                 </Layout.FormSection>
             </Layout.VisitScreen>
         )
@@ -79,6 +79,7 @@ export class ECForm extends React.Component {
                                 name={'EF'} unit={'%'}
                                 value={values.EF}
                                 onChangeText={handleChange('EF')}
+                                disabled={this.props.readonly}
                                 onBlur={(event) => {
                                     handleBlur('EF')(event);
                                     this.handleChange('EF', values.EF, true);
@@ -89,6 +90,7 @@ export class ECForm extends React.Component {
                                 name={'LAVI'} unit={'ml/m^2'}
                                 value={values.LAVI}
                                 onChangeText={handleChange('LAVI')}
+                                disabled={this.props.readonly}
                                 onBlur={(event) => {
                                     handleBlur('LAVI')(event);
                                     this.handleChange('LAVI', values.LAVI, true);
@@ -99,6 +101,7 @@ export class ECForm extends React.Component {
                                 label={'Comments'}
                                 multiline={true} numberOfLines={10}
                                 value={values.comment}
+                                disabled={this.props.readonly}
                                 onChangeText={handleChange('comment')}
                                 onBlur={(event) => {
                                     handleBlur('comment')(event);
@@ -112,10 +115,10 @@ export class ECForm extends React.Component {
         )
     }
 }
-const LabTestField = ({name, unit, error, ...props}) => {
+const LabTestField = ({name, unit, error, disabled, ...props}) => {
     return (
         <View style={{}}>
-            <DefaultTextInput label={name} placeholder={unit} {...props} numeric/>
+            <DefaultTextInput label={name} placeholder={unit} {...props} disabled={disabled} numeric/>
             <Layout.TextInputHelperText type="error" visible={hasValue(error)}>
                 {error}
             </Layout.TextInputHelperText>
@@ -134,6 +137,7 @@ const DefaultTextInput = (props) => {
                 value={props.value}
                 placeholder={props.placeholder}
                 onChangeText={props.onChangeText}
+                disabled={props.disabled}
                 onBlur={props.onBlur}
                 autoCompleteType={'off'}
                 keyboardType={props.numeric ? 'numeric' : 'default'}

@@ -33,16 +33,21 @@ export class DosageRecommendationStage extends React.Component {
 
     render() {
         const startingDate = new Date(Date.now());
+        const readonly = this.props.route.params.readonly;
         startingDate.setDate(startingDate.getDate() + 1);
         return (
             <Layout.VisitScreen>
-                <Layout.ScreenTitle title={'Recommended Dosage'} description={'Please specify Warfarin dosage for the next week.'}/>
+                <Layout.ScreenTitle
+                    title={'Recommended Dosage'}
+                    description={readonly ? null : 'Please specify Warfarin dosage for the next week.'}
+                />
                 <Layout.FormSection>
                     <WeeklyDosagePicker
                         onDoseUpdate={this.onDosageUpdate}
                         initialData={this.recommendedDosage}
                         startingDate={startingDate}
                         increment={1}
+                        disabled={readonly}
                     />
                 </Layout.FormSection>
             </Layout.VisitScreen>

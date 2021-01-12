@@ -21,6 +21,7 @@ export const WeeklyDosagePicker = (props) => {
                 onDoseUpdate={(dose) => {props.onDoseUpdate(i, dose)}}
                 dose={0}
                 initialDose={firstNonEmpty(props.initialData[i], 0)}
+                disabled={props.disabled}
             />
         )
     }
@@ -58,6 +59,7 @@ const DosageForDay = (props) => {
     const [percentage, setPercentage] = useState(0);
 
     const handleChange = (v) => {
+        if (props.disabled) return;
         setPercentage(v);
         props.onDoseUpdate(v/2.5);
     }

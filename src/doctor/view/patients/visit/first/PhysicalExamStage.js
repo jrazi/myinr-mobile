@@ -33,6 +33,8 @@ export class PhysicalExamStage extends React.Component {
     }
 
     render() {
+        const readonly = this.props.route.params.readonly;
+        const TextInputRow = (props) => <_TextInputRow {...props} disabled={readonly}/>
         return (
             <Layout.VisitScreen>
                 <Layout.ScreenTitle title={'Physical Exam'} />
@@ -116,7 +118,7 @@ export class PhysicalExamStage extends React.Component {
     }
 }
 
-const TextInputRow = ({title, error, ...props}) => {
+const _TextInputRow = ({title, error, ...props}) => {
     return (
         <View>
             {/*<Layout.InputTitle title={title}/>*/}
@@ -140,6 +142,7 @@ const DefaultTextInput = (props) => {
                 value={props.value}
                 placeholder={props.placeholder}
                 onChangeText={props.onChangeText}
+                disabled={props.disabled}
                 onBlur={props.onBlur}
                 autoCompleteType={'off'}
                 keyboardType={props.numeric ? 'numeric' : 'default'}

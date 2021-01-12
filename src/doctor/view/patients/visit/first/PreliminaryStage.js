@@ -31,15 +31,15 @@ export class PreliminaryStage extends React.Component {
             <Layout.VisitScreen
             >
                 <Layout.ScreenTitle title={'Warfarin Usage'}/>
-                <ReasonForWarfarinPicker userId={this.props.route.params.userId}/>
+                <ReasonForWarfarinPicker {...this.props.route.params}/>
 
                 <Layout.IntraSectionDivider m/>
 
-                <HeartValveReplacementConditions userId={this.props.route.params.userId}/>
+                <HeartValveReplacementConditions {...this.props.route.params}/>
 
                 <Layout.IntraSectionDivider m/>
 
-                <FirstTimeWarfarinForm userId={this.props.route.params.userId}/>
+                <FirstTimeWarfarinForm {...this.props.route.params}/>
 
                 <IntraSectionInvisibleDivider/>
             </Layout.VisitScreen>
@@ -69,7 +69,7 @@ const ReasonForWarfarinPicker = (props) => {
             <Layout.InputTitle title={'Reason for Using Warfarin'} description={null}/>
             <Layout.InputArea>
                 <ConditionalRender hidden={false}>
-                    <ChipBox items={medicalConditions} onChange={changeValue}/>
+                    <ChipBox items={medicalConditions} onChange={changeValue} disableAll={props.readonly}/>
                 </ConditionalRender>
             </Layout.InputArea>
         </View>
@@ -103,10 +103,11 @@ const HeartValveReplacementConditions = (props) => {
                 value={value}
                 onFlip={(val) => {visit.current.heartValveReplacementCondition.replaced = val; setValue(val)}}
                 title={'Cardiac Valve Replacement'}
+                disabled={props.readonly}
             />
             <ConditionalCollapsibleRender hidden={!value || !loaded}>
                 <Layout.InputArea>
-                    <ChipBox items={medicalConditions.current} onChange={changeConditionStatus}/>
+                    <ChipBox items={medicalConditions.current} onChange={changeConditionStatus} disableAll={props.readonly}/>
                 </Layout.InputArea>
             </ConditionalCollapsibleRender>
         </View>
@@ -135,12 +136,17 @@ const FirstTimeWarfarinForm = (props) => {
                 onFlip={() => {visit.current.firstWarfarin.isFirstTime= !firstTimeWarfarin; setFirstTimeWarfarin(!firstTimeWarfarin)}}
                 title={'No Prior Warfarin Usage'}
                 description={'Is this the first time for using warfarin?'}
+                disabled={props.readonly}
             />
             <ConditionalCollapsibleRender hidden={firstTimeWarfarin || !loaded}>
                 <Layout.FormSection>
                     <IntraSectionDivider s/>
                     <Layout.InputTitle title={'Last Warfarin Dosage'} description={'Please specify the last dosage that patient used.'}/>
-                    <WeeklyDosagePicker initialData={loaded ? visit.current.firstWarfarin.weeklyDosage : []} doseData={[]} onDoseUpdate={onDoseUpdate}/>
+                    <WeeklyDosagePicker
+                        initialData={loaded ? visit.current.firstWarfarin.weeklyDosage : []} doseData={[]}
+                        onDoseUpdate={onDoseUpdate}
+                        disabled={props.readonly}
+                    />
                 </Layout.FormSection>
             </ConditionalCollapsibleRender>
         </View>

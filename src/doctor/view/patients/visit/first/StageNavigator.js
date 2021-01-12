@@ -60,7 +60,12 @@ class StageNavigator extends React.Component {
     render() {
         const theme = this.props.theme;
         const renderScene = ({ route, jumpTo }) => {
-            return <StageNavStack visitInfo={this.props.visitInfo} userId={this.props.userId} currentStage={this.props.currentStage}/>;
+            return <StageNavStack
+                visitInfo={this.props.visitInfo}
+                readonly={this.props.route.params.readonly}
+                userId={this.props.userId}
+                currentStage={this.props.currentStage}
+            />;
         }
 
         return (
@@ -96,7 +101,7 @@ const StageNavStack = (props) => {
                         name={`VisitStage:${index}`}
                         component={stage}
                         options={{ headerShown: false , headerTitle: props => null }}
-                        initialParams={{visitInfo: props.visitInfo, userId: props.userId}}
+                        initialParams={{visitInfo: props.visitInfo, userId: props.userId, readonly: props.readonly}}
                         key={`VisitStage:${index}`}
                     />
                 )
@@ -107,7 +112,7 @@ const StageNavStack = (props) => {
                 name={`Secondary:AddDrugRecord`}
                 component={AddDrugRecord}
                 options={{ headerShown: false , headerTitle: props => null }}
-                initialParams={{visitInfo: props.visitInfo, userId: props.userId}}
+                initialParams={{visitInfo: props.visitInfo, userId: props.userId, readonly: props.readonly}}
                 key={`Secondary:AddDrugRecord`}
             />,
         ]}

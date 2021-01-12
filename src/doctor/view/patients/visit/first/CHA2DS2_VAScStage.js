@@ -47,6 +47,7 @@ class CHA2DS2_VAScStage extends React.Component {
 
     render() {
         const textColor = {color: this.props.theme.colors.text};
+        const readonly = this.props.route.params.readonly;
         let titleElement = (
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Headline style={textColor}>CHA</Headline>
@@ -64,7 +65,7 @@ class CHA2DS2_VAScStage extends React.Component {
                     badgeValue={this.state.totalScore}
                 />
                 <Layout.FormSection>
-                    <ScoreForm userId={this.props.route.params.userId} onChange={(id, val) => this.calcScore()}/>
+                    <ScoreForm userId={this.props.route.params.userId} onChange={(id, val) => this.calcScore()} readonly={readonly}/>
                 </Layout.FormSection>
             </Layout.VisitScreen>
         )
@@ -82,9 +83,9 @@ const ScoreForm = (props) => {
 
     return (
         <View>
-            <ScoreRadioBox items={scoreRadios} userId={props.userId} onChange={props.onChange}/>
+            <ScoreRadioBox items={scoreRadios} userId={props.userId} onChange={props.onChange} readonly={props.readonly}/>
             <IntraSectionInvisibleDivider s/>
-            <ScoreChipBox items={scoreChips} userId={props.userId} onChange={props.onChange}/>
+            <ScoreChipBox items={scoreChips} userId={props.userId} onChange={props.onChange} readonly={props.readonly}/>
         </View>
     )
 }
@@ -140,7 +141,7 @@ const ScoreRadioBox = (props) => {
                     fontStyle={{color: theme.dark ? null : theme.colors.backdrop}}
                     values={['Male', 'Female']}
                     selectedIndex={gender}
-                    onChange={(event) => {
+                    onChange={props.readonly ? null : (event) => {
                         changeGender(event.nativeEvent.selectedSegmentIndex)
                     }}
                     backgroundColor={theme.dark ? theme.colors.backdrop : null}
@@ -156,7 +157,7 @@ const ScoreRadioBox = (props) => {
                     fontStyle={{color: theme.dark ? null : theme.colors.backdrop}}
                     values={scoreItems[0].options.map(o => o.name)}
                     selectedIndex={ageGroup}
-                    onChange={(event) => {
+                    onChange={props.readonly ? null : (event) => {
                         changeAgeGroup(event.nativeEvent.selectedSegmentIndex)
                     }}
                     backgroundColor={theme.dark ? theme.colors.backdrop : null}
@@ -192,7 +193,11 @@ const ScoreChipBox = (props) => {
             <IntraSectionInvisibleDivider xs/>
             <Layout.InputTitle title={'Medical History'}/>
             <IntraSectionInvisibleDivider xs/>
-            <GenericScoreForm medicalConditions={medicalConditions.current} onChange={changeValue}/>
+            <GenericScoreForm
+                medicalConditions={medicalConditions.current}
+                onChange={changeValue}
+                readonly={props.readonly}
+            />
         </Layout.InputArea>
     )
 }

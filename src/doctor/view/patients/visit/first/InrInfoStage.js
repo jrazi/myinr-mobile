@@ -21,6 +21,7 @@ import * as Validators from "../../../../../root/view/form/Validators";
 import {FirstVisit} from "../../../../domain/visit/Visit";
 import DatePicker from '@mohamadkh75/react-native-jalali-datepicker';
 import {DefaultDatePicker} from "./forms/JalaliDatePicker";
+import {DefaultSwitchRow} from "./forms/ContextSpecificComponents";
 
 
 
@@ -56,6 +57,10 @@ export class InrInfoStage extends React.Component {
 
 
     render() {
+        const readonly = this.props.route.params.readonly;
+        const DefaultTextInput = (props) => <_DefaultTextInput {...props} disabled={readonly}/>
+        const DateInput = (props) => <_DateInput {...props} disabled={readonly}/>
+        const SwitchRow = (props) => <DefaultSwitchRow {...props} disabled={readonly}/>
         return (
             <Layout.VisitScreen
             >
@@ -176,27 +181,14 @@ export class InrInfoStage extends React.Component {
     }
 }
 
-export const SwitchRow = (props) => {
-    const theme = useTheme();
-    return (
-        <Layout.Row justifyBetween>
-            <Layout.InputTitle title={props.title} description={props.description}/>
-            <Switch
-                style={{}} value={props.value}
-                color={theme.colors.accent}
-                onValueChange={() => props.onChange()}
-            />
-        </Layout.Row>
-    );
-}
 
-
-const DefaultTextInput = (props) => {
+const _DefaultTextInput = (props) => {
     const theme = useTheme();
     return (
             <TextInput
                 label={props.label}
                 // value={}
+                disabled={props.disabled}
                 value={props.value}
                 placeholder={props.placeholder}
                 onChangeText={props.onChangeText}
@@ -220,7 +212,7 @@ const DefaultTextInput = (props) => {
     )
 }
 
-const DateInput = (props) => {
+const _DateInput = (props) => {
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [dateValue, setDateValue] = useState(firstNonEmpty(props.initialValue, getFormFormattedJalaliDate(new Date())));
     const onDateChange = (date) => {
@@ -235,7 +227,7 @@ const DateInput = (props) => {
                 label={props.label}
                 // value={}
                 value={dateValue}
-
+                disabled={props.disabled}
                 placeholder={props.placeholder}
                 onChangeText={props.onChangeText}
                 // onBlur={() => setDatePickerVisible(false)}

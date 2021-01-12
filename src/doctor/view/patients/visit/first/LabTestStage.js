@@ -28,7 +28,7 @@ export class LabTestStage extends React.Component {
             <Layout.VisitScreen>
                 <Layout.ScreenTitle title={'Lab Test'}/>
                 <Layout.FormSection>
-                    <LabTestResultForm userId={this.props.route.params.userId}/>
+                    <LabTestResultForm {...this.props.route.params}/>
                 </Layout.FormSection>
             </Layout.VisitScreen>
         )
@@ -64,6 +64,7 @@ class LabTestResultForm extends React.Component {
     }
 
     render() {
+        const readonly = this.props.readonly;
         return (
             <View style={{flex: 1, flexGrow:1, alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'column'}}>
                 <Formik
@@ -84,6 +85,7 @@ class LabTestResultForm extends React.Component {
                                     <LabTestField
                                         unit={field.unit}
                                         name={field.name}
+                                        disabled={readonly}
                                         key={`LTRF_${field.id}`}
                                         value={values[field.name]}
                                         onChangeText={handleChange(field.name)}
@@ -101,10 +103,10 @@ class LabTestResultForm extends React.Component {
         )
     }
 }
-const LabTestField = ({name, unit, error, ...props}) => {
+const LabTestField = ({name, unit, error, disabled, ...props}) => {
     return (
         <View style={{width: '100%'}}>
-            <DefaultTextInput {...props} label={name} placeholder={unit} />
+            <DefaultTextInput {...props} label={name} placeholder={unit} disabled={disabled}/>
             <Layout.TextInputHelperText
                 type="error" visible={hasValue(error)} >
                 {error}
@@ -123,6 +125,7 @@ const DefaultTextInput = (props) => {
                 placeholder={props.placeholder}
                 onChangeText={props.onChangeText}
                 onBlur={props.onBlur}
+                disabled={props.disabled}
                 value={props.value}
                 autoCompleteType={'off'}
                 keyboardType={'numeric'}

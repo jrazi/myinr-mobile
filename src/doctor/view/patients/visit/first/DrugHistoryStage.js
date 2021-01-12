@@ -2,7 +2,7 @@ import {View, FlatList} from "react-native";
 import React from "react";
 import {Avatar, Button, Text, List, IconButton, Caption, withTheme, useTheme} from "react-native-paper";
 import * as Layout from "./forms/Layout";
-import {IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
+import {ConditionalRender, IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
 import {FirstVisit} from "../../../../domain/visit/Visit";
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {firstNonEmpty} from "../../../../../root/domain/util/Util";
@@ -41,22 +41,25 @@ class DrugHistoryStage extends React.Component {
 
     render() {
         const theme = this.props.theme;
+        const readonly = this.props.route.params.readonly;
         return (
             <Layout.VisitScreen
             >
                 <View>
                     <Layout.Row justifyBetween style={{alignItems: 'center',}}>
                         <Layout.ScreenTitle title={'Drug History'} style={{ paddingBottom: 0}}/>
-                        <View>
-                            <Button
-                                color={theme.colors.actionColors.primary}
-                                compact mode="contained"
-                                onPress={() => this.props.navigation.navigate('Secondary:AddDrugRecord')}
-                                labelStyle={{fontSize: 12}}
-                            >
-                                Add Record
-                            </Button>
-                        </View>
+                        <ConditionalRender hidden={readonly}>
+                            <View>
+                                <Button
+                                    color={theme.colors.actionColors.primary}
+                                    compact mode="contained"
+                                    onPress={() => this.props.navigation.navigate('Secondary:AddDrugRecord')}
+                                    labelStyle={{fontSize: 12}}
+                                >
+                                    Add Record
+                                </Button>
+                            </View>
+                        </ConditionalRender>
                     </Layout.Row>
                 </View>
                 <IntraSectionInvisibleDivider s/>

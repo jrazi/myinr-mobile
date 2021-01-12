@@ -6,7 +6,7 @@ import {IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout"
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {FirstVisit} from "../../../../domain/visit/Visit";
-import {TitleWithBadge} from "./forms/ContextSpecificComponents";
+import {DefaultSwitch, TitleWithBadge} from "./forms/ContextSpecificComponents";
 
 
 export class HAS_BLEDStage extends React.Component {
@@ -49,6 +49,7 @@ export class HAS_BLEDStage extends React.Component {
     }
 
     render() {
+        const readonly = this.props.route.params.readonly;
         return (
             <Layout.VisitScreen>
                 <TitleWithBadge
@@ -56,7 +57,12 @@ export class HAS_BLEDStage extends React.Component {
                     badgeValue={this.state.totalScore}
                 />
                 <Layout.FormSection>
-                    <GenericScoreForm medicalConditions={this.medicalConditions} onChange={this.onValueChange} key={this.state.loaded}/>
+                    <GenericScoreForm
+                        medicalConditions={this.medicalConditions}
+                        onChange={this.onValueChange}
+                        key={this.state.loaded}
+                        readonly={readonly}
+                    />
                 </Layout.FormSection>
             </Layout.VisitScreen>
         )
@@ -87,10 +93,11 @@ export const GenericScoreForm = (props) => {
                         title={condition.name}
                         description={condition.description}
                     />
-                    <Switch
+                    <DefaultSwitch
                         style={{}} value={value}
                         color={useTheme().colors.accent}
                         onValueChange={() => {{props.onChange(condition.id, !value); setValue(!value)}}}
+                        disabled={props.readonly}
                     />
                 </Layout.Row>,
                 index == props.medicalConditions.length - 1 ? null : <IntraSectionDivider key={'hasBledDivider' + condition.id} s/>

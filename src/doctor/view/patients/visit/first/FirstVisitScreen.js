@@ -41,7 +41,7 @@ class FirstVisitScreen extends React.Component {
 
     async componentDidMount() {
         // await I18nManager.forceRTL(false);
-        const {userId, useCache} = this.props.route.params;
+        const {userId, useCache, readonly} = this.props.route.params;
 
         let visitInfo = visitDao.initVisit(userId);
 
@@ -54,7 +54,7 @@ class FirstVisitScreen extends React.Component {
         doctorDao.getCachedVisit(userId)
             .then(cachedVisit => {
                 visitInfo = visitDao.setVisits(userId, cachedVisit.visitInfo);
-                this.setState({visitInfo: visitInfo, currentStage: cachedVisit.currentStage, loaded: true});
+                this.setState({visitInfo: visitInfo, currentStage: readonly ? 0 : cachedVisit.currentStage, loaded: true});
             })
             .catch(err => {
                 doctorDao.saveCachedVisit(userId, {currentStage: 0, visitInfo: visitInfo});
@@ -68,6 +68,7 @@ class FirstVisitScreen extends React.Component {
     onNewStage = (stageIndex) => {
         this.setState({currentStage: stageIndex}, () => {
             const userId = this.props.route.params.userId;
+            if (this.props.route.params.readonly) return;
             let visit = visitDao.getVisits(userId);
             visit.lastEditDate = new Date().toString();
             const info = {
@@ -79,18 +80,29 @@ class FirstVisitScreen extends React.Component {
     }
 
     finishVisit = () => {
-        const visit = visitDao.getVisits(this.props.route.params.userId);
-        visit.lastEditDate = new Date().toString();
-        const info = {
-            currentStage: this.state.currentStage,
-            visitInfo: visit,
+        const navigate = () => {
+            this.setState({finishVisitDialogOpen: false});
+            this.props.navigation.reset({
+                index: 0,
+                routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
+            });
         }
-        doctorDao.saveCachedVisit(this.props.route.params.userId, info);
-        this.setState({finishVisitDialogOpen: false});
-        this.props.navigation.reset({
-            index: 0,
-            routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
-        });
+        if (this.props.route.params.readonly != true) {
+            const visit = visitDao.getVisits(this.props.route.params.userId);
+            visit.lastEditDate = new Date().toString();
+            const info = {
+                currentStage: this.state.currentStage,
+                visitInfo: visit,
+            }
+            doctorDao.saveCachedVisit(this.props.route.params.userId, info);
+        }
+        navigate();
+    }
+
+    onFinishPress = () => {
+        if (this.props.route.params.readonly)
+            this.finishVisit();
+        else this.setState({finishVisitDialogOpen: true});
     }
 
     render() {
@@ -127,7 +139,7 @@ class FirstVisitScreen extends React.Component {
                                 userId={this.props.route.params.userId}
                                 onNewStage={this.onNewStage}
                                 currentStage={this.state.currentStage}
-                                onFinish={() => this.setState({finishVisitDialogOpen: true})}
+                                onFinish={this.onFinishPress}
                             />
                         </ConditionalRender>
                     </View>

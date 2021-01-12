@@ -48,7 +48,7 @@ class _FirstVisitTab extends React.Component {
 
         doctorDao.getCachedVisit(userId)
             .then(cachedVisit => {
-                this.setState({visitInfo: cachedVisit.visitInfo});
+                this.setState({visitInfo: cachedVisit.visitInfo, loaded: true,});
             })
             .catch(err => {
             })
@@ -57,12 +57,15 @@ class _FirstVisitTab extends React.Component {
     navigateToFirstVisit = (patient) => {
         this.props.navigation.navigate(
             'VisitSessionScreen',
-            {userId: this.props.route.params.userId, patientName: patient.fullName, useCache: true}
+            {userId: this.props.route.params.userId, patientName: patient.fullName, useCache: true, readonly: false}
         );
     }
 
-    navigateToFirstNonModifiableVisit = (patient) => {
-        this.navigateToFirstVisit(patient);
+    navigateToFirstVisitReadonly = (patient) => {
+        this.props.navigation.navigate(
+            'VisitSessionScreen',
+            {userId: this.props.route.params.userId, patientName: patient.fullName, useCache: true, readonly: true}
+        );
     }
 
     finishFirstVisit = () => {
@@ -95,7 +98,7 @@ class _FirstVisitTab extends React.Component {
                                         <FAB
                                             style={[styles.fab,]}
                                             icon={'file-eye-outline'}
-                                            onPress={() => this.navigateToFirstNonModifiableVisit(value.patient)}
+                                            onPress={() => this.navigateToFirstVisitReadonly(value.patient)}
                                         />
                                     </View>
                                 </ConditionalRender>
@@ -192,7 +195,9 @@ const FirstVisitInfoContainer = (props) => {
 }
 
 const FirstVisitInfoRow = (props) => {
-    return props.children
+    return <View style={{}}>
+        {props.children}
+    </View>
 }
 const FirstVisitInfoItem = (props) => {
     return (
@@ -204,8 +209,6 @@ const FirstVisitInfoItem = (props) => {
         >
             <Surface
                 style={{
-                    // paddingHorizontal: 10,
-                    // paddingBottom: 10,
                     elevation: 0,
                 }}
             >
