@@ -33,6 +33,19 @@ export const normalizeListAsString = (listStr, separator='-') => {
         .map(item => normalize(item));
 }
 
+export const normalizeStrangeListAsString = (listStr, separator='-', secondarySeparator) => {
+    let list = normalize(listStr);
+    if (list == null || removeWhiteSpace(list) == '') return [];
+    list = list.replace(secondarySeparator, separator);
+    if (list[0] == separator) list = list.substr(1);
+    if (list.length > 0 && list[list.length - 1] == separator) list = list.substr(list.length - 2);
+    if (!hasValue(list) || !(list.length > 0)) return [];
+    return list.toString()
+        .split(separator)
+        .map(item => normalize(item));
+}
+
+
 export const normalizeBoolean = (field) => {
     field = normalizeNonList(field);
     if (!hasValue(field)) return null;

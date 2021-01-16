@@ -3,51 +3,38 @@
 export const PreliminaryStage = {
     REASON_FOR_WARFARIN_CONDITIONS: [
         {
-            id: 0,
+            id: '1',
             name: 'DVT',
         },
         {
-            id: 1,
-            name: 'Non Valvular AF',
-        },
-        {
-            id: 2,
+            id: '2',
             name: 'Pulmonary Embolism',
         },
         {
-            id: 3,
+            id: '3',
+            name: 'Non Valvular AF',
+        },
+        {
+            id: '4',
+            name: 'Valvular AF',
+        },
+        {
+            id: '5',
             name: 'Post-myocardial Infarction',
         },
     ],
     HEART_VALVE_REPLACEMENT_CONDITIONS: [
         {
-            id: 0,
+            id: '6',
             name: 'MVR',
         },
         {
-            id: 1,
+            id: '7',
             name: 'AVR',
         },
         {
-            id: 2,
+            id: '8',
             name: 'TVR',
-        },
-    ]
-}
-
-export const DrugHistoryStageData = {
-    DRUG_LIST: [
-        {
-            id: 0,
-            name: 'Acetaminphone',
-        },
-        {
-            id: 1,
-            name: 'Novafen',
-        },
-        {
-            id: 2,
-            name: 'Gelofen',
         },
     ]
 }

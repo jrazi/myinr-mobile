@@ -18,13 +18,13 @@ export class DosageRecommendationStage extends React.Component {
             loaded: false,
         }
         this.visitInfo = FirstVisit.createNew();
-        this.recommendedDosage = this.visitInfo.recommendedDosage;
+        this.recommendedDosage = this.visitInfo.recommendedDosage.dosageInfo;
     }
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
             this.visitInfo = visitDao.getVisits(this.props.route.params.userId);
-            this.recommendedDosage = this.visitInfo.recommendedDosage;
+            this.recommendedDosage = this.visitInfo.recommendedDosage.dosageInfo;
             this.setState({loaded: true});
         })
     }

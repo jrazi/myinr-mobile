@@ -1,6 +1,13 @@
 import {UserRole} from "../../../root/domain/Role";
-import {normalize, normalizeBoolean, normalizeListAsString, normalizeNumber} from "../../../root/domain/util/normalize";
+import {
+    normalize,
+    normalizeBoolean,
+    normalizeListAsString,
+    normalizeNumber,
+    normalizeStrangeListAsString
+} from "../../../root/domain/util/normalize";
 import {firstNonEmpty, hasValue, jalaliYMDToGeorgian} from "../../../root/domain/util/Util";
+import {PreliminaryStage} from "../../view/patients/visit/first/Data";
 
 export class FirstVisit {
 
@@ -115,7 +122,29 @@ export class FirstVisit {
         // Preliminary Data
 
 
-        visit.reasonForWarfarin = normalize(info.ReasonforusingWarfarin); // TODO
+        const warfarinReasonList = normalizeStrangeListAsString(info.ReasonforusingWarfarin);
+        const allWarfarinReasons = PreliminaryStage.REASON_FOR_WARFARIN_CONDITIONS;
+        const allHeartValveConditions = PreliminaryStage.HEART_VALVE_REPLACEMENT_CONDITIONS;
+        visit.reasonForWarfarin = {};
+        visit.heartValveReplacementCondition = {
+            replaced: false,
+            conditionType: {},
+        }
+        allWarfarinReasons.forEach(reason => {
+            if (warfarinReasonList.includes(reason.id.toString()))
+                visit.reasonForWarfarin[reason.id] = true;
+            else visit.reasonForWarfarin[reason.id] = false;
+        })
+        allHeartValveConditions.forEach(condition => {
+            if (warfarinReasonList.includes(condition.id.toString())) {
+                visit.heartValveReplacementCondition.replaced = true;
+                visit.heartValveReplacementCondition.conditionType[condition.id] = true;
+            }
+            else visit.heartValveReplacementCondition.conditionType[condition.id] = false;
+        })
+
+        console.log('So far so is', visit.reasonForWarfarin, visit.heartValveReplacementCondition, warfarinReasonList);
+
         visit.dateOfDiagnosis = normalize(info.dateofdiagnosis);
 
 
@@ -231,6 +260,18 @@ export class FirstVisit {
         visit.visitSaveFlag = normalizeNumber(info.FFlagSave);
 
 
+        visit.recommendedDosage = {
+            dosageId: 0,
+            dosageInfo: {
+                0: 0,
+                1: 0,
+                2: 0,
+                3: 0,
+                4: 0,
+                5: 0,
+                6: 0,
+            }
+        }
         // First Recommended Dosage
         // visit.recommendedDosage.dosageId = normalize(info.IDDosage);
         // visit.recommendedDosage.saturday = normalize(info.Saturday);
