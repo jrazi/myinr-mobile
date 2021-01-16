@@ -140,8 +140,16 @@ export const p2a = s => s.replace(/[۰-۹]/g, d => '٠١٢٣٤٥٦٧٨٩'['۰۱�
 export const a2p = s => s.replace(/[٠-٩]/g, d => '۰۱۲۳۴۵۶۷۸۹'['٠١٢٣٤٥٦٧٨٩'.indexOf(d)])
 
 
+export function jalaliYMDToGeorgian(year, month, day) {
+    let dateStr = hasValue(year) ? (year + '/') : ''
+        + hasValue(month) ? (month + '/') : ''
+        + hasValue(day) ? (day + '/') : '';
+    dateStr = hasValue(year) ? dateStr : null;
+    return jalaliToGeorgian(dateStr);
+}
+
 export function jalaliToGeorgian(jalaliDate) {
-    jalaliDate = removeWhiteSpace(jalaliDate).toString();
+    jalaliDate = removeWhiteSpace(firstNonEmpty(jalaliDate, '')).toString();
     if (jalaliDate == null || jalaliDate == '') return null;
     jalaliDate = p2e(a2e(jalaliDate));
     let parts = [];

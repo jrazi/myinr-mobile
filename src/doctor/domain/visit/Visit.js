@@ -1,6 +1,6 @@
 import {UserRole} from "../../../root/domain/Role";
-import {normalize} from "../../../root/domain/util/normalize";
-import {firstNonEmpty} from "../../../root/domain/util/Util";
+import {normalize, normalizeBoolean, normalizeListAsString, normalizeNumber} from "../../../root/domain/util/normalize";
+import {firstNonEmpty, hasValue, jalaliYMDToGeorgian} from "../../../root/domain/util/Util";
 
 export class FirstVisit {
 
@@ -20,13 +20,22 @@ export class FirstVisit {
             },
             dateOfDiagnosis: null,
             firstWarfarin: {
+                dateOfFirstWarfarin: null,
                 isFirstTime: true,
-                weeklyDosage: [],
+                weeklyDosage: {
+                    saturday: 0,
+                    sunday: 0,
+                    monday: 0,
+                    tuesday: 0,
+                    wednesday: 0,
+                    thursday: 0,
+                    friday: 0,
+                },
             },
             inr: {
                 testAtHome: false,
-                inrResult: null,
                 testLocation: null,
+                inrResult: null,
                 testDate: null,
                 targetRange: [null, null]
             },
@@ -51,7 +60,10 @@ export class FirstVisit {
             drugHistory: [],
             habit: [],
             physicalExam: {
-
+                bloodPressureSystolic: null,
+                bloodPressureDiastolic: null,
+                heartBeat: null,
+                respiratoryRate: null,
             },
             cha2ds2Score: {
                 totalScore: 0,
@@ -70,6 +82,9 @@ export class FirstVisit {
 
             },
             echocardiography: {
+                EF: null,
+                LAVI: null,
+                comment: null,
             },
             visitDate: {
 
@@ -88,67 +103,101 @@ export class FirstVisit {
         visit.id = normalize(info.IDFirst);
         visit.patientUserId = normalize(firstNonEmpty(info.IDUserPatient[0], info.IDUserPatient[1]));
 
+        const visitYear = normalize(info.FYearVisit);
+        const visitMonth = normalize(info.FMonthVisit);
+        const visitDay = normalize(info.FDayVisit);
+
+        visit.startDate = jalaliYMDToGeorgian(visitYear, visitMonth, visitDay);
+        visit.finished = normalizeBoolean(info.FlagEndVisit);
+        visit.lastEditDate = visit.startDate;
+        visit.finishDate = visit.startDate;
+
         // Preliminary Data
 
 
         visit.reasonForWarfarin = normalize(info.ReasonforusingWarfarin); // TODO
         visit.dateOfDiagnosis = normalize(info.dateofdiagnosis);
 
+
         // In case used warfarin
         visit.firstWarfarin.dateOfFirstWarfarin = normalize(info.dateoffirstWarfarin);
 
         // INR
-        visit.inr.inrTargetRange = normalize(info.INRtargetrange);
+        visit.inr.targetRange = normalizeListAsString(info.INRtargetrange, '-');
+
+        visit.firstWarfarin.saturday = normalizeNumber(info.Saturday)*1.25;
+        visit.firstWarfarin.sunday = normalizeNumber(info.Sunday)*1.25;
+        visit.firstWarfarin.monday = normalizeNumber(info.Monday)*1.25;
+        visit.firstWarfarin.tuesday = normalizeNumber(info.Tuesday)*1.25;
+        visit.firstWarfarin.wednesday = normalizeNumber(info.Wednesday)*1.25;
+        visit.firstWarfarin.thursday = normalizeNumber(info.Thursday)*1.25;
+        visit.firstWarfarin.friday = normalizeNumber(info.Friday)*1.25;
 
         // Last INR
-        visit.inr.lastInr = normalize(info.LastINR);
-        visit.inr.laboratory = normalize(info.Lab);
-        visit.inr.usedPortableDevice = normalize(info.PortableDevice); // TODO
-        visit.inr.inrTestTime = normalize(info.TimeofINRTest);
-        visit.inr.inrTestDate = normalize(info.DateofINRTest);
+        visit.inr.testLocation = normalize(info.Lab);
+        visit.inr.inrResult = normalize(info.LastINR);
+        visit.inr.testAtHome = normalize(info.PortableDevice); // TODO
+        // visit.inr.inrTestTime = normalize(info.TimeofINRTest);
+        visit.inr.testDate = normalize(info.DateofINRTest);
 
         // List Bleeding or clotting since last visit
         visit.bleedingOrClottingType = normalize(info.BleedingorClotting);
 
         // List(first one) past medical history & etc
-        visit.medicalHistory.pastMedicalHistory = normalize(info.PastMedicalHistory);
-        visit.medicalHistory.majorSurgery = normalize(info.MajorSurgery);
-        visit.medicalHistory.minorSurgery = normalize(info.MinorSurgery);
-        visit.medicalHistory.hospitalAdmission = normalize(info.HospitalAdmission);
+        visit.medicalHistory.pastConditions = normalize(info.PastMedicalHistory);
+
+        visit.medicalHistory.majorSurgery.info = normalize(info.MajorSurgery);
+        visit.medicalHistory.majorSurgery.active = hasValue(visit.medicalHistory.majorSurgery.info);
+
+        visit.medicalHistory.minorSurgery.info = normalize(info.MinorSurgery);
+        visit.medicalHistory.minorSurgery.active = hasValue(visit.medicalHistory.minorSurgery.info);
+
+        visit.medicalHistory.hospitalAdmission.info = normalize(info.HospitalAdmission);
+        visit.medicalHistory.hospitalAdmission.active = hasValue(visit.medicalHistory.hospitalAdmission.info);
 
 
         // List drug history
-        visit.drugHistory = normalize(info.DrugHistory);
+        visit.drugHistory = [];
+        if (hasValue(info._sub) && Array.isArray(info._sub.DrugHistory)) {
+            let infoDrugHistory = info._sub.DrugHistory;
+            visit.drugHistory = infoDrugHistory.map(drugItem => {return {
+                drugInfo: {
+                    DrugName: normalize(drugItem.Drug),
+                },
+                since: normalize(drugItem.Dateofstart),
+                until: normalize(drugItem.Dateofend),
+            }})
+        }
 
-        // Bad habits (smoking-addiction-alcahol)
+        // Bad habits (smoking-addiction-alchohol)
         visit.habit = normalize(info.Habit);
 
         // Physical Exam
         // pressure sys-dis separated by dash
-        visit.physicalExam.bloodPressure = normalize(info.BloodPressure);
-        visit.physicalExam.pulseRate = normalize(info.PulseRate);
+        visit.physicalExam.bloodPressureSystolic = normalize(info.BloodPressure);
+        visit.physicalExam.heartBeat = normalize(info.PulseRate);
         visit.physicalExam.respiratoryRate = normalize(info.RespiratoryRate);
 
         // CHA--- whatever score
-        visit.cha2ds2Score.ageGroup = normalize(info.Age)[0];
-        visit.cha2ds2Score.gender = normalize(info.Sex);
-        visit.cha2ds2Score.heartFailureHistory = normalize(info.HeartFailure);
-        visit.cha2ds2Score.hypertensionHistory = normalize(info.Hypertension)[0];
-        visit.cha2ds2Score.strokeHistory = normalize(info.Stroke)[0];
-        visit.cha2ds2Score.vascular = normalize(info.Vascular);
-        visit.cha2ds2Score.diabetes = normalize(info.Diabetes);
+        visit.cha2ds2Score.ageGroup = normalizeNumber(info.Age);
+        visit.cha2ds2Score.gender = normalizeNumber(normalize(info.Sex));
+        visit.cha2ds2Score.medicalHistory.heartFailureHistory = normalizeBoolean(normalize(info.HeartFailure));
+        visit.cha2ds2Score.medicalHistory.hypertensionHistory = normalizeBoolean(info.Hypertension);
+        visit.cha2ds2Score.medicalHistory.strokeHistory = normalizeBoolean(normalize(info.Stroke));
+        visit.cha2ds2Score.medicalHistory.vascular = normalizeBoolean(normalize(info.Vascular));
+        visit.cha2ds2Score.medicalHistory.diabetes = normalizeBoolean(normalize(info.Diabetes));
 
 
         // Has-Bled score
-        visit.hasBledScore.hypertension = normalize(info.Hypertension)[1];
-        visit.hasBledScore.renaldisease = normalize(info.Renaldisease);
-        visit.hasBledScore.liverDisease = normalize(info.Liverdisease);
-        visit.hasBledScore.strokeHistory = normalize(info.Stroke)[1];
-        visit.hasBledScore.priorBleeding = normalize(info.bleeding);
-        visit.hasBledScore.labileInr = normalize(info.LabileINR);
-        visit.hasBledScore.oldAgeGroup = normalize(info.Age)[1];
-        visit.hasBledScore.medUsagePredisposingToBleeding = normalize(info.predisposing);
-        visit.hasBledScore.alcaholOrDrugUsageHistory = normalize(info.drug);
+        visit.hasBledScore.medicalConditions.hypertension = normalizeBoolean(normalize(info.Hypertension));
+        visit.hasBledScore.medicalConditions.renalDisease = normalizeBoolean(normalize(info.Renaldisease));
+        visit.hasBledScore.medicalConditions.liverDisease = normalizeBoolean(normalize(info.Liverdisease));
+        visit.hasBledScore.medicalConditions.strokeHistory = normalizeBoolean(normalize(info.Stroke));
+        visit.hasBledScore.medicalConditions.priorBleeding = normalizeBoolean(normalize(info.bleeding));
+        visit.hasBledScore.medicalConditions.labileInr = normalizeBoolean(normalize(info.LabileINR));
+        visit.hasBledScore.medicalConditions.oldAgeGroup = normalizeBoolean(normalize(info.Age));
+        visit.hasBledScore.medicalConditions.medUsagePredisposingToBleeding = normalizeBoolean(normalize(info.predisposing));
+        visit.hasBledScore.medicalConditions.alcaholOrDrugUsageHistory = normalizeBoolean(normalize(info.drug));
 
 
         // Lab Test Result
@@ -177,21 +226,22 @@ export class FirstVisit {
         visit.visitDate.visitYear = normalize(info.FYearVisit);
         visit.visitDate.visitMonth = normalize(info.FMonthVisit);
         visit.visitDate.visitDay = normalize(info.FDayVisit);
-        visit.visitDate.visitFlag = normalize(info.FFlagVisit);
 
-        visit.visitSaveFlag = normalize(info.FFlagSave);
-        visit.endVisitFlag = normalize(info.FlagEndVisit);
+        visit.visitDate.visitFlag = normalizeNumber(info.FFlagVisit);
+        visit.visitSaveFlag = normalizeNumber(info.FFlagSave);
 
 
         // First Recommended Dosage
-        visit.recommendedDosage.dosageId = normalize(info.IDDosage);
-        visit.recommendedDosage.saturday = normalize(info.Saturday);
-        visit.recommendedDosage.sunday = normalize(info.Sunday);
-        visit.recommendedDosage.monday = normalize(info.Monday);
-        visit.recommendedDosage.tuesday = normalize(info.Tuesday);
-        visit.recommendedDosage.wednesday = normalize(info.Wednesday);
-        visit.recommendedDosage.thursday = normalize(info.Thursday);
-        visit.recommendedDosage.friday = normalize(info.Friday);
+        // visit.recommendedDosage.dosageId = normalize(info.IDDosage);
+        // visit.recommendedDosage.saturday = normalize(info.Saturday);
+        // visit.recommendedDosage.sunday = normalize(info.Sunday);
+        // visit.recommendedDosage.monday = normalize(info.Monday);
+        // visit.recommendedDosage.tuesday = normalize(info.Tuesday);
+        // visit.recommendedDosage.wednesday = normalize(info.Wednesday);
+        // visit.recommendedDosage.thursday = normalize(info.Thursday);
+        // visit.recommendedDosage.friday = normalize(info.Friday);
+
+        // visit.recommendedDosage.saturday = normalize(info.Saturday);
 
 
         return visit;

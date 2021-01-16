@@ -21,10 +21,10 @@ class DoctorDao {
     }
 
     getVisitState = (patientUserId) => {
-        return this.getCachedVisit(patientUserId)
+        return this.getLocalFirstVisit(patientUserId)
             .then(cachedVisit => {
                 if (cachedVisit == null) {
-                    return this.getVisitsHistory(patientUserId)
+                    return this.getFirstVisitFromServer(patientUserId)
                         .then(visits => {
                             return (hasValue(visits) && visits.length > 0) ? VisitState.FOLLOWUP_VISIT : VisitState.FIRST_VISIT;
                         })
@@ -33,10 +33,16 @@ class DoctorDao {
             })
     }
 
-    getCachedVisit = (patientUserId) => {
+    getLocalFirstVisit = (patientUserId) => {
         return AsyncStorage.getItem(RecordIdentifier.cachedVisit(patientUserId))
             .then(cachedVisit => {
+                throw {};
+                if (cachedVisit == null) throw {};
                 return JSON.parse(cachedVisit);
+            })
+            .catch(err => {
+                return this.getFirstVisitFromServer(patientUserId)
+                    .then(visit => {return {visitInfo: visit, currentStage: 0}})
             })
             .catch(err => null)
     }
@@ -52,11 +58,11 @@ class DoctorDao {
         return AsyncStorage.removeItem(RecordIdentifier.cachedVisit(patientUserId));
     }
 
-    getVisitsHistory = (patientUserId) => {
+    getFirstVisitFromServer = (patientUserId) => {
         return AsyncStorage.getItem(RecordIdentifier.visits(patientUserId))
             .then(visit => {
                 if (visit == null) {
-                    return doctorService.getVisitsHistory(patientUserId)
+                    return doctorService.getFirstVisit(patientUserId)
                         .then(visitHistory => {
                             return visitHistory;
                         })
@@ -64,7 +70,7 @@ class DoctorDao {
                 return JSON.parse(visit);
             })
             .catch(err => {
-                return [];
+                return {};
             })
     }
 }
@@ -79,5 +85,5 @@ export const VisitState = {
 
 const RecordIdentifier = {
     visits: (id) => `VISITS:${id}`,
-    cachedVisit: (id) => `CACHED_VISIT:${id}`,
+    cachedVisit: (id) => `CACHED_FIRST_VISIT:${id}`,
 }

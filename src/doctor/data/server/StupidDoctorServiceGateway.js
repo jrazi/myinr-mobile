@@ -11,16 +11,17 @@ export default class StupidDoctorServiceGateway {
     constructor() {
     }
 
-    getVisitsHistory = (patientUserId) => {
-        let visits = [];
+    getFirstVisit = (patientUserId) => {
         return withTimeout(DEFAULT_TIMEOUT, fetchList(fetchFirstVisitQuery(patientUserId)))
             .then(recordset => recordset[0])
             .then(firstVisitDto => {
-                // console.log('so here is the dto', firstVisitDto);
-                let firstVisit = FirstVisit.ofDao(firstVisitDto);
-                // console.log('and now the domain object', firstVisit);
-                visits.push(firstVisit);
-                return visits;
+                firstVisitDto._sub = {};
+                return withTimeout(DEFAULT_TIMEOUT, fetchList(drugHistoryQuery(patientUserId)))
+                    .then(drugHistory => {
+                        firstVisitDto._sub.DrugHistory = drugHistory;
+                        let firstVisit = FirstVisit.ofDao(firstVisitDto);
+                        return firstVisit;
+                    })
             })
             .catch(err => {
                 throw {
@@ -46,6 +47,7 @@ const fetchFirstVisitQuery = (patientUserId) => {
         LEFT JOIN myinrir_test.myinrir_test.[CHADS-VAScTbl] cvt on ft.IDUserPatient = cvt.PatientID 
         LEFT JOIN myinrir_test.myinrir_test.[HAS-BLEDTbl] hbt on ft.IDUserPatient = hbt.PatientID 
         WHERE ft.IDUserPatient = ${patientUserId}
+        ORDER BY fdt.IDDosage DESC, cvt.ID DESC, hbt.ID DESC OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY
     `;
 }
 
@@ -57,5 +59,13 @@ const searchDrugsQuery = (drugName) => {
         ORDER BY dt.IDDrug 
         OFFSET 0 ROWS 
         FETCH NEXT 50 ROWS ONLY 
+    `;
+}
+
+const drugHistoryQuery = (patientUserId) => {
+    return `
+        SELECT *
+        FROM myinrir_test.myinrir_test.PaDrTbl pdt 
+        WHERE pdt.IDPatient = ${patientUserId}
     `;
 }

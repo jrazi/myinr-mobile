@@ -51,7 +51,7 @@ class FirstVisitScreen extends React.Component {
             return ;
         }
 
-        doctorDao.getCachedVisit(userId)
+        doctorDao.getLocalFirstVisit(userId)
             .then(cachedVisit => {
                 visitInfo = visitDao.setVisits(userId, cachedVisit.visitInfo);
                 this.setState({visitInfo: visitInfo, currentStage: readonly ? 0 : cachedVisit.currentStage, loaded: true});

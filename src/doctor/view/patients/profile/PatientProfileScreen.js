@@ -7,6 +7,7 @@ import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs
 import {FAB, Title, withTheme} from 'react-native-paper';
 import {FirstVisitTab} from "./FirstVisitTab";
 import {SecondaryVisitTab} from "./SecondaryVisitTab";
+import {doctorService} from "../../../data/server/DoctorServiceGateway";
 
 const Tab = createMaterialTopTabNavigator();
 export const PatientProfileContext = React.createContext({patient: {}, visitState: {}, firstVisit: {}, visits: []});

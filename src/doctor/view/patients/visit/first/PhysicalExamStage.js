@@ -41,7 +41,7 @@ export class PhysicalExamStage extends React.Component {
                 <Formik
                     initialValues={{
                         bloodPressureSystolic: this.physicalExamInfo.bloodPressureSystolic,
-                        bloodPressureDiastolic: this.physicalExamInfo.bloodPressureSystolic,
+                        bloodPressureDiastolic: this.physicalExamInfo.bloodPressureDiastolic,
                         heartBeat: this.physicalExamInfo.heartBeat,
                         respiratoryRate: this.physicalExamInfo.respiratoryRate,
                     }}

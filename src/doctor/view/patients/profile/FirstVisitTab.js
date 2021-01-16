@@ -46,7 +46,7 @@ class _FirstVisitTab extends React.Component {
     async componentDidMount() {
         const {userId,} = this.props.route.params;
 
-        doctorDao.getCachedVisit(userId)
+        doctorDao.getLocalFirstVisit(userId)
             .then(cachedVisit => {
                 this.setState({visitInfo: cachedVisit.visitInfo, loaded: true,});
             })
