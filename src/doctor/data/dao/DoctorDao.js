@@ -20,14 +20,12 @@ class DoctorDao {
             })
     }
 
-    getVisitState = (patientUserId) => {
+    getVisitState = (patientUserId, patient=null) => {
         return this.getLocalFirstVisit(patientUserId)
             .then(cachedVisit => {
                 if (cachedVisit == null) {
-                    return this.getFirstVisitFromServer(patientUserId)
-                        .then(visits => {
-                            return (hasValue(visits) && visits.length > 0) ? VisitState.FOLLOWUP_VISIT : VisitState.FIRST_VISIT;
-                        })
+                    return (patient == null) ? VisitState.FIRST_VISIT :
+                        !patient.visited ? VisitState.FIRST_VISIT : VisitState.FOLLOWUP_VISIT;
                 }
                 else return VisitState.INCOMPLETE_VISIT;
             })

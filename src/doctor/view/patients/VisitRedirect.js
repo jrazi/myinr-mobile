@@ -18,7 +18,7 @@ export const VisitRedirect = (props) => {
 
     return (
         <StartVisitDialog
-            visitState={props.patient.unfinishedVisit ? VisitState.INCOMPLETE_VISIT : props.patient.visited ? VisitState.FOLLOWUP_VISIT : VisitState.FIRST_VISIT}
+            visitState={props.patient.visited ? VisitState.FOLLOWUP_VISIT : VisitState.FIRST_VISIT}
             visible={props.visible}
             onDismiss={props.onDismiss}
             onBeginNew={() => startVisitSession(false)}

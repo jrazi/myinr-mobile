@@ -142,10 +142,10 @@ class PatientsScreen extends React.Component {
             this.props.navigation.navigate('PatientProfileScreen', {userId: patient.userId});
         }
         else {
-            doctorDao.getVisitState(patient.userId)
+            doctorDao.getVisitState(patient.userId, patient)
                 .then(visitState => {
                     patient.unfinishedVisit = visitState == VisitState.INCOMPLETE_VISIT;
-                    if (patient.unfinishedVisit) {
+                    if (1 > 2 && patient.unfinishedVisit) {
                         this.props.navigation.navigate('PatientProfileScreen', {userId: patient.userId});
                     } else {
                         this.setState({visitRedirect: {visible: true, activePatient: patient}});
