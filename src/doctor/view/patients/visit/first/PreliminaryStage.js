@@ -128,14 +128,15 @@ const FirstTimeWarfarinForm = (props) => {
         visit.current.firstWarfarin.weeklyDosage[day] = dose;
     }
 
-    const getDoseData = () => {
-        let doseData = {};
+    const getDayOrder = () => {
+        let dayOrder = [];
         let date = new Date();
         const dayOfWeekOffset = date.getDay();
         for (let i = 0; i < 7; i++) {
-            doseData[i] = visit.current.firstWarfarin.weeklyDosage[getDayOfWeekName((dayOfWeekOffset + 7) - i)];
+            const dayOfWeekName = getDayOfWeekName((dayOfWeekOffset + 7) - i);
+            dayOrder.push(dayOfWeekName);
         }
-        return doseData;
+        return dayOrder;
     }
 
     return (
@@ -152,7 +153,8 @@ const FirstTimeWarfarinForm = (props) => {
                     <IntraSectionDivider s/>
                     <Layout.InputTitle title={'Last Warfarin Dosage'} description={'Please specify the last dosage that patient used.'}/>
                     <WeeklyDosagePicker
-                        initialData={loaded ? getDoseData() : {}}
+                        initialData={loaded ? visit.current.firstWarfarin.weeklyDosage : {}}
+                        dayOrder={getDayOrder()}
                         onDoseUpdate={onDoseUpdate}
                         disabled={props.readonly}
                     />

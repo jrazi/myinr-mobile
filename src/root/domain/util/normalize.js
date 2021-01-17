@@ -72,3 +72,27 @@ export const getBooleanMap = (keyArray, arrayOfTrues) => {
     }
     return boolDict;
 }
+
+export const getListOfTrues = (dict) => {
+    if (!hasValue(dict) || (typeof dict) != "object") return [];
+
+    let trueList = [];
+    for (const key in dict) {
+        if (dict[key] == true) trueList.push(key);
+    }
+    return trueList;
+}
+
+
+export const mergeListStrings = (separator='-', ...listStrings) => {
+    return listToString(listStrings, separator);
+}
+
+export const listToString = (list, separator=',') => {
+    if (!hasValue(list)) return "";
+    let listStr = "";
+    list.forEach((item, index) => {
+        listStr += item + index < list.length-1 ? separator : '';
+    })
+    return listStr;
+}

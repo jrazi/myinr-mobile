@@ -12,7 +12,7 @@ export const WeeklyDosagePicker = (props) => {
     let now = new Date(Date.now());
     const increment = firstNonEmpty(props.increment, -1);
     let i = 0;
-    for (let dayId in props.initialData) {
+    for (let dayId of firstNonEmpty(props.dayOrder, Object.keys(firstNonEmpty(props.initialData, {})))) {
         const date = new Date(firstNonEmpty(props.startingDate, now).getTime());
         date.setDate(date.getDate() + i*increment);
         dosageElements.push(
