@@ -166,7 +166,8 @@ export class FirstVisit {
         // Last INR
         visit.inr.testLocation = normalize(info.Lab);
         visit.inr.inrResult = normalize(info.LastINR);
-        visit.inr.testAtHome = normalizeBoolean(info.PortableDevice)
+        const portableDevice = normalizeBoolean(info.PortableDevice);
+        visit.inr.testAtHome = portableDevice;
         // visit.inr.inrTestTime = normalize(info.TimeofINRTest);
         visit.inr.testDate = normalize(info.DateofINRTest);
 

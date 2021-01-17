@@ -23,7 +23,7 @@ export const DefaultDatePicker = (props) => {
                     }}
                     selected={firstNonEmpty(props.selectedDate, getFormFormattedJalaliDate(new Date(Date.now())))}
                     dateSeparator='/'
-                    minDate='1399/1/1'
+                    minDate='1396/1/1'
                     maxDate='1399/12/29'
                     headerContainerStyle={{ height: '15%', flexDirection: 'row' }}
                     yearMonthBoxStyle={{
