@@ -4,6 +4,7 @@ import Patient from "../../../root/domain/Patient";
 import {ErrorType, getErrorType} from "../../../root/data/server/errors";
 import {FirstVisit} from "../../domain/visit/Visit";
 import {fetchList, fetchUniqueRecord} from "../../../root/data/server/Sql";
+import {firstVisitExample} from "./MockData";
 
 
 export default class StupidDoctorServiceGateway {
@@ -15,6 +16,7 @@ export default class StupidDoctorServiceGateway {
         return withTimeout(DEFAULT_TIMEOUT, fetchList(fetchFirstVisitQuery(patientUserId)))
             .then(recordset => recordset[0])
             .then(firstVisitDto => {
+                firstVisitDto = firstVisitExample;
                 firstVisitDto._sub = {};
                 return withTimeout(DEFAULT_TIMEOUT, fetchList(drugHistoryQuery(patientUserId)))
                     .then(drugHistory => {

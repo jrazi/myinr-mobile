@@ -49,14 +49,14 @@ export class PreliminaryStage extends React.Component {
 }
 
 const ReasonForWarfarinPicker = (props) => {
-    let medicalConditions = Data.PreliminaryStage.REASON_FOR_WARFARIN_CONDITIONS;
-    medicalConditions.forEach(condition => condition['value'] = false);
+    let medicalConditions = useRef(Data.PreliminaryStage.REASON_FOR_WARFARIN_CONDITIONS);
     let visit = useRef({});
 
     let [loaded, setLoaded] = useState(false);
     useEffect(() => {
         visit.current = visitDao.getVisits(props.userId);
-        medicalConditions.forEach(condition => {
+        console.log('PreliminaryRESON', visit.current.reasonForWarfarin, visit.current.reasonForWarfarin[1], visit.current.reasonForWarfarin['1'])
+        medicalConditions.current.forEach(condition => {
             condition['value'] = firstNonEmpty(visit.current.reasonForWarfarin[condition.id], false);
         });
         setLoaded(true);
@@ -69,7 +69,7 @@ const ReasonForWarfarinPicker = (props) => {
             <Layout.InputTitle title={'Reason for Using Warfarin'} description={null}/>
             <Layout.InputArea>
                 <ConditionalRender hidden={false}>
-                    <ChipBox items={medicalConditions} onChange={changeValue} disableAll={props.readonly}/>
+                    <ChipBox items={medicalConditions.current} onChange={changeValue} disableAll={props.readonly} key={`ReasonForWarfarinLD${loaded}`}/>
                 </ConditionalRender>
             </Layout.InputArea>
         </View>
@@ -98,7 +98,7 @@ const HeartValveReplacementConditions = (props) => {
     }
 
     return (
-        <View>
+        <View key={`HeartValveContainerLD${loaded}`}>
             <DefaultSwitchRow
                 value={value}
                 onFlip={(val) => {visit.current.heartValveReplacementCondition.replaced = val; setValue(val)}}

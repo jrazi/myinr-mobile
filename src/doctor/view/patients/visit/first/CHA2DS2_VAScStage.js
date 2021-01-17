@@ -37,7 +37,6 @@ class CHA2DS2_VAScStage extends React.Component {
         }
         for (const conditionId in this.cha2ds2Score.medicalHistory) {
             let scoreItem = getScoreItem(conditionId);
-            console.log('condition calc', conditionId, scoreItem);
             let hasCondition = this.cha2ds2Score.medicalHistory[conditionId];
             if (hasCondition) totalScore += scoreItem.yesScore;
             else totalScore += scoreItem.noScore;

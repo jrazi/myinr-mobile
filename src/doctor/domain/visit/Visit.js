@@ -1,13 +1,14 @@
 import {UserRole} from "../../../root/domain/Role";
 import {
+    getBooleanMap,
     normalize,
     normalizeBoolean,
-    normalizeListAsString,
+    normalizeListAsString, normalizeNonList,
     normalizeNumber,
-    normalizeStrangeListAsString
+    normalizeStrangeListAsString, normalizeStrangeListOfNumbers
 } from "../../../root/domain/util/normalize";
 import {firstNonEmpty, hasValue, jalaliYMDToGeorgian} from "../../../root/domain/util/Util";
-import {PreliminaryStage} from "../../view/patients/visit/first/Data";
+import {PastMedicalHistoryStageData, PreliminaryStage} from "../../view/patients/visit/first/Data";
 
 export class FirstVisit {
 
@@ -108,7 +109,7 @@ export class FirstVisit {
         let visit = this.createNew();
 
         visit.id = normalize(info.IDFirst);
-        visit.patientUserId = normalize(firstNonEmpty(info.IDUserPatient[0], info.IDUserPatient[1]));
+        visit.patientUserId = normalizeNonList(info.IDUserPatient);
 
         const visitYear = normalize(info.FYearVisit);
         const visitMonth = normalize(info.FMonthVisit);
@@ -143,29 +144,29 @@ export class FirstVisit {
             else visit.heartValveReplacementCondition.conditionType[condition.id] = false;
         })
 
-        console.log('So far so is', visit.reasonForWarfarin, visit.heartValveReplacementCondition, warfarinReasonList);
 
         visit.dateOfDiagnosis = normalize(info.dateofdiagnosis);
 
 
         // In case used warfarin
         visit.firstWarfarin.dateOfFirstWarfarin = normalize(info.dateoffirstWarfarin);
+        visit.firstWarfarin.isFirstTime = !hasValue(visit.firstWarfarin.dateOfFirstWarfarin);
+        visit.firstWarfarin.weeklyDosage = {};
+        visit.firstWarfarin.weeklyDosage.saturday = normalizeNumber(info.Saturday)*1.25;
+        visit.firstWarfarin.weeklyDosage.sunday = normalizeNumber(info.Sunday)*1.25;
+        visit.firstWarfarin.weeklyDosage.monday = normalizeNumber(info.Monday)*1.25;
+        visit.firstWarfarin.weeklyDosage.tuesday = normalizeNumber(info.Tuesday)*1.25;
+        visit.firstWarfarin.weeklyDosage.wednesday = normalizeNumber(info.Wednesday)*1.25;
+        visit.firstWarfarin.weeklyDosage.thursday = normalizeNumber(info.Thursday)*1.25;
+        visit.firstWarfarin.weeklyDosage.friday = normalizeNumber(info.Friday)*1.25;
 
         // INR
         visit.inr.targetRange = normalizeListAsString(info.INRtargetrange, '-');
 
-        visit.firstWarfarin.saturday = normalizeNumber(info.Saturday)*1.25;
-        visit.firstWarfarin.sunday = normalizeNumber(info.Sunday)*1.25;
-        visit.firstWarfarin.monday = normalizeNumber(info.Monday)*1.25;
-        visit.firstWarfarin.tuesday = normalizeNumber(info.Tuesday)*1.25;
-        visit.firstWarfarin.wednesday = normalizeNumber(info.Wednesday)*1.25;
-        visit.firstWarfarin.thursday = normalizeNumber(info.Thursday)*1.25;
-        visit.firstWarfarin.friday = normalizeNumber(info.Friday)*1.25;
-
         // Last INR
         visit.inr.testLocation = normalize(info.Lab);
         visit.inr.inrResult = normalize(info.LastINR);
-        visit.inr.testAtHome = normalize(info.PortableDevice); // TODO
+        visit.inr.testAtHome = normalizeBoolean(info.PortableDevice)
         // visit.inr.inrTestTime = normalize(info.TimeofINRTest);
         visit.inr.testDate = normalize(info.DateofINRTest);
 
@@ -173,7 +174,10 @@ export class FirstVisit {
         visit.bleedingOrClottingType = normalize(info.BleedingorClotting);
 
         // List(first one) past medical history & etc
-        visit.medicalHistory.pastConditions = normalize(info.PastMedicalHistory);
+        visit.medicalHistory.pastConditions = getBooleanMap(
+            PastMedicalHistoryStageData.MEDICAL_CONDITIONS.map(cond => cond.id),
+            normalizeStrangeListOfNumbers(info.PastMedicalHistory, ',')
+        );
 
         visit.medicalHistory.majorSurgery.info = normalize(info.MajorSurgery);
         visit.medicalHistory.majorSurgery.active = hasValue(visit.medicalHistory.majorSurgery.info);
@@ -209,7 +213,7 @@ export class FirstVisit {
 
         // CHA--- whatever score
         visit.cha2ds2Score.ageGroup = normalizeNumber(info.Age);
-        visit.cha2ds2Score.gender = normalizeNumber(normalize(info.Sex));
+        visit.cha2ds2Score.sex = normalizeNumber(normalize(info.Sex));
         visit.cha2ds2Score.medicalHistory.heartFailureHistory = normalizeBoolean(normalize(info.HeartFailure));
         visit.cha2ds2Score.medicalHistory.hypertensionHistory = normalizeBoolean(info.Hypertension);
         visit.cha2ds2Score.medicalHistory.strokeHistory = normalizeBoolean(normalize(info.Stroke));
@@ -272,6 +276,10 @@ export class FirstVisit {
                 6: 0,
             }
         }
+
+        console.log("FINALIZED_VISIT",
+            visit.medicalHistory,
+            "FINALIZED_VISIT");
         // First Recommended Dosage
         // visit.recommendedDosage.dosageId = normalize(info.IDDosage);
         // visit.recommendedDosage.saturday = normalize(info.Saturday);

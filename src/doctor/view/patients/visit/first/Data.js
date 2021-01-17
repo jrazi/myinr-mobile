@@ -38,3 +38,49 @@ export const PreliminaryStage = {
         },
     ]
 }
+
+export const PastMedicalHistoryStageData = {
+    MEDICAL_CONDITIONS: [
+        {
+            id: 33,
+            name: 'Hypertension',
+        },
+        {
+            id: 34,
+            name: 'Diabetes Mellitus',
+        },
+        {
+            id: 35,
+            name: 'Hyperlipidemia',
+        },
+        {
+            id: 36,
+            name: 'Coronary Artery Disease',
+        },
+        {
+            id: 37,
+            name: 'Stroke',
+        },
+        {
+            id: 38,
+            name: 'Systemic Embolism',
+        },
+        {
+            id: 39,
+            name: 'Major Trauma',
+        },
+        {
+            id: 40,
+            name: 'Permanent Pace Maker',
+        },
+        {
+            id: 41,
+            name: 'ICD',
+        },
+        {
+            id: 42,
+            name: 'CRT',
+        },
+    ]
+
+}

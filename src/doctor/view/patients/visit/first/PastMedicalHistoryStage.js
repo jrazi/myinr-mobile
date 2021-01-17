@@ -136,7 +136,6 @@ export const MedicalHistoryChipBox = (props) => {
     useEffect(() => {
         visit.current = visitDao.getVisits(props.userId);
         medicalConditions
-            .sort((a, b) => a.name.length - b.name.length)
             .forEach(condition => {
                 condition['value'] = firstNonEmpty(visit.current.medicalHistory.pastConditions[condition.id], false);
             });
@@ -150,7 +149,7 @@ export const MedicalHistoryChipBox = (props) => {
     return (
         <Layout.InputArea>
             <Layout.ItemsBox>
-                <ChipBox items={medicalConditions} onChange={changeValue} disableAll={props.readonly}/>
+                <ChipBox items={medicalConditions} onChange={changeValue} disableAll={props.readonly} key={`ChipMedConHis${loaded}`}/>
             </Layout.ItemsBox>
         </Layout.InputArea>
     )
@@ -208,43 +207,43 @@ const _MedicalInfoInput = (props) => {
 
 let medicalConditions = [
     {
-        id: 0,
+        id: 33,
         name: 'Hypertension',
     },
     {
-        id: 1,
+        id: 34,
         name: 'Diabetes Mellitus',
     },
     {
-        id: 2,
+        id: 35,
         name: 'Hyperlipidemia',
     },
     {
-        id: 3,
+        id: 36,
         name: 'Coronary Artery Disease',
     },
     {
-        id: 4,
+        id: 37,
         name: 'Stroke',
     },
     {
-        id: 5,
+        id: 38,
         name: 'Systemic Embolism',
     },
     {
-        id: 6,
+        id: 39,
         name: 'Major Trauma',
     },
     {
-        id: 7,
+        id: 40,
         name: 'Permanent Pace Maker',
     },
     {
-        id: 8,
+        id: 41,
         name: 'ICD',
     },
     {
-        id: 9,
+        id: 42,
         name: 'CRT',
     },
 ]
