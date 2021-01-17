@@ -189,18 +189,19 @@ export function firstNonEmpty(...values) {
     return null;
 }
 
-export function getFormattedJalaliDate(date) {
+export function getFormattedJalaliDate(date, customFormat='dddd DD MMMM') {
     if (!hasValue(date)) date = new Date(Date.now());
     const jDate = new jd.default(date);
-    const dateStr = jDate.format('dddd DD MMMM');
+    const dateStr = jDate.format(customFormat);
     return e2p(dateStr);
 }
 
 export function getFormattedJalaliDateTime(date) {
     if (!hasValue(date)) date = new Date(Date.now());
-    let dateTime = getFormattedJalaliDate(date);
-    let time = (date.getHours() % 12 || 12) + ':' + date.getMinutes() + ' ' + (date.getHours() < 12 ? 'ق.ظ' : 'ب.ظ');
-    dateTime = time + ' ' + dateTime;
+    let dateTime = getFormattedJalaliDate(date, 'dddd DD MMMM YYYY');
+    let hasTime = !(date.getHours() == 0 && date.getMinutes() == 0 && date.getSeconds() == 0)
+    let time = !hasTime ? '' : (date.getHours() % 12 || 12) + ':' + date.getMinutes() + ' ' + (date.getHours() < 12 ? 'ق.ظ' : 'ب.ظ') + ' ';
+    // dateTime = time + dateTime;
     return e2p(dateTime);
 }
 
