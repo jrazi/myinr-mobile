@@ -8,6 +8,7 @@ import {FAB, Title, withTheme} from 'react-native-paper';
 import {FirstVisitTab} from "./FirstVisitTab";
 import {SecondaryVisitTab} from "./SecondaryVisitTab";
 import {doctorService} from "../../../data/server/DoctorServiceGateway";
+import {LoadingScreen} from "../../../../root/view/loading/Loading";
 
 const Tab = createMaterialTopTabNavigator();
 export const PatientProfileContext = React.createContext({patient: {}, visitState: {}, firstVisit: {}, visits: []});
@@ -17,9 +18,13 @@ class PatientProfileScreen extends React.Component {
         super(props);
         this.state = {
             patient: {},
-            loading: true,
+            loaded: false,
             visitState: null,
+            firstVisit: {},
         }
+        this.patientInfoLoaded = false;
+        this.visitInfoLoaded = false;
+        this.visitStateLoaded = false;
     }
 
     componentDidMount = () => {
@@ -27,14 +32,42 @@ class PatientProfileScreen extends React.Component {
         this.refresh();
     }
 
-    refresh = () => {
-        doctorDao.getPatientInfo(this.props.route.params.userId)
-            .then(patient => this.setState({patient: patient, loading: false}))
-            .catch(err => {})
+    updateLoadedStatus = () => {
+        let loaded = false;
+        if (this.patientInfoLoaded && this.visitStateLoaded && this.visitInfoLoaded)
+            loaded = true;
+        this.setState({loaded: loaded});
+    }
 
-        doctorDao.getVisitState(this.props.route.params.userId)
-            .then(visitState => this.setState({visitState: visitState}))
-            .catch(err => {})
+    refresh = () => {
+        this.patientInfoLoaded = false;
+        this.visitInfoLoaded = false;
+        this.visitStateLoaded = false;
+        this.setState({loaded: false}, () => {
+            doctorDao.getPatientInfo(this.props.route.params.userId)
+                .then(patient => {
+                    this.setState({patient: patient});
+                    this.patientInfoLoaded = true;
+                    this.updateLoadedStatus();
+                })
+                .catch(err => {})
+
+            doctorDao.getVisitState(this.props.route.params.userId)
+                .then(visitState => {
+                    this.setState({visitState: visitState});
+                    this.visitStateLoaded = true;
+                    this.updateLoadedStatus();
+                })
+                .catch(err => {})
+
+            doctorDao.getLocalFirstVisit(this.props.route.params.userId)
+                .then(firstVisit => {
+                    this.setState({firstVisit: firstVisit});
+                    this.visitInfoLoaded = true;
+                    this.updateLoadedStatus();
+                })
+                .catch(err => {})
+        });
     }
 
     render() {
@@ -45,9 +78,10 @@ class PatientProfileScreen extends React.Component {
                 <Title style={{}}>داده‌ای موجود نیست.</Title>
             </View>
         )}
+        if (!this.state.loaded) return <LoadingScreen loaded={this.state.loaded}/>;
         return (
             <PatientProfileContext.Provider
-                value={{patient: this.state.patient, visitState: this.state.visitState, firstVisit: {}, visits: []}}
+                value={{patient: this.state.patient, visitState: this.state.visitState, firstVisit: this.state.firstVisit, visits: []}}
             >
                 <ScreenLayout>
                     <ScreenHeader

@@ -37,21 +37,11 @@ class _FirstVisitTab extends React.Component {
         super(props);
         this.state = {
             certifyVisitDialogOpen: false,
-            visitInfo: FirstVisit.createNew(),
-            loaded: false,
             doingAction: false,
         }
     }
 
     async componentDidMount() {
-        const {userId,} = this.props.route.params;
-
-        doctorDao.getLocalFirstVisit(userId)
-            .then(cachedVisit => {
-                this.setState({visitInfo: cachedVisit.visitInfo, loaded: true,});
-            })
-            .catch(err => {
-            })
     }
 
     navigateToFirstVisit = (patient) => {
@@ -91,9 +81,9 @@ class _FirstVisitTab extends React.Component {
                 {(value) => {
                     return (
                         <ScreenLayout>
-                            <FirstVisitInfo visitInfo={this.state.visitInfo}/>
+                            <FirstVisitInfo visitInfo={value.firstVisit.visitInfo}/>
                             <View style={styles.fabContainer}>
-                                <ConditionalRender hidden={this.state.visitInfo.finished != true}>
+                                <ConditionalRender hidden={value.firstVisit.visitInfo.finished != true}>
                                     <View style={styles.fabWrapper}>
                                         <FAB
                                             style={[styles.fab,]}
@@ -102,7 +92,7 @@ class _FirstVisitTab extends React.Component {
                                         />
                                     </View>
                                 </ConditionalRender>
-                                <ConditionalRender hidden={this.state.visitInfo.finished == true}>
+                                <ConditionalRender hidden={value.firstVisit.visitInfo.finished == true}>
                                     <View style={styles.fabWrapper}>
                                         <FAB
                                             style={[styles.fab,]}
@@ -111,7 +101,7 @@ class _FirstVisitTab extends React.Component {
                                         />
                                     </View>
                                 </ConditionalRender>
-                                <ConditionalRender hidden={this.state.visitInfo.finished == true}>
+                                <ConditionalRender hidden={value.firstVisit.visitInfo.finished == true}>
                                     <View style={styles.fabWrapper}>
                                         <FAB
                                             style={[styles.fab, {
