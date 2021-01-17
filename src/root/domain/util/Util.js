@@ -208,3 +208,19 @@ export function getFormFormattedJalaliDate(date) {
     const dateStr = jDate.format('YYYY/MM/DD');
     return dateStr;
 }
+
+
+export function getDayOfWeekName(dayNum) {
+    dayNum = dayNum + 1;
+    const daysOfWeek = {
+        0: 'saturday',
+        1: 'sunday',
+        2: 'monday',
+        3: 'tuesday',
+        4: 'wednesday',
+        5: 'thursday',
+        6: 'friday',
+    }
+    if (!hasValue(dayNum)) return null;
+    return daysOfWeek[dayNum % 7];
+}

@@ -278,7 +278,7 @@ export class FirstVisit {
         }
 
         console.log("FINALIZED_VISIT",
-            visit.medicalHistory,
+            visit.firstWarfarin.weeklyDosage,
             "FINALIZED_VISIT");
         // First Recommended Dosage
         // visit.recommendedDosage.dosageId = normalize(info.IDDosage);

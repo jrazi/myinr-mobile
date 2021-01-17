@@ -11,7 +11,7 @@ import * as Data from './Data';
 import {ChipBox, DefaultSwitchRow} from "./forms/ContextSpecificComponents";
 import {WeeklyDosagePicker} from "./forms/WeeklyDosagePicker";
 import {visitDao} from "../../../../data/dao/VisitDao";
-import {firstNonEmpty} from "../../../../../root/domain/util/Util";
+import {firstNonEmpty, getDayOfWeekName} from "../../../../../root/domain/util/Util";
 
 export class PreliminaryStage extends React.Component {
     constructor(props) {
@@ -55,7 +55,6 @@ const ReasonForWarfarinPicker = (props) => {
     let [loaded, setLoaded] = useState(false);
     useEffect(() => {
         visit.current = visitDao.getVisits(props.userId);
-        console.log('PreliminaryRESON', visit.current.reasonForWarfarin, visit.current.reasonForWarfarin[1], visit.current.reasonForWarfarin['1'])
         medicalConditions.current.forEach(condition => {
             condition['value'] = firstNonEmpty(visit.current.reasonForWarfarin[condition.id], false);
         });
@@ -129,8 +128,18 @@ const FirstTimeWarfarinForm = (props) => {
         visit.current.firstWarfarin.weeklyDosage[day] = dose;
     }
 
+    const getDoseData = () => {
+        let doseData = {};
+        let date = new Date();
+        const dayOfWeekOffset = date.getDay();
+        for (let i = 0; i < 7; i++) {
+            doseData[i] = visit.current.firstWarfarin.weeklyDosage[getDayOfWeekName((dayOfWeekOffset + 7) - i)];
+        }
+        return doseData;
+    }
+
     return (
-        <View>
+        <View key={`LastDosage_LD${loaded}`}>
             <DefaultSwitchRow
                 value={firstTimeWarfarin}
                 onFlip={() => {visit.current.firstWarfarin.isFirstTime= !firstTimeWarfarin; setFirstTimeWarfarin(!firstTimeWarfarin)}}
@@ -143,7 +152,7 @@ const FirstTimeWarfarinForm = (props) => {
                     <IntraSectionDivider s/>
                     <Layout.InputTitle title={'Last Warfarin Dosage'} description={'Please specify the last dosage that patient used.'}/>
                     <WeeklyDosagePicker
-                        initialData={loaded ? visit.current.firstWarfarin.weeklyDosage : []} doseData={[]}
+                        initialData={loaded ? getDoseData() : {}}
                         onDoseUpdate={onDoseUpdate}
                         disabled={props.readonly}
                     />
