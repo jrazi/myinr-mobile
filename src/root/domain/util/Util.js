@@ -141,11 +141,14 @@ export const a2p = s => s.replace(/[٠-٩]/g, d => '۰۱۲۳۴۵۶۷۸۹'['٠١�
 
 
 export function jalaliYMDToGeorgian(year, month, day) {
-    let dateStr = hasValue(year) ? (year + '/') : ''
-        + hasValue(month) ? (month + '/') : ''
-        + hasValue(day) ? (day + '/') : '';
+    if (!hasValue(year) || !hasValue(month) || !hasValue(day)) return null;
+    let dateStr = (hasValue(year) ? (year.toString() + '/') : '')
+        + (hasValue(month) ? (month.toString() + '/') : '')
+        + (hasValue(day) ? (day.toString() + '/') : '');
     dateStr = hasValue(year) ? dateStr : null;
-    return jalaliToGeorgian(dateStr);
+    const georgianDate = jalaliToGeorgian(dateStr);
+    if (Number.isNaN(georgianDate.getDate())) return null;
+    return georgianDate;
 }
 
 export function jalaliToGeorgian(jalaliDate) {

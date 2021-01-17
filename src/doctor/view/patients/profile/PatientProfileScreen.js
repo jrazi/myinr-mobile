@@ -60,7 +60,7 @@ class PatientProfileScreen extends React.Component {
                 })
                 .catch(err => {})
 
-            doctorDao.getLocalFirstVisit(this.props.route.params.userId)
+            doctorDao.getLocalFirstVisit(this.props.route.params.userId, true)
                 .then(firstVisit => {
                     this.setState({firstVisit: firstVisit});
                     this.visitInfoLoaded = true;

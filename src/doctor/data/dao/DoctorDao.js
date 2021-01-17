@@ -33,16 +33,19 @@ class DoctorDao {
             })
     }
 
-    getLocalFirstVisit = (patientUserId) => {
+    getLocalFirstVisit = (patientUserId, forceFresh=false) => {
         return AsyncStorage.getItem(RecordIdentifier.cachedVisit(patientUserId))
             .then(cachedVisit => {
-                throw {};
-                if (cachedVisit == null) throw {};
+                if (forceFresh || cachedVisit == null) throw {};
                 return JSON.parse(cachedVisit);
             })
             .catch(err => {
                 return this.getFirstVisitFromServer(patientUserId)
-                    .then(visit => {return {visitInfo: visit, currentStage: 0}})
+                    .then(visit => {
+                        const visitToCache = {visitInfo: visit, currentStage: 0};
+                        this.saveCachedVisit(patientUserId, visitToCache);
+                        return visitToCache;
+                    })
             })
             .catch(err => null)
     }
