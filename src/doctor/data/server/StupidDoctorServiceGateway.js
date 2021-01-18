@@ -16,7 +16,7 @@ export default class StupidDoctorServiceGateway {
         return withTimeout(DEFAULT_TIMEOUT, fetchList(fetchFirstVisitQuery(patientUserId)))
             .then(recordset => recordset[0])
             .then(firstVisitDto => {
-                firstVisitDto = firstVisitExample;
+                // firstVisitDto = firstVisitExample;
                 firstVisitDto._sub = {};
                 return withTimeout(DEFAULT_TIMEOUT, fetchList(drugHistoryQuery(patientUserId)))
                     .then(drugHistory => {

@@ -60,3 +60,26 @@ export const fetchList = (query) => {
 const createQueryUrl = (query) => {
     return encodeURI(`http://${SERVER_ADDRESS}/query?q=${query}`);
 }
+
+export const transactionQuery = (...statements) => {
+    let transaction = 'BEGIN TRANSACTION\n';
+    for (const st of statements) {
+        transaction += st + '\n';
+    }
+    transaction += 'ROLLBACK';
+    return transaction;
+}
+
+export const upsertQuery = (notExistsQuery, insertQuery, updateQuery) => {
+    let upsert = '';
+    upsert += `IF NOT EXISTS (${notExistsQuery})\n`;
+    upsert += "BEGIN\n";
+    upsert += insertQuery + '\n';
+    upsert += 'END\n';
+
+    upsert += 'ELSE\n';
+    upsert += "BEGIN\n";
+    upsert += updateQuery + '\n';
+    upsert += 'END';
+    return upsert;
+}
