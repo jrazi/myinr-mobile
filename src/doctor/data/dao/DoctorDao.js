@@ -38,6 +38,7 @@ class DoctorDao {
                 return JSON.parse(cachedVisit);
             })
             .catch(err => {
+                console.log("THERE WAS AN ERROR, GOING TO FETCH FROM SERVER");
                 return this.getFirstVisitFromServer(patientUserId)
                     .then(visit => {
                         const visitToCache = {visitInfo: visit, currentStage: 0};

@@ -55,10 +55,12 @@ class FirstVisitScreen extends React.Component {
             .then(cachedVisit => {
                 visitInfo = visitDao.setVisits(userId, cachedVisit.visitInfo);
                 this.setState({visitInfo: visitInfo, currentStage: readonly ? 0 : cachedVisit.currentStage, loaded: true});
+
             })
             .catch(err => {
                 doctorDao.saveCachedVisit(userId, {currentStage: 0, visitInfo: visitInfo});
                 this.setState({visitInfo: visitInfo, currentStage: 0, loaded: true});
+                console.log("USER CACHE FAILED", err);
             })
             .finally(() => {
             })

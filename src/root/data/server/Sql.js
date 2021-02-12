@@ -70,16 +70,16 @@ export const transactionQuery = (...statements) => {
     return transaction;
 }
 
-export const upsertQuery = (notExistsQuery, insertQuery, updateQuery) => {
+export const upsertQuery = (notExistsQuery, insertQuery, updateQuery, linePrefix='') => {
     let upsert = '';
-    upsert += `IF NOT EXISTS (${notExistsQuery})\n`;
-    upsert += "BEGIN\n";
-    upsert += insertQuery + '\n';
-    upsert += 'END\n';
+    upsert += linePrefix + `IF NOT EXISTS (${notExistsQuery})\n`;
+    upsert += linePrefix + "BEGIN\n";
+    upsert += linePrefix + insertQuery + '\n';
+    upsert += linePrefix + 'END\n';
 
-    upsert += 'ELSE\n';
-    upsert += "BEGIN\n";
-    upsert += updateQuery + '\n';
-    upsert += 'END';
+    upsert += linePrefix + 'ELSE\n';
+    upsert += linePrefix + "BEGIN\n";
+    upsert += linePrefix + updateQuery + '\n';
+    upsert += linePrefix + 'END';
     return upsert;
 }

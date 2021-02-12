@@ -92,7 +92,12 @@ export const listToString = (list, separator=',') => {
     if (!hasValue(list)) return "";
     let listStr = "";
     list.forEach((item, index) => {
-        listStr += item + index < list.length-1 ? separator : '';
+        listStr += item + (index < list.length-1 ? separator : '');
     })
     return listStr;
+}
+
+export const nullToBlank = (str) => {
+    if (!hasValue(str)) return '';
+    return str;
 }

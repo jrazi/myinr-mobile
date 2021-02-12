@@ -55,6 +55,7 @@ const ReasonForWarfarinPicker = (props) => {
     let [loaded, setLoaded] = useState(false);
     useEffect(() => {
         visit.current = visitDao.getVisits(props.userId);
+        console.log("VISIT CURRENT IS BRO", visit.current, "REASON WARFARIN", visit.current.reasonForWarfarin);
         medicalConditions.current.forEach(condition => {
             condition['value'] = firstNonEmpty(visit.current.reasonForWarfarin[condition.id], false);
         });

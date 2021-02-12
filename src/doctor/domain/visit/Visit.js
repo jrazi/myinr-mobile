@@ -217,7 +217,13 @@ export class FirstVisit {
 
         // Physical Exam
         // pressure sys-dis separated by dash
-        visit.physicalExam.bloodPressureSystolic = normalize(info.BloodPressure);
+        let bloodPressures = normalizeStrangeListAsString(info.BloodPressure, '-', '/');
+        if (!hasValue(bloodPressures)) bloodPressures = ['', ''];
+        if (!hasValue(bloodPressures[0])) bloodPressures[0] = '';
+        if (!hasValue(bloodPressures[1])) bloodPressures[1] = '';
+
+        visit.physicalExam.bloodPressureSystolic = bloodPressures[0];
+        visit.physicalExam.bloodPressureDiastolic = bloodPressures[1];
         visit.physicalExam.heartBeat = normalize(info.PulseRate);
         visit.physicalExam.respiratoryRate = normalize(info.RespiratoryRate);
 
