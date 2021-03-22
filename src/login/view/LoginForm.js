@@ -55,23 +55,30 @@ class LoginForm extends React.Component {
             });
         }
         this.changeSubmissionStatus(FormSubmissionStatus.SUBMITTING, () => {
-            serverGateway.fetchUserDataWithLogin(credentials.username, credentials.password).then(user => {
-                rootDao.saveUser(user).then(() => {
-                    this.changeSubmissionStatus(FormSubmissionStatus.NOT_SUBMITTING, () => {
-                        if (user.role === UserRole.PATIENT) reset(Screen.PATIENT);
-                        else if (user.role === UserRole.DOCTOR) reset(Screen.DOCTOR);
-                    });
+            serverGateway.fetchUserDataWithLogin(credentials.username, credentials.password).then(async (data) => {
+                console.log('now data is', data);
+                const user = data.details;
+                const token = data.accessToken;
+
+                await rootDao.saveAccessToken(token);
+                await rootDao.saveUser(user);
+
+                this.changeSubmissionStatus(FormSubmissionStatus.NOT_SUBMITTING, () => {
+                    if (user.userInfo.role === UserRole.PATIENT) reset(Screen.PATIENT);
+                    else if (user.userInfo.role === UserRole.DOCTOR) reset(Screen.DOCTOR);
                 });
+
             }).catch(error => {
                 this.changeSubmissionStatus(FormSubmissionStatus.NOT_SUBMITTING, () => {
-                    const serverErrorType = getErrorType(error);
+                    const code = error.code;
                     let message = '';
-                    switch (serverErrorType) {
+                    switch (code) {
                         case ErrorType.RECORD_NOT_FOUND:
+                        case ErrorType.USERNAME_PASSWORD_MISMATCH:
                             message = 'نام کاربری یا رمز عبور اشتباه است';
                             break;
                         default:
-                            message = 'خطایی در ارتباط با سرور رخ داده است';
+                            message = 'خطا در ارتباط با سرور';
                             break;
                     }
                     this.setState({

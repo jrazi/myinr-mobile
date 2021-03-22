@@ -7,8 +7,7 @@ export function withTimeout(ms, promise) {
             reject({
                 errorType: ErrorType.TIMEOUT,
             })
-        }, ms)
-
+        }, ms);
         promise
             .then(value => {
                 clearTimeout(timer)

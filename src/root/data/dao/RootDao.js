@@ -17,6 +17,7 @@ class RootDao {
     }
 
     async getUser() {
+        console.log('going to get userrr');
         if (!this.tempTimeToUpdate() && this.user != null) return this.user;
 
         let user = await this.rootRepository.getUser();
@@ -60,6 +61,16 @@ class RootDao {
         this.user = null;
         this.tempLastUpdate = new Date('2018-01-01').getTime()/1000;
         return user;
+    }
+
+    async saveAccessToken(token) {
+        let savedToken = await this.rootRepository.saveAccessToken(token);
+        return savedToken;
+    }
+
+    async getAccessToken() {
+        let token = await this.rootRepository.getAccessToken();
+        return token;
     }
 
     getLocale() {

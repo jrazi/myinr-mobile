@@ -1,3 +1,4 @@
 import StupidButRealServerGateway from "./StupidServer";
+import WebServiceGateway from "./WebServiceGateway";
 
-export const serverGateway = new StupidButRealServerGateway();
+export const serverGateway = new WebServiceGateway();
