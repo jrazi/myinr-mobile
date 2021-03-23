@@ -136,7 +136,7 @@ export class FirstVisit {
         const allWarfarinReasons = PreliminaryStage.REASON_FOR_WARFARIN_CONDITIONS;
         const allHeartValveConditions = PreliminaryStage.HEART_VALVE_REPLACEMENT_CONDITIONS;
         visit.reasonForWarfarin = {};
-        visit.heartValveReplacementCondition = {
+        visit.heartValveReplacementConditions = {
             replaced: false,
             conditionType: {},
         }
@@ -147,10 +147,10 @@ export class FirstVisit {
         })
         allHeartValveConditions.forEach(condition => {
             if (warfarinReasonList.includes(condition.id.toString())) {
-                visit.heartValveReplacementCondition.replaced = true;
-                visit.heartValveReplacementCondition.conditionType[condition.id] = true;
+                visit.heartValveReplacementConditions.replaced = true;
+                visit.heartValveReplacementConditions.conditionType[condition.id] = true;
             }
-            else visit.heartValveReplacementCondition.conditionType[condition.id] = false;
+            else visit.heartValveReplacementConditions.conditionType[condition.id] = false;
         })
 
 
@@ -159,15 +159,15 @@ export class FirstVisit {
 
         // In case used warfarin
         visit.firstWarfarin.dateOfFirstWarfarin = normalize(info.dateoffirstWarfarin);
-        visit.firstWarfarin.isFirstTime = !hasValue(visit.firstWarfarin.dateOfFirstWarfarin);
-        visit.firstWarfarin.weeklyDosage = {};
-        visit.firstWarfarin.weeklyDosage.saturday = normalizeNumber(info.Saturday)*1.25;
-        visit.firstWarfarin.weeklyDosage.sunday = normalizeNumber(info.Sunday)*1.25;
-        visit.firstWarfarin.weeklyDosage.monday = normalizeNumber(info.Monday)*1.25;
-        visit.firstWarfarin.weeklyDosage.tuesday = normalizeNumber(info.Tuesday)*1.25;
-        visit.firstWarfarin.weeklyDosage.wednesday = normalizeNumber(info.Wednesday)*1.25;
-        visit.firstWarfarin.weeklyDosage.thursday = normalizeNumber(info.Thursday)*1.25;
-        visit.firstWarfarin.weeklyDosage.friday = normalizeNumber(info.Friday)*1.25;
+        visit.warfarinInfo.firstTimeWarfarin = !hasValue(visit.firstWarfarin.dateOfFirstWarfarin);
+        visit.warfarinInfo.lastWarfarinDosage = {};
+        visit.warfarinInfo.lastWarfarinDosage.saturday = normalizeNumber(info.Saturday)*1.25;
+        visit.warfarinInfo.lastWarfarinDosage.sunday = normalizeNumber(info.Sunday)*1.25;
+        visit.warfarinInfo.lastWarfarinDosage.monday = normalizeNumber(info.Monday)*1.25;
+        visit.warfarinInfo.lastWarfarinDosage.tuesday = normalizeNumber(info.Tuesday)*1.25;
+        visit.warfarinInfo.lastWarfarinDosage.wednesday = normalizeNumber(info.Wednesday)*1.25;
+        visit.warfarinInfo.lastWarfarinDosage.thursday = normalizeNumber(info.Thursday)*1.25;
+        visit.warfarinInfo.lastWarfarinDosage.friday = normalizeNumber(info.Friday)*1.25;
 
         // INR
         visit.inr.targetRange = normalizeListAsString(info.INRtargetrange, '-');
@@ -294,7 +294,7 @@ export class FirstVisit {
         }
 
         console.log("FINALIZED_VISIT",
-            visit.firstWarfarin.weeklyDosage,
+            visit.warfarinInfo.lastWarfarinDosage,
             "FINALIZED_VISIT");
         // First Recommended Dosage
         // visit.recommendedDosage.dosageId = normalize(info.IDDosage);

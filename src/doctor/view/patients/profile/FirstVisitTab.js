@@ -81,7 +81,7 @@ class _FirstVisitTab extends React.Component {
                         <ScreenLayout>
                             <FirstVisitInfo visitInfo={value.firstVisit.visitInfo}/>
                             <View style={styles.fabContainer}>
-                                <ConditionalRender hidden={value.firstVisit.visitInfo.flags.isEnded == true}>
+                                <ConditionalRender hidden={!value.firstVisit.visitInfo.flags.isEnded}>
                                     <View style={styles.fabWrapper}>
                                         <FAB
                                             style={[styles.fab,]}
@@ -90,7 +90,7 @@ class _FirstVisitTab extends React.Component {
                                         />
                                     </View>
                                 </ConditionalRender>
-                                <ConditionalRender hidden={value.firstVisit.visitInfo.flags.isEnded == false}>
+                                <ConditionalRender hidden={value.firstVisit.visitInfo.flags.isEnded }>
                                     <View style={styles.fabWrapper}>
                                         <FAB
                                             style={[styles.fab,]}
@@ -99,7 +99,7 @@ class _FirstVisitTab extends React.Component {
                                         />
                                     </View>
                                 </ConditionalRender>
-                                <ConditionalRender hidden={value.firstVisit.visitInfo.flags.isEnded == false}>
+                                <ConditionalRender hidden={value.firstVisit.visitInfo.flags.isEnded }>
                                     <View style={styles.fabWrapper}>
                                         <FAB
                                             style={[styles.fab, {

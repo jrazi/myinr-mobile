@@ -84,7 +84,7 @@ const firstVisitTableUpsertQuery = (patientUserId, firstVisit) => {
     dao.ReasonforusingWarfarin = mergeListStrings(
         '-',
         listToString(getListOfTrues(firstVisit.reasonForWarfarin)),
-        listToString(getListOfTrues(firstVisit.heartValveReplacementCondition.conditionType))
+        listToString(getListOfTrues(firstVisit.heartValveReplacementConditions.conditionType))
     );
 
     dao.INRtargetrange = listToString(firstVisit.inr.targetRange, '-');

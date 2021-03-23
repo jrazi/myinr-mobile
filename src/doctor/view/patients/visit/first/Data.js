@@ -36,7 +36,15 @@ export const PreliminaryStage = {
             id: '8',
             name: 'TVR',
         },
-    ]
+    ],
+    findConditionById(id) {
+        const cond = this.REASON_FOR_WARFARIN_CONDITIONS.find(item => item.id == id);
+        return cond || null;
+    },
+    findHeartValveReplacementConditionById(id) {
+        const cond = this.HEART_VALVE_REPLACEMENT_CONDITIONS.find(item => item.id == id);
+        return cond || null;
+    }
 }
 
 export const PastMedicalHistoryStageData = {

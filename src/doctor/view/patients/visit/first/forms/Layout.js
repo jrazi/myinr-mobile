@@ -207,7 +207,7 @@ export const IntraSectionInvisibleDivider = (props) => {
 }
 
 export const ConditionalRender = (props) => {
-    if (props.hidden) return null;
+    if ((props.hidden == true) || (props.visible == false)) return null;
     else return props.children;
 }
 
