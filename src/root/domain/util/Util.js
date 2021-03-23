@@ -189,6 +189,29 @@ export function firstNonEmpty(...values) {
     return null;
 }
 
+export function getJalaliDateInDisplayableFormat({year=null, month=null, day=null}) {
+
+    if (!(year && month) && !(month && day)) {
+        return "";
+    }
+    let customFormat = `${((year && month && day) || '') && 'dddd'} ${(day || '') && 'DD'} ${(month || '') && 'MMMM'} ${(year || '') && 'YYYY'}`.trim();
+    year = (year || "").toString() || "00";
+    month = (month || "").toString() || "00";
+    day = (day || "").toString() || "00";
+
+
+    let date = jalaliYMDToGeorgian(year, month, day);
+
+
+    if (!hasValue(date) || !hasValue(date.getFullYear) )
+        return "";
+
+    const jDate = new jd.default(date);
+    const dateStr = jDate.format(customFormat);
+    return e2p(dateStr);
+}
+
+
 export function getFormattedJalaliDate(date, customFormat='dddd DD MMMM') {
     if (!hasValue(date)) date = new Date(Date.now());
     const jDate = new jd.default(date);

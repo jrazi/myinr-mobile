@@ -1,6 +1,6 @@
 
 export const UserRole = {
-    PATIENT: 0,
+    PATIENT: 3,
     DOCTOR: 1,
     NURSE: 2,
 }

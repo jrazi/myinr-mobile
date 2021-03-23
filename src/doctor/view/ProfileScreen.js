@@ -2,7 +2,7 @@ import React from "react";
 import {StyleSheet, View} from "react-native";
 import {serverGateway} from "../../root/data/server/ServerGateway";
 import {rootDao} from "../../root/data/dao/RootDao";
-import {guessGender} from "../../root/domain/util/Util";
+import {guessGender, hasValue} from "../../root/domain/util/Util";
 import * as Profile from '../../root/view/screen/Profile';
 
 class ProfileScreen extends React.Component {
@@ -45,7 +45,7 @@ class ProfileScreen extends React.Component {
             <>
                 <Profile.Screen
                     title={this.state.user.fullName}
-                    caption={this.state.user.clinic != undefined ? this.state.user.clinic.name : null}
+                    caption={hasValue((this.state.user.workPlaces || [])[0]) ? this.state.user.workPlaces[0].name : null}
                     gender={guessGender(this.state.user) == 'F' ? 'F' : 'M'}
                     menu={[
                         {

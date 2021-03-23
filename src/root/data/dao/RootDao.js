@@ -17,7 +17,6 @@ class RootDao {
     }
 
     async getUser() {
-        console.log('going to get userrr');
         if (!this.tempTimeToUpdate() && this.user != null) return this.user;
 
         let user = await this.rootRepository.getUser();
@@ -30,7 +29,7 @@ class RootDao {
         if (userMeta == null) return null;
 
         try {
-            user = await serverGateway.fetchUserDataWithUsername(userMeta.username);
+            user = await serverGateway.fetchUserDataWithUsername(userMeta.userId);
             await this.saveUser(user);
         } catch (err) {
             user = await this.getOfflineUser();

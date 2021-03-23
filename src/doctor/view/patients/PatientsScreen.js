@@ -34,8 +34,9 @@ import {
 import {FilterTagBox, PatientsListFilterBox} from "./FilterTagBox";
 import {EmptyList} from "../../../root/view/list/EmptyListMessage";
 import {VisitRedirect} from "./VisitRedirect";
-import {doctorDao, VisitState} from "../../data/dao/DoctorDao";
+import {doctorDao} from "../../data/dao/DoctorDao";
 import {debugBorderBlue, debugBorderRed} from "../../../root/view/styles/borders";
+import Patient from "../../../root/domain/Patient";
 
 class PatientsScreen extends React.Component {
     constructor(props) {
@@ -60,10 +61,10 @@ class PatientsScreen extends React.Component {
 
     refresh = () => {
         this.setState({loading: true}, () => {
-            rootDao.withRefresh()
-                .getUser()
-                .then(user => {
-                    this.setPatients(user.patients, {loading: false,});
+            doctorDao.withRefresh()
+                .getPatientsList()
+                .then(patients => {
+                    this.setPatients(patients, {loading: false,});
                 })
                 .catch(err => {
                     this.setState({
@@ -105,7 +106,6 @@ class PatientsScreen extends React.Component {
         let filteredList = patients
             .filter(p => {
                 return safeIncludes(p.fullName, query) ||
-                    safeIncludes(p.username, query) ||
                     (
                         query.length > 3 &&
                         (
@@ -124,13 +124,13 @@ class PatientsScreen extends React.Component {
         const medicalConditionFilterEnabled = (filters.MVR ^ filters.AVR) || (filters.MVR ^ filters.VALVULAR_AF);
 
         let filteredList = patients
-            .filter(p => !visitFilterEnabled || (filters.VISITED && p.visited) || (filters.NOT_VISITED && !p.visited))
+            .filter(p => !visitFilterEnabled || (filters.VISITED && p.firstVisitStatus.started) || (filters.NOT_VISITED && !p.firstVisitStatus.started))
             .filter(p =>
                 !medicalConditionFilterEnabled || (
                     hasValue(p.medicalCondition) && (
-                        (filters.MVR && p.medicalCondition.includes('MVR')) ||
-                        (filters.AVR && p.medicalCondition.includes('AVR')) ||
-                        (filters.VALVULAR_AF && p.medicalCondition.includes('Valvular AF'))
+                        (filters.MVR && Patient.hasMedicalCondition(p, 'MVR') ) ||
+                        (filters.AVR && Patient.hasMedicalCondition(p, 'AVR') ) ||
+                        (filters.VALVULAR_AF && Patient.hasMedicalCondition(p, 'Valvular AF') )
                     )
                 )
             );
@@ -138,20 +138,12 @@ class PatientsScreen extends React.Component {
     }
 
     onPatientCardPress = (patient) => {
-        if (patient.visited) {
+        const firstVisitStatus = patient.firstVisitStatus;
+        if (firstVisitStatus.started) {
             this.props.navigation.navigate('PatientProfileScreen', {userId: patient.userId});
         }
         else {
-            doctorDao.getVisitState(patient.userId, patient)
-                .then(visitState => {
-                    patient.unfinishedVisit = visitState == VisitState.INCOMPLETE_VISIT;
-                    if (1 > 2 && patient.unfinishedVisit) {
-                        this.props.navigation.navigate('PatientProfileScreen', {userId: patient.userId});
-                    } else {
-                        this.setState({visitRedirect: {visible: true, activePatient: patient}});
-                    }
-                })
-                .catch(err => {})
+            this.setState({visitRedirect: {visible: true, activePatient: patient}});
         }
     }
 
@@ -167,7 +159,7 @@ class PatientsScreen extends React.Component {
             const displayPatient = normalizeDictForDisplay(patient, 'FA');
             patientInfoCards.push([
                 <PatientInfoCard
-                    key={patient.nationalId + patient.username}
+                    key={patient.userId + patient.nationalId}
                     index={index}
                     patientInfo={displayPatient}
                     onPress={() => this.onPatientCardPress(patient)}
@@ -205,11 +197,13 @@ class PatientsScreen extends React.Component {
                         </List.Section>
                     </View>
                 </ScrollView>
-                <VisitRedirect
-                    onDismiss={this.dismissVisitRedirect}
-                    visible={this.state.visitRedirect.visible}
-                    patient={this.state.visitRedirect.activePatient}
-                />
+                <ConditionalRender hidden={!hasValue(this.state.visitRedirect.activePatient.userId)}>
+                    <VisitRedirect
+                        onDismiss={this.dismissVisitRedirect}
+                        visible={this.state.visitRedirect.visible}
+                        patient={this.state.visitRedirect.activePatient}
+                    />
+                </ConditionalRender>
             </ScreenLayout>
         );
     }
@@ -338,7 +332,7 @@ const PatientCardDetails = (props) => {
     return ([
         <Row key={'first'}>
             <InfoItem
-                title={props.patientInfo.medicalCondition}
+                title={Patient.getMedicalConditionsListAsString(props.patientInfo)}
                 customIcon={<MaterialCommunityIcons name="stethoscope" size={20} color={theme.colors.placeholder}/>}
             />
             <InfoItem

@@ -1,7 +1,7 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
 import {ScreenHeader, ScreenLayout} from "../../../../root/view/screen/Layout";
-import {doctorDao, VisitState} from "../../../data/dao/DoctorDao";
+import {doctorDao} from "../../../data/dao/DoctorDao";
 import {hasValue} from "../../../../root/domain/util/Util";
 import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
 import {FAB, Title, withTheme} from 'react-native-paper';
@@ -11,7 +11,7 @@ import {doctorService} from "../../../data/server/DoctorServiceGateway";
 import {LoadingScreen} from "../../../../root/view/loading/Loading";
 
 const Tab = createMaterialTopTabNavigator();
-export const PatientProfileContext = React.createContext({patient: {}, visitState: {}, firstVisit: {}, visits: []});
+export const PatientProfileContext = React.createContext({patient: {}, firstVisit: {}, visits: []});
 
 class PatientProfileScreen extends React.Component {
     constructor(props) {
@@ -19,12 +19,10 @@ class PatientProfileScreen extends React.Component {
         this.state = {
             patient: {},
             loaded: false,
-            visitState: null,
             firstVisit: {},
         }
         this.patientInfoLoaded = false;
         this.visitInfoLoaded = false;
-        this.visitStateLoaded = false;
     }
 
     componentDidMount = () => {
@@ -34,7 +32,7 @@ class PatientProfileScreen extends React.Component {
 
     updateLoadedStatus = () => {
         let loaded = false;
-        if (this.patientInfoLoaded && this.visitStateLoaded && this.visitInfoLoaded)
+        if (this.patientInfoLoaded &&  this.visitInfoLoaded)
             loaded = true;
         this.setState({loaded: loaded});
     }
@@ -42,7 +40,6 @@ class PatientProfileScreen extends React.Component {
     refresh = () => {
         this.patientInfoLoaded = false;
         this.visitInfoLoaded = false;
-        this.visitStateLoaded = false;
         this.setState({loaded: false}, () => {
             doctorDao.getPatientInfo(this.props.route.params.userId)
                 .then(patient => {
@@ -50,15 +47,9 @@ class PatientProfileScreen extends React.Component {
                     this.patientInfoLoaded = true;
                     this.updateLoadedStatus();
                 })
-                .catch(err => {})
-
-            doctorDao.getVisitState(this.props.route.params.userId)
-                .then(visitState => {
-                    this.setState({visitState: visitState});
-                    this.visitStateLoaded = true;
-                    this.updateLoadedStatus();
+                .catch(err => {
+                    console.warn(err);
                 })
-                .catch(err => {})
 
             doctorDao.getLocalFirstVisit(this.props.route.params.userId, true)
                 .then(firstVisit => {
@@ -66,7 +57,9 @@ class PatientProfileScreen extends React.Component {
                     this.visitInfoLoaded = true;
                     this.updateLoadedStatus();
                 })
-                .catch(err => {})
+                .catch(err => {
+                    console.warn(err);
+                })
         });
     }
 
@@ -81,7 +74,7 @@ class PatientProfileScreen extends React.Component {
         if (!this.state.loaded) return <LoadingScreen loaded={this.state.loaded}/>;
         return (
             <PatientProfileContext.Provider
-                value={{patient: this.state.patient, visitState: this.state.visitState, firstVisit: this.state.firstVisit, visits: []}}
+                value={{patient: this.state.patient, firstVisit: this.state.firstVisit, visits: []}}
             >
                 <ScreenLayout>
                     <ScreenHeader

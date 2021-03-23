@@ -39,8 +39,8 @@ export default class RootEntry extends React.Component {
 
         rootDao.getUser().then(user => {
             if (user == null) reset(Screen.LOGIN);
-            else if (user.role === UserRole.PATIENT) reset(Screen.PATIENT);
-            else if (user.role === UserRole.DOCTOR) reset(Screen.DOCTOR);
+            else if (user.userInfo.role === UserRole.PATIENT) reset(Screen.PATIENT);
+            else if (user.userInfo.role === UserRole.DOCTOR) reset(Screen.DOCTOR);
         }).catch(err => {
 
         });

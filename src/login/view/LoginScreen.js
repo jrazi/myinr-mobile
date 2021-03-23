@@ -22,13 +22,13 @@ class LoginScreen extends React.Component {
     componentDidMount() {
         rootDao.getUser().then(user => {
             if (user == null) return;
-            if (user.role == UserRole.PATIENT) {
+            if (user.userInfo.role == UserRole.PATIENT) {
                 this.props.navigation.reset({
                     index: 0,
                     routes: [{name: 'PATIENT'}],
                 });
             }
-            else if (user.role == UserRole.DOCTOR) {
+            else if (user.userInfo.role == UserRole.DOCTOR) {
                 this.props.navigation.reset({
                     index: 0,
                     routes: [{name: 'DOCTOR'}],

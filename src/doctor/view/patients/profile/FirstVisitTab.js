@@ -1,6 +1,6 @@
 import React from "react";
 import {PatientProfileContext} from "./PatientProfileScreen";
-import {doctorDao, VisitState} from "../../../data/dao/DoctorDao";
+import {doctorDao} from "../../../data/dao/DoctorDao";
 import {ScreenLayout} from "../../../../root/view/screen/Layout";
 import {
     Button,
@@ -27,7 +27,7 @@ import {FirstVisit} from "../../../domain/visit/Visit";
 import {
     firstNonEmpty,
     getFormattedJalaliDate,
-    getFormattedJalaliDateTime,
+    getFormattedJalaliDateTime, getJalaliDateInDisplayableFormat,
     hasValue
 } from "../../../../root/domain/util/Util";
 import {debugBorderRed} from "../../../../root/view/styles/borders";
@@ -62,8 +62,6 @@ class _FirstVisitTab extends React.Component {
         this.setState({doingAction: true}, () => {
             setTimeout(() => {
                 const visit = visitDao.getVisits(this.props.route.params.userId);
-                visit.finishDate = new Date().toString();
-                visit.finished = true;
                 const info = {
                     currentStage: 0,
                     visitInfo: visit,
@@ -83,7 +81,7 @@ class _FirstVisitTab extends React.Component {
                         <ScreenLayout>
                             <FirstVisitInfo visitInfo={value.firstVisit.visitInfo}/>
                             <View style={styles.fabContainer}>
-                                <ConditionalRender hidden={value.firstVisit.visitInfo.finished != true}>
+                                <ConditionalRender hidden={value.firstVisit.visitInfo.flags.isEnded == true}>
                                     <View style={styles.fabWrapper}>
                                         <FAB
                                             style={[styles.fab,]}
@@ -92,7 +90,7 @@ class _FirstVisitTab extends React.Component {
                                         />
                                     </View>
                                 </ConditionalRender>
-                                <ConditionalRender hidden={value.firstVisit.visitInfo.finished == true}>
+                                <ConditionalRender hidden={value.firstVisit.visitInfo.flags.isEnded == false}>
                                     <View style={styles.fabWrapper}>
                                         <FAB
                                             style={[styles.fab,]}
@@ -101,7 +99,7 @@ class _FirstVisitTab extends React.Component {
                                         />
                                     </View>
                                 </ConditionalRender>
-                                <ConditionalRender hidden={value.firstVisit.visitInfo.finished == true}>
+                                <ConditionalRender hidden={value.firstVisit.visitInfo.flags.isEnded == false}>
                                     <View style={styles.fabWrapper}>
                                         <FAB
                                             style={[styles.fab, {
@@ -130,6 +128,7 @@ class _FirstVisitTab extends React.Component {
 export const FirstVisitTab = withTheme(_FirstVisitTab);
 
 const FirstVisitInfo = (props) => {
+    const visitStartDate = props.visitInfo.visitDate.details || {};
     return (
         <View style={{paddingTop: 10,}}>
             {/*<Title>مشخصات ویزیت اول</Title>*/}
@@ -137,27 +136,27 @@ const FirstVisitInfo = (props) => {
                 <FirstVisitInfoRow>
                     <FirstVisitInfoItem
                         title={'وضعیت'}
-                        value={props.visitInfo.finished ? 'به اتمام رسیده' : 'تایید نشده'}
-                        itemIcon={props.visitInfo.finished ? 'check-all' : 'timer-sand'}
+                        value={props.visitInfo.flags.isEnded ? 'به اتمام رسیده' : 'تایید نشده'}
+                        itemIcon={props.visitInfo.flags.isEnded ? 'check-all' : 'timer-sand'}
                     />
                     <FirstVisitInfoItem
                         title={'تاریخ شروع'}
-                        value={hasValue(props.visitInfo.startDate) ? getFormattedJalaliDateTime(new Date(props.visitInfo.startDate)) : 'نامشخص'}
+                        value={getJalaliDateInDisplayableFormat({year: visitStartDate.visitYear, month: visitStartDate.visitMonth, day: visitStartDate.visitDay}) || 'نامشخص'}
                         itemIcon={'calendar'}
                     />
                 </FirstVisitInfoRow>
                 <FirstVisitInfoRow>
-                    <ConditionalRender hidden={props.visitInfo.finished}>
+                    <ConditionalRender hidden={props.visitInfo.flags.isEnded}>
                         <FirstVisitInfoItem
                             title={'آخرین ویرایش'}
-                            value={hasValue(props.visitInfo.lastEditDate) ? getFormattedJalaliDateTime(new Date(props.visitInfo.lastEditDate)) : 'نامشخص'}
+                            value={getJalaliDateInDisplayableFormat({}) || 'نامشخص'}
                             itemIcon={'calendar-edit'}
                         />
                     </ConditionalRender>
-                    <ConditionalRender hidden={!props.visitInfo.finished}>
+                    <ConditionalRender hidden={!props.visitInfo.flags.isEnded}>
                         <FirstVisitInfoItem
                             title={'تاریخ اتمام'}
-                            value={hasValue(props.visitInfo.finishDate) ? getFormattedJalaliDateTime(new Date(props.visitInfo.finishDate)) : 'نامشخص'}
+                            value={getJalaliDateInDisplayableFormat({year: visitStartDate.visitYear, month: visitStartDate.visitMonth, day: visitStartDate.visitDay}) || 'نامشخص'}
                             itemIcon={'calendar-check'}
                         />
                     </ConditionalRender>

@@ -1,6 +1,6 @@
 import {Button, Dialog, Portal, Subheading, useTheme} from "react-native-paper";
 import React, {useEffect, useState} from "react";
-import {doctorDao, VisitState} from "../../data/dao/DoctorDao";
+import {doctorDao} from "../../data/dao/DoctorDao";
 import {ScreenLayout} from "../../../root/view/screen/Layout";
 import {firstNonEmpty} from "../../../root/domain/util/Util";
 import {useRoute, useNavigation} from "@react-navigation/native";
@@ -18,7 +18,7 @@ export const VisitRedirect = (props) => {
 
     return (
         <StartVisitDialog
-            visitState={props.patient.visited ? VisitState.FOLLOWUP_VISIT : VisitState.FIRST_VISIT}
+            patient={props.patient}
             visible={props.visible}
             onDismiss={props.onDismiss}
             onBeginNew={() => startVisitSession(false)}
@@ -28,22 +28,18 @@ export const VisitRedirect = (props) => {
 }
 
 export const StartVisitDialog = (props) => {
-    if (props.visitState == VisitState.FIRST_VISIT) {
+    if (props.patient.firstVisitStatus.started == false) {
         return <StartFirstVisitDialog
             visible={props.visible} onDismiss={props.onDismiss} dismissable={true}
             onBeginNew={props.onBeginNew}
         />
-    } else if (props.visitState == VisitState.FOLLOWUP_VISIT) {
+    }
+    else if (props.patient.firstVisitStatus.flags.isEnded) {
         return <FollowupVisitNotImplementedDialog
             visible={props.visible} onDismiss={props.onDismiss} dismissable={true}
         />
-    } else if (props.visitState == VisitState.INCOMPLETE_VISIT) {
-        return <ContinueCachedVisitDialog
-            visible={props.visible} onDismiss={props.onDismiss} dismissable={true}
-            onBeginNew={props.onBeginNew}
-            onContinue={props.onContinuePrevious}
-        />
-    } else return null;
+    }
+    else return null;
 }
 export const ContinueCachedVisitDialog = (props) => {
     return (

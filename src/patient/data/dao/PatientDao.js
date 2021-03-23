@@ -8,7 +8,7 @@ export class PatientDao {
 
     async getUser() {
         let patient = await rootDao.getUser();
-        if (patient.role == UserRole.PATIENT) return patient;
+        if (patient.userInfo.role == UserRole.PATIENT) return patient;
         else return null;
     }
 

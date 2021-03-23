@@ -1,8 +1,8 @@
 import React from "react";
 import {View} from "react-native";
 import {FAB, Text, Subheading} from "react-native-paper";
-import {FollowupVisitNotImplementedDialog, StartVisitDialog} from "../VisitRedirect";
-import {doctorDao, VisitState} from "../../../data/dao/DoctorDao";
+import {FollowupVisitNotImplementedDialog} from "../VisitRedirect";
+import {doctorDao} from "../../../data/dao/DoctorDao";
 import {ScreenLayout} from "../../../../root/view/screen/Layout";
 import {StyleSheet} from "react-native";
 import {hasValue} from "../../../../root/domain/util/Util";
@@ -30,10 +30,6 @@ export class SecondaryVisitTab extends React.Component {
         return (
             <PatientProfileContext.Consumer>
                 {(value) => {
-                    const visitState =
-                        value.patient.visitCount > 1 && value.visitState == VisitState.FOLLOWUP_VISIT
-                            ? VisitState.FOLLOWUP_VISIT
-                            : value.patient.visitCount > 1 && value.visitState == VisitState.FOLLOWUP_VISIT
                     return (
                         <ScreenLayout>
                             <View>

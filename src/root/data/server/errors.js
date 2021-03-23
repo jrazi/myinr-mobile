@@ -8,6 +8,7 @@ export const ErrorType = {
     TIMEOUT: 'TIMEOUT',
     CONNECTION_FAILED: 'CONNECTION_FAILED',
     UNKNOWN: 'UNKNOWN',
+    UNAUTHORIZED: 'UNAUTHORIZED',
 }
 
 export function getErrorType(error) {

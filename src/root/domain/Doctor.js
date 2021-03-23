@@ -6,7 +6,7 @@ export default class Doctor {
     static ofDao(info) {
         let doctor = {};
         doctor.userId = normalize(info.IDUser);
-        doctor.doctorId = normalize(info.IDPhysician);
+        doctor.physicianId = normalize(info.IDPhysician);
         doctor.username = normalize(info.UsernameUser);
         doctor.fullName = joinNames(normalize(info.FNamePhysician), normalize(info.LNamePhysician));
         doctor.status = normalize(info.StatusUser);
@@ -16,11 +16,7 @@ export default class Doctor {
         doctor.nationalId = normalize(info.NIDPhysician);
         doctor.phone = normalize(info.PhonePhysician);
         doctor.patients = [];
-        doctor.clinic = {
-            id: normalize(info.IDAnsector),
-            name:  normalize(info.NameAnsector),
-            status:  normalize(info.StatusAncestor),
-        }
+        doctor.workPlaces = [];
         doctor.role = UserRole.DOCTOR;
         return doctor;
     }

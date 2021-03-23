@@ -23,7 +23,7 @@ class PatientApp extends React.Component {
     componentDidMount() {
         rootDao.getUser().then(user => {
             if (user == null) this.props.navigation.navigate('LOGIN');
-            else if (this.user.role = UserRole.PATIENT) this.props.navigation.navigate('LOGIN');
+            else if (user.userInfo.role == UserRole.PATIENT) this.props.navigation.navigate('LOGIN');
             else this.user = user;
         });
     }

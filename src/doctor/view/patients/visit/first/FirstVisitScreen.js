@@ -15,7 +15,7 @@ import {
 } from "react-native-paper";
 import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
 import {FirstVisit} from "../../../../domain/visit/Visit";
-import {doctorDao, VisitState} from "../../../../data/dao/DoctorDao";
+import {doctorDao} from "../../../../data/dao/DoctorDao";
 import StageNavigator from "./StageNavigator";
 import {stages} from "./FirstVisitProperties";
 import {debugBorderRed} from "../../../../../root/view/styles/borders";

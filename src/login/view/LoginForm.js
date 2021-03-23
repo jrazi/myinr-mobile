@@ -56,7 +56,6 @@ class LoginForm extends React.Component {
         }
         this.changeSubmissionStatus(FormSubmissionStatus.SUBMITTING, () => {
             serverGateway.fetchUserDataWithLogin(credentials.username, credentials.password).then(async (data) => {
-                console.log('now data is', data);
                 const user = data.details;
                 const token = data.accessToken;
 
