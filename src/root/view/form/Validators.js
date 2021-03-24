@@ -43,7 +43,7 @@ export const SHORT_TEXT = Yup.string()
 
 export const BLOOD_PRESSURE = Yup.string()
     .nullable()
-    .min(3, 'Invalid value')
+    .min(1, 'Invalid value')
     .max(64, 'Too many characters')
 
 export const HEARTBEAT = Yup.number()

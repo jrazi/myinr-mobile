@@ -1,5 +1,4 @@
 import React from "react";
-import {PatientProfileContext} from "./PatientProfileScreen";
 import {doctorDao} from "../../../data/dao/DoctorDao";
 import {ScreenLayout} from "../../../../root/view/screen/Layout";
 import {
@@ -21,7 +20,6 @@ import {
 import {DialogMessage, FollowupVisitNotImplementedDialog, visitDialogStyles} from "../VisitRedirect";
 import {StyleSheet, View, ScrollView} from "react-native";
 import {ConditionalRender} from "../visit/first/forms/Layout";
-import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import {visitDao} from "../../../data/dao/VisitDao";
 import {FirstVisit} from "../../../domain/visit/Visit";
 import {
@@ -30,7 +28,7 @@ import {
     getFormattedJalaliDateTime, getJalaliDateInDisplayableFormat,
     hasValue
 } from "../../../../root/domain/util/Util";
-import {debugBorderRed} from "../../../../root/view/styles/borders";
+import {PatientProfileContext} from "./ContextProvider";
 
 class _FirstVisitTab extends React.Component {
     constructor(props) {

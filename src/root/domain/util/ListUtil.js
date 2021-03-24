@@ -3,6 +3,11 @@ import {hasValue} from "./Util";
 
 export default class ListUtil {
 
+    static containsElementWithId(list, id) {
+        const el = this.findOneById(list, id);
+        return el ? true : false;
+    }
+
     static findOneById(list, id) {
         if (!hasValue(list) || !hasValue(list.length)) return null;
 

@@ -49,23 +49,12 @@ export class FirstVisit {
             },
             bleedingOrClottingType: [],
             medicalHistory: {
-                majorSurgery: {
-                    active: false,
-                    info: null,
-                },
-                minorSurgery: {
-                    active: false,
-                    info: null,
-                },
-                hospitalAdmission: {
-                    active: false,
-                    info: null,
-                },
-                pastConditions: {
-
-                }
+                majorSurgery: "",
+                minorSurgery: "",
+                hospitalAdmission: "",
+                pastConditions: [],
             },
-            drugHistory: [],
+            medicationHistory: [],
             habit: [],
             physicalExam: {
                 bloodPressureSystolic: null,
@@ -75,13 +64,11 @@ export class FirstVisit {
             },
             cha2ds2Score: {
                 totalScore: 0,
-                ageGroup: null,
-                sex: null,
-                medicalHistory: {},
+                data: {},
             },
             hasBledScore: {
                 totalScore: 0,
-                medicalConditions: {},
+                data: {},
             },
             testResult: {
 
@@ -200,10 +187,10 @@ export class FirstVisit {
 
 
         // List drug history
-        visit.drugHistory = [];
+        visit.medicationHistory = [];
         if (hasValue(info._sub) && Array.isArray(info._sub.DrugHistory)) {
             let infoDrugHistory = info._sub.DrugHistory;
-            visit.drugHistory = infoDrugHistory.map(drugItem => {return {
+            visit.medicationHistory = infoDrugHistory.map(drugItem => {return {
                 drugInfo: {
                     DrugName: normalize(drugItem.Drug),
                 },
@@ -228,13 +215,13 @@ export class FirstVisit {
         visit.physicalExam.respiratoryRate = normalize(info.RespiratoryRate);
 
         // CHA--- whatever score
-        visit.cha2ds2Score.ageGroup = normalizeNumber(info.Age);
-        visit.cha2ds2Score.sex = normalizeNumber(normalize(info.Sex));
-        visit.cha2ds2Score.medicalHistory.heartFailureHistory = normalizeBoolean(normalize(info.HeartFailure));
-        visit.cha2ds2Score.medicalHistory.hypertensionHistory = normalizeBoolean(info.Hypertension);
-        visit.cha2ds2Score.medicalHistory.strokeHistory = normalizeBoolean(normalize(info.Stroke));
-        visit.cha2ds2Score.medicalHistory.vascular = normalizeBoolean(normalize(info.Vascular));
-        visit.cha2ds2Score.medicalHistory.diabetes = normalizeBoolean(normalize(info.Diabetes));
+        visit.cha2ds2Score.data.ageGroup = normalizeNumber(info.Age);
+        visit.cha2ds2Score.data.gender = normalizeNumber(normalize(info.Sex));
+        visit.cha2ds2Score.data.heartFailureHistory = normalizeBoolean(normalize(info.HeartFailure));
+        visit.cha2ds2Score.data.hypertensionHistory = normalizeBoolean(info.Hypertension);
+        visit.cha2ds2Score.data.strokeHistory = normalizeBoolean(normalize(info.Stroke));
+        visit.cha2ds2Score.data.vascular = normalizeBoolean(normalize(info.Vascular));
+        visit.cha2ds2Score.data.diabetes = normalizeBoolean(normalize(info.Diabetes));
 
 
         // Has-Bled score

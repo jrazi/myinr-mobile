@@ -6,13 +6,14 @@ import {ConditionalRender, IntraSectionDivider, IntraSectionInvisibleDivider} fr
 import {FirstVisit} from "../../../../domain/visit/Visit";
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {firstNonEmpty} from "../../../../../root/domain/util/Util";
+import ListUtil from "../../../../../root/domain/util/ListUtil";
 
 class DrugHistoryStage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loaded: false,
-            drugHistory: FirstVisit.createNew().drugHistory,
+            medicationHistory: FirstVisit.createNew().medicationHistory,
         }
 
     }
@@ -29,14 +30,14 @@ class DrugHistoryStage extends React.Component {
 
     refreshRecords = () => {
         this.setState({loaded: false}, () => {
-            this.state.drugHistory = visitDao.getVisits(this.props.route.params.userId).drugHistory;
+            this.state.medicationHistory = visitDao.getVisits(this.props.route.params.userId).medicationHistory;
             this.setState({loaded: true});
         })
     }
 
     deleteRecord = (id) => {
-        deleteItem(this.state.drugHistory, id);
-        this.setState({drugHistory: this.state.drugHistory});
+        ListUtil.removeById(this.state.medicationHistory, id);
+        this.setState({medicationHistory: this.state.medicationHistory});
     }
 
     render() {
@@ -63,7 +64,7 @@ class DrugHistoryStage extends React.Component {
                     </Layout.Row>
                 </View>
                 <IntraSectionInvisibleDivider s/>
-                <DrugRecords records={this.state.drugHistory} onDelete={this.deleteRecord} readonly={readonly}/>
+                <DrugRecords records={this.state.medicationHistory} onDelete={this.deleteRecord} readonly={readonly}/>
             </Layout.VisitScreen>
         );
     }
@@ -84,14 +85,13 @@ const DrugRecords = (props) => {
                     )
                 :
                 props.records.map((item, index) => {
-                    let drugInfo = item.drugInfo;
                     return (
-                        <View key={`DrugRecord${drugInfo.IDDrug}`}>
+                        <View key={`DrugRecord${item.id}`}>
                             <SingleDrugRecord
-                                name={drugInfo.DrugName}
-                                since={item.since}
-                                until={item.until}
-                                onDelete={() => props.onDelete(drugInfo.IDDrug)}
+                                name={item.drugName}
+                                since={item.startDate}
+                                until={item.endDate}
+                                onDelete={() => props.onDelete(item.id)}
                                 readonly={props.readonly}
                             />
                             {index == props.records.length-1 ? null : <IntraSectionDivider s/>}
@@ -125,11 +125,4 @@ const SingleDrugRecord = (props) => {
             </ConditionalRender>
         </Layout.Row>
     )
-}
-
-let deleteItem = (list, id) => {
-    let index = list.findIndex(item => item.drugInfo.IDDrug == id);
-    if (index == -1) return null;
-
-    return list.splice(index, 1);
 }

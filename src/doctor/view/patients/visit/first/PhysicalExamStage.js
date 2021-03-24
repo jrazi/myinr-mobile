@@ -32,6 +32,10 @@ export class PhysicalExamStage extends React.Component {
         this.physicalExamInfo[inputName] = data;
     }
 
+    handleInputChange = (changeFunction) => {
+        changeFunction();
+    }
+
     render() {
         const readonly = this.props.route.params.readonly;
         const TextInputRow = (props) => <_TextInputRow {...props} disabled={readonly}/>
@@ -40,10 +44,10 @@ export class PhysicalExamStage extends React.Component {
                 <Layout.ScreenTitle title={'Physical Exam'} />
                 <Formik
                     initialValues={{
-                        bloodPressureSystolic: this.physicalExamInfo.bloodPressureSystolic,
-                        bloodPressureDiastolic: this.physicalExamInfo.bloodPressureDiastolic,
-                        heartBeat: this.physicalExamInfo.heartBeat,
-                        respiratoryRate: this.physicalExamInfo.respiratoryRate,
+                        bloodPressureSystolic: !this.state.loaded ? "" : this.physicalExamInfo.bloodPressure.systolic,
+                        bloodPressureDiastolic: !this.state.loaded ? "" : this.physicalExamInfo.bloodPressure.diastolic,
+                        heartBeat: !this.state.loaded ? "" : this.physicalExamInfo.heartBeat,
+                        respiratoryRate: !this.state.loaded ? "" : this.physicalExamInfo.respiratoryRate,
                     }}
                     validationSchema={Yup.object({
                         bloodPressureSystolic: Validators.BLOOD_PRESSURE,
@@ -69,7 +73,9 @@ export class PhysicalExamStage extends React.Component {
                                     onChangeText={handleChange('bloodPressureSystolic')}
                                     onBlur={(event) => {
                                         handleBlur('bloodPressureSystolic')(event);
-                                        this.handleChange('bloodPressureSystolic', values.bloodPressureSystolic, true);
+                                        this.handleInputChange(() => {
+                                            this.physicalExamInfo.bloodPressure.systolic = values.bloodPressureSystolic;
+                                        });
                                     }}
                                     error={errors.bloodPressureSystolic}
                                 />
@@ -81,7 +87,9 @@ export class PhysicalExamStage extends React.Component {
                                     onChangeText={handleChange('bloodPressureDiastolic')}
                                     onBlur={(event) => {
                                         handleBlur('bloodPressureDiastolic')(event);
-                                        this.handleChange('bloodPressureDiastolic', values.bloodPressureDiastolic, true);
+                                        this.handleInputChange(() => {
+                                            this.physicalExamInfo.bloodPressure.diastolic = values.bloodPressureDiastolic;
+                                        });
                                     }}
                                     error={errors.bloodPressureDiastolic}
                                 />

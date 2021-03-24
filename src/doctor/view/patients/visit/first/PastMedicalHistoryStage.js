@@ -15,6 +15,7 @@ import {Formik} from "formik";
 import * as Yup from "yup";
 import * as Validators from "../../../../../root/view/form/Validators";
 import {FirstVisit} from "../../../../domain/visit/Visit";
+import ListUtil from "../../../../../root/domain/util/ListUtil";
 
 
 export class PastMedicalHistoryStage extends React.Component {
@@ -34,11 +35,12 @@ export class PastMedicalHistoryStage extends React.Component {
     }
 
     handleTextInputChange = (inputName, data, isValid) => {
-        this.medicalHistory[inputName].info = data;
+        this.medicalHistory[inputName] = data;
     }
 
     handleTextInputSwitchChange = (inputName, switchValue) => {
-        this.medicalHistory[inputName].active = switchValue;
+        if (switchValue === false)
+            this.medicalHistory[inputName] = "";
     }
 
     render() {
@@ -56,9 +58,9 @@ export class PastMedicalHistoryStage extends React.Component {
                 <Layout.FormSection>
                     <Formik
                         initialValues={{
-                            majorSurgery: this.medicalHistory.majorSurgery.info,
-                            minorSurgery: this.medicalHistory.minorSurgery.info,
-                            hospitalAdmission: this.medicalHistory.hospitalAdmission.info,
+                            majorSurgery: this.medicalHistory.majorSurgery,
+                            minorSurgery: this.medicalHistory.minorSurgery,
+                            hospitalAdmission: this.medicalHistory.hospitalAdmission,
                         }}
                         validationSchema={Yup.object({
                             majorSurgery: Validators.SHORT_TEXT,
@@ -85,7 +87,7 @@ export class PastMedicalHistoryStage extends React.Component {
                                             this.handleTextInputChange('majorSurgery', values.majorSurgery, true);
                                         }}
                                         error={errors.majorSurgery}
-                                        initialSwitchValue={this.medicalHistory['majorSurgery'].active}
+                                        initialSwitchValue={(this.medicalHistory.majorSurgery || "") != ""}
                                         onChangeSwitch={(value) => this.handleTextInputSwitchChange('majorSurgery', value)}
                                     />
                                     <MedicalInfoInput
@@ -99,7 +101,7 @@ export class PastMedicalHistoryStage extends React.Component {
                                             this.handleTextInputChange('minorSurgery', values.minorSurgery, true);
                                         }}
                                         error={errors.minorSurgery}
-                                        initialSwitchValue={this.medicalHistory['minorSurgery'].active}
+                                        initialSwitchValue={(this.medicalHistory.minorSurgery || "") != ""}
                                         onChangeSwitch={(value) => this.handleTextInputSwitchChange('minorSurgery', value)}
                                     />
                                     <MedicalInfoInput
@@ -113,7 +115,7 @@ export class PastMedicalHistoryStage extends React.Component {
                                             this.handleTextInputChange('hospitalAdmission', values.hospitalAdmission, true);
                                         }}
                                         error={errors.hospitalAdmission}
-                                        initialSwitchValue={this.medicalHistory['hospitalAdmission'].active}
+                                        initialSwitchValue={(this.medicalHistory.hospitalAdmission || "") != ""}
                                         onChangeSwitch={(value) => this.handleTextInputSwitchChange('hospitalAdmission', value)}
                                     />
                                 </View>
@@ -137,15 +139,24 @@ export const MedicalHistoryChipBox = (props) => {
         visit.current = visitDao.getVisits(props.userId);
         medicalConditions
             .forEach(condition => {
-                condition['value'] = firstNonEmpty(visit.current.medicalHistory.pastConditions[condition.id], false);
+                condition['value'] = ListUtil.containsElementWithId(visit.current.medicalHistory.pastConditions, condition.id);
             });
         setLoaded(true);
     }, []);
 
 
 
-    const changeValue = (id, value) => {visit.current.medicalHistory.pastConditions[id] = value};
-    
+    const changeValue = (id, value) => {
+        const pastConditions = visit.current.medicalHistory.pastConditions;
+        if (value == false) {
+            ListUtil.removeById(pastConditions, id);
+        }
+        else {
+            const condition = ListUtil.findOneById(medicalConditions, id);
+            ListUtil.addById(pastConditions, condition);
+        }
+    };
+
     return (
         <Layout.InputArea>
             <Layout.ItemsBox>

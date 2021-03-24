@@ -2,12 +2,10 @@ import React from "react";
 import {View} from "react-native";
 import {FAB, Text, Subheading} from "react-native-paper";
 import {FollowupVisitNotImplementedDialog} from "../VisitRedirect";
-import {doctorDao} from "../../../data/dao/DoctorDao";
 import {ScreenLayout} from "../../../../root/view/screen/Layout";
 import {StyleSheet} from "react-native";
-import {hasValue} from "../../../../root/domain/util/Util";
-import {PatientProfileContext} from "./PatientProfileScreen";
 import {EmptyList} from "../../../../root/view/list/EmptyListMessage";
+import {PatientProfileContext} from "./ContextProvider";
 
 export class SecondaryVisitTab extends React.Component {
     constructor(props) {

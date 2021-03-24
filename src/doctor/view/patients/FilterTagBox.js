@@ -84,7 +84,7 @@ export class FilterTagBox extends React.Component {
         const chipRows = [];
         this.props.filters.forEach((filterRow, index) => {
             chipRows.push(
-                <ConditionalCollapsibleRender hidden={!this.props.rowsVisibility[index]}>
+                <ConditionalCollapsibleRender hidden={!this.props.rowsVisibility[index]} key={index}>
                     <ChipRow
                         items={filterRow.filters}
                         radio={filterRow.radio}

@@ -28,20 +28,20 @@ class DrugDatePicker extends React.Component {
             sinceDate: null,
             untilDate: null,
         }
-        this.drugHistory = [];
+        this.medicationHistory = [];
     }
 
     componentDidMount() {
-        this.drugHistory = visitDao.getVisits(this.props.userId).drugHistory;
+        this.medicationHistory = visitDao.getVisits(this.props.userId).medicationHistory;
     }
 
     setSinceDate = (date) => this.setState({sinceDate: date});
     setUntilDate = (date) => this.setState({untilDate: date});
 
     addDrug = () => {
-        let index = this.drugHistory.findIndex(item => item.drugInfo.IDDrug == this.props.drugInfo.IDDrug);
+        let index = this.medicationHistory.findIndex(item => item.drugInfo.IDDrug == this.props.drugInfo.IDDrug);
         if (index < 0) {
-            this.drugHistory.push(
+            this.medicationHistory.push(
                 {
                     drugInfo: this.props.drugInfo,
                     since: this.state.sinceDate,
@@ -50,7 +50,7 @@ class DrugDatePicker extends React.Component {
             );
         }
         else {
-            this.drugHistory[index] = {
+            this.medicationHistory[index] = {
                 drugInfo: this.props.drugInfo,
                 since: this.state.sinceDate,
                 until: this.state.untilDate,

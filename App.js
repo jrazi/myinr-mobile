@@ -8,8 +8,8 @@ import {rootDao} from "./src/root/data/dao/RootDao";
 import {lightTheme, darkTheme} from "./theme";
 import RNRestart from 'react-native-restart';
 import {LoadingScreen} from "./src/root/view/loading/Loading";
+import {ThemeContext} from "./src/root/view/RootContextProvider";
 
-export const ThemeContext = React.createContext({changeTheme: (theme) => {}});
 
 export default class App extends React.Component {
 

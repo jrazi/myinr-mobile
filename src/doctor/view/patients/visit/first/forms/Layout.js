@@ -68,7 +68,7 @@ export const ScreenTitle = (props) => {
     const theme = useTheme();
     return (
         <View style={[styles.screenTitle, props.style]}>
-            <Headline style={{color: theme.colors.text, direction: 'left'}}>{props.title}</Headline>
+            <Headline style={{color: theme.colors.text}}>{props.title}</Headline>
             <ConditionalRender hidden={!hasValue(props.description)}>
                 <Caption>{props.description}</Caption>
             </ConditionalRender>

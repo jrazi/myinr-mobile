@@ -53,12 +53,16 @@ export const CustomContentScreenHeader = (props) => {
         >
             {
                 props.reverse ? [
-                        <Appbar.Action icon="arrow-right" size={28} onPress={goBackAction} color={theme.colors.placeholder}/>,
-                        props.children,
+                        <Appbar.Action key={'back-button'} icon="arrow-right" size={28} onPress={goBackAction} color={theme.colors.placeholder}/>,
+                        <React.Fragment key={'header-children'}>
+                            {props.children}
+                        </React.Fragment>
                 ] :
                 [
-                    props.children,
-                    <Appbar.Action icon="arrow-left" size={28} onPress={goBackAction} color={theme.colors.placeholder}/>
+                    <React.Fragment key={'header-children'}>
+                        {props.children}
+                    </React.Fragment>,
+                    <Appbar.Action key={'back-button'} icon="arrow-left" size={28} onPress={goBackAction} color={theme.colors.placeholder}/>
                 ]
             }
         </Appbar.Header>

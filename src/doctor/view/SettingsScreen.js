@@ -6,8 +6,8 @@ import {View} from 'react-native';
 import {rootDao} from "../../root/data/dao/RootDao";
 import {ConditionalCollapsibleRender, ConditionalRender} from "./patients/visit/first/forms/Layout";
 import {withTheme} from "react-native-paper";
-import {ThemeContext} from "../../../App";
 import {darkTheme, lightTheme} from "../../../theme";
+import {ThemeContext} from "../../root/view/RootContextProvider";
 
 
 class SettingsScreen extends React.Component {

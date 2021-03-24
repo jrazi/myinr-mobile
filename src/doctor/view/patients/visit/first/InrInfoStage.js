@@ -39,7 +39,7 @@ export class InrInfoStage extends React.Component {
     componentDidMount() {
         this.setState({loaded: false}, () => {
             this.inrTestInfo = visitDao.getVisits(this.props.route.params.userId).inr;
-            this.setState({latestInrAtHome: firstNonEmpty(this.inrTestInfo.testAtHome, false), loaded: true});
+            this.setState({latestInrAtHome: firstNonEmpty(this.inrTestInfo.lastInrTest.hasUsedPortableDevice, false), loaded: true});
         })
     }
 
@@ -51,8 +51,20 @@ export class InrInfoStage extends React.Component {
         this.inrTestInfo[inputName][index] = data;
     }
 
+    handleChange = (inputName, data, isValid) => {
+        this.inrTestInfo[inputName] = data;
+    }
+
+    handleObjectChange = (obj, key, value, isValid=true) => {
+        obj[key] = value;
+    }
+
+    changeValue = (changeFunction) => {
+        changeFunction();
+    }
 
     render() {
+
         const readonly = this.props.route.params.readonly;
         const DefaultTextInput = (props) => <_DefaultTextInput {...props} disabled={readonly}/>
         const DateInput = (props) => <_DateInput {...props} disabled={readonly}/>
@@ -62,10 +74,10 @@ export class InrInfoStage extends React.Component {
                 <Layout.ScreenTitle title={'INR Test'} description={'Results of the latest INR test'}/>
                 <Formik
                     initialValues={{
-                        inrResult: this.inrTestInfo.inrResult,
-                        testLocation: this.inrTestInfo.testLocation,
-                        targetRangeFrom: this.inrTestInfo.targetRange[0],
-                        targetRangeTo: this.inrTestInfo.targetRange[1],
+                        inrResult: !this.state.loaded ? "" : this.inrTestInfo.lastInrTest.lastInrValue,
+                        testLocation: !this.state.loaded ? "" : this.inrTestInfo.lastInrTest.lastInrTestLabInfo,
+                        targetRangeFrom: !this.state.loaded ? "" : this.inrTestInfo.inrTargetRange.from,
+                        targetRangeTo: !this.state.loaded ? "" : this.inrTestInfo.inrTargetRange.to,
                     }}
                     validationSchema={Yup.object({
                         inrResult: Validators.INR,
@@ -98,7 +110,9 @@ export class InrInfoStage extends React.Component {
                                     onChangeText={handleChange('inrResult')}
                                     onBlur={(event) => {
                                         handleBlur('inrResult')(event);
-                                        this.handleChange('inrResult', values.inrResult, true);
+                                        this.changeValue(() => {
+                                            this.inrTestInfo.lastInrTest.lastInrValue = values.inrResult
+                                        });
                                     }}
                                 />
                                 <Layout.TextInputHelperText type="error" visible={hasValue(errors.inrResult)}>
@@ -114,7 +128,9 @@ export class InrInfoStage extends React.Component {
                                         onChangeText={handleChange('testLocation')}
                                         onBlur={(event) => {
                                             handleBlur('testLocation')(event);
-                                            this.handleChange('testLocation', values.testLocation, true);
+                                            this.changeValue(() => {
+                                                this.inrTestInfo.lastInrTest.lastInrTestLabInfo = values.testLocation
+                                            });
                                         }}
                                         style={{}}
                                     />
@@ -126,7 +142,11 @@ export class InrInfoStage extends React.Component {
                                 <Layout.InputTitle title={'Test Date'}/>
                                 <DateInput
                                     placeholder={"Date of INR Test"}
-                                    onDateChange={(date) => this.handleChange('testDate', date, true)}
+                                    onDateChange={(date => {
+                                        this.changeValue(() => {
+                                            this.inrTestInfo.lastInrTest.dateOfLastInrTest = date
+                                        });
+                                    })}
                                     initialValue={this.inrTestInfo.testDate}
                                 />
                                 <Layout.IntraSectionInvisibleDivider sm/>
@@ -142,7 +162,10 @@ export class InrInfoStage extends React.Component {
                                             onChangeText={handleChange('targetRangeFrom')}
                                             onBlur={(event) => {
                                                 handleBlur('targetRangeFrom')(event);
-                                                this.handleArrayChange('targetRange', 0, values.targetRangeFrom, true);
+                                                this.changeValue(() => {
+                                                    this.inrTestInfo.inrTargetRange.from = values.targetRangeFrom
+                                                });
+
                                             }}
                                         />
                                         <Layout.TextInputHelperText type="error" visible={hasValue(errors.targetRangeFrom)}>
@@ -159,7 +182,10 @@ export class InrInfoStage extends React.Component {
                                             onChangeText={handleChange('targetRangeTo')}
                                             onBlur={(event) => {
                                                 handleBlur('targetRangeTo')(event);
-                                                this.handleArrayChange('targetRange', 1, values.targetRangeTo, true);
+                                                this.changeValue(() => {
+                                                    this.inrTestInfo.inrTargetRange.to = values.targetRangeTo
+                                                });
+
                                             }}
                                         />
                                         <Layout.TextInputHelperText type="error" visible={hasValue(errors.targetRangeTo)}>

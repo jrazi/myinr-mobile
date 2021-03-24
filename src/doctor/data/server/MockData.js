@@ -1,3 +1,146 @@
+export const firstVisitAbd =
+{
+    "status": 200,
+    "code": "SUCCESS",
+    "message": "",
+    "data": {
+    "firstVisit": {
+        "warfarinInfo": {
+            "reasonForWarfarin": {
+                "conditions": [
+                    {
+                        "id": 1,
+                        "name": "DVT",
+                        "groupId": 1
+                    },
+                    {
+                        "id": 4,
+                        "name": "Valvular AF",
+                        "groupId": 1
+                    }
+                ],
+                    "heartValveReplacementConditions": [
+                    {
+                        "id": 7,
+                        "name": "AVR",
+                        "groupId": 2
+                    }
+                ]
+            },
+            "dateOfFirstWarfarin": "",
+                "lastWarfarinDosage": {
+                "id": 3041,
+                    "patientUserId": 9139,
+                    "saturday": "0",
+                    "sunday": "0",
+                    "monday": "0",
+                    "tuesday": "4",
+                    "wednesday": "16",
+                    "thursday": "0",
+                    "friday": "3"
+            },
+            "firstTimeWarfarin": false
+        },
+        "inr": {
+            "inrTargetRange": {
+                "from": "2.8",
+                    "to": "3.4"
+            },
+            "nextInrCheckDate": "",
+                "lastInrTest": {
+                "hasUsedPortableDevice": true,
+                    "dateOfLastInrTest": "1399/10/11",
+                    "lastInrValue": "4.2",
+                    "lastInrTestLabInfo": ""
+            }
+        },
+        "testResult": {
+            "Hb": "",
+                "Hct": "",
+                "Plt": "",
+                "Bun": "",
+                "Urea": "",
+                "Cr": "",
+                "Na": "",
+                "K": "",
+                "Alt": "",
+                "Ast": ""
+        },
+        "medicalHistory": {
+            "majorSurgery": "Yep",
+                "minorSurgery": "Nope",
+                "hospitalAdmission": "",
+                "pastConditions": [
+                {
+                    "id": 35,
+                    "name": "Hyperlipidemia",
+                    "groupId": 4
+                },
+                {
+                    "id": 37,
+                    "name": "Stroke",
+                    "groupId": 4
+                }
+            ]
+        },
+        "physicalExam": {
+            "bloodPressure": {
+                "systolic": "18",
+                    "diastolic": "18"
+            },
+            "heartBeat": "75",
+                "respiratoryRate": "75"
+        },
+        "echocardiography": {
+            "EF": "",
+                "LAVI": "",
+                "comment": ""
+        },
+        "flags": {
+            "visitFlag": false,
+                "isSaved": true,
+                "isEnded": true
+        },
+        "visitDate": {
+            "value": "98/03/20",
+                "details": {
+                "visitDay": "20",
+                    "visitMonth": "03",
+                    "visitYear": "98"
+            }
+        },
+        "bleedingOrClottingTypes": [],
+            "electrocardiography": {
+            "ecg": null,
+                "avrBlock": null
+        },
+        "habit": [
+            {
+                "id": 44,
+                "name": "Opium Addiction",
+                "groupId": 5
+            }
+        ],
+            "id": 4057,
+            "patientUserId": 9139,
+            "dateOfDiagnosis": "1399/05/11",
+            "drugHistory": 1,
+            "reportComment": "OK GOOD BT",
+            "medicationHistory": [
+                {
+                    "id": 3091,
+                    "patientUserId": 9139,
+                    "drugName": "Acetaminophen+Caffeine+Ibuprofen ",
+                    "startDate": "1399/09/20",
+                    "endDate": null
+                }
+            ],
+        "hasBledScore": null,
+        "cha2ds2Score": null
+    }
+}
+}
+
 export const firstVisitWebService = {
     "status": 200,
     "code": "SUCCESS",
@@ -49,15 +192,15 @@ export const firstVisitWebService = {
             },
             "medicalHistory": {
                 "majorSurgery": "",
-                    "minorSurgery": "",
-                    "hospitalAdmission": "1396/10/29-1399/8/16-1399/10/21بعلت عدم تنظیم وارفارین و عوارض خونریزی دهنده",
-                    "pastConditions": [
-                    {
-                        "id": 35,
-                        "name": "Hyperlipidemia",
-                        "groupId": 4
-                    }
-                ]
+                "minorSurgery": "",
+                "hospitalAdmission": "1396/10/29-1399/8/16-1399/10/21بعلت عدم تنظیم وارفارین و عوارض خونریزی دهنده",
+                "pastConditions": [
+                {
+                    "id": 35,
+                    "name": "Hyperlipidemia",
+                    "groupId": 4
+                }
+            ]
             },
             "physicalExam": {
                 "bloodPressure": {
@@ -80,9 +223,15 @@ export const firstVisitWebService = {
             "inr": {
                 "inrTargetRange": {
                     "from": "2.5",
-                        "to": "3.5"
+                    "to": "3.5"
                 },
-                "nextInrCheckDate": "1399/12/18"
+                "nextInrCheckDate": "1399/12/18",
+                "lastInrTest": {
+                    "hasUsedPortableDevice": false,
+                    "dateOfLastInrTest": "1399/12/02",
+                    "lastInrValue": "1.6",
+                    "lastInrTestLabInfo": "laboratory"
+                }
             },
             "visitDate": {
                 "value": "98/03/20",
@@ -152,27 +301,27 @@ export const firstVisitWebService = {
             ],
                 "hasBledScore": {
                 "id": 3035,
-                    "patientUserId": 9145,
-                    "hypertension": 0,
-                    "renalDisease": 1,
-                    "liverDisease": 0,
-                    "strokeHistory": 0,
-                    "priorBleeding": 1,
-                    "labileInr": 1,
-                    "ageGroup": 0,
-                    "medUsagePredisposingToBleeding": 1,
-                    "alcaholOrDrugUsageHistory": 0
+                "patientUserId": 9145,
+                "hypertension": 0,
+                "renalDisease": 1,
+                "liverDisease": 0,
+                "strokeHistory": 0,
+                "priorBleeding": 1,
+                "labileInr": 1,
+                "ageGroup": 0,
+                "medUsagePredisposingToBleeding": 1,
+                "alcaholOrDrugUsageHistory": 0
             },
             "cha2ds2Score": {
                 "id": 3036,
-                    "patientUserId": 9145,
-                    "ageGroup": 0,
-                    "sex": 0,
-                    "heartFailureHistory": 1,
-                    "hypertensionHistory": 0,
-                    "strokeHistory": 0,
-                    "vascular": 0,
-                    "diabetes": 0
+                "patientUserId": 9145,
+                "ageGroup": 0,
+                "sex": 0,
+                "heartFailureHistory": 1,
+                "hypertensionHistory": 0,
+                "strokeHistory": 0,
+                "vascular": 0,
+                "diabetes": 0
             }
         }
     }

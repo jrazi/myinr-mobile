@@ -7,11 +7,10 @@ import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs
 import {FAB, Title, withTheme} from 'react-native-paper';
 import {FirstVisitTab} from "./FirstVisitTab";
 import {SecondaryVisitTab} from "./SecondaryVisitTab";
-import {doctorService} from "../../../data/server/DoctorServiceGateway";
 import {LoadingScreen} from "../../../../root/view/loading/Loading";
+import {PatientProfileContext} from "./ContextProvider";
 
 const Tab = createMaterialTopTabNavigator();
-export const PatientProfileContext = React.createContext({patient: {}, firstVisit: {}, visits: []});
 
 class PatientProfileScreen extends React.Component {
     constructor(props) {
