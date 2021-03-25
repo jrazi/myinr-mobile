@@ -15,12 +15,9 @@ export class FirstVisit {
 
     static createNew() {
         return {
-            startDate: null,
-            lastEditDate: null,
-            finished: false,
-            finishDate: null,
             id: null,
             patientUserId: null,
+            dateOfDiagnosis: null,
             warfarinInfo: {
                 reasonForWarfarin: {
                     conditions: [],
@@ -38,15 +35,20 @@ export class FirstVisit {
                 },
                 firstTimeWarfarin: false
             },
-            dateOfDiagnosis: null,
             inr: {
-                testAtHome: false,
-                testLocation: null,
-                inrResult: null,
-                testDate: null,
-                targetRange: [null, null]
+                inrTargetRange: {
+                    from: "",
+                    to: ""
+                },
+                nextInrCheckDate: "",
+                lastInrTest: {
+                    hasUsedPortableDevice: false,
+                    dateOfLastInrTest: "",
+                    lastInrValue: "",
+                    lastInrTestLabInfo: ""
+                }
             },
-            bleedingOrClottingType: [],
+            bleedingOrClottingTypes: [],
             medicalHistory: {
                 majorSurgery: "",
                 minorSurgery: "",
@@ -56,10 +58,12 @@ export class FirstVisit {
             medicationHistory: [],
             habit: [],
             physicalExam: {
-                bloodPressureSystolic: null,
-                bloodPressureDiastolic: null,
-                heartBeat: null,
-                respiratoryRate: null,
+                bloodPressure: {
+                    systolic: "",
+                    diastolic: ""
+                },
+                heartBeat: "",
+                respiratoryRate: "",
             },
             cha2ds2Score: {
                 totalScore: 0,
@@ -70,21 +74,34 @@ export class FirstVisit {
                 data: {},
             },
             testResult: {
-
-            },
-            ecg: {
-
+                Hb: "",
+                Hct: "",
+                Plt: "",
+                Bun: "",
+                Urea: "",
+                Cr: "",
+                Na: "",
+                K: "",
+                Alt: "",
+                Ast: ""
             },
             echocardiography: {
-                EF: null,
-                LAVI: null,
-                comment: null,
+                EF: "",
+                LAVI: "",
+                comment: "",
+            },
+            electrocardiography: {
+                ecg: null,
+                avrBlock: null
             },
             visitDate: {
-
+                value: "",
+                details: {
+                    visitDay: "",
+                    visitMonth: "",
+                    visitYear: ""
+                }
             },
-            visitSaveFlag: null,
-            endVisitFlag: null,
             recommendedDosage: {
                 saturday: 0,
                 sunday: 0,
@@ -93,8 +110,35 @@ export class FirstVisit {
                 wednesday: 0,
                 thursday: 0,
                 friday: 0,
+            },
+            drugHistory: 1,
+            reportComment: "",
+            flags: {
+                visitFlag: false,
+                isSaved: true,
+                isEnded: false
+            },
+
+        }
+    }
+
+    static diff(reference, updated) {
+        const diff = {};
+        for (const key in reference) {
+            if (!updated.hasOwnProperty(key)) continue;
+            const refVal = reference[key];
+            const updatedVal = updated[key];
+            if (updatedVal == refVal) continue;
+            else if (!hasValue(refVal) || !hasValue(updatedVal)) {
+                diff[key] = updatedVal;
+            }
+            else {
+                const refStr = JSON.stringify(refVal);
+                const updatedStr = JSON.stringify(updatedVal);
+                if (refStr != updatedStr) diff[key] = updatedVal;
             }
         }
+        return diff;
     }
 
     static ofDao(info) {

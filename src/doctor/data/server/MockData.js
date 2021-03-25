@@ -56,15 +56,15 @@ export const firstVisitAbd =
         },
         "testResult": {
             "Hb": "",
-                "Hct": "",
-                "Plt": "",
-                "Bun": "",
-                "Urea": "",
-                "Cr": "",
-                "Na": "",
-                "K": "",
-                "Alt": "",
-                "Ast": ""
+            "Hct": "",
+            "Plt": "",
+            "Bun": "",
+            "Urea": "",
+            "Cr": "",
+            "Na": "",
+            "K": "",
+            "Alt": "",
+            "Ast": ""
         },
         "medicalHistory": {
             "majorSurgery": "Yep",
@@ -89,7 +89,7 @@ export const firstVisitAbd =
                     "diastolic": "18"
             },
             "heartBeat": "75",
-                "respiratoryRate": "75"
+            "respiratoryRate": "75"
         },
         "echocardiography": {
             "EF": "",
@@ -103,16 +103,16 @@ export const firstVisitAbd =
         },
         "visitDate": {
             "value": "98/03/20",
-                "details": {
+            "details": {
                 "visitDay": "20",
-                    "visitMonth": "03",
-                    "visitYear": "98"
+                "visitMonth": "03",
+                "visitYear": "98"
             }
         },
         "bleedingOrClottingTypes": [],
-            "electrocardiography": {
+        "electrocardiography": {
             "ecg": null,
-                "avrBlock": null
+            "avrBlock": null
         },
         "habit": [
             {
