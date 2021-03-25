@@ -121,20 +121,20 @@ export const firstVisitAbd =
                 "groupId": 5
             }
         ],
-            "id": 4057,
-            "patientUserId": 9139,
-            "dateOfDiagnosis": "1399/05/11",
-            "drugHistory": 1,
-            "reportComment": "OK GOOD BT",
-            "medicationHistory": [
-                {
-                    "id": 3091,
-                    "patientUserId": 9139,
-                    "drugName": "Acetaminophen+Caffeine+Ibuprofen ",
-                    "startDate": "1399/09/20",
-                    "endDate": null
-                }
-            ],
+        "id": 4057,
+        "patientUserId": 9139,
+        "dateOfDiagnosis": "1399/05/11",
+        "drugHistory": 1,
+        "reportComment": "OK GOOD BT",
+        "medicationHistory": [
+            {
+                "id": 3091,
+                "patientUserId": 9139,
+                "drugName": "Acetaminophen+Caffeine+Ibuprofen ",
+                "startDate": "1399/09/20",
+                "endDate": null
+            }
+        ],
         "hasBledScore": null,
         "cha2ds2Score": null
     }
@@ -310,7 +310,7 @@ export const firstVisitWebService = {
                 "labileInr": 1,
                 "ageGroup": 0,
                 "medUsagePredisposingToBleeding": 1,
-                "alcaholOrDrugUsageHistory": 0
+                "alcoholOrDrugUsageHistory": 0
             },
             "cha2ds2Score": {
                 "id": 3036,

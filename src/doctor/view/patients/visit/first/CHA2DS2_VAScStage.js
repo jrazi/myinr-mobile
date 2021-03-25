@@ -37,6 +37,9 @@ class CHA2DS2_VAScStage extends React.Component {
             .map(key => this.cha2ds2Score.data[key])
             .reduce((acc, current) => acc + current, 0);
 
+
+        this.setState({totalScore: totalScore});
+
         return totalScore || 0;
     }
 
@@ -60,7 +63,7 @@ class CHA2DS2_VAScStage extends React.Component {
                     badgeValue={this.state.totalScore}
                 />
                 <Layout.FormSection>
-                    <ScoreForm userId={this.props.route.params.userId} onChange={(id, val) => this.calcScore()} readonly={readonly}/>
+                    <ScoreForm userId={this.props.route.params.userId} onChange={(id, score) => this.calcScore()} readonly={readonly}/>
                 </Layout.FormSection>
             </Layout.VisitScreen>
         )
@@ -86,8 +89,8 @@ const ScoreForm = (props) => {
 }
 
 const ScoreRadioBox = (props) => {
-    let [gender, setGender] = useState(0);
-    let [ageGroup, setAgeGroup] = useState(0);
+    let [gender, setGender] = useState(null);
+    let [ageGroup, setAgeGroup] = useState(null);
 
     let visit = useRef({});
 
@@ -99,12 +102,12 @@ const ScoreRadioBox = (props) => {
         setLoaded(true);
             doctorDao.getPatientInfo(props.userId)
                 .then(patient => {
-                    if (visit.current.cha2ds2Score.data.gender == null) {
+                    if (visit.current.cha2ds2Score.data.gender == null && !props.readonly) {
                         const gender = guessGender(patient);
                         if (gender == 'M') changeGender(0);
                         else if (gender == 'F') changeGender(1);
                     }
-                    if (visit.current.cha2ds2Score.data.ageGroup == null) {
+                    if (visit.current.cha2ds2Score.data.ageGroup == null && !props.readonly) {
                         const age = calcAge(patient.birthDate);
                         if (age < 65) changeAgeGroup(0);
                         else if (65 <= age < 75) changeAgeGroup(1);
@@ -113,16 +116,16 @@ const ScoreRadioBox = (props) => {
                 })
     }, []);
 
-    const changeGender = (genderId) => {
-        visit.current.cha2ds2Score.data.gender = genderId;
-        setGender(genderId);
-        if (hasValue(props.onChange)) props.onChange(scoreItems[1].id, genderId);
+    const changeGender = (genderScore) => {
+        visit.current.cha2ds2Score.data.gender = genderScore;
+        setGender(genderScore);
+        if (hasValue(props.onChange)) props.onChange(scoreItems[1].id, genderScore);
     }
 
-    const changeAgeGroup = (ageGroupId) => {
-        visit.current.cha2ds2Score.data.ageGroup = ageGroupId;
-        setAgeGroup(ageGroupId);
-        if (hasValue(props.onChange)) props.onChange(scoreItems[0].id, ageGroupId);
+    const changeAgeGroup = (ageGroupScore) => {
+        visit.current.cha2ds2Score.data.ageGroup = ageGroupScore;
+        setAgeGroup(ageGroupScore);
+        if (hasValue(props.onChange)) props.onChange(scoreItems[0].id, ageGroupScore);
     }
 
     const theme = useTheme();
@@ -178,9 +181,9 @@ const ScoreChipBox = (props) => {
         setLoaded(true);
     }, []);
 
-    const changeValue = (id, value) => {
-        visit.current.cha2ds2Score.data[id] = value;
-        if (hasValue(props.onChange)) props.onChange(id, value);
+    const changeValue = (id, score) => {
+        visit.current.cha2ds2Score.data[id] = score;
+        if (hasValue(props.onChange)) props.onChange(id, score);
     };
 
     return (

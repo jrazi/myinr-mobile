@@ -28,7 +28,6 @@ export class InrInfoStage extends React.Component {
             loaded: false,
         }
         this.inrTestInfo = FirstVisit.createNew().inr;
-        this.formRef = React.createRef();
     }
 
     toggleLatestInrAtHome = () => {
@@ -43,20 +42,9 @@ export class InrInfoStage extends React.Component {
         })
     }
 
-    handleChange = (inputName, data, isValid) => {
-        this.inrTestInfo[inputName] = data;
-    }
-
-    handleArrayChange = (inputName, index, data, isValid) => {
-        this.inrTestInfo[inputName][index] = data;
-    }
 
     handleChange = (inputName, data, isValid) => {
         this.inrTestInfo[inputName] = data;
-    }
-
-    handleObjectChange = (obj, key, value, isValid=true) => {
-        obj[key] = value;
     }
 
     changeValue = (changeFunction) => {
@@ -80,10 +68,10 @@ export class InrInfoStage extends React.Component {
                         targetRangeTo: !this.state.loaded ? "" : this.inrTestInfo.inrTargetRange.to,
                     }}
                     validationSchema={Yup.object({
-                        inrResult: Validators.INR,
-                        testLocation: Validators.SHORT_TEXT,
-                        targetRangeFrom: Validators.INR,
-                        targetRangeTo: Validators.INR,
+                        inrResult:  readonly ? Validators.NOTHING : Validators.INR,
+                        testLocation: readonly ? Validators.NOTHING : Validators.SHORT_TEXT,
+                        targetRangeFrom: readonly ? Validators.NOTHING : Validators.INR,
+                        targetRangeTo: readonly ? Validators.NOTHING : Validators.INR,
                     })}
                     validateOnChange={false}
                     validateOnBlur={true}

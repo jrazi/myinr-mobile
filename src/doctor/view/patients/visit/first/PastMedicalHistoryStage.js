@@ -63,9 +63,9 @@ export class PastMedicalHistoryStage extends React.Component {
                             hospitalAdmission: this.medicalHistory.hospitalAdmission,
                         }}
                         validationSchema={Yup.object({
-                            majorSurgery: Validators.SHORT_TEXT,
-                            minorSurgery: Validators.SHORT_TEXT,
-                            hospitalAdmission: Validators.SHORT_TEXT,
+                            majorSurgery: readonly ? Validators.NOTHING : Validators.SHORT_TEXT,
+                            minorSurgery: readonly ? Validators.NOTHING : Validators.SHORT_TEXT,
+                            hospitalAdmission: readonly ? Validators.NOTHING : Validators.SHORT_TEXT,
                         })}
                         validateOnChange={false}
                         validateOnBlur={true}

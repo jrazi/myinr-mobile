@@ -21,16 +21,13 @@ export class FirstVisit {
             finishDate: null,
             id: null,
             patientUserId: null,
-            reasonForWarfarin: {},
-            heartValveReplacementCondition: {
-                replaced: false,
-                conditionType: {},
-            },
-            dateOfDiagnosis: null,
-            firstWarfarin: {
-                dateOfFirstWarfarin: null,
-                isFirstTime: true,
-                weeklyDosage: {
+            warfarinInfo: {
+                reasonForWarfarin: {
+                    conditions: [],
+                    heartValveReplacementConditions: []
+                },
+                dateOfFirstWarfarin: "",
+                lastWarfarinDosage: {
                     saturday: 0,
                     sunday: 0,
                     monday: 0,
@@ -39,7 +36,9 @@ export class FirstVisit {
                     thursday: 0,
                     friday: 0,
                 },
+                firstTimeWarfarin: false
             },
+            dateOfDiagnosis: null,
             inr: {
                 testAtHome: false,
                 testLocation: null,
@@ -87,16 +86,13 @@ export class FirstVisit {
             visitSaveFlag: null,
             endVisitFlag: null,
             recommendedDosage: {
-                dosageId: 0,
-                dosageInfo: {
-                    0: 0,
-                    1: 0,
-                    2: 0,
-                    3: 0,
-                    4: 0,
-                    5: 0,
-                    6: 0,
-                }
+                saturday: 0,
+                sunday: 0,
+                monday: 0,
+                tuesday: 0,
+                wednesday: 0,
+                thursday: 0,
+                friday: 0,
             }
         }
     }
@@ -231,9 +227,9 @@ export class FirstVisit {
         visit.hasBledScore.medicalConditions.strokeHistory = normalizeBoolean(normalize(info.Stroke));
         visit.hasBledScore.medicalConditions.priorBleeding = normalizeBoolean(normalize(info.bleeding));
         visit.hasBledScore.medicalConditions.labileInr = normalizeBoolean(normalize(info.LabileINR));
-        visit.hasBledScore.medicalConditions.oldAgeGroup = normalizeBoolean(normalize(info.Age));
+        visit.hasBledScore.medicalConditions.ageGroup = normalizeBoolean(normalize(info.Age));
         visit.hasBledScore.medicalConditions.medUsagePredisposingToBleeding = normalizeBoolean(normalize(info.predisposing));
-        visit.hasBledScore.medicalConditions.alcaholOrDrugUsageHistory = normalizeBoolean(normalize(info.drug));
+        visit.hasBledScore.medicalConditions.alcoholOrDrugUsageHistory = normalizeBoolean(normalize(info.drug));
 
 
         // Lab Test Result

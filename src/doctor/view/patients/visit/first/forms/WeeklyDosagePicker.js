@@ -15,9 +15,10 @@ export const WeeklyDosagePicker = (props) => {
     for (let dayId of firstNonEmpty(props.dayOrder, Object.keys(firstNonEmpty(props.initialData, {})))) {
         const date = new Date(firstNonEmpty(props.startingDate, now).getTime());
         date.setDate(date.getDate() + i*increment);
+        const formattedDate = getFormattedJalaliDate(date);
         dosageElements.push(
             <DosageForDay
-                date={date}
+                date={props.manualDate ? props.dates[i] : formattedDate}
                 key={'DosageForDay' + i}
                 onDoseUpdate={(dose) => {props.onDoseUpdate(dayId, dose)}}
                 dose={0}
@@ -29,7 +30,7 @@ export const WeeklyDosagePicker = (props) => {
     }
 
     const DosageElemRow = (props) => {return ([
-        <Layout.Row justifyBetween style={{}} key={'row0E'}>
+        <Layout.Row rowReverse={false} justifyBetween style={{}} key={'row0E'}>
             {props.items}
         </Layout.Row>,
         <IntraSectionInvisibleDivider s key={'row1E'}/>
@@ -88,7 +89,7 @@ const DosageForDay = (props) => {
             >
                 <View>
                     <Text style={{ textAlign: 'center', fontSize: 12, fontWeight: 'bold', marginBottom: 8 }}>{`${(percentage/2.5).toFixed(2)} mg`}</Text>
-                    <Text style={{ textAlign: 'center' , fontSize: 12}}>{getFormattedJalaliDate(props.date)}</Text>
+                    <Text style={{ textAlign: 'center' , fontSize: 12}}>{props.date}</Text>
                 </View>
             </CircularPicker>
         </View>

@@ -4,7 +4,7 @@ import {Text} from "react-native-paper";
 import {ScreenLayout} from "../../../../../root/view/screen/Layout";
 import * as Layout from "./forms/Layout";
 import {IntraSectionInvisibleDivider} from "./forms/Layout";
-import {firstNonEmpty, getFormattedJalaliDate} from "../../../../../root/domain/util/Util";
+import {firstNonEmpty, getFormattedJalaliDate, hasValue} from "../../../../../root/domain/util/Util";
 import CircularPicker from "react-native-circular-picker";
 import {WeeklyDosagePicker} from "./forms/WeeklyDosagePicker";
 import {FirstVisit} from "../../../../domain/visit/Visit";
@@ -18,13 +18,17 @@ export class DosageRecommendationStage extends React.Component {
             loaded: false,
         }
         this.visitInfo = FirstVisit.createNew();
-        this.recommendedDosage = this.visitInfo.recommendedDosage.dosageInfo;
+        this.recommendedDosage = this.visitInfo.recommendedDosage;
     }
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
             this.visitInfo = visitDao.getVisits(this.props.route.params.userId);
-            this.recommendedDosage = this.visitInfo.recommendedDosage.dosageInfo;
+            if (hasValue(this.visitInfo.recommendedDosage))
+                this.recommendedDosage = this.visitInfo.recommendedDosage;
+            else {
+                this.visitInfo.recommendedDosage = this.recommendedDosage;
+            }
             this.setState({loaded: true});
         })
     }
@@ -47,6 +51,9 @@ export class DosageRecommendationStage extends React.Component {
                     <WeeklyDosagePicker
                         onDoseUpdate={this.onDosageUpdate}
                         initialData={this.recommendedDosage}
+                        dayOrder={['saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday']}
+                        dates={['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه']}
+                        manualDate
                         startingDate={startingDate}
                         increment={1}
                         disabled={readonly}

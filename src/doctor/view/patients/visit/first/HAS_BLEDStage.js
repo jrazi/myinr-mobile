@@ -16,36 +16,45 @@ export class HAS_BLEDStage extends React.Component {
             loaded: false,
             totalScore: 0,
         }
-        this.hasBledInfo = FirstVisit.createNew().hasBledScore;
+        this.hasBledScore = FirstVisit.createNew().hasBledScore;
         this.medicalConditions = medicalConditions.map(c => c);
     }
 
     componentDidMount() {
+
+
         this.setState({loaded: false}, () => {
-            this.hasBledInfo = visitDao.getVisits(this.props.route.params.userId).hasBledScore;
-            this.medicalConditions.forEach(
-                condition => condition['value'] = firstNonEmpty(this.hasBledInfo.medicalConditions[condition.id], false)
-            )
+            const visit = visitDao.getVisits(this.props.route.params.userId);
+            if (hasValue(visit.hasBledScore))
+                this.hasBledScore = visit.hasBledScore;
+            else {
+                visit.hasBledScore = this.hasBledScore;
+            }
             this.calcScore();
+
+            this.medicalConditions.forEach(
+                condition => condition['value'] = firstNonEmpty(this.hasBledScore.data[condition.id] > 0, false)
+            )
+
             this.setState({loaded: true});
         })
     }
 
-    onValueChange = (id, value) => {
-        this.hasBledInfo.medicalConditions[id] = value;
+    onValueChange = (id, score) => {
+        this.hasBledScore.data[id] = score;
         this.calcScore();
     }
 
     calcScore = () => {
-        let totalScore = 0;
 
-        for (const conditionId in this.hasBledInfo.medicalConditions) {
-            let scoreItem = getScoreItem(conditionId);
-            let hasCondition = this.hasBledInfo.medicalConditions[conditionId];
-            if (hasCondition) totalScore += scoreItem.yesScore;
-        }
-        this.hasBledInfo.totalScore = totalScore;
+        let totalScore = Object.keys(this.hasBledScore.data)
+            .map(key => this.hasBledScore.data[key])
+            .reduce((acc, current) => acc + current, 0);
+
         this.setState({totalScore: totalScore});
+
+        return totalScore || 0;
+
     }
 
     render() {
@@ -75,6 +84,7 @@ export const GenericScoreForm = (props) => {
         .map((condition, index) => {
             const [value, setValue] = useState(firstNonEmpty(condition.value, false));
             selectedStates.push([value, setValue]);
+            const yesScore = condition.yesScore;
             return [
                 <Layout.Row
                     justifyBetween
@@ -96,7 +106,7 @@ export const GenericScoreForm = (props) => {
                     <DefaultSwitch
                         style={{}} value={value}
                         color={useTheme().colors.accent}
-                        onValueChange={() => {{props.onChange(condition.id, !value); setValue(!value)}}}
+                        onValueChange={() => {{props.onChange(condition.id, Number(!value)*yesScore); setValue(!value)}}}
                         disabled={props.readonly}
                     />
                 </Layout.Row>,
@@ -148,7 +158,7 @@ let medicalConditions = [
         yesScore: 1,
     },
     {
-        id: 'oldAgeGroup',
+        id: 'ageGroup',
         name: 'Age > 65',
         description: null,
         yesScore: 1,
@@ -160,7 +170,7 @@ let medicalConditions = [
         yesScore: 1,
     },
     {
-        id: 'alcaholOrDrugUsageHistory',
+        id: 'alcoholOrDrugUsageHistory',
         name: 'Alcohol or drug usage history',
         description: '≥8 drinks/week',
         yesScore: 1,

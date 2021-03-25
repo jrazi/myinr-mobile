@@ -64,7 +64,11 @@ export const PERCENTAGE = Yup.number()
 export const USUAL_NUMBER = Yup.number()
     .nullable()
     .max(-100, 'Must be a valid number')
-    .max(1000, 'Must be a valid number')
+    .max(100000000, 'Must be a valid number')
+
+export const NOTHING = Yup.string()
+    .nullable()
+    .notRequired();
 
 export const NATIONAL_CODE = null;
 export const PASSWORD_REPEAT = null;

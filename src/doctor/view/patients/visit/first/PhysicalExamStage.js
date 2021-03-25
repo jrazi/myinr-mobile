@@ -50,10 +50,10 @@ export class PhysicalExamStage extends React.Component {
                         respiratoryRate: !this.state.loaded ? "" : this.physicalExamInfo.respiratoryRate,
                     }}
                     validationSchema={Yup.object({
-                        bloodPressureSystolic: Validators.BLOOD_PRESSURE,
-                        bloodPressureDiastolic: Validators.BLOOD_PRESSURE,
-                        heartBeat: Validators.HEARTBEAT,
-                        respiratoryRate: Validators.RESPIRATORY_RATE,
+                        bloodPressureSystolic: readonly ? Validators.NOTHING : Validators.BLOOD_PRESSURE,
+                        bloodPressureDiastolic: readonly ? Validators.NOTHING : Validators.BLOOD_PRESSURE,
+                        heartBeat: readonly ? Validators.NOTHING : Validators.HEARTBEAT,
+                        respiratoryRate: readonly ? Validators.NOTHING : Validators.RESPIRATORY_RATE,
                     })}
                     validateOnChange={false}
                     validateOnBlur={true}

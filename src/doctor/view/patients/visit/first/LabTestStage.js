@@ -49,11 +49,12 @@ class LabTestResultForm extends React.Component {
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
+            const readonly = this.props.readonly;
             this.labTestResult = visitDao.getVisits(this.props.userId).testResult;
             this.initialValues = {};
             fields.forEach(field => {
                 this.initialValues[field.name] = this.labTestResult[field.name];
-                this.validationSchema[field.name] = field.validation;
+                this.validationSchema[field.name] = readonly ? Validators.NOTHING : field.validation;
             })
             this.setState({loaded: true});
         })

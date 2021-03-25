@@ -156,7 +156,8 @@ export const Row = (props) => {return (
             {
                 justifyContent: props.justifyAround == true ?
                     'space-around' : props.justifyBetween == true ?
-                        'space-between' : props.justifyCenter ? 'center' : 'flex-start'
+                        'space-between' : props.justifyCenter ? 'center' : 'flex-start',
+                flexDirection: props.rowReverse === false ? 'row' : 'row-reverse',
             },
             props.style
         ]

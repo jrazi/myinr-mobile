@@ -13,6 +13,7 @@ import {WeeklyDosagePicker} from "./forms/WeeklyDosagePicker";
 import {visitDao} from "../../../../data/dao/VisitDao";
 import {firstNonEmpty, getDayOfWeekName} from "../../../../../root/domain/util/Util";
 import ListUtil from "../../../../../root/domain/util/ListUtil";
+import {FirstVisit} from "../../../../domain/visit/Visit";
 
 export class PreliminaryStage extends React.Component {
     constructor(props) {
@@ -151,6 +152,7 @@ const FirstTimeWarfarinForm = (props) => {
     useEffect(() => {
         visit.current = visitDao.getVisits(props.userId);
         setFirstTimeWarfarin(firstNonEmpty(visit.current.warfarinInfo.firstTimeWarfarin, true));
+        visit.current.warfarinInfo.lastWarfarinDosage = visit.current.warfarinInfo.lastWarfarinDosage || FirstVisit.createNew().warfarinInfo.lastWarfarinDosage;
         setLoaded(true);
     }, []);
 

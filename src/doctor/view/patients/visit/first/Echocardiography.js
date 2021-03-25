@@ -62,8 +62,8 @@ export class ECForm extends React.Component {
                     comment: this.echocardiographyInfo.comment,
                 }}
                 validationSchema={Yup.object({
-                    EF: Validators.PERCENTAGE,
-                    LAVI: Validators.USUAL_NUMBER,
+                    EF: (this.props.readonly && Validators.NOTHING) ||  Validators.PERCENTAGE,
+                    LAVI: (this.props.readonly && Validators.NOTHING) || Validators.USUAL_NUMBER,
                 })}
                 validateOnChange={false}
                 validateOnBlur={true}
