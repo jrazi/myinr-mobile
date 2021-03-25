@@ -15,10 +15,10 @@ export class DrugDao {
         let drugList = await this.searchDrugs(drugName);
         let drugGroups = {};
         drugList.forEach(drug => {
-            if (!(drug.RouteofAdmin in drugGroups)) {
-                drugGroups[drug.RouteofAdmin] = [];
+            if (!(drug.routeOfAdministration in drugGroups)) {
+                drugGroups[drug.routeOfAdministration] = [];
             }
-            drugGroups[drug.RouteofAdmin].push(drug);
+            drugGroups[drug.routeOfAdministration].push(drug);
         })
         return drugGroups;
     }

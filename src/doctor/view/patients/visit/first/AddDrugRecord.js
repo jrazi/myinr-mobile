@@ -204,10 +204,10 @@ const DrugList = (props) => {
                                         return (
                                             <DrugInfo
                                                 id={drug.IDDrug}
-                                                name={drug.DrugName}
+                                                name={drug.drugName}
                                                 isLast={index == drugList.length-1}
-                                                dosageForm={drug.DosageForm}
-                                                strength={drug.Strengh}
+                                                dosageForm={drug.dosageForm}
+                                                strength={drug.strength}
                                                 onPress={() => pickDatesForDrug(drug)}
                                             />
                                         )

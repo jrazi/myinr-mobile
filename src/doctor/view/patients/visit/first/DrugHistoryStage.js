@@ -88,9 +88,9 @@ const DrugRecords = (props) => {
                     return (
                         <View key={`DrugRecord${item.id}`}>
                             <SingleDrugRecord
-                                name={item.drugName}
-                                since={item.startDate}
-                                until={item.endDate}
+                                name={item.drugName || "N/A"}
+                                since={item.startDate || "N/A"}
+                                until={item.endDate || "N/A"}
                                 onDelete={() => props.onDelete(item.id)}
                                 readonly={props.readonly}
                             />

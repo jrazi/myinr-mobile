@@ -12,6 +12,7 @@ import {TitleWithBadge} from "./forms/ContextSpecificComponents";
 import {FirstVisit} from "../../../../domain/visit/Visit";
 import SegmentedControl from '@react-native-community/segmented-control';
 import color from 'color';
+import ListUtil from "../../../../../root/domain/util/ListUtil";
 
 class CHA2DS2_VAScStage extends React.Component {
     constructor(props) {
@@ -90,30 +91,18 @@ const ScoreForm = (props) => {
 
 const ScoreRadioBox = (props) => {
     let [gender, setGender] = useState(null);
-    let [ageGroup, setAgeGroup] = useState(null);
+    let [ageGroupIndex, setAgeGroupIndex] = useState(null);
 
     let visit = useRef({});
 
     let [loaded, setLoaded] = useState(false);
-    let [ageItems, genderItems] = scoreItems;
+
     useEffect(() => {
         setLoaded(false);
         visit.current = visitDao.getVisits(props.userId);
+        setGender(firstNonEmpty(visit.current.cha2ds2Score.data.gender, null));
+        setAgeGroupIndex(firstNonEmpty(visit.current.cha2ds2Score.data.ageGroup, null));
         setLoaded(true);
-            doctorDao.getPatientInfo(props.userId)
-                .then(patient => {
-                    if (visit.current.cha2ds2Score.data.gender == null && !props.readonly) {
-                        const gender = guessGender(patient);
-                        if (gender == 'M') changeGender(0);
-                        else if (gender == 'F') changeGender(1);
-                    }
-                    if (visit.current.cha2ds2Score.data.ageGroup == null && !props.readonly) {
-                        const age = calcAge(patient.birthDate);
-                        if (age < 65) changeAgeGroup(0);
-                        else if (65 <= age < 75) changeAgeGroup(1);
-                        else if (age >= 75) changeAgeGroup(2);
-                    }
-                })
     }, []);
 
     const changeGender = (genderScore) => {
@@ -122,9 +111,10 @@ const ScoreRadioBox = (props) => {
         if (hasValue(props.onChange)) props.onChange(scoreItems[1].id, genderScore);
     }
 
-    const changeAgeGroup = (ageGroupScore) => {
+    const changeAgeGroup = (ageGroupIndex) => {
+        const ageGroupScore = scoreItems[0].options[ageGroupIndex].score;
         visit.current.cha2ds2Score.data.ageGroup = ageGroupScore;
-        setAgeGroup(ageGroupScore);
+        setAgeGroupIndex(ageGroupIndex);
         if (hasValue(props.onChange)) props.onChange(scoreItems[0].id, ageGroupScore);
     }
 
@@ -154,7 +144,7 @@ const ScoreRadioBox = (props) => {
                     activeFontStyle={{color: theme.colors.primary}}
                     fontStyle={{color: theme.dark ? null : theme.colors.backdrop}}
                     values={scoreItems[0].options.map(o => o.name)}
-                    selectedIndex={ageGroup == 2 ? 0 : ageGroup == 1 ? 1 : ageGroup == 0 ? 2 : null}
+                    selectedIndex={ageGroupIndex}
                     onChange={props.readonly ? null : (event) => {
                         changeAgeGroup(event.nativeEvent.selectedSegmentIndex)
                     }}

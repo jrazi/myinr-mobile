@@ -21,9 +21,10 @@ export default class ListUtil {
         const item = list.find(el => el == newItem.id || (el || {}).id == newItem.id) || null;
         if (item == null) {
             list.push(newItem)
-            return true;
         }
-        return false;
+        else {
+            Object.keys(newItem).forEach(key => item[key] = newItem[key]);
+        }
     }
 
     static removeById(list, id) {

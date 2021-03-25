@@ -20,6 +20,7 @@ import {FormSubmissionStatus} from "../../../../../root/view/FormSubmissionStatu
 import * as Locale from "../../../../../login/view/Locale";
 import {DefaultDatePicker} from "./forms/JalaliDatePicker";
 import {visitDao} from "../../../../data/dao/VisitDao";
+import ListUtil from "../../../../../root/domain/util/ListUtil";
 
 class DrugDatePicker extends React.Component {
     constructor(props) {
@@ -39,23 +40,14 @@ class DrugDatePicker extends React.Component {
     setUntilDate = (date) => this.setState({untilDate: date});
 
     addDrug = () => {
-        let index = this.medicationHistory.findIndex(item => item.drugInfo.IDDrug == this.props.drugInfo.IDDrug);
-        if (index < 0) {
-            this.medicationHistory.push(
-                {
-                    drugInfo: this.props.drugInfo,
-                    since: this.state.sinceDate,
-                    until: this.state.untilDate,
-                }
-            );
-        }
-        else {
-            this.medicationHistory[index] = {
-                drugInfo: this.props.drugInfo,
-                since: this.state.sinceDate,
-                until: this.state.untilDate,
-            }
-        }
+        const newRecord = {
+            id: this.props.drugInfo.id,
+            drugName: this.props.drugInfo.drugName,
+            startDate: this.state.sinceDate,
+            endDate: this.state.untilDate,
+        };
+        ListUtil.addById(this.medicationHistory, newRecord);
+
         this.props.navigation.goBack();
     }
 
