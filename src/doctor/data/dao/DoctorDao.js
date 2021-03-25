@@ -3,6 +3,7 @@ import {hasValue} from "../../../root/domain/util/Util";
 import {AsyncStorage} from "react-native";
 import {doctorService} from "../server/DoctorServiceGateway";
 import {serverGateway} from "../../../root/data/server/ServerGateway";
+import {FirstVisit} from "../../domain/visit/Visit";
 
 class DoctorDao {
 
@@ -41,11 +42,20 @@ class DoctorDao {
             })
     }
 
-    saveCachedVisit = (patientUserId, cachedVisit) => {
-        return AsyncStorage.setItem(
+    saveCachedVisit = async (patientUserId, cachedVisit, saveRemotely=false) => {
+        const currentVisitData = await this.getLocalFirstVisit(patientUserId, false);
+
+        const updatedData = FirstVisit.diff(currentVisitData.visitInfo, cachedVisit.visitInfo);
+
+        if (saveRemotely && Object.keys(updatedData).length > 0)
+            await doctorService.updateFirstVisit(patientUserId, updatedData);
+
+        await AsyncStorage.setItem(
             RecordIdentifier.cachedVisit(patientUserId),
             JSON.stringify(cachedVisit)
         );
+
+        return cachedVisit;
     }
 
     deleteCachedVisit = (patientUserId) => {

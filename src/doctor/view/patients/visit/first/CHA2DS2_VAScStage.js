@@ -154,7 +154,7 @@ const ScoreRadioBox = (props) => {
                     activeFontStyle={{color: theme.colors.primary}}
                     fontStyle={{color: theme.dark ? null : theme.colors.backdrop}}
                     values={scoreItems[0].options.map(o => o.name)}
-                    selectedIndex={ageGroup}
+                    selectedIndex={ageGroup == 2 ? 0 : ageGroup == 1 ? 1 : ageGroup == 0 ? 2 : null}
                     onChange={props.readonly ? null : (event) => {
                         changeAgeGroup(event.nativeEvent.selectedSegmentIndex)
                     }}

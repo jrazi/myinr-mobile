@@ -55,7 +55,6 @@ class FirstVisitScreen extends React.Component {
             .then(cachedVisit => {
                 visitInfo = visitDao.setVisits(userId, cachedVisit.visitInfo);
                 this.setState({visitInfo: visitInfo, currentStage: readonly ? 0 : cachedVisit.currentStage, loaded: true});
-
             })
             .catch(err => {
                 doctorDao.saveCachedVisit(userId, {currentStage: 0, visitInfo: visitInfo});
@@ -72,12 +71,12 @@ class FirstVisitScreen extends React.Component {
             const userId = this.props.route.params.userId;
             if (this.props.route.params.readonly) return;
             let visit = visitDao.getVisits(userId);
-            visit.lastEditDate = new Date().toString();
             const info = {
                 currentStage: this.state.currentStage,
                 visitInfo: visit,
+                lastEditDate: new Date().toString(),
             }
-            doctorDao.saveCachedVisit(userId, info);
+            doctorDao.saveCachedVisit(userId, info, true);
         });
     }
 
@@ -91,14 +90,15 @@ class FirstVisitScreen extends React.Component {
         }
         if (this.props.route.params.readonly != true) {
             const visit = visitDao.getVisits(this.props.route.params.userId);
-            visit.lastEditDate = new Date().toString();
             const info = {
                 currentStage: this.state.currentStage,
                 visitInfo: visit,
+                lastEditDate: new Date().toString(),
             }
-            doctorDao.saveCachedVisit(this.props.route.params.userId, info);
+            doctorDao.saveCachedVisit(this.props.route.params.userId, info, true).then(() => navigate());
         }
-        navigate();
+        else navigate();
+
     }
 
     onFinishPress = () => {

@@ -12,8 +12,7 @@ export class InMemVisitDao {
 
     initVisit(userId) {
         this.visits[userId] = FirstVisit.createNew();
-        this.visits[userId].startDate = new Date().toString();
-        this.visits[userId].lastEditDate = new Date().toString();
+        this.visits[userId].patientUserId = userId;
         return this.visits[userId];
     }
 

@@ -33,7 +33,7 @@ export default class DoctorWebServiceGateway extends StupidDoctorServiceGateway 
 
         return this.webServiceGateway.getAccessToken()
             .then(token => {
-                return withTimeout(DEFAULT_TIMEOUT*3, fetch(url, {
+                return withTimeout(DEFAULT_TIMEOUT*4, fetch(url, {
                         method: 'GET',
                         headers: {
                             Authorization: token,
@@ -52,5 +52,30 @@ export default class DoctorWebServiceGateway extends StupidDoctorServiceGateway 
             });
     }
 
+    updateFirstVisit = (patientUserId, firstVisitUpdatedInfo) => {
+        let url = `${API_PATH}/patient/${patientUserId}/firstVisit`;
+
+        console.log('first vsiit info is', firstVisitUpdatedInfo);
+        return this.webServiceGateway.getAccessToken()
+            .then(token => {
+                return withTimeout(DEFAULT_TIMEOUT*4, fetch(url, {
+                        method: 'PUT',
+                        headers: {
+                            Authorization: token,
+                            'content-type': 'application/json',
+                        },
+                        body: JSON.stringify({firstVisit: firstVisitUpdatedInfo}),
+                    })
+                )})
+            .then(async res => {
+                const resData = await res.json();
+                if (res.ok) return resData;
+                else throw resData;
+            })
+            .catch(err => {
+                console.warn('API Error', err);
+                throw formatError(err);
+            });
+    }
 
 }

@@ -52,7 +52,7 @@ export class PreliminaryStage extends React.Component {
 
 const ReasonForWarfarinPicker = (props) => {
 
-    let medicalConditions = useRef(Data.PreliminaryStage.REASON_FOR_WARFARIN_CONDITIONS);
+    let medicalConditions = useRef([...Data.PreliminaryStage.REASON_FOR_WARFARIN_CONDITIONS]);
     let visit = useRef({});
 
     let [loaded, setLoaded] = useState(false);
@@ -90,7 +90,7 @@ const ReasonForWarfarinPicker = (props) => {
 }
 
 const HeartValveReplacementConditions = (props) => {
-    let medicalConditions = useRef(Data.PreliminaryStage.HEART_VALVE_REPLACEMENT_CONDITIONS);
+    let medicalConditions = useRef([...Data.PreliminaryStage.HEART_VALVE_REPLACEMENT_CONDITIONS]);
 
     let [value, setValue] = useState(false);
     let visit = useRef({});

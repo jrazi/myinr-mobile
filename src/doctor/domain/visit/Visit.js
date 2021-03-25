@@ -153,7 +153,6 @@ export class FirstVisit {
 
         visit.startDate = jalaliYMDToGeorgian(visitYear, visitMonth, visitDay);
         visit.finished = normalizeBoolean(info.FlagEndVisit);
-        visit.lastEditDate = visit.startDate;
         visit.finishDate = visit.startDate;
 
         // Preliminary Data
