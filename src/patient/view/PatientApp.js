@@ -1,5 +1,5 @@
 import React from 'react';
-import {BottomNavigation, useTheme} from "react-native-paper";
+import {BottomNavigation, useTheme, withTheme} from "react-native-paper";
 import HomeScreen from "./HomeScreen";
 import ReportsScreen from "./ReportsScreen";
 import MyDoctorScreen from "./MyDoctorScreen";
@@ -23,21 +23,23 @@ class PatientApp extends React.Component {
     componentDidMount() {
         rootDao.getUser().then(user => {
             if (user == null) this.props.navigation.navigate('LOGIN');
-            else if (user.userInfo.role == UserRole.PATIENT) this.props.navigation.navigate('LOGIN');
+            else if (user.userInfo.role !== UserRole.PATIENT) this.props.navigation.navigate('LOGIN');
             else this.user = user;
         });
     }
 
     render() {
-        const colors = this.props.defaultTheme.colors;
+        const colors = this.props.theme.colors;
+        const theme = this.props.theme;
         return (
             <Tab.Navigator
                 initialRouteName={"patient/home"}
-                barStyle={{ backgroundColor: colors.background }}
+                barStyle={{ backgroundColor: theme.colors.surface,}}
                 shifting={false}
                 backBehavior={'history'}
-                activeColor={theme.colors.primary}
-                inactiveColor={theme.colors.placeholder}
+                activeColor={theme.colors.accent}
+                inactiveColor={theme.colors.backdrop}
+                lazy={false}
             >
                 <Tab.Screen
                     name="patient/home"
@@ -84,11 +86,7 @@ class PatientApp extends React.Component {
     }
 };
 
-export default function(props) {
-    // const navigation = useNavigation();
-    const defaultTheme = useTheme();
+export default withTheme(PatientApp);
 
-    return <PatientApp {...props} defaultTheme={defaultTheme}/>;
-}
 
 
