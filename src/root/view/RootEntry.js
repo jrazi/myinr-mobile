@@ -1,18 +1,19 @@
 import React from 'react';
-import {StyleSheet, Text, View, Button, I18nManager} from "react-native";
-import {ActivityIndicator, Colors} from 'react-native-paper';
-import {StatusBar} from "expo-status-bar";
-import {Screen} from "./Screen";
 import {UserRole} from "../domain/Role";
 import {rootDao} from "../data/dao/RootDao";
 import {Locale} from '../domain/Locale';
 import {LoadingScreen} from "./loading/Loading";
+import LoginScreen from "../../login/view/LoginScreen";
+import DoctorAppNavigator from "../../doctor/view/DoctorAppNavigator";
+import PatientApp from "../../patient/view/PatientApp";
 
 export default class RootEntry extends React.Component {
     constructor(props) {
         super(props);
-        this.user = {};
-        this.state = {};
+        this.state = {
+            role: {},
+            loaded: false,
+        }
     }
 
     componentDidMount = () => {
@@ -25,39 +26,28 @@ export default class RootEntry extends React.Component {
         );
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        this.refresh();
-    }
-
     refresh = () => {
-        const reset = (routeName) => {
-            this.props.navigation.reset({
-                index: 0,
-                routes: [{name: routeName}],
-            });
-        }
-
-        rootDao.getUser().then(user => {
-            if (user == null) reset(Screen.LOGIN);
-            else if (user.userInfo.role === UserRole.PATIENT) reset(Screen.PATIENT);
-            else if (user.userInfo.role === UserRole.DOCTOR) reset(Screen.DOCTOR);
-        }).catch(err => {
-
-        });
+        this.setState({loaded: false}, () => {
+            rootDao.getUser().then(user => {
+                this.setState({
+                    role: user == null ? null : user.userInfo.role,
+                    loaded: true,
+                })
+            })
+        })
     }
+
 
     render() {
         return (
-            <LoadingScreen loaded={false}></LoadingScreen>
+            <LoadingScreen loaded={this.state.loaded}>
+                {
+                    this.state.role == null ? <LoginScreen navigation={this.props.navigation}/>
+                        : this.state.role == UserRole.DOCTOR ? <DoctorAppNavigator navigation={this.props.navigation}/>
+                        : this.state.role == UserRole.PATIENT ? <PatientApp navigation={this.props.navigation}/>
+                            : <LoginScreen navigation={this.props.navigation}/>
+                }
+            </LoadingScreen>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});

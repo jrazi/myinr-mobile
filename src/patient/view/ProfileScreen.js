@@ -21,17 +21,14 @@ class ProfileScreen extends React.Component {
 
     logout = () => {
         this.setState({isLoggingOut: true}, () => {
-            serverGateway.logout('')
+            rootDao.logout()
                 .then(res => {
-                    rootDao.deleteUser()
-                        .then(user => {
-                            this.setState({isLoggingOut: true, logoutDialogVisible: false}, () => {
-                                this.props.navigation.reset({
-                                    index: 0,
-                                    routes: [{name: 'LOGIN'}],
-                                });
-                            })
-                        })
+                    this.setState({isLoggingOut: true, logoutDialogVisible: false}, () => {
+                        this.props.navigation.reset({
+                            index: 0,
+                            routes: [{name: 'ROOT'}],
+                        });
+                    })
                 });
         });
     }

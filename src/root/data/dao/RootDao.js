@@ -55,13 +55,6 @@ class RootDao {
         return savedUser;
     }
 
-    async deleteUser() {
-        let user = await this.rootRepository.deleteUser();
-        this.user = null;
-        this.tempLastUpdate = new Date('2018-01-01').getTime()/1000;
-        return user;
-    }
-
     async saveAccessToken(token) {
         let savedToken = await this.rootRepository.saveAccessToken(token);
         return savedToken;
@@ -99,6 +92,12 @@ class RootDao {
 
     tempTimeToUpdate() {
         return (new Date().getTime()/1000) - (this.tempLastUpdate) > (300);
+    }
+
+    async logout() {
+        await AsyncStorage.clear();
+        this.user = null;
+        this.tempLastUpdate = new Date('2018-01-01').getTime()/1000;
     }
 }
 

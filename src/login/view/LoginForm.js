@@ -48,10 +48,10 @@ class LoginForm extends React.Component {
     }
 
     submitForm = (credentials) => {
-        const reset = (routeName) => {
+        const reset = () => {
             this.props.navigation.reset({
                 index: 0,
-                routes: [{name: routeName}],
+                routes: [{name: 'ROOT'}],
             });
         }
         this.changeSubmissionStatus(FormSubmissionStatus.SUBMITTING, () => {
@@ -63,8 +63,7 @@ class LoginForm extends React.Component {
                 await rootDao.saveUser(user);
 
                 this.changeSubmissionStatus(FormSubmissionStatus.NOT_SUBMITTING, () => {
-                    if (user.userInfo.role === UserRole.PATIENT) reset(Screen.PATIENT);
-                    else if (user.userInfo.role === UserRole.DOCTOR) reset(Screen.DOCTOR);
+                    reset();
                 });
 
             }).catch(error => {

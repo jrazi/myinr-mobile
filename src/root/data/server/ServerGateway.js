@@ -108,13 +108,6 @@ class WebServiceGateway {
                 throw formatError(err);
             });
     }
-
-
-    async logout() {
-        const result = await AsyncStorage.clear();
-        return;
-    }
-
-
 }
+
 export const serverGateway = new WebServiceGateway();
