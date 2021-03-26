@@ -2,7 +2,6 @@ import React from "react";
 import {StyleSheet, Text, View} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import UnderConstruction from "../../root/view/screen/UnderConstruction";
-import StupidButRealServerGateway from "../../root/data/server/StupidServer";
 import {rootDao} from "../../root/data/dao/RootDao";
 
 export default class HomeScreen extends React.Component {

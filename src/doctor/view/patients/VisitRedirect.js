@@ -1,8 +1,6 @@
 import {Button, Dialog, Portal, Subheading, useTheme} from "react-native-paper";
 import React, {useEffect, useState} from "react";
 import {doctorDao} from "../../data/dao/DoctorDao";
-import {ScreenLayout} from "../../../root/view/screen/Layout";
-import {firstNonEmpty} from "../../../root/domain/util/Util";
 import {useRoute, useNavigation} from "@react-navigation/native";
 
 export const VisitRedirect = (props) => {
