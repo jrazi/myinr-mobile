@@ -11,6 +11,7 @@ export function formatError(err) {
         status: 400,
         code: 'ERROR',
         message: 'خطا در ارتباط با سرور',
+        detailedMessage: "",
         data: {},
     }
     if (!hasValue(err) || !(err instanceof Object))
@@ -18,5 +19,7 @@ export function formatError(err) {
 
     errorObject.status = err.status || errorObject.status;
     errorObject.code = err.code || errorObject.code;
+    errorObject.detailedMessage = err.message || "";
     return errorObject;
 }
+

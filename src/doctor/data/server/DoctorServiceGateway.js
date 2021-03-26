@@ -1,113 +1,58 @@
-import {TokenService} from "../../../root/data/server/TokenService";
 import {DEFAULT_TIMEOUT, withTimeout} from "../../../root/data/server/util";
 import {API_PATH as API_PATH_PREFIX, formatError} from "../../../root/data/server/ApiUtil";
+import ApiService from "../../../root/data/server/ApiService";
 
 const API_PATH = `${API_PATH_PREFIX}/doctor`;
 
 class DoctorWebServiceGateway {
 
     constructor() {
-        this.tokenService = TokenService.getInstance();
+        this.apiService =  ApiService.getInstance()
     }
 
     getFirstVisit = (patientUserId) => {
         let url = `${API_PATH}/patient/${patientUserId}/firstVisit`;
 
-        return this.tokenService.getAccessToken()
-            .then(token => {
-                return withTimeout(DEFAULT_TIMEOUT * 4, fetch(url, {
-                        method: 'GET',
-                        headers: {
-                            Authorization: token,
-                        }
-                    })
-                )
-            })
-            .then(async res => {
-                const resData = await res.json();
-                if (res.ok) return resData;
-                else throw resData;
-            })
-            .then(res => res.data.firstVisit)
-            .catch(err => {
-                console.warn('API Error', err);
-                throw formatError(err);
-            });
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            timeout: DEFAULT_TIMEOUT*4,
+        })
+            .then(data => data.firstVisit);
     }
 
     updateFirstVisit = (patientUserId, firstVisitUpdatedInfo) => {
         let url = `${API_PATH}/patient/${patientUserId}/firstVisit`;
 
         console.log('first visit info to update is', firstVisitUpdatedInfo);
-        return this.tokenService.getAccessToken()
-            .then(token => {
-                return withTimeout(DEFAULT_TIMEOUT * 4, fetch(url, {
-                        method: 'PUT',
-                        headers: {
-                            Authorization: token,
-                            'content-type': 'application/json',
-                        },
-                        body: JSON.stringify({firstVisit: firstVisitUpdatedInfo}),
-                    })
-                )
-            })
-            .then(async res => {
-                const resData = await res.json();
-                if (res.ok) return resData;
-                else throw resData;
-            })
-            .catch(err => {
-                console.warn('API Error', err);
-                throw formatError(err);
-            });
+
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({firstVisit: firstVisitUpdatedInfo}),
+            timeout: DEFAULT_TIMEOUT*3,
+        })
+            .then(data => data.firstVisit);
+
     }
 
     endFirstVisit = (patientUserId) => {
         let url = `${API_PATH}/patient/${patientUserId}/firstVisit/finish`;
 
-        return this.tokenService.getAccessToken()
-            .then(token => {
-                return withTimeout(DEFAULT_TIMEOUT, fetch(url, {
-                        method: 'PUT',
-                        headers: {
-                            Authorization: token,
-                        },
-                    })
-                )
-            })
-            .then(async res => {
-                const resData = await res.json();
-                if (res.ok) return resData;
-                else throw resData;
-            })
-            .catch(err => {
-                console.warn('API Error', err);
-                throw formatError(err);
-            });
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            method: 'PUT',
+            timeout: DEFAULT_TIMEOUT,
+        });
+
     }
 
     startFirstVisit = (patientUserId) => {
         let url = `${API_PATH}/patient/${patientUserId}/firstVisit/start`;
 
-        return this.tokenService.getAccessToken()
-            .then(token => {
-                return withTimeout(DEFAULT_TIMEOUT, fetch(url, {
-                        method: 'PUT',
-                        headers: {
-                            Authorization: token,
-                        },
-                    })
-                )
-            })
-            .then(async res => {
-                const resData = await res.json();
-                if (res.ok) return resData;
-                else throw resData;
-            })
-            .catch(err => {
-                console.warn('API Error', err);
-                throw formatError(err);
-            });
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            method: 'PUT',
+            timeout: DEFAULT_TIMEOUT,
+        });
     }
 
     searchDrugs = (drugName) => {
@@ -115,26 +60,11 @@ class DoctorWebServiceGateway {
         let params = {name: drugName}
         url += new URLSearchParams(params).toString();
 
-        return this.tokenService.getAccessToken()
-            .then(token => {
-                return withTimeout(DEFAULT_TIMEOUT * 2, fetch(url, {
-                        method: 'GET',
-                        headers: {
-                            Authorization: token,
-                        }
-                    })
-                )
-            })
-            .then(async res => {
-                const resData = await res.json();
-                if (res.ok) return resData;
-                else throw resData;
-            })
-            .then(res => res.data.drugs)
-            .catch(err => {
-                console.warn('API Error', err);
-                throw formatError(err);
-            });
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            timeout: DEFAULT_TIMEOUT,
+        })
+            .then(data => data.drugs);
+
     }
 
 

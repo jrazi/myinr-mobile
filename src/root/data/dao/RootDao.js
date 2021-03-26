@@ -29,7 +29,7 @@ class RootDao {
         if (userMeta == null) return null;
 
         try {
-            user = await serverGateway.fetchUserDataWithUsername(userMeta.userId);
+            user = await serverGateway.fetchUserInfo(userMeta.userId);
             await this.saveUser(user);
         } catch (err) {
             user = await this.getOfflineUser();

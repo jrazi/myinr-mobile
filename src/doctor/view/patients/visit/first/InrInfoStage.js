@@ -135,7 +135,7 @@ export class InrInfoStage extends React.Component {
                                             this.inrTestInfo.lastInrTest.dateOfLastInrTest = date
                                         });
                                     })}
-                                    initialValue={this.inrTestInfo.testDate}
+                                    initialValue={!this.state.loaded ? null : this.inrTestInfo.lastInrTest.dateOfLastInrTest}
                                 />
                                 <Layout.IntraSectionInvisibleDivider sm/>
                                 <Layout.InputTitle title={'Target Range'} description={"Target range for patient's INR"}/>
@@ -224,7 +224,7 @@ const _DefaultTextInput = (props) => {
 
 const _DateInput = (props) => {
     const [datePickerVisible, setDatePickerVisible] = useState(false);
-    const [dateValue, setDateValue] = useState(firstNonEmpty(props.initialValue, getFormFormattedJalaliDate(new Date())));
+    const [dateValue, setDateValue] = useState(firstNonEmpty(props.initialValue || null, getFormFormattedJalaliDate(new Date())));
     const onDateChange = (date) => {
         setDateValue(date);
         setDatePickerVisible(false);
