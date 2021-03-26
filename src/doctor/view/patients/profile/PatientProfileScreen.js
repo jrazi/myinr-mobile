@@ -62,6 +62,11 @@ class PatientProfileScreen extends React.Component {
         });
     }
 
+    endFirstVisit = () => {
+        this.state.firstVisit.visitInfo.flags.isEnded = true;
+        this.setState({firstVisit: this.state.firstVisit});
+    }
+
     render() {
         const theme = this.props.theme;
         const colors = theme.colors;
@@ -73,7 +78,7 @@ class PatientProfileScreen extends React.Component {
         if (!this.state.loaded) return <LoadingScreen loaded={this.state.loaded}/>;
         return (
             <PatientProfileContext.Provider
-                value={{patient: this.state.patient, firstVisit: this.state.firstVisit, visits: []}}
+                value={{patient: this.state.patient, firstVisit: this.state.firstVisit, endFirstVisit: this.endFirstVisit,  visits: []}}
             >
                 <ScreenLayout>
                     <ScreenHeader

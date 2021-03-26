@@ -58,6 +58,21 @@ class DoctorDao {
         return cachedVisit;
     }
 
+    startFirstVisit = async (patientUserId) => {
+        const startResult = await doctorService.startFirstVisit(patientUserId);
+        return startResult;
+    }
+
+    endFirstVisit = async (patientUserId) => {
+        const endResult = doctorService.endFirstVisit(patientUserId);
+
+        const cacheUpdateResult = this.getLocalFirstVisit(patientUserId, false)
+            .then(firstVisitData => this.saveCachedVisit(patientUserId, firstVisitData, false));
+
+        const result = await Promise.all([endResult, cacheUpdateResult]);
+        return result;
+    }
+
     deleteCachedVisit = (patientUserId) => {
         return AsyncStorage.removeItem(RecordIdentifier.cachedVisit(patientUserId));
     }

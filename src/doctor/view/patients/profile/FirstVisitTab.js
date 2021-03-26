@@ -57,16 +57,16 @@ class _FirstVisitTab extends React.Component {
     }
 
     finishFirstVisit = () => {
-        this.setState({doingAction: true}, () => {
-            setTimeout(() => {
-                const visit = visitDao.getVisits(this.props.route.params.userId);
-                const info = {
-                    currentStage: 0,
-                    visitInfo: visit,
-                }
-                doctorDao.saveCachedVisit(this.props.route.params.userId, info);
-                this.setState({visitInfo: visit, doingAction: false, certifyVisitDialogOpen: false,});
-            }, 1500)
+        this.setState({doingAction: true}, async () => {
+            try {
+                await doctorDao.endFirstVisit(this.props.route.params.userId);
+                const context = this.context;
+                context.endFirstVisit();
+                this.setState({doingAction: false, certifyVisitDialogOpen: false,});
+            } catch (e) {
+                console.warn('error finishing first visit', e);
+                this.setState({doingAction: false, certifyVisitDialogOpen: true,});
+            }
         })
     }
 
@@ -123,6 +123,7 @@ class _FirstVisitTab extends React.Component {
     }
 }
 
+_FirstVisitTab.contextType = PatientProfileContext;
 export const FirstVisitTab = withTheme(_FirstVisitTab);
 
 const FirstVisitInfo = (props) => {
@@ -163,6 +164,7 @@ const FirstVisitInfo = (props) => {
         </View>
     )
 }
+
 
 const FirstVisitInfoContainer = (props) => {
     return (

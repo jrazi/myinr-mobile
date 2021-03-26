@@ -9,11 +9,17 @@ export const VisitRedirect = (props) => {
     const navigation = useNavigation();
 
     const startVisitSession = (useCache) => {
-        props.onDismiss();
-        navigation.navigate(
-            'VisitSessionScreen',
-            {userId: props.patient.userId, patientName: props.patient.fullName, useCache: useCache}
-        );
+        doctorDao.startFirstVisit(props.patient.userId)
+            .then(res => {
+                props.onDismiss();
+                navigation.navigate(
+                    'VisitSessionScreen',
+                    {userId: props.patient.userId, patientName: props.patient.fullName, useCache: useCache}
+                );
+            })
+            .catch(err => {
+                props.onDismiss();
+            })
     }
 
     return (

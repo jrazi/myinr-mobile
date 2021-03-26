@@ -1,8 +1,6 @@
 import {DEFAULT_TIMEOUT, withTimeout} from "../../../root/data/server/util";
 import {hasValue} from "../../../root/domain/util/Util";
 import {serverGateway} from "../../../root/data/server/ServerGateway";
-import StupidDoctorServiceGateway from "./StupidDoctorServiceGateway";
-import {fetchList} from "../../../root/data/server/Sql";
 
 const SERVER_ADDRESS = "http://192.168.0.100:3000";
 const API_PATH = `${SERVER_ADDRESS}/api/v1/doctor`;
@@ -22,10 +20,9 @@ function formatError(err) {
     return errorObject;
 }
 
-export default class DoctorWebServiceGateway extends StupidDoctorServiceGateway {
+export default class DoctorWebServiceGateway  {
 
     constructor() {
-        super();
         this.webServiceGateway = serverGateway;
     }
 
@@ -66,6 +63,52 @@ export default class DoctorWebServiceGateway extends StupidDoctorServiceGateway 
                             'content-type': 'application/json',
                         },
                         body: JSON.stringify({firstVisit: firstVisitUpdatedInfo}),
+                    })
+                )})
+            .then(async res => {
+                const resData = await res.json();
+                if (res.ok) return resData;
+                else throw resData;
+            })
+            .catch(err => {
+                console.warn('API Error', err);
+                throw formatError(err);
+            });
+    }
+
+    endFirstVisit = (patientUserId) => {
+        let url = `${API_PATH}/patient/${patientUserId}/firstVisit/finish`;
+
+        return this.webServiceGateway.getAccessToken()
+            .then(token => {
+                return withTimeout(DEFAULT_TIMEOUT, fetch(url, {
+                        method: 'PUT',
+                        headers: {
+                            Authorization: token,
+                        },
+                    })
+                )})
+            .then(async res => {
+                const resData = await res.json();
+                if (res.ok) return resData;
+                else throw resData;
+            })
+            .catch(err => {
+                console.warn('API Error', err);
+                throw formatError(err);
+            });
+    }
+
+    startFirstVisit = (patientUserId) => {
+        let url = `${API_PATH}/patient/${patientUserId}/firstVisit/start`;
+
+        return this.webServiceGateway.getAccessToken()
+            .then(token => {
+                return withTimeout(DEFAULT_TIMEOUT, fetch(url, {
+                        method: 'PUT',
+                        headers: {
+                            Authorization: token,
+                        },
                     })
                 )})
             .then(async res => {
