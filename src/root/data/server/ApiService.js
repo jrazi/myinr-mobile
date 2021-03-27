@@ -18,7 +18,7 @@ export default class ApiService {
         this.tokenService = TokenService.getInstance();
     }
 
-    fetchFromProtectedEndpoint(url, {method='GET', headers={}, body=null, showErrorNotification=true, throwError=true}={}) {
+    fetchFromProtectedEndpoint(url, {method='GET', headers={}, body=null, timeout=DEFAULT_TIMEOUT,  showErrorNotification=true, throwError=true}={}) {
         return this.tokenService.getAccessToken()
             .then(token => {
                 return this.sendApiRequest(url, {
@@ -28,6 +28,9 @@ export default class ApiService {
                             Authorization: token,
                         },
                         body: body,
+                    },
+                    {
+                        timeout: timeout,
                     });
             })
             .catch(err => {
@@ -46,11 +49,14 @@ export default class ApiService {
             });
     }
 
-    fetchFromNonProtectedEndpoint(url, {method='GET', headers={}, body=null, showErrorNotification=true, throwError=true}={}) {
+    fetchFromNonProtectedEndpoint(url, {method='GET', headers={}, body=null, timeout=DEFAULT_TIMEOUT, showErrorNotification=true, throwError=true}={}) {
         return this.sendApiRequest(url, {
                 method: method,
                 headers: headers,
                 body: body,
+            },
+            {
+                timeout: timeout,
             })
             .catch(err => {
                 console.warn('API Error', err);

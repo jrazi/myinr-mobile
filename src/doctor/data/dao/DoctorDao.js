@@ -25,52 +25,71 @@ class DoctorDao {
     }
 
 
-    getLocalFirstVisit = (patientUserId, forceFresh=false) => {
+    getLocalFirstVisit = async (patientUserId, forceFresh=false) => {
+
         return AsyncStorage.getItem(RecordIdentifier.cachedVisit(patientUserId))
             .then(cachedVisit => {
-                if (forceFresh || cachedVisit == null) throw {};
-                return JSON.parse(cachedVisit);
+                return cachedVisit ? JSON.parse(cachedVisit) : null;
             })
-            .catch(err => {
+            .then(cachedVisit => {
+                const shouldRefresh = forceFresh || cachedVisit == null;
+                const localVisitData = this.buildCachedVisit(cachedVisit);
+                if (!shouldRefresh) {
+                    return localVisitData;
+                }
                 return this.getFirstVisitFromServer(patientUserId)
-                    .then(visit => {
-                        const visitToCache = {visitInfo: visit, currentStage: 0};
-                        this.saveCachedVisit(patientUserId, visitToCache);
-                        return visitToCache;
+                    .then(async visit => {
+                        localVisitData.visitInfo = visit;
+                        await this.cacheFirstVisit(patientUserId, localVisitData);
+                        return localVisitData;
                     })
-                    .catch(err => {throw err})
+                    .catch(err => Promise.reject(err))
             })
+            .catch(err => Promise.reject(err))
     }
 
-    saveCachedVisit = async (patientUserId, cachedVisit, saveRemotely=false) => {
+    updateFirstVisit = async (patientUserId, newInfo, saveRemotely=false) => {
         const currentVisitData = await this.getLocalFirstVisit(patientUserId, false);
 
-        const updatedData = FirstVisit.diff(currentVisitData.visitInfo, cachedVisit.visitInfo);
+        const updatedData = FirstVisit.diff(currentVisitData.visitInfo, newInfo.visitInfo);
+        const newCacheObject = this.updateFirstVisitFields(currentVisitData, newInfo);
 
-        if (saveRemotely && Object.keys(updatedData).length > 0)
+        if ((Object.keys(updatedData).length || 0) == 0)
+            return;
+
+        if (saveRemotely)
             await doctorService.updateFirstVisit(patientUserId, updatedData);
 
-        await AsyncStorage.setItem(
-            RecordIdentifier.cachedVisit(patientUserId),
-            JSON.stringify(cachedVisit)
-        );
+        const localVisitData = this.buildCachedVisit(newCacheObject);
+        localVisitData.local.lastEditDate = new Date();
 
-        return cachedVisit;
+        await this.cacheFirstVisit(patientUserId, localVisitData);
+
+        return localVisitData;
     }
 
     startFirstVisit = async (patientUserId) => {
         const startResult = await doctorService.startFirstVisit(patientUserId);
-        return startResult;
+
+        const localVisitData = this.buildCachedVisit(null);
+        localVisitData.local.startDate = new Date();
+        await this.cacheFirstVisit(patientUserId, localVisitData);
+
+        return localVisitData;
     }
 
     endFirstVisit = async (patientUserId) => {
-        const endResult = doctorService.endFirstVisit(patientUserId);
+        const endResult = await doctorService.endFirstVisit(patientUserId);
 
-        const cacheUpdateResult = this.getLocalFirstVisit(patientUserId, false)
-            .then(firstVisitData => this.saveCachedVisit(patientUserId, firstVisitData, false));
+        const cacheUpdateResult = await this.getLocalFirstVisit(patientUserId, false)
+            .then(firstVisitData => {
+                firstVisitData.visitInfo.flags.isEnded = true;
+                firstVisitData.local.endDate = new Date();
+                return firstVisitData;
+            })
+            .then(firstVisitData => this.cacheFirstVisit(patientUserId, firstVisitData));
 
-        const result = await Promise.all([endResult, cacheUpdateResult]);
-        return result;
+        return cacheUpdateResult;
     }
 
     deleteCachedVisit = (patientUserId) => {
@@ -80,6 +99,39 @@ class DoctorDao {
     getFirstVisitFromServer = (patientUserId) => {
         return doctorService.getFirstVisit(patientUserId)
             .then(firstVisit => firstVisit);
+    }
+
+    buildCachedVisit = (cachedVisit) => {
+        const builtObject = {};
+        const refObject = cachedVisit || {};
+
+        builtObject.visitInfo = refObject.visitInfo || {};
+        builtObject.currentStage = refObject.currentStage || 0;
+        builtObject.local ={
+            startDate: (refObject.local || {}).startDate || null,
+            lastEditDate: (refObject.local || {}).lastEditDate || null,
+            endDate: (refObject.local || {}).endDate || null,
+        }
+        return builtObject;
+    }
+
+
+    cacheFirstVisit = async (patientUserId, cachedVisit) => {
+        const localVisitData = this.buildCachedVisit(cachedVisit);
+        await AsyncStorage.setItem(
+            RecordIdentifier.cachedVisit(patientUserId),
+            JSON.stringify(localVisitData)
+        );
+
+        return localVisitData;
+    }
+
+    updateFirstVisitFields = (source, updatedInfo) => {
+        if (!hasValue(source) || !hasValue(updatedInfo)) return source;
+
+        source.visitInfo = updatedInfo.visitInfo;
+        source.currentStage = updatedInfo.currentStage;
+        return source;
     }
 }
 

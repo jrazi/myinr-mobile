@@ -64,7 +64,6 @@ class _FirstVisitTab extends React.Component {
                 context.endFirstVisit();
                 this.setState({doingAction: false, certifyVisitDialogOpen: false,});
             } catch (e) {
-                console.warn('error finishing first visit', e);
                 this.setState({doingAction: false, certifyVisitDialogOpen: true,});
             }
         })

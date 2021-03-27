@@ -37,9 +37,7 @@ class FirstVisitScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            visitInfo: FirstVisit.createNew(),
             currentStage: 0,
-            finishVisitDialogOpen: false,
             loaded: false,
         }
     }
@@ -50,24 +48,13 @@ class FirstVisitScreen extends React.Component {
 
         let visitInfo = visitDao.initVisit(userId);
 
-        if (!useCache) {
-            doctorDao.saveCachedVisit(userId, {currentStage: 0, visitInfo: visitInfo});
-            this.setState({visitInfo: visitInfo, currentStage: 0, loaded: true});
-            return ;
-        }
-
-        doctorDao.getLocalFirstVisit(userId)
-            .then(cachedVisit => {
-                visitInfo = visitDao.setVisits(userId, cachedVisit.visitInfo);
-                this.setState({visitInfo: visitInfo, currentStage: readonly ? 0 : cachedVisit.currentStage, loaded: true});
-            })
-            .catch(err => {
-                doctorDao.saveCachedVisit(userId, {currentStage: 0, visitInfo: visitInfo});
-                this.setState({visitInfo: visitInfo, currentStage: 0, loaded: true});
-                console.log("USER CACHE FAILED", err);
-            })
-            .finally(() => {
-            })
+        this.setState({loaded: false}, () => {
+            doctorDao.getLocalFirstVisit(userId)
+                .then(cachedVisit => {
+                    visitInfo = visitDao.setVisits(userId, cachedVisit.visitInfo);
+                    this.setState({visitInfo: visitInfo, currentStage: readonly ? 0 : cachedVisit.currentStage, loaded: true});
+                })
+        })
     }
 
 
@@ -94,9 +81,8 @@ class FirstVisitScreen extends React.Component {
         const info = {
             currentStage: this.state.currentStage,
             visitInfo: visit,
-            lastEditDate: new Date().toString(),
         }
-        await doctorDao.saveCachedVisit(userId, info, true);
+        await doctorDao.updateFirstVisit(userId, info, true);
     }
 
     render() {

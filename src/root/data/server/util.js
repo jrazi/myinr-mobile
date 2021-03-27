@@ -5,7 +5,8 @@ export function withTimeout(ms, promise) {
     return new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
             reject({
-                errorType: ErrorType.TIMEOUT,
+                code: ErrorType.TIMEOUT,
+                message: `Could not finish request in ${ms} millis`,
             })
         }, ms);
         promise
@@ -20,5 +21,5 @@ export function withTimeout(ms, promise) {
     })
 }
 
-export const DEFAULT_TIMEOUT = 10000;
+export const DEFAULT_TIMEOUT = 10000*1.2;
 

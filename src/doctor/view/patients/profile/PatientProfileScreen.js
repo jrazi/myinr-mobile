@@ -47,7 +47,7 @@ class PatientProfileScreen extends React.Component {
                     this.updateLoadedStatus();
                 })
                 .catch(err => {
-                    console.warn(err);
+                    console.warn('Error loading patient profile', err);
                 })
 
             doctorDao.getLocalFirstVisit(this.props.route.params.userId, true)
@@ -57,7 +57,7 @@ class PatientProfileScreen extends React.Component {
                     this.updateLoadedStatus();
                 })
                 .catch(err => {
-                    console.warn(err);
+                    console.warn('Patient Profile: Error loading first visit', err);
                 })
         });
     }
