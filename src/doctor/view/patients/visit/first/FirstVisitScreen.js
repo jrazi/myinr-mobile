@@ -73,16 +73,30 @@ class FirstVisitScreen extends React.Component {
 
     onNewStage = (stageIndex) => {
         this.setState({currentStage: stageIndex}, () => {
-            const userId = this.props.route.params.userId;
-            if (this.props.route.params.readonly) return;
-            let visit = visitDao.getVisits(userId);
-            const info = {
-                currentStage: this.state.currentStage,
-                visitInfo: visit,
-                lastEditDate: new Date().toString(),
-            }
-            doctorDao.saveCachedVisit(userId, info, true);
+            this.saveVisit();
         });
+    }
+
+    onExit = () => {
+        this.saveVisit()
+            .finally(() => {
+                this.props.navigation.reset({
+                    index: 0,
+                    routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
+                })
+            })
+    }
+
+    saveVisit = async () => {
+        const userId = this.props.route.params.userId;
+        if (this.props.route.params.readonly) return;
+        let visit = visitDao.getVisits(userId);
+        const info = {
+            currentStage: this.state.currentStage,
+            visitInfo: visit,
+            lastEditDate: new Date().toString(),
+        }
+        await doctorDao.saveCachedVisit(userId, info, true);
     }
 
     render() {
@@ -93,12 +107,7 @@ class FirstVisitScreen extends React.Component {
                     <CustomContentCustomActionScreenHeader
                         iconName={"check-bold"}
                         style={{elevation: 0}}
-                        onActionPress={() =>
-                            this.props.navigation.reset({
-                                index: 0,
-                                routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
-                            })
-                        }
+                        onActionPress={this.onExit}
                         reverse
                     >
                         <View style={{flex: 1, alignItems: 'flex-end'}}>
