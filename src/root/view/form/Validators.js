@@ -20,13 +20,13 @@ export const USERNAME = {
 export const PASSWORD = {
     EN: Yup.string()
         .nullable()
-        .min(8, 'Password length cannot be less than 8 characters.')
+        .min(4, 'Password length cannot be less than 4 characters.')
         .max(64, 'Password length cannot exceed 64 characters')
         .required('This field cannot be left empty.'),
 
     FA: Yup.string()
         .nullable()
-        .min(8, 'رمز عبور باید شامل حداقل ۸ کاراکتر باشد.')
+        .min(4, 'رمز عبور باید شامل حداقل ۴ کاراکتر باشد.')
         .max(64, 'رمز عبور نمی‌تواند شامل بیش از ۶۴ کاراکتر باشد.')
         .required('این فیلد نمی‌تواند خالی باشد.'),
 }

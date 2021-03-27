@@ -1,6 +1,7 @@
 import {TokenService} from "./TokenService";
 import {formatError} from "./ApiUtil";
 import {DEFAULT_TIMEOUT, withTimeout} from "./util";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 export default class ApiService {
 
@@ -17,42 +18,64 @@ export default class ApiService {
         this.tokenService = TokenService.getInstance();
     }
 
-    fetchFromProtectedEndpoint(url, {method='GET', headers={}, body=null, timeout=DEFAULT_TIMEOUT}={}) {
+    fetchFromProtectedEndpoint(url, {method='GET', headers={}, body=null, showErrorNotification=true, throwError=true}={}) {
         return this.tokenService.getAccessToken()
             .then(token => {
-                return withTimeout(timeout, this.sendApiRequest(url, {
+                return this.sendApiRequest(url, {
                         method: method,
                         headers: {
                             ...headers,
                             Authorization: token,
                         },
                         body: body,
-                    })
-                );
+                    });
             })
+            .catch(err => {
+                console.warn('API Error', err);
+                const apiError =  formatError(err);
+                if (showErrorNotification) {
+                    showMessage({
+                        message: apiError.message || null,
+                        description: apiError.detailedMessage || null,
+                        type: "danger",
+                    });
+                }
+                if (throwError) {
+                    return Promise.reject(apiError);
+                }
+            });
     }
 
-    fetchFromNonProtectedEndpoint(url, {method='GET', headers={}, body=null, timeout=DEFAULT_TIMEOUT}={}) {
-        return withTimeout(timeout, this.sendApiRequest(url, {
+    fetchFromNonProtectedEndpoint(url, {method='GET', headers={}, body=null, showErrorNotification=true, throwError=true}={}) {
+        return this.sendApiRequest(url, {
                 method: method,
                 headers: headers,
                 body: body,
             })
-        );
+            .catch(err => {
+                console.warn('API Error', err);
+                const apiError =  formatError(err);
+                if (showErrorNotification) {
+                    showMessage({
+                        message: apiError.message || null,
+                        description: apiError.detailedMessage || null,
+                        type: "danger",
+                    });
+                }
+                if (throwError) {
+                    return Promise.reject(apiError);
+                }
+            });
     }
 
-    sendApiRequest(url, fetchOptions, {returnOnlyData=true}={}) {
-        return fetch(url, fetchOptions)
+    sendApiRequest(url, fetchOptions, {returnOnlyData=true, timeout=DEFAULT_TIMEOUT}={}) {
+        return withTimeout(timeout, fetch(url, fetchOptions))
             .then(async res => {
                 const resData = await res.json();
                 if (res.ok) return resData;
                 else throw resData;
             })
             .then(res => returnOnlyData ? res.data : res)
-            .catch(err => {
-                console.warn('API Error', err);
-                throw formatError(err);
-            });
     }
 }
 

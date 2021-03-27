@@ -10,16 +10,27 @@ export function formatError(err) {
     let errorObject = {
         status: 400,
         code: 'ERROR',
-        message: 'خطا در ارتباط با سرور',
-        detailedMessage: "",
+        message: 'خطا',
+        detailedMessage: 'ارتباط با سرور برقرار نشد.',
+        serverMessage: "",
         data: {},
     }
     if (!hasValue(err) || !(err instanceof Object))
         return errorObject;
 
+    switch (err.code || "") {
+        case "USERNAME_PASSWORD_MISMATCH":
+            errorObject.message = 'نام کاربری یا رمز عبور نادرست است.';
+            errorObject.detailedMessage = '';
+            break;
+        default:
+            errorObject.message = 'خطا';
+            errorObject.detailedMessage = 'ارتباط با سرور برقرار نشد.';
+            break;
+    }
     errorObject.status = err.status || errorObject.status;
     errorObject.code = err.code || errorObject.code;
-    errorObject.detailedMessage = err.message || "";
+    errorObject.serverMessage = err.message || "";
     return errorObject;
 }
 

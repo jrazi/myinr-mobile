@@ -68,21 +68,6 @@ class LoginForm extends React.Component {
 
             }).catch(error => {
                 this.changeSubmissionStatus(FormSubmissionStatus.NOT_SUBMITTING, () => {
-                    const code = error.code;
-                    let message = '';
-                    switch (code) {
-                        case ErrorType.RECORD_NOT_FOUND:
-                        case ErrorType.USERNAME_PASSWORD_MISMATCH:
-                            message = 'نام کاربری یا رمز عبور اشتباه است';
-                            break;
-                        default:
-                            message = 'خطا در ارتباط با سرور';
-                            break;
-                    }
-                    this.setState({
-                        errorDialogOpen: true,
-                        errorMessage: message,
-                    });
                 });
             });
         })
