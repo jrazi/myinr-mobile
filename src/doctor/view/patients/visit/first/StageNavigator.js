@@ -1,7 +1,7 @@
 import React from 'react';
 import {BottomNavigation, useTheme, withTheme} from "react-native-paper";
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
-import {stages} from "./FirstVisitProperties";
+import {stages} from "./FirstVisitMetaData";
 import {createStackNavigator} from "@react-navigation/stack";
 import {StyleSheet, View} from "react-native";
 import {fullSize} from "../../../../../root/view/styles/containers";

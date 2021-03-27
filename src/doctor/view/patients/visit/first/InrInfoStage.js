@@ -1,24 +1,15 @@
-import React, {useCallback, useState} from "react";
+import React from "react";
 import * as Layout from "./forms/Layout";
-import {Text, Button, Divider, Switch, TextInput, Portal, useTheme} from "react-native-paper";
-import {
-    ConditionalCollapsibleRender,
-} from "./forms/Layout";
-import {Platform, PanResponder, View} from 'react-native';
+import {ConditionalCollapsibleRender} from "./forms/Layout";
+import {TextInput, useTheme} from "react-native-paper";
+import {View} from 'react-native';
 import {Formik} from "formik";
 import * as Yup from 'yup';
 import {visitDao} from "../../../../data/dao/VisitDao";
-import {
-    firstNonEmpty,
-    getFormattedJalaliDate,
-    getFormFormattedJalaliDate,
-    hasValue, jalaliToGeorgian
-} from "../../../../../root/domain/util/Util";
+import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
 import * as Validators from "../../../../../root/view/form/Validators";
 import {FirstVisit} from "../../../../domain/visit/Visit";
-import {DefaultDatePicker} from "./forms/JalaliDatePicker";
-import { DefaultSwitchRow} from "./forms/ContextSpecificComponents";
-
+import {DefaultDateInput, DefaultSwitchRow} from "./forms/ContextSpecificComponents";
 
 
 export class InrInfoStage extends React.Component {
@@ -55,7 +46,7 @@ export class InrInfoStage extends React.Component {
 
         const readonly = this.props.route.params.readonly;
         const DefaultTextInput = (props) => <_DefaultTextInput {...props} disabled={readonly}/>
-        const DateInput = (props) => <_DateInput {...props} disabled={readonly}/>
+        const DateInput = (props) => <DefaultDateInput {...props} disabled={readonly}/>
         return (
             <Layout.VisitScreen
             >
@@ -219,48 +210,6 @@ const _DefaultTextInput = (props) => {
                 }}
                 dense={true}
             />
-    )
-}
-
-const _DateInput = (props) => {
-    const [datePickerVisible, setDatePickerVisible] = useState(false);
-    const [dateValue, setDateValue] = useState(firstNonEmpty(props.initialValue || null, getFormFormattedJalaliDate(new Date())));
-    const onDateChange = (date) => {
-        setDateValue(date);
-        setDatePickerVisible(false);
-        props.onDateChange(date);
-    }
-    const theme = useTheme();
-    return (
-        <View>
-            <TextInput
-                label={props.label}
-                // value={}
-                value={dateValue}
-                disabled={props.disabled}
-                placeholder={props.placeholder}
-                onChangeText={props.onChangeText}
-                // onBlur={() => setDatePickerVisible(false)}
-                onFocus={() => setDatePickerVisible(true)}
-                autoCompleteType={'off'}
-                returnKeyType={'next'}
-                keyboardType={null}
-                showSoftInputOnFocus={false}
-                textContentType={props.textContentType}
-                autoCorrect={false}
-                style={{
-                    backgroundColor: theme.colors.surface,
-                    fontSize: 14,
-                    flexGrow: 0,
-                    paddingHorizontal: 0,
-                    textAlign: 'left',
-
-                    ...props.style
-                }}
-                dense={true}
-            />
-            <DefaultDatePicker visible={datePickerVisible} onDateChange={onDateChange} selectedDate={dateValue}/>
-        </View>
     )
 }
 

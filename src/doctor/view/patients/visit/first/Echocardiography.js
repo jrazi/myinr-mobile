@@ -102,11 +102,11 @@ export class ECForm extends React.Component {
                                 multiline={true} numberOfLines={10}
                                 value={values.comment}
                                 disabled={this.props.readonly}
-                                onChangeText={handleChange('comment')}
-                                onBlur={(event) => {
-                                    handleBlur('comment')(event);
+                                onChangeText={(event) => {
+                                    handleChange('comment')(event);
                                     this.handleChange('comment', values.comment, true);
                                 }}
+                                onBlur={handleBlur('comment')}
                             />
                         </View>
                     );

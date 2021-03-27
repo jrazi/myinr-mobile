@@ -17,7 +17,7 @@ import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../..
 import {FirstVisit} from "../../../../domain/visit/Visit";
 import {doctorDao} from "../../../../data/dao/DoctorDao";
 import StageNavigator from "./StageNavigator";
-import {stages} from "./FirstVisitProperties";
+import {stages} from "./FirstVisitMetaData";
 import {debugBorderRed} from "../../../../../root/view/styles/borders";
 import {firstNonEmpty} from "../../../../../root/domain/util/Util";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";

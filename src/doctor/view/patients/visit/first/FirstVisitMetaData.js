@@ -9,6 +9,8 @@ import {HAS_BLEDStage} from "./HAS_BLEDStage";
 import {LabTestStage} from "./LabTestStage";
 import {Echocardiography} from "./Echocardiography";
 import DrugHistoryStage from "./DrugHistoryStage";
+import {ReportStage} from "./ReportStage";
+import {ElectrocardiographyStage} from "./ElectrocardiographyStage";
 
 export const stages = [
     (props) => <PreliminaryStage {...props}/>,
@@ -19,6 +21,8 @@ export const stages = [
     (props) => <CHA2DS2_VAScStage {...props}/>,
     (props) => <HAS_BLEDStage {...props}/>,
     (props) => <LabTestStage {...props}/>,
+    (props) => <ElectrocardiographyStage {...props}/>,
     (props) => <Echocardiography {...props}/>,
     (props) => <DosageRecommendationStage {...props}/>,
+    (props) => <ReportStage {...props}/>,
 ]

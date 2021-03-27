@@ -1,11 +1,11 @@
-import React, {useEffect, useRef, useState} from "react";
-import * as Data from "../Data";
+import React, {useState} from "react";
 import * as Layout from "./Layout";
-import {Badge, Chip, Switch, useTheme} from "react-native-paper";
-import {View} from "react-native";
 import {LayoutStyles} from "./Layout";
+import {Badge, Chip, Switch, TextInput, useTheme} from "react-native-paper";
+import {View} from "react-native";
 import color from 'color';
-import {debugBorderRed} from "../../../../../../root/view/styles/borders";
+import {firstNonEmpty, getFormFormattedJalaliDate} from "../../../../../../root/domain/util/Util";
+import {DefaultDatePicker} from "./JalaliDatePicker";
 
 
 export const ChipBox = (props) => {
@@ -135,6 +135,85 @@ export const TitleWithBadge = (props) => {
             <View style={{}}>
                 <Badge size={32} theme={theme} style={{backgroundColor: theme.colors.actionColors.remove, }}>{props.badgeValue}</Badge>
             </View>
+        </View>
+    )
+}
+
+export const DefaultDateInput = (props) => {
+    const [datePickerVisible, setDatePickerVisible] = useState(false);
+    const [dateValue, setDateValue] = useState(props.initialValue);
+
+    const onDateChange = (date) => {
+        setDateValue(date);
+        setDatePickerVisible(false);
+        props.onDateChange(date);
+    }
+
+    const dismissModal = () => {
+        setDatePickerVisible(false);
+    }
+
+    const theme = useTheme();
+
+    return (
+        <View>
+            {
+                props.label ? <Layout.InputOutlineLabel title={props.label}/> : null
+            }
+            <TextInput
+                value={dateValue}
+                disabled={props.disabled}
+                placeholder={props.placeholder}
+                onChangeText={props.onChangeText}
+                onFocus={() => setDatePickerVisible(true)}
+                autoCompleteType={'off'}
+                returnKeyType={'next'}
+                keyboardType={null}
+                showSoftInputOnFocus={false}
+                textContentType={props.textContentType}
+                autoCorrect={false}
+                style={{
+                    backgroundColor: theme.colors.surface,
+                    fontSize: 14,
+                    flexGrow: 0,
+                    paddingHorizontal: 0,
+                    textAlign: 'left',
+
+                    ...props.style
+                }}
+                dense={true}
+            />
+            <DefaultDatePicker visible={datePickerVisible} onDismiss={dismissModal} onDateChange={onDateChange} selectedDate={dateValue || getFormFormattedJalaliDate(new Date())}/>
+        </View>
+    )
+}
+
+export const DefaultTextInput = (props) => {
+    const theme = useTheme();
+    return (
+        <View>
+            <Layout.InputOutlineLabel title={props.label}/>
+            <TextInput
+                value={props.value}
+                placeholder={props.placeholder}
+                onChangeText={props.onChangeText}
+                disabled={props.disabled}
+                onBlur={props.onBlur}
+                autoCompleteType={'off'}
+                keyboardType={props.numeric ? 'numeric' : 'default'}
+                textContentType={props.textContentType}
+                autoCorrect={false}
+                style={{
+                    backgroundColor: theme.colors.surface,
+                    fontSize: 14,
+                    paddingHorizontal: 0,
+                    textAlign: 'left',
+                    ...props.style
+                }}
+                multiline={props.multiline}
+                numberOfLines={props.numberOfLines}
+                dense={true}
+            />
         </View>
     )
 }
