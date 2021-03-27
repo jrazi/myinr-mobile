@@ -197,18 +197,19 @@ const DrugList = (props) => {
                 Object.entries(props.drugGroups)
                     .map( ([key, drugList]) => {
                         return (
-                            <List.Section>
-                                <List.Subheader style={styles.drugListTitle}>{key}</List.Subheader>
+                            <List.Section key={`DrugGroup${key}`}>
+                                <List.Subheader key={`DrugGroupSubHeader${key}`} style={styles.drugListTitle}>{key}</List.Subheader>
                                 {
                                     drugList.map((drug, index) => {
                                         return (
                                             <DrugInfo
-                                                id={drug.IDDrug}
+                                                id={drug.id}
                                                 name={drug.drugName}
                                                 isLast={index == drugList.length-1}
                                                 dosageForm={drug.dosageForm}
                                                 strength={drug.strength}
                                                 onPress={() => pickDatesForDrug(drug)}
+                                                key={`DrugInfo${drug.id}`}
                                             />
                                         )
                                     })

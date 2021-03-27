@@ -1,11 +1,12 @@
 import React, {useState} from "react";
 import * as Layout from "./Layout";
-import {LayoutStyles} from "./Layout";
-import {Badge, Chip, Switch, TextInput, useTheme} from "react-native-paper";
+import {IntraSectionDivider, LayoutStyles} from "./Layout";
+import {Badge, Chip, Switch, TextInput, useTheme, Text} from "react-native-paper";
 import {View} from "react-native";
 import color from 'color';
 import {firstNonEmpty, getFormFormattedJalaliDate} from "../../../../../../root/domain/util/Util";
 import {DefaultDatePicker} from "./JalaliDatePicker";
+import {debugBorderBlue, debugBorderRed} from "../../../../../../root/view/styles/borders";
 
 
 export const ChipBox = (props) => {
@@ -214,6 +215,60 @@ export const DefaultTextInput = (props) => {
                 numberOfLines={props.numberOfLines}
                 dense={true}
             />
+        </View>
+    )
+}
+
+
+export const CheckboxGroup = (props) => {
+    let selectedStates = [];
+    const theme = useTheme();
+    let conditionElements = (props.items || [])
+        .map((item, index) => {
+            const [value, setValue] = useState(firstNonEmpty(item.value, false));
+            selectedStates.push([value, setValue]);
+            return [
+                <View
+                    style={{
+                        flexDirection: 'row-reverse',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flex: 1,
+                        width: '100%',
+                    }}
+                    key={'CheckBoxGroup' + item.id}
+                >
+                    <View
+                        style={{
+                            width: '75%',
+                            paddingLeft: 20,
+                        }}
+                    >
+                        <Text style={{fontSize: 14, color: theme.colors.text, textAlign: 'right', }}>{item.name}</Text>
+                    </View>
+                    <View
+                        style={{
+                            width: '25%',
+                        }}
+                    >
+                        <DefaultSwitch
+                            style={{
+
+                            }}
+                            value={value}
+                            color={useTheme().colors.accent}
+                            onValueChange={() => {{props.onChange(item.id, !value); setValue(!value)}}}
+                            disabled={props.readonly}
+                        />
+
+                    </View>
+                </View>,
+                (index == props.items.length - 1) ? null : <IntraSectionDivider key={'CheckBoxGroupDivider' + item.id} s/>
+            ]
+        })
+    return (
+        <View>
+            {conditionElements}
         </View>
     )
 }

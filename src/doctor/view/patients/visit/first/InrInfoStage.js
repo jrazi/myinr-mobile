@@ -17,12 +17,13 @@ export class InrInfoStage extends React.Component {
         super(props);
         this.state = {
             loaded: false,
+            latestInrAtHome: false,
         }
         this.inrTestInfo = FirstVisit.createNew().inr;
     }
 
     toggleLatestInrAtHome = () => {
-        this.inrTestInfo.testAtHome = !this.state.latestInrAtHome;
+        this.inrTestInfo.lastInrTest.hasUsedPortableDevice = !this.state.latestInrAtHome;
         this.setState({latestInrAtHome: !this.state.latestInrAtHome});
     }
 

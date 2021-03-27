@@ -43,8 +43,8 @@ class DrugDatePicker extends React.Component {
         const newRecord = {
             id: this.props.drugInfo.id,
             drugName: this.props.drugInfo.drugName,
-            startDate: this.state.sinceDate,
-            endDate: this.state.untilDate,
+            startDate: this.state.sinceDate || "",
+            endDate: this.state.untilDate || "",
         };
         ListUtil.addById(this.medicationHistory, newRecord);
 

@@ -11,12 +11,16 @@ import {Echocardiography} from "./Echocardiography";
 import DrugHistoryStage from "./DrugHistoryStage";
 import {ReportStage} from "./ReportStage";
 import {ElectrocardiographyStage} from "./ElectrocardiographyStage";
+import {BleedingTypesStage} from "./BleedingTypesStage";
+import {HabitsStage} from "./HabitsStage";
 
 export const stages = [
     (props) => <PreliminaryStage {...props}/>,
     (props) => <InrInfoStage {...props}/>,
+    (props) => <BleedingTypesStage {...props}/>,
     (props) => <PastMedicalHistoryStage {...props}/>,
     (props) => <DrugHistoryStage {...props}/>,
+    (props) => <HabitsStage {...props}/>,
     (props) => <PhysicalExamStage {...props}/>,
     (props) => <CHA2DS2_VAScStage {...props}/>,
     (props) => <HAS_BLEDStage {...props}/>,

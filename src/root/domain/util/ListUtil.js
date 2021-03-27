@@ -16,7 +16,7 @@ export default class ListUtil {
     }
 
     static addById(list, newItem) {
-        if (!hasValue(list) || !hasValue(list.length)) return null;
+        if (!hasValue(list) || !hasValue(list.length) || !hasValue((newItem || {}).id)) return null;
 
         const item = list.find(el => el == newItem.id || (el || {}).id == newItem.id) || null;
         if (item == null) {

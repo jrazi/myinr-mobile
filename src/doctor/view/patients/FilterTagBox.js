@@ -12,12 +12,12 @@ export const PatientsListFilterBox = (props) => {
             filters: [
                 {
                     id: 'NOT_VISITED',
-                    name: 'ویزیت اول',
+                    name: 'بیماران جدید',
                     value: false,
                 },
                 {
                     id: 'VISITED',
-                    name: 'ویزیت شده',
+                    name: 'بیماران ویزیت‌شده',
                     value: false,
                 },
             ],
