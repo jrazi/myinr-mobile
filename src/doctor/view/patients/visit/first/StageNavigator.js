@@ -1,12 +1,32 @@
 import React from 'react';
 import {BottomNavigation, useTheme, withTheme} from "react-native-paper";
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
-import {stages} from "./FirstVisitMetaData";
+import {STAGE_NAMES, stages} from "./FirstVisitMetaData";
 import {createStackNavigator} from "@react-navigation/stack";
 import {StyleSheet, View} from "react-native";
 import {fullSize} from "../../../../../root/view/styles/containers";
 import {AddDrugRecord} from "./AddDrugRecord";
-import {DrugDatePicker} from "./DrugDatePicker";
+
+const totalStageCount = stages.length;
+
+function getNextIndex(index) {
+    return (index + 1) % totalStageCount;
+}
+
+function getPrevIndex(index) {
+    return (index + totalStageCount - 1) % totalStageCount;
+}
+
+function getButtonTitle(currentStageIndex) {
+    const nextStageIndex = getNextIndex(currentStageIndex);
+    const prevStageIndex = getPrevIndex(currentStageIndex);
+
+    return {
+        prev: STAGE_NAMES[prevStageIndex] || "Previous",
+        next: STAGE_NAMES[nextStageIndex] || "Next",
+    }
+}
+
 
 class StageNavigator extends React.Component {
     constructor(props) {
@@ -21,40 +41,27 @@ class StageNavigator extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.currentStage == stages.length - 1) {
-            this.state.routes[0].title = 'Finish';
-        }
+        const buttonTitles = getButtonTitle(this.props.currentStage);
+        this.state.routes[0].title = buttonTitles.next;
+        this.state.routes[1].title = buttonTitles.prev;
+
         this.props.navigation.navigate(this.props.route.name, {screen: `VisitStage:${this.props.currentStage}`, visitInfo: this.props.visitInfo});
         this.setState({routes: this.state.routes})
     }
 
     onIndexChange = (index) => {
-        // this.setState({index:  index});
     }
 
     onTabPress = ({route}) => {
-        const index = route.key == 'prev' ? 0 : 1;
-        // if (index == 0 && this.props.currentStage == 0) return;
-        if (index == 1 && this.props.currentStage == stages.length-1) {
-            if (hasValue(this.props.onFinish)) this.props.onFinish();
-            return;
-        }
+        const goingForward = route.key == 'next';
+        const nextCurrentStage = goingForward ? getNextIndex(this.props.currentStage) : getPrevIndex(this.props.currentStage);
+        const buttonTitles = getButtonTitle(nextCurrentStage);
 
-        if (
-            (index == 1 && this.props.currentStage == stages.length - 2)
-            || (index == 0 && this.props.currentStage == 0)
-        ) {
-            this.state.routes[0].title = 'Finish';
-        }
-        else if (index == 0 && this.props.currentStage == stages.length-1) {
-            this.state.routes[0].title = 'Next';
-        }
+        this.state.routes[0].title = buttonTitles.next;
+        this.state.routes[1].title = buttonTitles.prev;
 
-        const inc = index == 0 ? this.props.currentStage == 0 ? stages.length-1 : -1 : index == 1 ? 1 : 0;
-        const newStage = this.props.currentStage + inc;
-
-        if (hasValue(this.props.onNewStage) && inc != 0) this.props.onNewStage(newStage);
-        this.props.navigation.navigate(`VisitStage:${newStage}`, {visitInfo: this.props.visitInfo});
+        this.props.onNewStage(nextCurrentStage);
+        this.props.navigation.navigate(`VisitStage:${nextCurrentStage}`, {visitInfo: this.props.visitInfo});
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {

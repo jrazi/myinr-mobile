@@ -30,3 +30,20 @@ export const stages = [
     (props) => <DosageRecommendationStage {...props}/>,
     (props) => <ReportStage {...props}/>,
 ]
+
+export const STAGE_NAMES = {
+    0: 'Warfarin Info',
+    1: 'INR',
+    2: 'Recent Incidents',
+    3: 'Medical History',
+    4: 'Drug History',
+    5: 'Habits',
+    6: 'Physical Exam',
+    7: 'CHA2DS2',
+    8: 'HAS-BLED',
+    9: 'Lab Test',
+    10: 'ECG',
+    11: 'ECHO',
+    12: 'Prescription',
+    13: 'Conclusion',
+}

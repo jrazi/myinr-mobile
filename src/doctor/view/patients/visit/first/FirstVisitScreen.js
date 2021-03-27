@@ -13,7 +13,12 @@ import {
     Subheading,
     withTheme, useTheme
 } from "react-native-paper";
-import {CustomContentScreenHeader, ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout";
+import {
+    CustomContentCustomActionScreenHeader,
+    CustomContentScreenHeader,
+    ScreenHeader,
+    ScreenLayout
+} from "../../../../../root/view/screen/Layout";
 import {FirstVisit} from "../../../../domain/visit/Visit";
 import {doctorDao} from "../../../../data/dao/DoctorDao";
 import StageNavigator from "./StageNavigator";
@@ -80,46 +85,19 @@ class FirstVisitScreen extends React.Component {
         });
     }
 
-    finishVisit = () => {
-        const navigate = () => {
-            this.setState({finishVisitDialogOpen: false});
-            this.props.navigation.reset({
-                index: 0,
-                routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
-            });
-        }
-        if (this.props.route.params.readonly != true) {
-            const visit = visitDao.getVisits(this.props.route.params.userId);
-            const info = {
-                currentStage: this.state.currentStage,
-                visitInfo: visit,
-                lastEditDate: new Date().toString(),
-            }
-            doctorDao.saveCachedVisit(this.props.route.params.userId, info, true).then(() => navigate());
-        }
-        else navigate();
-
-    }
-
-    onFinishPress = () => {
-        if (this.props.route.params.readonly)
-            this.finishVisit();
-        else this.setState({finishVisitDialogOpen: true});
-    }
-
     render() {
         const theme = this.props.theme;
         return (
             <LoadingScreen loaded={this.state.loaded}>
                 <ScreenLayout>
-                    <CustomContentScreenHeader
+                    <CustomContentCustomActionScreenHeader
+                        iconName={"check-bold"}
                         style={{elevation: 0}}
-                        onBack={() =>
+                        onActionPress={() =>
                             this.props.navigation.reset({
                                 index: 0,
                                 routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
                             })
-
                         }
                         reverse
                     >
@@ -128,11 +106,13 @@ class FirstVisitScreen extends React.Component {
                                 <StageProgressBar currentStage={this.state.currentStage}/>
                             </View>
                         </View>
-                    </CustomContentScreenHeader>
-                    <View style={{
-                        flex: 1,
-                        backgroundColor: theme.colors.surface,
-                    }}>
+                    </CustomContentCustomActionScreenHeader>
+                    <View
+                        style={{
+                            flex: 1,
+                            backgroundColor: theme.colors.surface,
+                        }}
+                    >
                         <ConditionalRender hidden={!this.state.loaded}>
                             <StageNavigator
                                 navigation={this.props.navigation}
@@ -141,15 +121,9 @@ class FirstVisitScreen extends React.Component {
                                 userId={this.props.route.params.userId}
                                 onNewStage={this.onNewStage}
                                 currentStage={this.state.currentStage}
-                                onFinish={this.onFinishPress}
                             />
                         </ConditionalRender>
                     </View>
-                    <FinishVisitDialog
-                        visible={this.state.finishVisitDialogOpen}
-                        onDismiss={() => this.setState({finishVisitDialogOpen: false})}
-                        onFinish={this.finishVisit}
-                    />
                 </ScreenLayout>
             </LoadingScreen>
         )

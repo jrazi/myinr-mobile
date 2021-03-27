@@ -31,6 +31,36 @@ export const ScreenHeader = ({style, title, navigation, reverse, contentStyle, .
     );
 }
 
+export const CustomContentCustomActionScreenHeader = (props) => {
+    const theme = useTheme();
+    return (
+        <Appbar.Header
+            style={{
+                paddingVertical: 40,
+                paddingHorizontal: 10,
+                borderBottomWidth: 0,
+                ...props.style,
+            }}
+            theme={theme.mostlyWhiteTheme}
+        >
+            {
+                props.reverse ? [
+                        <Appbar.Action key={'action-button'} icon={props.iconName} size={28} onPress={props.onActionPress} color={theme.colors.placeholder}/>,
+                        <React.Fragment key={'header-children'}>
+                            {props.children}
+                        </React.Fragment>
+                    ] :
+                    [
+                        <React.Fragment key={'header-children'}>
+                            {props.children}
+                        </React.Fragment>,
+                        <Appbar.Action key={'action-button'} icon={props.iconName} size={28} onPress={props.onActionPress} color={theme.colors.placeholder}/>,
+                    ]
+            }
+        </Appbar.Header>
+    );
+}
+
 export const CustomContentScreenHeader = (props) => {
     let navigation = null;
     if (hasValue(props.navigation))
