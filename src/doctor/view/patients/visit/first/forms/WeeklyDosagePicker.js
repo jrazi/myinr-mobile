@@ -12,17 +12,26 @@ export const WeeklyDosagePicker = (props) => {
     let now = new Date(Date.now());
     const increment = firstNonEmpty(props.increment, -1);
     let i = 0;
+
+    const onDoseUpdate = (dayId, doseInMilliGram) => {
+        let reportedDose = props.unitInMilliGram ? doseInMilliGram : Math.floor(doseInMilliGram*0.8);
+
+        props.onDoseUpdate(dayId, reportedDose)
+    }
+
     for (let dayId of firstNonEmpty(props.dayOrder, Object.keys(firstNonEmpty(props.initialData, {})))) {
         const date = new Date(firstNonEmpty(props.startingDate, now).getTime());
         date.setDate(date.getDate() + i*increment);
         const formattedDate = getFormattedJalaliDate(date);
+        const doseForDay = Math.floor((props.initialData || {})[dayId] || 0);
+        const initialDose = props.unitInMilliGram ? doseForDay : doseForDay*1.25;
         dosageElements.push(
             <DosageForDay
                 date={props.manualDate ? props.dates[i] : formattedDate}
                 key={'DosageForDay' + i}
-                onDoseUpdate={(dose) => {props.onDoseUpdate(dayId, dose)}}
+                onDoseUpdate={(dose) => {onDoseUpdate(dayId, dose)}}
                 dose={0}
-                initialDose={firstNonEmpty(props.initialData[dayId], 0)}
+                initialDose={initialDose}
                 disabled={props.disabled}
             />
         )
