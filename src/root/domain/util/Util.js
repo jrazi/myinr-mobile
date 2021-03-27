@@ -213,18 +213,24 @@ export function getJalaliDateInDisplayableFormat({year=null, month=null, day=nul
 
 
 export function getFormattedJalaliDate(date, customFormat='dddd DD MMMM') {
-    if (!hasValue(date)) date = new Date(Date.now());
+    if (!hasValue(date || null)) return null;
+    date = new Date(date);
+    if (date.toString() == 'Invalid Date' || !hasValue(date.getFullYear)) return null;
+
     const jDate = new jd.default(date);
     const dateStr = jDate.format(customFormat);
     return e2p(dateStr);
 }
 
 export function getFormattedJalaliDateTime(date) {
-    if (!hasValue(date)) date = new Date(Date.now());
+    if (!hasValue(date || null)) return null;
+    date = new Date(date);
+    if (date.toString() == 'Invalid Date' || !hasValue(date.getFullYear)) return null;
+
     let dateTime = getFormattedJalaliDate(date, 'dddd DD MMMM YYYY');
     let hasTime = !(date.getHours() == 0 && date.getMinutes() == 0 && date.getSeconds() == 0)
     let time = !hasTime ? '' : (date.getHours() % 12 || 12) + ':' + date.getMinutes() + ' ' + (date.getHours() < 12 ? 'ق.ظ' : 'ب.ظ') + ' ';
-    // dateTime = time + dateTime;
+    dateTime = time + dateTime;
     return e2p(dateTime);
 }
 

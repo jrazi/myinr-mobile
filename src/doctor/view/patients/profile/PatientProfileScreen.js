@@ -64,6 +64,7 @@ class PatientProfileScreen extends React.Component {
 
     endFirstVisit = () => {
         this.state.firstVisit.visitInfo.flags.isEnded = true;
+        this.state.firstVisit.local.endDate = new Date().toString();
         this.setState({firstVisit: this.state.firstVisit});
     }
 

@@ -76,7 +76,7 @@ class _FirstVisitTab extends React.Component {
                 {(value) => {
                     return (
                         <ScreenLayout>
-                            <FirstVisitInfo visitInfo={value.firstVisit.visitInfo}/>
+                            <FirstVisitInfo firstVisit={value.firstVisit}/>
                             <View style={styles.fabContainer}>
                                 <ConditionalRender hidden={!value.firstVisit.visitInfo.flags.isEnded}>
                                     <View style={styles.fabWrapper}>
@@ -126,7 +126,9 @@ _FirstVisitTab.contextType = PatientProfileContext;
 export const FirstVisitTab = withTheme(_FirstVisitTab);
 
 const FirstVisitInfo = (props) => {
-    const visitStartDate = props.visitInfo.visitDate.details || {};
+    const {startDate, lastEditDate, endDate} = props.firstVisit.local;
+
+    console.log('FirstVisitTab: first visit local key', props.firstVisit.local);
     return (
         <View style={{paddingTop: 10,}}>
             {/*<Title>مشخصات ویزیت اول</Title>*/}
@@ -134,27 +136,27 @@ const FirstVisitInfo = (props) => {
                 <FirstVisitInfoRow>
                     <FirstVisitInfoItem
                         title={'وضعیت'}
-                        value={props.visitInfo.flags.isEnded ? 'به اتمام رسیده' : 'تایید نشده'}
-                        itemIcon={props.visitInfo.flags.isEnded ? 'check-all' : 'timer-sand'}
+                        value={props.firstVisit.visitInfo.flags.isEnded ? 'به اتمام رسیده' : 'تایید نشده'}
+                        itemIcon={props.firstVisit.visitInfo.flags.isEnded ? 'check-all' : 'timer-sand'}
                     />
                     <FirstVisitInfoItem
                         title={'تاریخ شروع'}
-                        value={getJalaliDateInDisplayableFormat({year: visitStartDate.visitYear, month: visitStartDate.visitMonth, day: visitStartDate.visitDay}) || 'نامشخص'}
+                        value={getFormattedJalaliDateTime(startDate) || 'نامشخص'}
                         itemIcon={'calendar'}
                     />
                 </FirstVisitInfoRow>
                 <FirstVisitInfoRow>
-                    <ConditionalRender hidden={props.visitInfo.flags.isEnded}>
+                    <ConditionalRender hidden={props.firstVisit.visitInfo.flags.isEnded}>
                         <FirstVisitInfoItem
                             title={'آخرین ویرایش'}
-                            value={getJalaliDateInDisplayableFormat({}) || 'نامشخص'}
+                            value={getFormattedJalaliDateTime(lastEditDate) || 'نامشخص'}
                             itemIcon={'calendar-edit'}
                         />
                     </ConditionalRender>
-                    <ConditionalRender hidden={!props.visitInfo.flags.isEnded}>
+                    <ConditionalRender hidden={!props.firstVisit.visitInfo.flags.isEnded}>
                         <FirstVisitInfoItem
                             title={'تاریخ اتمام'}
-                            value={getJalaliDateInDisplayableFormat({year: visitStartDate.visitYear, month: visitStartDate.visitMonth, day: visitStartDate.visitDay}) || 'نامشخص'}
+                            value={getFormattedJalaliDateTime(endDate) || 'نامشخص'}
                             itemIcon={'calendar-check'}
                         />
                     </ConditionalRender>

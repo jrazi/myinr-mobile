@@ -105,7 +105,7 @@ const HeartValveReplacementConditions = (props) => {
             condition['value'] = isConditionListed;
         });
         setLoaded(true);
-    }, [value]);
+    }, []);
 
 
     let changeConditionStatus = (id, value) => {

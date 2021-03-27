@@ -44,12 +44,12 @@ class FirstVisitScreen extends React.Component {
 
     async componentDidMount() {
         // await I18nManager.forceRTL(false);
-        const {userId, useCache, readonly} = this.props.route.params;
+        const {userId, useCache, readonly, fetchRemote} = this.props.route.params;
 
         let visitInfo = visitDao.initVisit(userId);
 
         this.setState({loaded: false}, () => {
-            doctorDao.getLocalFirstVisit(userId)
+            doctorDao.getLocalFirstVisit(userId, fetchRemote || false)
                 .then(cachedVisit => {
                     visitInfo = visitDao.setVisits(userId, cachedVisit.visitInfo);
                     this.setState({visitInfo: visitInfo, currentStage: readonly ? 0 : cachedVisit.currentStage, loaded: true});

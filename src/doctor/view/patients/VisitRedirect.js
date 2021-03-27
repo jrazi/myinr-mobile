@@ -12,7 +12,7 @@ export const VisitRedirect = (props) => {
                 props.onDismiss();
                 navigation.navigate(
                     'VisitSessionScreen',
-                    {userId: props.patient.userId, patientName: props.patient.fullName, useCache: useCache}
+                    {userId: props.patient.userId, patientName: props.patient.fullName, useCache: useCache, readonly: false, fetchRemote: true}
                 );
             })
             .catch(err => {
@@ -25,8 +25,7 @@ export const VisitRedirect = (props) => {
             patient={props.patient}
             visible={props.visible}
             onDismiss={props.onDismiss}
-            onBeginNew={() => startVisitSession(false)}
-            onContinuePrevious={() => startVisitSession(true)}
+            onBeginNew={() => startVisitSession(true)}
         />
     )
 }

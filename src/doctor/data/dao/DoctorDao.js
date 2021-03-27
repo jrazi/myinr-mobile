@@ -61,7 +61,7 @@ class DoctorDao {
             await doctorService.updateFirstVisit(patientUserId, updatedData);
 
         const localVisitData = this.buildCachedVisit(newCacheObject);
-        localVisitData.local.lastEditDate = new Date();
+        localVisitData.local.lastEditDate = new Date().toString();
 
         await this.cacheFirstVisit(patientUserId, localVisitData);
 
@@ -72,7 +72,7 @@ class DoctorDao {
         const startResult = await doctorService.startFirstVisit(patientUserId);
 
         const localVisitData = this.buildCachedVisit(null);
-        localVisitData.local.startDate = new Date();
+        localVisitData.local.startDate = new Date().toString();
         await this.cacheFirstVisit(patientUserId, localVisitData);
 
         return localVisitData;
@@ -84,7 +84,7 @@ class DoctorDao {
         const cacheUpdateResult = await this.getLocalFirstVisit(patientUserId, false)
             .then(firstVisitData => {
                 firstVisitData.visitInfo.flags.isEnded = true;
-                firstVisitData.local.endDate = new Date();
+                firstVisitData.local.endDate = new Date().toString();
                 return firstVisitData;
             })
             .then(firstVisitData => this.cacheFirstVisit(patientUserId, firstVisitData));
