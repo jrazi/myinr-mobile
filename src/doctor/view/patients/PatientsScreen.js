@@ -37,6 +37,10 @@ import {VisitRedirect} from "./VisitRedirect";
 import {doctorDao} from "../../data/dao/DoctorDao";
 import {debugBorderBlue, debugBorderRed} from "../../../root/view/styles/borders";
 import Patient from "../../../root/domain/Patient";
+import {getReasonsForWarfarin} from "../../../root/data/dao/StaticDomainNameTable";
+import ListUtil from "../../../root/domain/util/ListUtil";
+
+const reasonsForWarfarin = getReasonsForWarfarin();
 
 class PatientsScreen extends React.Component {
     constructor(props) {
@@ -121,19 +125,17 @@ class PatientsScreen extends React.Component {
 
     filterPatients = (patients, filters) => {
         const visitFilterEnabled = filters.VISITED ^ filters.NOT_VISITED;
-        const medicalConditionFilterEnabled = (filters.MVR ^ filters.AVR) || (filters.MVR ^ filters.VALVULAR_AF);
+        const medicalConditionFilters = Object.keys(filters)
+            .filter(key => key != 'VISITED' && key != 'NOT_VISITED');
+
+        const enabledMedicalConditionFilters = medicalConditionFilters.filter(filterKey => filters[filterKey] === true) || [];
+
+        const medicalConditionFilterEnabled = filters.VISITED && enabledMedicalConditionFilters.length > 0;
 
         let filteredList = patients
             .filter(p => !visitFilterEnabled || (filters.VISITED && !Patient.isNewPatient(p)) || (filters.NOT_VISITED && Patient.isNewPatient(p)))
-            .filter(p =>
-                !medicalConditionFilterEnabled || (
-                    hasValue(p.medicalCondition) && (
-                        (filters.MVR && Patient.hasMedicalCondition(p, 'MVR') ) ||
-                        (filters.AVR && Patient.hasMedicalCondition(p, 'AVR') ) ||
-                        (filters.VALVULAR_AF && Patient.hasMedicalCondition(p, 'Valvular AF') )
-                    )
-                )
-            );
+            .filter(p => !medicalConditionFilterEnabled || Patient.hasOneOfTheseMedicalConditions(p, enabledMedicalConditionFilters.map(id => (reasonsForWarfarin[id] || {name: null}).name)));
+
         return filteredList;
     }
 

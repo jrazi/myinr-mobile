@@ -3,6 +3,16 @@ import {hasValue} from "./Util";
 
 export default class ListUtil {
 
+
+    static containsOneOfGivenIds(list, idList) {
+        for (let id of idList) {
+            const el = this.containsElementWithId(list, id);
+            if (el) return true;
+        }
+        return false;
+    }
+
+
     static containsElementWithId(list, id) {
         const el = this.findOneById(list, id);
         return el ? true : false;

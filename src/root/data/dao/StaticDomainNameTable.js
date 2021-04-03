@@ -320,7 +320,7 @@ const StaticDomainNameTable = {
 }
 
 export function getReasonsForWarfarin() {
-    const dict = {};
+    let dict = {};
 
     Object.values(StaticDomainNameTable)
         .filter(item => item.groupId === 1 || item.groupId === 2)
@@ -331,4 +331,3 @@ export function getReasonsForWarfarin() {
     return dict;
 }
 
-module.exports = StaticDomainNameTable;

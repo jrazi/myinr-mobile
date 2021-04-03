@@ -28,70 +28,34 @@ export const PatientsListFilterBox = (props) => {
         },
         {
             radio: false,
-            filters: [
-                {
-                    id: 'MVR',
-                    name: 'MVR',
-                    value: false,
-                },
-                {
-                    id: 'AVR',
-                    name: 'AVR',
-                    value: false,
-                },
-                {
-                    id: 'VALVULAR_AF',
-                    name: 'Valvular AF',
-                    value: false,
-                },
-                {
-                    id: 'DVT',
-                    name: 'DVT',
-                    value: false,
-                },
-                {
-                    id: 'PE',
-                    name: 'Pulmonary Embolism',
-                    value: false,
-                },
-                {
-                    id: 'NV_AF',
-                    name: 'Non Valvular AF',
-                    value: false,
-                },
-                {
-                    id: 'PMI',
-                    name: 'Post-myocardial Infarction',
-                    value: false,
-                },
-                {
-                    id: 'TVR',
-                    name: 'TVR',
-                    value: false,
-                },
-            ]
+            filters: Object.values(reasonsForWarfarin).map(item => {return {...item, value: false}})
         }
     ];
 
     const [rowsVisibility, setRowsVisibility] = useState([true, false]);
 
+
+
     const searchCriteria = useRef({
         VISITED: false,
         NOT_VISITED: false,
-        VALVULAR_AF: false,
-        MVR: false,
-        AVR: false,
+        ...Object.values(reasonsForWarfarin)
+            .reduce((acc, current) => {
+                acc[current.id] = false;
+                return acc;
+            }, {})
     });
 
     const onChange = (id, value) => {
         searchCriteria.current[id] = value;
-        if (id == 'VISITED' && value == true)
+        if (id == 'VISITED' && value == true) {
+            searchCriteria.current.VISITED = true;
             searchCriteria.current.NOT_VISITED = false;
+        }
         else if (id == 'NOT_VISITED' && value == true) {
-            searchCriteria.current.VISITED = false;
-            searchCriteria.current.VALVULAR_AF = false;
-            searchCriteria.current.MVR = false;
-            searchCriteria.current.AVR = false;
+            Object.keys(searchCriteria.current)
+                .forEach(key => searchCriteria.current[key] = false)
+            searchCriteria.current.NOT_VISITED = true;
         }
         setRowsVisibility([true, searchCriteria.current.VISITED])
 

@@ -4,6 +4,15 @@ import {firstNonEmpty, hasValue, removeWhiteSpace, translateGender} from "./util
 
 export default class Patient {
 
+    static hasOneOfTheseMedicalConditions(patient, conditionNameList) {
+        for (let conditionName of conditionNameList) {
+            const hasThis = this.hasMedicalCondition(patient, conditionName);
+            if (hasThis) return true;
+        }
+        return false;
+    }
+
+
     static hasMedicalCondition(patient, conditionName) {
         if (!hasValue(patient) || !hasValue(patient.medicalCondition) || !hasValue(patient.medicalCondition.length))
             return false;
