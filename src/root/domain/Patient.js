@@ -16,4 +16,7 @@ export default class Patient {
         const conditionsAsString = patient.medicalCondition.reduce((acc, current) => `${acc}-${current.name}`, "");
         return conditionsAsString.substring(1);
     }
+
+    static isNewPatient = patient => !patient.firstVisitStatus.started ||  !(patient.firstVisitStatus.flags || {}).isEnded;
+
 }
