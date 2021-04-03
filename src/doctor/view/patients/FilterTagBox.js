@@ -1,9 +1,13 @@
 import React, {useRef, useState} from "react";
 import {Surface} from "react-native-paper";
 import {ChipBox, RadioChipBox} from "./visit/first/forms/ContextSpecificComponents";
-import {View} from 'react-native';
 import {ConditionalCollapsibleRender, IntraSectionInvisibleDivider} from "./visit/first/forms/Layout";
 import {firstNonEmpty, noop} from "../../../root/domain/util/Util";
+import {ScrollView} from "react-native";
+import {debugBorderBlue, debugBorderRed} from "../../../root/view/styles/borders";
+import {getReasonsForWarfarin} from "../../../root/data/dao/StaticDomainNameTable";
+
+const reasonsForWarfarin = getReasonsForWarfarin();
 
 export const PatientsListFilterBox = (props) => {
     const filterRows = [
@@ -38,6 +42,31 @@ export const PatientsListFilterBox = (props) => {
                 {
                     id: 'VALVULAR_AF',
                     name: 'Valvular AF',
+                    value: false,
+                },
+                {
+                    id: 'DVT',
+                    name: 'DVT',
+                    value: false,
+                },
+                {
+                    id: 'PE',
+                    name: 'Pulmonary Embolism',
+                    value: false,
+                },
+                {
+                    id: 'NV_AF',
+                    name: 'Non Valvular AF',
+                    value: false,
+                },
+                {
+                    id: 'PMI',
+                    name: 'Post-myocardial Infarction',
+                    value: false,
+                },
+                {
+                    id: 'TVR',
+                    name: 'TVR',
                     value: false,
                 },
             ]
@@ -106,21 +135,35 @@ export class FilterTagBox extends React.Component {
 }
 
 const ChipRow = (props) => {
-    if (props.radio) {
-        return <RadioChipBox
-            items={props.items}
-            itemBoxStyle={{
-                flexDirection: 'row',
+    return (
+        <ScrollView
+            horizontal={true}
+            style={{
+                width: '100%',
             }}
-            onChange={props.onChange}
-        />
-    }
-    else return <ChipBox
-        items={props.items}
-        itemBoxStyle={{
-            flexDirection: 'row',
-        }}
-        onChange={props.onChange}
-    />
+            contentContainerStyle={{
+                minWidth: '100%',
+            }}
+        >
+            {
+                props.radio ?
+                    <RadioChipBox
+                        items={props.items}
+                        itemBoxStyle={{
+                            flexDirection: 'row',
+                        }}
+                        onChange={props.onChange}
+                    />
+                :
+                    <ChipBox
+                        items={props.items}
+                        itemBoxStyle={{
+                            flexDirection: 'row',
+                        }}
+                        onChange={props.onChange}
+                    />
+            }
+        </ScrollView>
+    )
 }
 
