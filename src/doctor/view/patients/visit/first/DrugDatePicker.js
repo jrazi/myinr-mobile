@@ -19,7 +19,7 @@ import {IntraSectionDivider} from "./forms/Layout";
 import {FormSubmissionStatus} from "../../../../../root/view/FormSubmissionStatus";
 import * as Locale from "../../../../../login/view/Locale";
 import {DefaultDatePicker} from "./forms/JalaliDatePicker";
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import ListUtil from "../../../../../root/domain/util/ListUtil";
 
 class DrugDatePicker extends React.Component {
@@ -33,7 +33,7 @@ class DrugDatePicker extends React.Component {
     }
 
     componentDidMount() {
-        this.medicationHistory = visitDao.getVisits(this.props.userId).medicationHistory;
+        this.medicationHistory = firstVisitDao.getVisits(this.props.userId).medicationHistory;
     }
 
     setSinceDate = (date) => this.setState({sinceDate: date});

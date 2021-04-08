@@ -8,8 +8,8 @@ import {debugBorderRed} from "../../../../../root/view/styles/borders";
 import {Formik} from "formik";
 import * as Yup from "yup";
 import * as Validators from "../../../../../root/view/form/Validators";
-import {visitDao} from "../../../../data/dao/VisitDao";
-import {FirstVisit} from "../../../../domain/visit/Visit";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
+import {FirstVisit} from "../../../../domain/visit/FirstVisit";
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
 
 
@@ -50,7 +50,7 @@ class LabTestResultForm extends React.Component {
     componentDidMount() {
         this.setState({loaded: false}, () => {
             const readonly = this.props.readonly;
-            this.labTestResult = visitDao.getVisits(this.props.userId).testResult;
+            this.labTestResult = firstVisitDao.getVisits(this.props.userId).testResult;
             this.initialValues = {};
             fields.forEach(field => {
                 this.initialValues[field.name] = this.labTestResult[field.name];

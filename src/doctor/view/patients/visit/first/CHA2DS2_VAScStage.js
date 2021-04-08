@@ -6,10 +6,10 @@ import {calcAge, e2p, firstNonEmpty, guessGender, hasValue} from "../../../../..
 import {IntraSectionInvisibleDivider, LayoutStyles} from "./forms/Layout";
 import {GenericScoreForm} from "./HAS_BLEDStage";
 import {Picker} from "@react-native-community/picker";
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import {doctorDao} from "../../../../data/dao/DoctorDao";
 import {TitleWithBadge} from "./forms/ContextSpecificComponents";
-import {FirstVisit} from "../../../../domain/visit/Visit";
+import {FirstVisit} from "../../../../domain/visit/FirstVisit";
 import SegmentedControl from '@react-native-community/segmented-control';
 import color from 'color';
 import ListUtil from "../../../../../root/domain/util/ListUtil";
@@ -24,7 +24,7 @@ class CHA2DS2_VAScStage extends React.Component {
     }
 
     componentDidMount() {
-        const visit = visitDao.getVisits(this.props.route.params.userId);
+        const visit = firstVisitDao.getVisits(this.props.route.params.userId);
         if (hasValue(visit.cha2ds2Score))
             this.cha2ds2Score = visit.cha2ds2Score;
         else {
@@ -99,7 +99,7 @@ const ScoreRadioBox = (props) => {
 
     useEffect(() => {
         setLoaded(false);
-        visit.current = visitDao.getVisits(props.userId);
+        visit.current = firstVisitDao.getVisits(props.userId);
         setGender(firstNonEmpty(visit.current.cha2ds2Score.data.gender, null));
         setAgeGroupIndex(firstNonEmpty(visit.current.cha2ds2Score.data.ageGroup, null));
         setLoaded(true);
@@ -163,7 +163,7 @@ const ScoreChipBox = (props) => {
     let medicalConditions = useRef([]);
     useEffect(() => {
         setLoaded(false);
-        visit.current = visitDao.getVisits(props.userId);
+        visit.current = firstVisitDao.getVisits(props.userId);
         props.items.forEach(condition => {
             medicalConditions.current.push(condition);
             medicalConditions.current.slice(-1)[0]['value'] = firstNonEmpty(visit.current.cha2ds2Score.data[condition.id], false);

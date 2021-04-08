@@ -3,7 +3,7 @@ import {hasValue} from "../../../root/domain/util/Util";
 import {AsyncStorage} from "react-native";
 import {doctorService} from "../server/DoctorServiceGateway";
 import {serverGateway} from "../../../root/data/server/ServerGateway";
-import {FirstVisit} from "../../domain/visit/Visit";
+import {FirstVisit} from "../../domain/visit/FirstVisit";
 
 class DoctorDao {
 

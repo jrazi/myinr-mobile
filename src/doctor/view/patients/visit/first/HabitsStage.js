@@ -1,5 +1,5 @@
 import React from "react";
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import * as Layout from "./forms/Layout";
 import {IntraSectionInvisibleDivider} from "./forms/Layout";
 import {CheckboxGroup, ChipBox, RadioChipBox} from "./forms/ContextSpecificComponents";
@@ -16,7 +16,7 @@ export class HabitsStage extends React.Component {
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
-            this.firstVisit = visitDao.getVisits(this.props.route.params.userId);
+            this.firstVisit = firstVisitDao.getVisits(this.props.route.params.userId);
             const habit = this.firstVisit.habit
 
             Object.values(this.habitItems).forEach(condition => {

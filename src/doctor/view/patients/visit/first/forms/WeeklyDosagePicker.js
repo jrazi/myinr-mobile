@@ -5,7 +5,7 @@ import {firstNonEmpty, getFormattedJalaliDate} from "../../../../../../root/doma
 import CircularPicker from "react-native-circular-picker";
 import {Surface, Text, useTheme} from "react-native-paper";
 import {Animated, View, Dimensions} from 'react-native';
-import {visitDao} from "../../../../../data/dao/VisitDao";
+import {firstVisitDao} from "../../../../../data/dao/FirstVisitDao";
 
 export const WeeklyDosagePicker = (props) => {
     let dosageElements = [];

@@ -19,14 +19,14 @@ import {
     ScreenHeader,
     ScreenLayout
 } from "../../../../../root/view/screen/Layout";
-import {FirstVisit} from "../../../../domain/visit/Visit";
+import {FirstVisit} from "../../../../domain/visit/FirstVisit";
 import {doctorDao} from "../../../../data/dao/DoctorDao";
 import StageNavigator from "./StageNavigator";
 import {stages} from "./FirstVisitMetaData";
 import {debugBorderRed} from "../../../../../root/view/styles/borders";
 import {firstNonEmpty} from "../../../../../root/domain/util/Util";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import {ConditionalRender} from "./forms/Layout";
 import {LoadingScreen} from "../../../../../root/view/loading/Loading";
 import {AddDrugRecord} from "./AddDrugRecord";
@@ -46,12 +46,12 @@ class FirstVisitScreen extends React.Component {
         // await I18nManager.forceRTL(false);
         const {userId, useCache, readonly, fetchRemote} = this.props.route.params;
 
-        let visitInfo = visitDao.initVisit(userId);
+        let visitInfo = firstVisitDao.initVisit(userId);
 
         this.setState({loaded: false}, () => {
             doctorDao.getLocalFirstVisit(userId, fetchRemote || false)
                 .then(cachedVisit => {
-                    visitInfo = visitDao.setVisits(userId, cachedVisit.visitInfo);
+                    visitInfo = firstVisitDao.setVisits(userId, cachedVisit.visitInfo);
                     this.setState({visitInfo: visitInfo, currentStage: readonly ? 0 : cachedVisit.currentStage, loaded: true});
                 })
         })
@@ -77,7 +77,7 @@ class FirstVisitScreen extends React.Component {
     saveVisit = async () => {
         const userId = this.props.route.params.userId;
         if (this.props.route.params.readonly) return;
-        let visit = visitDao.getVisits(userId);
+        let visit = firstVisitDao.getVisits(userId);
         const info = {
             currentStage: this.state.currentStage,
             visitInfo: visit,

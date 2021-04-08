@@ -1,4 +1,4 @@
-import {FirstVisit} from "../../../src/doctor/domain/visit/Visit";
+import {FirstVisit} from "../../../src/doctor/domain/visit/FirstVisit";
 
 describe('test diff method of first visit. the compares two first visit objects and return new things in second one', function () {
 

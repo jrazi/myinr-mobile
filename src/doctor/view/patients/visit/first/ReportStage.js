@@ -1,5 +1,5 @@
 import React from "react";
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import {Formik} from "formik";
 import * as Yup from "yup";
 import * as Validators from "../../../../../root/view/form/Validators";
@@ -18,7 +18,7 @@ export class ReportStage extends React.Component {
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
-            this.firstVisit = visitDao.getVisits(this.props.route.params.userId);
+            this.firstVisit = firstVisitDao.getVisits(this.props.route.params.userId);
             this.setState({loaded: true});
         })
     }

@@ -5,10 +5,10 @@ import {TextInput, useTheme} from "react-native-paper";
 import {View} from 'react-native';
 import {Formik} from "formik";
 import * as Yup from 'yup';
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
 import * as Validators from "../../../../../root/view/form/Validators";
-import {FirstVisit} from "../../../../domain/visit/Visit";
+import {FirstVisit} from "../../../../domain/visit/FirstVisit";
 import {DefaultDateInput, DefaultSwitchRow} from "./forms/ContextSpecificComponents";
 
 
@@ -29,7 +29,7 @@ export class InrInfoStage extends React.Component {
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
-            this.inrTestInfo = visitDao.getVisits(this.props.route.params.userId).inr;
+            this.inrTestInfo = firstVisitDao.getVisits(this.props.route.params.userId).inr;
             this.setState({latestInrAtHome: firstNonEmpty(this.inrTestInfo.lastInrTest.hasUsedPortableDevice, false), loaded: true});
         })
     }

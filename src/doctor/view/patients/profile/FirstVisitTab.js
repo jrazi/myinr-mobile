@@ -20,8 +20,8 @@ import {
 import {DialogMessage, FollowupVisitNotImplementedDialog, visitDialogStyles} from "../VisitRedirect";
 import {StyleSheet, View, ScrollView} from "react-native";
 import {ConditionalRender} from "../visit/first/forms/Layout";
-import {visitDao} from "../../../data/dao/VisitDao";
-import {FirstVisit} from "../../../domain/visit/Visit";
+import {firstVisitDao} from "../../../data/dao/FirstVisitDao";
+import {FirstVisit} from "../../../domain/visit/FirstVisit";
 import {
     firstNonEmpty,
     getFormattedJalaliDate,

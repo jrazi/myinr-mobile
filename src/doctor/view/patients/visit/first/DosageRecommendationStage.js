@@ -7,8 +7,8 @@ import {IntraSectionInvisibleDivider} from "./forms/Layout";
 import {firstNonEmpty, getFormattedJalaliDate, hasValue} from "../../../../../root/domain/util/Util";
 import CircularPicker from "react-native-circular-picker";
 import {WeeklyDosagePicker} from "./forms/WeeklyDosagePicker";
-import {FirstVisit} from "../../../../domain/visit/Visit";
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {FirstVisit} from "../../../../domain/visit/FirstVisit";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 
 
 export class DosageRecommendationStage extends React.Component {
@@ -23,7 +23,7 @@ export class DosageRecommendationStage extends React.Component {
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
-            this.visitInfo = visitDao.getVisits(this.props.route.params.userId);
+            this.visitInfo = firstVisitDao.getVisits(this.props.route.params.userId);
             if (hasValue(this.visitInfo.recommendedDosage))
                 this.recommendedDosage = this.visitInfo.recommendedDosage;
             else {

@@ -1,5 +1,5 @@
 import React from "react";
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import * as Layout from "./forms/Layout";
 import {IntraSectionInvisibleDivider} from "./forms/Layout";
 import {ChipBox, RadioChipBox} from "./forms/ContextSpecificComponents";
@@ -17,7 +17,7 @@ export class ElectrocardiographyStage extends React.Component {
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
-            this.firstVisit = visitDao.getVisits(this.props.route.params.userId);
+            this.firstVisit = firstVisitDao.getVisits(this.props.route.params.userId);
             const electrocardiographyInfo = this.firstVisit.electrocardiography
 
             Object.values(this.electrocardiographyItems.ecg).forEach(item => item.value = false);

@@ -1,17 +1,16 @@
-import {FirstVisit} from "../../domain/visit/Visit";
+import {FollowupVisit} from "../../domain/visit/FollowupVisit";
 
-
-export class InMemVisitDao {
+export class FollowupVisitInMemStore {
     constructor() {
         this.visits = {};
     }
 
     static createInstance() {
-        return new InMemVisitDao();
+        return new FollowupVisitInMemStore();
     }
 
     initVisit(userId) {
-        this.visits[userId] = FirstVisit.createNew();
+        this.visits[userId] = FollowupVisit.createNew();
         this.visits[userId].patientUserId = userId;
         return this.visits[userId];
     }
@@ -26,6 +25,6 @@ export class InMemVisitDao {
     }
 }
 
-export const visitDao = InMemVisitDao.createInstance();
+export const followupVisitStore = FollowupVisitInMemStore.createInstance();
 
 

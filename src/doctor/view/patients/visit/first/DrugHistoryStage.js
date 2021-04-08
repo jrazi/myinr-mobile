@@ -3,8 +3,8 @@ import React from "react";
 import {Avatar, Button, Text, List, IconButton, Caption, withTheme, useTheme} from "react-native-paper";
 import * as Layout from "./forms/Layout";
 import {ConditionalRender, IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
-import {FirstVisit} from "../../../../domain/visit/Visit";
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {FirstVisit} from "../../../../domain/visit/FirstVisit";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import {firstNonEmpty} from "../../../../../root/domain/util/Util";
 import ListUtil from "../../../../../root/domain/util/ListUtil";
 
@@ -30,7 +30,7 @@ class DrugHistoryStage extends React.Component {
 
     refreshRecords = () => {
         this.setState({loaded: false}, () => {
-            this.state.medicationHistory = visitDao.getVisits(this.props.route.params.userId).medicationHistory;
+            this.state.medicationHistory = firstVisitDao.getVisits(this.props.route.params.userId).medicationHistory;
             this.setState({loaded: true});
         })
     }

@@ -6,7 +6,7 @@ import {
     IntraSectionDivider,
     IntraSectionInvisibleDivider
 } from "./forms/Layout";
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
 import {ChipBox, DefaultSwitchRow} from "./forms/ContextSpecificComponents";
 import {TextInput, useTheme} from "react-native-paper";
@@ -14,7 +14,7 @@ import {View} from 'react-native';
 import {Formik} from "formik";
 import * as Yup from "yup";
 import * as Validators from "../../../../../root/view/form/Validators";
-import {FirstVisit} from "../../../../domain/visit/Visit";
+import {FirstVisit} from "../../../../domain/visit/FirstVisit";
 import ListUtil from "../../../../../root/domain/util/ListUtil";
 
 
@@ -29,7 +29,7 @@ export class PastMedicalHistoryStage extends React.Component {
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
-            this.medicalHistory = visitDao.getVisits(this.props.route.params.userId).medicalHistory;
+            this.medicalHistory = firstVisitDao.getVisits(this.props.route.params.userId).medicalHistory;
             this.setState({loaded: true});
         })
     }
@@ -136,7 +136,7 @@ export const MedicalHistoryChipBox = (props) => {
 
     let [loaded, setLoaded] = useState(false);
     useEffect(() => {
-        visit.current = visitDao.getVisits(props.userId);
+        visit.current = firstVisitDao.getVisits(props.userId);
         medicalConditions
             .forEach(condition => {
                 condition['value'] = ListUtil.containsElementWithId(visit.current.medicalHistory.pastConditions, condition.id);

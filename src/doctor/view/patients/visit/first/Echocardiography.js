@@ -6,8 +6,8 @@ import {IntraSectionInvisibleDivider} from "./forms/Layout";
 import {Formik} from "formik";
 import * as Yup from "yup";
 import * as Validators from "../../../../../root/view/form/Validators";
-import {FirstVisit} from "../../../../domain/visit/Visit";
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {FirstVisit} from "../../../../domain/visit/FirstVisit";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import {hasValue} from "../../../../../root/domain/util/Util";
 
 
@@ -44,7 +44,7 @@ export class ECForm extends React.Component {
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
-            this.echocardiographyInfo = visitDao.getVisits(this.props.userId).echocardiography;
+            this.echocardiographyInfo = firstVisitDao.getVisits(this.props.userId).echocardiography;
             this.setState({loaded: true});
         })
     }

@@ -10,10 +10,10 @@ import {
 import * as Data from './Data';
 import {ChipBox, DefaultSwitchRow} from "./forms/ContextSpecificComponents";
 import {WeeklyDosagePicker} from "./forms/WeeklyDosagePicker";
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import {firstNonEmpty, getDayOfWeekName} from "../../../../../root/domain/util/Util";
 import ListUtil from "../../../../../root/domain/util/ListUtil";
-import {FirstVisit} from "../../../../domain/visit/Visit";
+import {FirstVisit} from "../../../../domain/visit/FirstVisit";
 
 export class PreliminaryStage extends React.Component {
     constructor(props) {
@@ -57,7 +57,7 @@ const ReasonForWarfarinPicker = (props) => {
 
     let [loaded, setLoaded] = useState(false);
     useEffect(() => {
-        visit.current = visitDao.getVisits(props.userId);
+        visit.current = firstVisitDao.getVisits(props.userId);
         medicalConditions.current.forEach(condition => {
             const isConditionListed = ListUtil.findOneById(visit.current.warfarinInfo.reasonForWarfarin.conditions, condition.id) != null;
             condition['value'] = isConditionListed;
@@ -97,7 +97,7 @@ const HeartValveReplacementConditions = (props) => {
 
     let [loaded, setLoaded] = useState(false);
     useEffect(() => {
-        visit.current = visitDao.getVisits(props.userId);
+        visit.current = firstVisitDao.getVisits(props.userId);
         const heartValveConditions = visit.current.warfarinInfo.reasonForWarfarin.heartValveReplacementConditions;
         setValue((heartValveConditions || []).length > 0);
         medicalConditions.current.forEach(condition => {
@@ -150,7 +150,7 @@ const FirstTimeWarfarinForm = (props) => {
 
     let visit = useRef({});
     useEffect(() => {
-        visit.current = visitDao.getVisits(props.userId);
+        visit.current = firstVisitDao.getVisits(props.userId);
         setFirstTimeWarfarin(firstNonEmpty(visit.current.warfarinInfo.firstTimeWarfarin, true));
         visit.current.warfarinInfo.lastWarfarinDosage = visit.current.warfarinInfo.lastWarfarinDosage || FirstVisit.createNew().warfarinInfo.lastWarfarinDosage;
         setLoaded(true);

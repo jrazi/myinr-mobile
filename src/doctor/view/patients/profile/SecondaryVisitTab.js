@@ -1,25 +1,44 @@
 import React from "react";
-import {View} from "react-native";
+import {View, ScrollView} from "react-native";
 import {FAB, Text, Subheading} from "react-native-paper";
 import {FollowupVisitNotImplementedDialog} from "../VisitRedirect";
 import {ScreenLayout} from "../../../../root/view/screen/Layout";
 import {StyleSheet} from "react-native";
 import {EmptyList} from "../../../../root/view/list/EmptyListMessage";
 import {PatientProfileContext} from "./ContextProvider";
+import {ItemListContainer} from "../../../../root/view/list/ItemList";
+import {doctorVisitDao} from "../../../data/dao/DoctorVisitDao";
 
 export class SecondaryVisitTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             newVisitDialogOpen: false,
+            loadingVisits: true,
+            visits: [],
         }
+    }
+
+    componentDidMount() {
+        this.loadVisits();
+    }
+
+    loadVisits =  () => {
+        this.setState({loadingVisits: true}, async () => {
+            const visits = await doctorVisitDao.getFollowupVisits(this.props.route.params.userId);
+
+            this.setState({
+                visits: visits,
+                loadingVisits: false,
+            })
+        });
     }
 
     startVisitSession = (useCache) => {
         this.setState({newVisitDialogOpen: false}, () => {
             this.props.navigation.navigate(
                 'VisitSessionScreen',
-                {userId: this.props.route.params.userId, patientName: this.state.patient.fullName, useCache: useCache}
+                {userId: this.props.route.params.userId, patientName: '', useCache: useCache}
             );
         })
     }
@@ -30,9 +49,11 @@ export class SecondaryVisitTab extends React.Component {
                 {(value) => {
                     return (
                         <ScreenLayout>
-                            <View>
-                                <EmptyList hidden={false} message={'ویزیتی تا کنون انجام نشده‌است.'}/>
-                            </View>
+                            <VisitList
+                                visits={this.state.visits}
+                                refreshing={this.state.loadingVisits}
+                                onRefresh={this.loadVisits}
+                            />
                             <FAB
                                 style={styles.fab}
                                 icon={'note-plus'}
@@ -63,3 +84,25 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
 })
+
+
+const VisitList = (props) => {
+    return (
+        <ItemListContainer
+            refreshing={props.refreshing}
+            onRefresh={props.onRefresh}
+        >
+            {
+                props.visits.map(visit => {
+                    return (
+                        <View>
+                            <Text>
+                                {'Id: ' + visit.id}
+                            </Text>
+                        </View>
+                    )
+                })
+            }
+        </ItemListContainer>
+    )
+}

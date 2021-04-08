@@ -3,9 +3,9 @@ import {StyleSheet, View} from "react-native";
 import {HelperText, Text, TextInput, useTheme} from "react-native-paper";
 import * as Layout from './forms/Layout';
 import {IntraSectionInvisibleDivider} from "./forms/Layout";
-import {visitDao} from "../../../../data/dao/VisitDao";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
-import {FirstVisit} from "../../../../domain/visit/Visit";
+import {FirstVisit} from "../../../../domain/visit/FirstVisit";
 import {Formik} from "formik";
 import * as Yup from "yup";
 import * as Validators from "../../../../../root/view/form/Validators";
@@ -23,7 +23,7 @@ export class PhysicalExamStage extends React.Component {
 
     componentDidMount() {
         this.setState({loaded: false}, () => {
-            this.physicalExamInfo = visitDao.getVisits(this.props.route.params.userId).physicalExam;
+            this.physicalExamInfo = firstVisitDao.getVisits(this.props.route.params.userId).physicalExam;
             this.setState({loaded: true});
         })
     }

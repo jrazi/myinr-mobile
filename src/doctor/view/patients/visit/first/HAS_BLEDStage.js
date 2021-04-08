@@ -4,8 +4,8 @@ import {Switch, Text, useTheme} from "react-native-paper";
 import * as Layout from "./forms/Layout";
 import {IntraSectionDivider, IntraSectionInvisibleDivider} from "./forms/Layout";
 import {firstNonEmpty, hasValue} from "../../../../../root/domain/util/Util";
-import {visitDao} from "../../../../data/dao/VisitDao";
-import {FirstVisit} from "../../../../domain/visit/Visit";
+import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
+import {FirstVisit} from "../../../../domain/visit/FirstVisit";
 import {DefaultSwitch, TitleWithBadge} from "./forms/ContextSpecificComponents";
 
 
@@ -24,7 +24,7 @@ export class HAS_BLEDStage extends React.Component {
 
 
         this.setState({loaded: false}, () => {
-            const visit = visitDao.getVisits(this.props.route.params.userId);
+            const visit = firstVisitDao.getVisits(this.props.route.params.userId);
             if (hasValue(visit.hasBledScore))
                 this.hasBledScore = visit.hasBledScore;
             else {
