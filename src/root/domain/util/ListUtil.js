@@ -12,6 +12,10 @@ export default class ListUtil {
         return false;
     }
 
+    static justifyItemListForDisplay(list, getItem) {
+        return (list || []).sort((a, b) => getItem(a).length - getItem(b).length);
+    }
+
 
     static containsElementWithId(list, id) {
         const el = this.findOneById(list, id);

@@ -4,27 +4,34 @@ export class FollowupVisit {
 
 
     static createNew() {
+
+        const sampleDate = {
+            timestamp: null,
+            iso: "",
+            jalali: {
+                asString: "",
+                asArray: [
+                    null,
+                    null,
+                    null
+                ],
+                asObject: {
+                    year: null,
+                    month: null,
+                    day: null
+                }
+            }
+        }
         return {
             id: null,
             patientUserId: null,
-            dateOfDiagnosis: null,
-            warfarinInfo: {
-                reasonForWarfarin: {
-                    conditions: [],
-                    heartValveReplacementConditions: []
-                },
-                dateOfFirstWarfarin: "",
-                lastWarfarinDosage: {
-                    saturday: 0,
-                    sunday: 0,
-                    monday: 0,
-                    tuesday: 0,
-                    wednesday: 0,
-                    thursday: 0,
-                    friday: 0,
-                },
-                firstTimeWarfarin: false
-            },
+            reasonForVisit: [
+                {
+                    id: 57,
+                    name: "Telephone Contact",
+                    groupId: 8
+                }
+            ],
             inr: {
                 inrTargetRange: {
                     from: "",
@@ -33,82 +40,25 @@ export class FollowupVisit {
                 nextInrCheckDate: "",
                 lastInrTest: {
                     hasUsedPortableDevice: false,
-                    dateOfLastInrTest: "",
+                    dateOfLastInrTest: {...sampleDate},
+                    timeOfLastInrTest: "",
                     lastInrValue: "",
                     lastInrTestLabInfo: ""
-                }
-            },
-            bleedingOrClottingTypes: [],
-            medicalHistory: {
-                majorSurgery: "",
-                minorSurgery: "",
-                hospitalAdmission: "",
-                pastConditions: [],
-            },
-            medicationHistory: [],
-            habit: [],
-            physicalExam: {
-                bloodPressure: {
-                    systolic: "",
-                    diastolic: ""
                 },
-                heartBeat: "",
-                respiratoryRate: "",
             },
-            cha2ds2Score: {
-                totalScore: 0,
-                data: {},
+            wasHospitalized: false,
+            bleedingOrClottingTypes: [],
+            recommendationForFuture: {
+                id: 85,
+                name: "New Prescription",
+                groupId: 10
             },
-            hasBledScore: {
-                totalScore: 0,
-                data: {},
-            },
-            testResult: {
-                Hb: "",
-                Hct: "",
-                Plt: "",
-                Bun: "",
-                Urea: "",
-                Cr: "",
-                Na: "",
-                K: "",
-                Alt: "",
-                Ast: ""
-            },
-            echocardiography: {
-                EF: "",
-                LAVI: "",
-                comment: "",
-            },
-            electrocardiography: {
-                ecg: null,
-                avrBlock: null
-            },
-            visitDate: {
-                value: "",
-                details: {
-                    visitDay: "",
-                    visitMonth: "",
-                    visitYear: ""
-                }
-            },
-            recommendedDosage: {
-                saturday: 0,
-                sunday: 0,
-                monday: 0,
-                tuesday: 0,
-                wednesday: 0,
-                thursday: 0,
-                friday: 0,
-            },
-            drugHistory: 1,
+            hasTakenWarfarinToday: false,
+            visitDate: {...sampleDate},
+            visitFlag: true,
+            procedurePreparing: "",
+            recommendedDaysWithoutWarfarin: "",
             reportComment: "",
-            flags: {
-                visitFlag: false,
-                isSaved: true,
-                isEnded: false
-            },
-
         }
     }
 

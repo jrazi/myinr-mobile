@@ -34,11 +34,11 @@ export class SecondaryVisitTab extends React.Component {
         });
     }
 
-    startVisitSession = (useCache) => {
+    startVisitSession = () => {
         this.setState({newVisitDialogOpen: false}, () => {
             this.props.navigation.navigate(
-                'VisitSessionScreen',
-                {userId: this.props.route.params.userId, patientName: '', useCache: useCache}
+                'FollowupVisitRoot',
+                {userId: this.props.route.params.userId, patientName: '', visitInfo: this.state.visits[0]}
             );
         })
     }
@@ -57,7 +57,7 @@ export class SecondaryVisitTab extends React.Component {
                             <FAB
                                 style={styles.fab}
                                 icon={'note-plus'}
-                                onPress={() => this.setState({newVisitDialogOpen: true})}
+                                onPress={() => this.startVisitSession()}
                             />
                             <StartSecondaryVisitDialog
                                 visible={this.state.newVisitDialogOpen}

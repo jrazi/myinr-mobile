@@ -331,3 +331,14 @@ export function getReasonsForWarfarin() {
     return dict;
 }
 
+export function getReasonsForVisit() {
+    let dict = {};
+
+    Object.values(StaticDomainNameTable)
+        .filter(item => item.groupId === 8)
+        .map(item => {return {id: item.id, name: new String(item.name).toString(), groupId: item.groupId}})
+        .sort((a, b) => a.id - b.id)
+        .forEach(item => dict[item.id] = item);
+
+    return dict;
+}

@@ -1,3 +1,92 @@
+const visitExample = {
+    reasonForVisit: [
+        {
+            id: 57,
+            name: "Telephone Contact",
+            groupId: 8
+        }
+    ],
+        inr: {
+        nextInrCheckDate: {
+            timestamp: 1615149000000,
+                iso: "Mon Mar 08 2021 00:00:00 GMT+0330 (Iran Standard Time)",
+                jalali: {
+                asString: "1399/12/18",
+                    asArray: [
+                    1399,
+                    12,
+                    18
+                ],
+                    asObject: {
+                    year: 1399,
+                        month: 12,
+                        day: 18
+                }
+            }
+        },
+        lastInrTest: {
+            hasUsedPortableDevice: false,
+                dateOfLastInrTest: {
+                timestamp: 1613766600000,
+                    iso: "Sat Feb 20 2021 00:00:00 GMT+0330 (Iran Standard Time)",
+                    jalali: {
+                    asString: "1399/12/2",
+                        asArray: [
+                        1399,
+                        12,
+                        2
+                    ],
+                        asObject: {
+                        year: 1399,
+                            month: 12,
+                            day: 2
+                    }
+                }
+            },
+            timeOfLastInrTest: "9:59 AM",
+                lastInrValue: "1.6",
+                lastInrTestLabInfo: "laboratory"
+        }
+    },
+    wasHospitalized: false,
+        bleedingOrClottingTypes: [
+        {
+            id: 9,
+            name: "No Bleeding or Clotting occur since last visit",
+            groupId: 3
+        }
+    ],
+        recommendationForFuture: {
+        id: 85,
+            name: "New Prescription",
+            groupId: 10
+    },
+    hasTakenWarfarinToday: false,
+        visitDate: {
+        timestamp: 1615149000000,
+            iso: "Mon Mar 08 2021 00:00:00 GMT+0330 (Iran Standard Time)",
+            jalali: {
+            asString: "1399/12/18",
+                asArray: [
+                1399,
+                12,
+                18
+            ],
+                asObject: {
+                year: 1399,
+                    month: 12,
+                    day: 18
+            }
+        }
+    },
+    visitFlag: true,
+    id: 1102,
+    patientUserId: 9145,
+    procedurePreparing: "",
+    recommendedDaysWithoutWarfarin: "",
+    reportComment: ""
+}
+
 export const firstVisitAbd =
 {
     "status": 200,

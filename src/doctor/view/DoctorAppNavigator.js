@@ -7,6 +7,7 @@ import PatientProfileScreen from "./patients/profile/PatientProfileScreen";
 import FirstVisitScreen from "./patients/visit/first/FirstVisitScreen";
 import {AddDrugRecord} from "./patients/visit/first/AddDrugRecord";
 import SettingsScreen from "./SettingsScreen";
+import FollowupVisitScreen from "./patients/visit/followup/FollowupVisitScreen";
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,12 @@ export default class DoctorAppNavigator extends React.Component {
                     component={FirstVisitScreen}
                     options={{ headerShown: false , headerTitle: props => null }}
                     initialParams={{ userId: null, patientName: null, useCache: true, readonly: false, fetchRemote: false }}
+                />
+                <Stack.Screen
+                    name={'FollowupVisitRoot'}
+                    component={FollowupVisitScreen}
+                    options={{ headerShown: false , headerTitle: props => null }}
+                    initialParams={{ userId: null, patientName: null, useCache: false, readonly: false, fetchRemote: false, visitInfo: {} }}
                 />
                 <Stack.Screen
                     name={'SettingsScreen'}
