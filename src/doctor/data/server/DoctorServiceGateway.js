@@ -22,8 +22,6 @@ class DoctorWebServiceGateway {
     updateFirstVisit = (patientUserId, firstVisitUpdatedInfo) => {
         let url = `${API_PATH}/patient/${patientUserId}/firstVisit`;
 
-        console.log('first visit info to update is', firstVisitUpdatedInfo);
-
         return this.apiService.fetchFromProtectedEndpoint(url, {
             method: 'PUT',
             headers: {
@@ -75,6 +73,23 @@ class DoctorWebServiceGateway {
         })
             .then(data => data.visits);
     }
+
+    saveFollowupVisit = (patientUserId, appointmentId, visitInfo) => {
+        let url = `${API_PATH}/patient/${patientUserId}/visit?appointmentId=${appointmentId}`;
+
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({visit: visitInfo}),
+            timeout: DEFAULT_TIMEOUT*3,
+        })
+            .then(data => data.visits);
+
+    }
+
+
 
     getAppointments = (patientUserId) => {
         let url = `${API_PATH}/patient/${patientUserId}/appointment`;

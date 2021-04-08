@@ -64,7 +64,7 @@ export class FollowupVisit {
             date.setDate(startingDate.getDate() + i)
             recommendedDosage.push({
                 dosagePH: 0,
-                dosagePA: 0,
+                dosagePA: null,
                 dosageDate: {
                     timestamp: date.getTime(),
                     jalali: {

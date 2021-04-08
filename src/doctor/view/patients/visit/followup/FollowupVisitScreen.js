@@ -26,6 +26,7 @@ import {ConditionalRender} from "../first/forms/Layout";
 import {LoadingScreen} from "../../../../../root/view/loading/Loading";
 import {FollowupVisit} from "../../../../domain/visit/FollowupVisit";
 import FollowupVisitStageNavigator from "./FollowupVisitStageNavigator";
+import {doctorVisitDao} from "../../../../data/dao/DoctorVisitDao";
 
 class FollowupVisitScreen extends React.Component {
     constructor(props) {
@@ -34,6 +35,8 @@ class FollowupVisitScreen extends React.Component {
             currentStage: 0,
             loaded: false,
             visitInfo: {},
+            finishVisitDialogOpen: false,
+            savingVisitInfo: false,
         }
     }
 
@@ -52,24 +55,34 @@ class FollowupVisitScreen extends React.Component {
     }
 
     onExit = () => {
-        this.saveVisit()
-            .finally(() => {
-                this.props.navigation.reset({
-                    index: 0,
-                    routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
+        this.props.navigation.reset({
+            index: 0,
+            routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
+        })
+    }
+
+    onFinish = () => {
+        this.setState({savingVisitInfo: true}, () => {
+            this.saveVisit()
+                .finally(() => {
+                    this.setState({savingVisitInfo: false, finishVisitDialogOpen: false}, () => {
+                        this.props.navigation.reset({
+                            index: 0,
+                            routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
+                        })
+                    });
                 })
-            })
+
+        })
     }
 
     saveVisit = async () => {
         const userId = this.props.route.params.userId;
+        const appointmentId = this.props.route.params.appointmentId;
+
         if (this.props.route.params.readonly) return;
-        let visit = firstVisitDao.getVisits(userId);
-        const info = {
-            currentStage: this.state.currentStage,
-            visitInfo: visit,
-        }
-        await doctorDao.updateFirstVisit(userId, info, true);
+
+        await doctorVisitDao.saveFollowupVisit(userId, appointmentId, this.props.route.params.visitInfo)
     }
 
     render() {
@@ -80,7 +93,7 @@ class FollowupVisitScreen extends React.Component {
                     <CustomContentCustomActionScreenHeader
                         iconName={"check-bold"}
                         style={{elevation: 0}}
-                        onActionPress={this.onExit}
+                        onActionPress={() => this.setState({finishVisitDialogOpen: true})}
                         reverse
                     >
                         <View style={{flex: 1, alignItems: 'flex-end'}}>
@@ -106,6 +119,12 @@ class FollowupVisitScreen extends React.Component {
                             />
                         </ConditionalRender>
                     </View>
+                    <FinishVisitDialog
+                        visible={this.state.finishVisitDialogOpen}
+                        loading={this.state.savingVisitInfo}
+                        onDismiss={() => this.setState({finishVisitDialogOpen: false})}
+                        onFinish={this.onFinish}
+                    />
                 </ScreenLayout>
             </LoadingScreen>
         )
@@ -150,10 +169,10 @@ const FinishVisitDialog = (props) => {
     return (
         <Portal>
             <Dialog visible={props.visible} onDismiss={props.onDismiss} style={{paddingBottom: 5}} dismissable={false}>
-                <DialogMessage>آیا مطمئن هستید؟</DialogMessage>
+                <DialogMessage>آیا میخواهید ویزیت را به اتمام برسانید؟</DialogMessage>
                 <Dialog.Actions style={{alignItems: 'center', justifyContent: 'space-around',}}>
                     <Button style={{}} labelStyle={{padding: 5}} mode="text" loading={props.loading} onPress={props.onFinish} >اتمام ویزیت</Button>
-                    <Button disabled={false} style={{}} labelStyle={{padding: 5}} mode="text" onPress={props.onDismiss} >انصرف</Button>
+                    <Button disabled={false} style={{}} labelStyle={{padding: 5}} mode="text" onPress={props.onDismiss} >بازگشت</Button>
                 </Dialog.Actions>
             </Dialog>
         </Portal>

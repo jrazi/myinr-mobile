@@ -17,6 +17,11 @@ export class DoctorVisitDao {
             .then(appointments => appointments);
     }
 
+
+    saveFollowupVisit = (patientUserId, appointmentId, visitInfo) => {
+        console.log('visit to save', patientUserId, appointmentId, visitInfo);
+        return doctorService.saveFollowupVisit(patientUserId, appointmentId, visitInfo);
+    }
 }
 
 export const doctorVisitDao = new DoctorVisitDao();
