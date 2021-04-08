@@ -49,7 +49,8 @@ const visitExample = {
         }
     },
     wasHospitalized: false,
-        bleedingOrClottingTypes: [
+    hadERVisit: false,
+    bleedingOrClottingTypes: [
         {
             id: 9,
             name: "No Bleeding or Clotting occur since last visit",

@@ -342,3 +342,15 @@ export function getReasonsForVisit() {
 
     return dict;
 }
+
+export function getBleedingOrClottingTypes() {
+    let dict = {};
+
+    Object.values(StaticDomainNameTable)
+        .filter(item => item.groupId === 3)
+        .map(item => {return {id: item.id, name: new String(item.name).toString(), groupId: item.groupId}})
+        .sort((a, b) => a.id - b.id)
+        .forEach(item => dict[item.id] = item);
+
+    return dict;
+}

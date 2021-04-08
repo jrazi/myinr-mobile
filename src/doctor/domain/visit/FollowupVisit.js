@@ -26,11 +26,6 @@ export class FollowupVisit {
             id: null,
             patientUserId: null,
             reasonForVisit: [
-                {
-                    id: 57,
-                    name: "Telephone Contact",
-                    groupId: 8
-                }
             ],
             inr: {
                 inrTargetRange: {
@@ -49,9 +44,6 @@ export class FollowupVisit {
             wasHospitalized: false,
             bleedingOrClottingTypes: [],
             recommendationForFuture: {
-                id: 85,
-                name: "New Prescription",
-                groupId: 10
             },
             hasTakenWarfarinToday: false,
             visitDate: {...sampleDate},
@@ -59,6 +51,7 @@ export class FollowupVisit {
             procedurePreparing: "",
             recommendedDaysWithoutWarfarin: "",
             reportComment: "",
+            medicationHistory: [],
         }
     }
 
