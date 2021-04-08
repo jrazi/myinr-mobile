@@ -259,7 +259,7 @@ export const CheckboxGroup = (props) => {
                             value={value}
                             color={useTheme().colors.accent}
                             onValueChange={() => {{props.onChange(item.id, !value); setValue(!value)}}}
-                            disabled={props.readonly}
+                            disabled={props.readonly || props.disableAll}
                         />
 
                     </View>

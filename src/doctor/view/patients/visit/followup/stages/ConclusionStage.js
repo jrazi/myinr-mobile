@@ -34,7 +34,7 @@ export class ConclusionStage extends React.Component {
                             reportComment: !this.state.loaded ? "" : this.visitInfo.reportComment,
                         }}
                         validationSchema={Yup.object({
-                            reportComment: (this.props.readonly && Validators.NOTHING) || Validators.NOTHING,
+                            reportComment: (this.props.route.params.readonly && Validators.NOTHING) || Validators.NOTHING,
                         })}
                         validateOnChange={false}
                         validateOnBlur={true}
@@ -55,19 +55,19 @@ export class ConclusionStage extends React.Component {
                                             });
                                         })}
                                         initialValue={!this.state.loaded ? null : this.visitInfo.inr.nextInrCheckDate.jalali.asString || null}
-                                        disabled={this.props.readonly}
+                                        disabled={this.props.route.params.readonly}
                                     />
                                     <IntraSectionInvisibleDivider s/>
                                     <DefaultDateInput
                                         label={"Next Visit Date"}
-                                        placeholder={"Approximate Date of Next Visit"}
+                                        placeholder={this.props.route.params.readonly ? "" : "Approximate Date of Next Visit"}
                                         onDateChange={(date => {
                                             this.handleInputChange(() => {
                                                 this.visitInfo.nextVisitDate = date
                                             });
                                         })}
                                         initialValue={!this.state.loaded ? null : this.visitInfo.nextVisitDate || null}
-                                        disabled={this.props.readonly}
+                                        disabled={this.props.route.params.readonly}
                                     />
                                     <IntraSectionInvisibleDivider s/>
                                     <DefaultTextInput
@@ -81,7 +81,7 @@ export class ConclusionStage extends React.Component {
                                             });
                                         }}
                                         onBlur={handleBlur('reportComment')}
-                                        disabled={this.props.readonly}
+                                        disabled={this.props.route.params.readonly}
                                     />
                                 </View>
                             );

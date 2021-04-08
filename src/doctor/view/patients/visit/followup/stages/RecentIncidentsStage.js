@@ -82,7 +82,7 @@ export class RecentIncidentsStage extends React.Component {
                             <CheckboxGroup
                                 items={recentIncidentInputs}
                                 onChange={(id, value) => {this.modifyRecentIncidentInput(id, value)}}
-                                disableAll={this.props.readonly}
+                                disableAll={this.props.route.params.readonly}
                                 key={`RECENT_INCIDENTS${this.state.loaded}`}
                             />
                         </Layout.ItemsBox>
@@ -94,7 +94,7 @@ export class RecentIncidentsStage extends React.Component {
                             <CheckboxGroup
                                 items={bleedingItems}
                                 onChange={(id, value) => {this.modifyBleedingTypeList(id, value)}}
-                                disableAll={this.props.readonly}
+                                disableAll={this.props.route.params.readonly}
                                 key={`BLEEDING_TYPE_CHIPS_${this.state.loaded}`}
                             />
                         </Layout.ItemsBox>

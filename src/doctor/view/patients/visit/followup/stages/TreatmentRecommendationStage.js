@@ -92,6 +92,7 @@ export class TreatmentRecommendationStage extends React.Component {
                                     }}
                                     onBlur={handleBlur('recommendedDaysWithoutWarfarin')}
                                     numeric
+                                    disabled={this.readonly}
                                 />
                             )}
                         </Formik>

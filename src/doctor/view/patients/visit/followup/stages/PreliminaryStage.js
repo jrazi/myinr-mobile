@@ -85,6 +85,7 @@ export class PreliminaryStage extends React.Component {
                                         });
                                     }}
                                     onBlur={handleBlur('procedurePreparing')}
+                                    disabled={this.readonly}
                                 />
                             )}
                         </Formik>

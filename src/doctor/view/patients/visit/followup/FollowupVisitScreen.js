@@ -93,7 +93,7 @@ class FollowupVisitScreen extends React.Component {
                     <CustomContentCustomActionScreenHeader
                         iconName={"check-bold"}
                         style={{elevation: 0}}
-                        onActionPress={() => this.setState({finishVisitDialogOpen: true})}
+                        onActionPress={() => this.props.route.params.readonly ? this.onFinish() : this.setState({finishVisitDialogOpen: true})}
                         reverse
                     >
                         <View style={{flex: 1, alignItems: 'flex-end'}}>
