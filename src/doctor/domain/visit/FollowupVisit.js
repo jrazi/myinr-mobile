@@ -1,4 +1,4 @@
-import {firstNonEmpty, hasValue, jalaliYMDToGeorgian} from "../../../root/domain/util/Util";
+import {firstNonEmpty, getFormFormattedJalaliDate, hasValue, jalaliYMDToGeorgian} from "../../../root/domain/util/Util";
 
 export class FollowupVisit {
 
@@ -51,7 +51,29 @@ export class FollowupVisit {
             recommendedDaysWithoutWarfarin: "",
             reportComment: "",
             medicationHistory: [],
+            recommendedDosage: FollowupVisit.createRecommendedDosageForNextWeek(),
         }
+
+    }
+
+    static createRecommendedDosageForNextWeek() {
+        const startingDate = new Date();
+        const recommendedDosage = [];
+        for (let i = 0; i < 7; i++) {
+            const date = new Date(startingDate);
+            date.setDate(startingDate.getDate() + i)
+            recommendedDosage.push({
+                dosagePH: 0,
+                dosagePA: 0,
+                dosageDate: {
+                    timestamp: date.getTime(),
+                    jalali: {
+                        asString: getFormFormattedJalaliDate(date),
+                    }
+                }
+            })
+        }
+        return recommendedDosage;
     }
 
     static diff(reference, updated) {
