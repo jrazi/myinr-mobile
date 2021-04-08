@@ -34,7 +34,6 @@ class FollowupVisitScreen extends React.Component {
         this.state = {
             currentStage: 0,
             loaded: false,
-            visitInfo: {},
             finishVisitDialogOpen: false,
             savingVisitInfo: false,
         }
@@ -43,7 +42,6 @@ class FollowupVisitScreen extends React.Component {
     async componentDidMount() {
         // await I18nManager.forceRTL(false);
         this.setState({
-            visitInfo: this.props.route.params.visitInfo || FollowupVisit.createNew(),
             loaded: true
         })
     }
@@ -112,7 +110,7 @@ class FollowupVisitScreen extends React.Component {
                             <FollowupVisitStageNavigator
                                 navigation={this.props.navigation}
                                 route={this.props.route}
-                                visitInfo={this.state.visitInfo}
+                                visitInfo={this.props.route.params.visitInfo}
                                 userId={this.props.route.params.userId}
                                 onNewStage={this.onNewStage}
                                 currentStage={this.state.currentStage}

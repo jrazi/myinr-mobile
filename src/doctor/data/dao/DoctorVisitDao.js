@@ -19,7 +19,6 @@ export class DoctorVisitDao {
 
 
     saveFollowupVisit = (patientUserId, appointmentId, visitInfo) => {
-        console.log('visit to save', patientUserId, appointmentId, visitInfo);
         return doctorService.saveFollowupVisit(patientUserId, appointmentId, visitInfo);
     }
 }

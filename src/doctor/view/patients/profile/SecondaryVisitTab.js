@@ -8,6 +8,7 @@ import {EmptyList} from "../../../../root/view/list/EmptyListMessage";
 import {PatientProfileContext} from "./ContextProvider";
 import {ItemListContainer} from "../../../../root/view/list/ItemList";
 import {doctorVisitDao} from "../../../data/dao/DoctorVisitDao";
+import {FollowupVisit} from "../../../domain/visit/FollowupVisit";
 
 export class SecondaryVisitTab extends React.Component {
     constructor(props) {
@@ -16,7 +17,12 @@ export class SecondaryVisitTab extends React.Component {
             newVisitDialogOpen: false,
             loadingVisits: true,
             visits: [],
+            appointments: [],
         }
+    }
+
+    getAttendableAppointments() {
+        return this.state.appointments.filter(appointment => appointment.isScheduled && !appointment.hasVisitHappened)
     }
 
     componentDidMount() {
@@ -25,27 +31,47 @@ export class SecondaryVisitTab extends React.Component {
 
     loadVisits =  () => {
         this.setState({loadingVisits: true}, async () => {
-            const visits = await doctorVisitDao.getFollowupVisits(this.props.route.params.userId);
+            const visitsPromise = doctorVisitDao.getFollowupVisits(this.props.route.params.userId);
+            const appointmentsPromise = doctorVisitDao.getAppointments(this.props.route.params.userId);
+
+            const [visits, appointments] = await Promise.all([visitsPromise, appointmentsPromise]);
 
             this.setState({
                 visits: visits,
+                appointments: appointments,
                 loadingVisits: false,
             })
         });
     }
 
+
+
     viewVisitInfo = () => {
-        this.setState({newVisitDialogOpen: false}, () => {
-            this.props.navigation.navigate(
-                'FollowupVisitRoot',
-                {
-                    userId: this.props.route.params.userId,
-                    patientName: '',
-                    visitInfo: this.state.visits[0],
-                    readonly: true,
-                },
-            );
-        })
+        this.props.navigation.navigate(
+            'FollowupVisitRoot',
+            {
+                userId: this.props.route.params.userId,
+                patientName: '',
+                visitInfo: this.state.visits[0],
+                readonly: true,
+                appointmentId: null,
+            },
+        );
+    }
+
+
+    attendAnAppointment = (appointment) => {
+        if (!appointment || !appointment.isScheduled || appointment.hasVisitHappened) return;
+        this.props.navigation.navigate(
+            'FollowupVisitRoot',
+            {
+                userId: this.props.route.params.userId,
+                patientName: '',
+                readonly: false,
+                visitInfo: FollowupVisit.createNew(),
+                appointmentId: appointment.id,
+            },
+        );
     }
 
     render() {
@@ -62,7 +88,7 @@ export class SecondaryVisitTab extends React.Component {
                             <FAB
                                 style={styles.fab}
                                 icon={'note-plus'}
-                                onPress={() => this.viewVisitInfo()}
+                                onPress={() => this.attendAnAppointment(this.getAttendableAppointments()[0])}
                             />
                             <StartSecondaryVisitDialog
                                 visible={this.state.newVisitDialogOpen}

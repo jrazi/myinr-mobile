@@ -5,20 +5,22 @@ export class FollowupVisit {
 
     static createNew() {
 
-        const sampleDate = {
-            timestamp: null,
-            iso: "",
-            jalali: {
-                asString: "",
-                asArray: [
-                    null,
-                    null,
-                    null
-                ],
-                asObject: {
-                    year: null,
-                    month: null,
-                    day: null
+        function sampleDate() {
+            return {
+                timestamp: null,
+                iso: "",
+                jalali: {
+                    asString: "",
+                    asArray: [
+                        null,
+                        null,
+                        null
+                    ],
+                    asObject: {
+                        year: null,
+                        month: null,
+                        day: null
+                    }
                 }
             }
         }
@@ -32,10 +34,10 @@ export class FollowupVisit {
                     from: "",
                     to: ""
                 },
-                nextInrCheckDate: "",
+                nextInrCheckDate: sampleDate(),
                 lastInrTest: {
                     hasUsedPortableDevice: false,
-                    dateOfLastInrTest: {...sampleDate},
+                    dateOfLastInrTest: sampleDate(),
                     timeOfLastInrTest: "",
                     lastInrValue: "",
                     lastInrTestLabInfo: ""
@@ -45,7 +47,7 @@ export class FollowupVisit {
             bleedingOrClottingTypes: [],
             recommendationForFuture: null,
             hasTakenWarfarinToday: false,
-            visitDate: {...sampleDate},
+            visitDate: sampleDate(),
             visitFlag: true,
             procedurePreparing: "",
             recommendedDaysWithoutWarfarin: "",

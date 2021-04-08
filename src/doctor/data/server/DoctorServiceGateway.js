@@ -78,7 +78,7 @@ class DoctorWebServiceGateway {
         let url = `${API_PATH}/patient/${patientUserId}/visit?appointmentId=${appointmentId}`;
 
         return this.apiService.fetchFromProtectedEndpoint(url, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'content-type': 'application/json',
             },
