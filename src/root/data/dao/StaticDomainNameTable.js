@@ -354,3 +354,15 @@ export function getBleedingOrClottingTypes() {
 
     return dict;
 }
+
+export function getTreatmentRecommendationOptions() {
+    let dict = {};
+
+    Object.values(StaticDomainNameTable)
+        .filter(item => item.groupId === 10)
+        .map(item => {return {id: item.id, name: new String(item.name).toString(), groupId: item.groupId}})
+        .sort((a, b) => a.id - b.id)
+        .forEach(item => dict[item.id] = item);
+
+    return dict;
+}

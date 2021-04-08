@@ -43,8 +43,7 @@ export class FollowupVisit {
             },
             wasHospitalized: false,
             bleedingOrClottingTypes: [],
-            recommendationForFuture: {
-            },
+            recommendationForFuture: null,
             hasTakenWarfarinToday: false,
             visitDate: {...sampleDate},
             visitFlag: true,

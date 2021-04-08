@@ -3,6 +3,8 @@ import {PreliminaryStage} from "./stages/PreliminaryStage";
 import {InrInfoStage} from "./stages/InrInfoStage";
 import {RecentIncidentsStage} from "./stages/RecentIncidentsStage";
 import DrugHistoryStage from "./stages/DrugHistoryStage";
+import {ConclusionStage} from "./stages/ConclusionStage";
+import {TreatmentRecommendationStage} from "./stages/TreatmentRecommendationStage";
 
 export const stages = [
     (props) => <PreliminaryStage {...props}/>,
@@ -10,8 +12,8 @@ export const stages = [
     (props) => <PreliminaryStage {...props}/>,
     (props) => <RecentIncidentsStage {...props}/>,
     (props) => <DrugHistoryStage {...props}/>,
-    (props) => <PreliminaryStage {...props}/>,
-    (props) => <PreliminaryStage {...props}/>,
+    (props) => <TreatmentRecommendationStage {...props}/>,
+    (props) => <ConclusionStage {...props}/>,
 ]
 
 export const STAGE_NAMES = {

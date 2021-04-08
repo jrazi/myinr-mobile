@@ -7,7 +7,6 @@ import {
     IntraSectionDivider,
     IntraSectionInvisibleDivider
 } from "../../first/forms/Layout";
-import {MedicalHistoryChipBox} from "../../first/PastMedicalHistoryStage";
 import {ChipBox, DefaultTextInput} from "../../first/forms/ContextSpecificComponents";
 import {getReasonsForVisit} from "../../../../../../root/data/dao/StaticDomainNameTable";
 import ListUtil from "../../../../../../root/domain/util/ListUtil";
@@ -70,7 +69,7 @@ export class PreliminaryStage extends React.Component {
                                 inrResult:  this.readonly ? Validators.NOTHING : Validators.NOTHING,
                             })}
                             validateOnChange={false}
-                            validateOnBlur={true}
+                            valisdateOnBlur={true}
                             key={this.state.loaded}
                             onSubmit={(values, { validate }) => {}}
                         >

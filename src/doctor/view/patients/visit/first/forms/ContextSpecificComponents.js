@@ -198,6 +198,7 @@ export const DefaultTextInput = (props) => {
                 value={props.value}
                 placeholder={props.placeholder}
                 onChangeText={props.onChangeText}
+                onChange={props.onChange}
                 disabled={props.disabled}
                 onBlur={props.onBlur}
                 autoCompleteType={'off'}

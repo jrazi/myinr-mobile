@@ -1,26 +1,22 @@
 import React from "react";
-import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import {Formik} from "formik";
 import * as Yup from "yup";
-import * as Validators from "../../../../../root/view/form/Validators";
+import * as Validators from "../../../../../../root/view/form/Validators";
 import {View} from "react-native";
-import * as Layout from "./forms/Layout";
-import {IntraSectionInvisibleDivider} from "./forms/Layout";
-import {DefaultDateInput, DefaultTextInput} from "./forms/ContextSpecificComponents";
+import * as Layout from "../../first/forms/Layout";
+import {IntraSectionInvisibleDivider} from "../../first/forms/Layout";
+import {DefaultDateInput, DefaultTextInput} from "../../first/forms/ContextSpecificComponents";
 
-export class ReportStage extends React.Component {
+export class ConclusionStage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loaded: false,
+            loaded: true,
         }
+        this.visitInfo = this.props.route.params.visitInfo;
     }
 
     componentDidMount() {
-        this.setState({loaded: false}, () => {
-            this.firstVisit = firstVisitDao.getVisits(this.props.route.params.userId);
-            this.setState({loaded: true});
-        })
     }
 
     handleInputChange = (changeFunction) => {
@@ -35,7 +31,7 @@ export class ReportStage extends React.Component {
                 <Layout.FormSection>
                     <Formik
                         initialValues={{
-                            reportComment: !this.state.loaded ? "" : this.firstVisit.reportComment,
+                            reportComment: !this.state.loaded ? "" : this.visitInfo.reportComment,
                         }}
                         validationSchema={Yup.object({
                             reportComment: (this.props.readonly && Validators.NOTHING) || Validators.NOTHING,
@@ -55,10 +51,10 @@ export class ReportStage extends React.Component {
                                         placeholder={""}
                                         onDateChange={(date => {
                                             this.handleInputChange(() => {
-                                                this.firstVisit.inr.nextInrCheckDate = date
+                                                this.visitInfo.inr.nextInrCheckDate.jalali.asString = date
                                             });
                                         })}
-                                        initialValue={!this.state.loaded ? null : this.firstVisit.inr.nextInrCheckDate || null}
+                                        initialValue={!this.state.loaded ? null : this.visitInfo.inr.nextInrCheckDate.jalali.asString || null}
                                         disabled={this.props.readonly}
                                     />
                                     <IntraSectionInvisibleDivider s/>
@@ -67,10 +63,10 @@ export class ReportStage extends React.Component {
                                         placeholder={"Approximate Date of Next Visit"}
                                         onDateChange={(date => {
                                             this.handleInputChange(() => {
-                                                this.firstVisit.visitDate.value = date
+                                                this.visitInfo.nextVisitDate = date
                                             });
                                         })}
-                                        initialValue={!this.state.loaded ? null : this.firstVisit.visitDate.value || null}
+                                        initialValue={!this.state.loaded ? null : this.visitInfo.nextVisitDate || null}
                                         disabled={this.props.readonly}
                                     />
                                     <IntraSectionInvisibleDivider s/>
@@ -81,7 +77,7 @@ export class ReportStage extends React.Component {
                                         onChangeText={(event) => {
                                             handleChange('reportComment')(event);
                                             this.handleInputChange(() => {
-                                                this.firstVisit.reportComment = event;
+                                                this.visitInfo.reportComment = event;
                                             });
                                         }}
                                         onBlur={handleBlur('reportComment')}
