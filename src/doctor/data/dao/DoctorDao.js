@@ -4,6 +4,7 @@ import {AsyncStorage} from "react-native";
 import {doctorService} from "../server/DoctorServiceGateway";
 import {serverGateway} from "../../../root/data/server/ServerGateway";
 import {FirstVisit} from "../../domain/visit/FirstVisit";
+import {DEFAULT_TIMEOUT} from "../../../root/data/server/util";
 
 class DoctorDao {
 
@@ -133,6 +134,11 @@ class DoctorDao {
         source.currentStage = updatedInfo.currentStage;
         return source;
     }
+
+    getAllAttendableAppointments = () => {
+        return doctorService.getAllAttendableAppointments();
+    }
+
 }
 
 export const doctorDao = new DoctorDao();

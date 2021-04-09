@@ -25,10 +25,6 @@ export class SecondaryVisitTab extends React.Component {
         }
     }
 
-    getAttendableAppointments() {
-        return this.state.attendableAppointments;
-    }
-
     componentDidMount() {
         this.loadVisits();
     }

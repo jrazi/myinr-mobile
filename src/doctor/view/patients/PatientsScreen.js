@@ -31,7 +31,7 @@ import {
     IntraSectionDivider,
     IntraSectionInvisibleDivider
 } from "./visit/first/forms/Layout";
-import {FilterTagBox, PatientsListFilterBox} from "./FilterTagBox";
+import {FilterTagBox} from "./FilterTagBox";
 import {EmptyList} from "../../../root/view/list/EmptyListMessage";
 import {VisitRedirect} from "./VisitRedirect";
 import {doctorDao} from "../../data/dao/DoctorDao";
@@ -39,6 +39,7 @@ import {debugBorderBlue, debugBorderRed} from "../../../root/view/styles/borders
 import Patient from "../../../root/domain/Patient";
 import {getReasonsForWarfarin} from "../../../root/data/dao/StaticDomainNameTable";
 import ListUtil from "../../../root/domain/util/ListUtil";
+import {PatientsListFilterBox} from "./PatientListFilter";
 
 const reasonsForWarfarin = getReasonsForWarfarin();
 

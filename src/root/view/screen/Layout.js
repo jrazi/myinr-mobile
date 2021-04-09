@@ -99,6 +99,23 @@ export const CustomContentScreenHeader = (props) => {
     );
 }
 
+export const TitleOnlyScreenHeader = (props) => {
+    const theme = useTheme();
+    return (
+        <Appbar.Header
+            style={{
+                paddingVertical: 40,
+                paddingHorizontal: 10,
+                borderBottomWidth: 0,
+                ...props.style,
+            }}
+            theme={theme.mostlyWhiteTheme}
+        >
+            <Appbar.Content color={theme.colors.primary} title={props.title} style={props.contentStyle}/>
+        </Appbar.Header>
+    );
+}
+
 export const DoubleIconScreenHeader = (props) => {
     const theme = useTheme();
     return (

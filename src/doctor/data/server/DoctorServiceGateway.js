@@ -69,7 +69,7 @@ class DoctorWebServiceGateway {
         let url = `${API_PATH}/patient/${patientUserId}/visit`;
 
         return this.apiService.fetchFromProtectedEndpoint(url, {
-            timeout: DEFAULT_TIMEOUT*3,
+            timeout: DEFAULT_TIMEOUT,
         })
             .then(data => data.visits);
     }
@@ -95,11 +95,22 @@ class DoctorWebServiceGateway {
         let url = `${API_PATH}/patient/${patientUserId}/appointment`;
 
         return this.apiService.fetchFromProtectedEndpoint(url, {
-            timeout: DEFAULT_TIMEOUT * 3,
+            timeout: DEFAULT_TIMEOUT,
         })
             .then(data => data.appointments);
 
     }
+
+    getAllAttendableAppointments = () => {
+        let url = `${API_PATH}/appointment`;
+
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            timeout: DEFAULT_TIMEOUT * 2,
+        })
+            .then(data => data.appointments);
+
+    }
+
 }
 
 export const doctorService = new DoctorWebServiceGateway();
