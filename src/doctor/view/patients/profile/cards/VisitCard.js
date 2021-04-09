@@ -1,5 +1,9 @@
 import {Button, Card, Surface, Text, useTheme} from "react-native-paper";
-import {getFormattedJalaliDate, hasValue, jalaliTimePastInFarsi} from "../../../../../root/domain/util/Util";
+import {
+    getFormattedJalaliDate,
+    hasValue,
+    howMuchTimePast,
+} from "../../../../../root/domain/util/Util";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import React from "react";
 import {StyleSheet, View} from "react-native";
@@ -19,7 +23,7 @@ export const AttendedVisitInfoCard = (props) => {
     }
     let timePastVisit = '';
     if (hasValue(props.visitInfo.visitDate) && hasValue(props.visitInfo.visitDate.jalali.asString || null)) {
-        timePastVisit = jalaliTimePastInFarsi(props.visitInfo.visitDate.jalali.asString) + ' قبل';
+        timePastVisit = howMuchTimePast(props.visitInfo.visitDate.jalali.asString);
     }
 
 

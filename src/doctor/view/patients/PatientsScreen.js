@@ -282,7 +282,7 @@ const PatientInfoCard = (props) => {
         if (timePast != null && !timePast.includes('امروز')) latestInrTestMessage += ' قبل';
     }
     if (timePast == null) {
-        latestInrTestMessage = 'عدم ثبت شاخص INR';
+        latestInrTestMessage = 'عدم ثبت INR';
     }
     const theme = useTheme();
     const CardContainer = ({index, style, ...props}) => {

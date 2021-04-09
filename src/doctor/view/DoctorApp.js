@@ -1,7 +1,7 @@
 import React from 'react';
 import {BottomNavigation, useTheme, withTheme} from "react-native-paper";
 import HomeScreen from "./HomeScreen";
-import VisitsScreen from "./patients/visits/VisitsScreen";
+import AppointmentsScreen from "./patients/visits/AppointmentsScreen";
 import ProfileScreen from "./ProfileScreen";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -55,7 +55,7 @@ class DoctorApp extends React.Component {
                 />
                 <Tab.Screen
                     name="VisitsScreen"
-                    component={VisitsScreen}
+                    component={AppointmentsScreen}
                     options={{
                         tabBarLabel: 'ویزیت‌ها',
                         tabBarIcon: ({ color }) => (

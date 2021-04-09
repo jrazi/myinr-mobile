@@ -18,8 +18,6 @@ export const AppointmentCard = (props) => {
         </Surface>
     }
 
-    let scheduledVisitDate = getFormattedJalaliDate(props.appointment.scheduledVisitDate.timestamp, 'MMMM YYYY');
-
     return (
         <CardContainer index={props.index}
                        style={[{
@@ -38,7 +36,7 @@ export const AppointmentCard = (props) => {
                     }}
                 >
                     <Card.Title
-                        title={scheduledVisitDate}
+                        title={props.appointment.patient.fullName}
                         subtitle={''}
                         style={{
                             flexGrow: 0,

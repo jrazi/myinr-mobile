@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {
     ScreenLayout, TitleOnlyScreenHeader
 } from "../../../../root/view/screen/Layout";
-import {AppointmentCard} from "../profile/cards/AppointmentCard";
 import {List, Searchbar, Surface, useTheme} from "react-native-paper";
 import {ConditionalCollapsibleRender, ConditionalRender} from "../visit/first/forms/Layout";
 import {ItemListContainer} from "../../../../root/view/list/ItemList";
@@ -10,8 +9,9 @@ import {doctorDao} from "../../../data/dao/DoctorDao";
 import {FollowupVisit} from "../../../domain/visit/FollowupVisit";
 import {AppointmentListFilter} from "./filter/AppointmentListFilter";
 import {AppointmentFilterType, appointmentListStore} from "./filter/AppointmentListStore";
+import {AppointmentCard} from "./cards/AppointmentCard";
 
-export default class VisitsScreen extends React.Component {
+export default class AppointmentsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.user = {};
@@ -50,8 +50,8 @@ export default class VisitsScreen extends React.Component {
         this.props.navigation.navigate(
             'FollowupVisitRoot',
             {
-                userId: this.props.route.params.userId,
-                patientName: '',
+                userId: appointment.patientUserId,
+                patientName: appointment.patient.fullName,
                 readonly: false,
                 visitInfo: FollowupVisit.createNew(),
                 appointmentId: appointment.id,

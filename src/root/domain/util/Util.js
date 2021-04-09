@@ -21,6 +21,15 @@ export function removeWhiteSpace(str) {
     return str.replace(/\s/g,'');
 }
 
+export function howMuchTimePast(oldDate) {
+    const str = jalaliTimePastInFarsi(oldDate);
+
+    if ((str == 'امروز' ) || str.length < 5) return str;
+
+    return str + ' ' + 'قبل';
+}
+
+
 export function jalaliTimePastInFarsi(oldDate) {
     let timePast = jalaliTimePast(oldDate);
     if (!hasValue(timePast) || timePast.length != 3) return null;
@@ -35,7 +44,6 @@ export function timePastInFarsi(year, month, day) {
     year = Number(year);
     month = Number(month);
     day = Number(day);
-
 
     if (year == 0 && month == 0 && day == 0) return 'امروز';
 
@@ -59,12 +67,13 @@ export function timePastInFarsi(year, month, day) {
 export function jalaliTimePast(oldDate) {
     if (!hasValue(oldDate)) return null;
     oldDate = jalaliToGeorgian(oldDate);
+
     return calcTimePast(oldDate);
 }
 
-export function calcTimePast(oldDate) {
+export function calcTimePast(oldDate, referenceDate=null) {
     if (!hasValue(oldDate)) return null;
-    const now = new Date();
+    const now = referenceDate ? referenceDate : new Date();
     let diff = new Date(
         now.getFullYear()-oldDate.getFullYear(),
         now.getMonth()-oldDate.getMonth(),
