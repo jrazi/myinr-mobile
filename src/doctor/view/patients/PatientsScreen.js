@@ -290,7 +290,7 @@ const PatientInfoCard = (props) => {
                 {props.children}
             </View>
         }
-        else return <Surface style={[{elevation: 0, debugBorderBlue}, style]}>
+        else return <Surface style={[{elevation: 0,}, style]}>
             {props.children}
         </Surface>
     }

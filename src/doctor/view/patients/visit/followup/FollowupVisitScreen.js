@@ -53,10 +53,7 @@ class FollowupVisitScreen extends React.Component {
     }
 
     onExit = () => {
-        this.props.navigation.reset({
-            index: 0,
-            routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
-        })
+        this.props.navigation.goBack();
     }
 
     onFinish = () => {
@@ -89,9 +86,9 @@ class FollowupVisitScreen extends React.Component {
             <LoadingScreen loaded={this.state.loaded}>
                 <ScreenLayout>
                     <CustomContentCustomActionScreenHeader
-                        iconName={"check-bold"}
+                        iconName={this.props.route.params.readonly ? "arrow-right" : "check-bold"}
                         style={{elevation: 0}}
-                        onActionPress={() => this.props.route.params.readonly ? this.onFinish() : this.setState({finishVisitDialogOpen: true})}
+                        onActionPress={() => this.props.route.params.readonly ? this.onExit() : this.setState({finishVisitDialogOpen: true})}
                         reverse
                     >
                         <View style={{flex: 1, alignItems: 'flex-end'}}>

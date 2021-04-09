@@ -1,14 +1,17 @@
 import React from "react";
-import {View, ScrollView} from "react-native";
-import {FAB, Text, Subheading} from "react-native-paper";
+import {ScrollView, StyleSheet, View} from "react-native";
+import {FAB, List} from "react-native-paper";
 import {FollowupVisitNotImplementedDialog} from "../VisitRedirect";
 import {ScreenLayout} from "../../../../root/view/screen/Layout";
-import {StyleSheet} from "react-native";
-import {EmptyList} from "../../../../root/view/list/EmptyListMessage";
 import {PatientProfileContext} from "./ContextProvider";
 import {ItemListContainer} from "../../../../root/view/list/ItemList";
 import {doctorVisitDao} from "../../../data/dao/DoctorVisitDao";
 import {FollowupVisit} from "../../../domain/visit/FollowupVisit";
+import {AttendedVisitInfoCard} from "./cards/VisitCard";
+import {AppointmentCard} from "./cards/AppointmentCard";
+import {ConditionalCollapsibleRender} from "../visit/first/forms/Layout";
+import {EmptyList} from "../../../../root/view/list/EmptyListMessage";
+import {hasValue} from "../../../../root/domain/util/Util";
 
 export class SecondaryVisitTab extends React.Component {
     constructor(props) {
@@ -18,11 +21,12 @@ export class SecondaryVisitTab extends React.Component {
             loadingVisits: true,
             visits: [],
             appointments: [],
+            attendableAppointments: [],
         }
     }
 
     getAttendableAppointments() {
-        return this.state.appointments.filter(appointment => appointment.isScheduled && !appointment.hasVisitHappened)
+        return this.state.attendableAppointments;
     }
 
     componentDidMount() {
@@ -35,10 +39,16 @@ export class SecondaryVisitTab extends React.Component {
             const appointmentsPromise = doctorVisitDao.getAppointments(this.props.route.params.userId);
 
             const [visits, appointments] = await Promise.all([visitsPromise, appointmentsPromise]);
+            const sortedVisits = (visits || []).sort((a, b) => Number(b.visitDate.timestamp || 0) - Number(a.visitDate.timestamp || 0));
+
+            const sortedAttendableAppointments = appointments
+                .filter(appointment => appointment.isScheduled && !appointment.hasVisitHappened)
+                .sort((a, b) => Number(a.scheduledVisitDate.timestamp) - Number(b.scheduledVisitDate.timestamp))
 
             this.setState({
-                visits: visits,
+                visits: sortedVisits,
                 appointments: appointments,
+                attendableAppointments: sortedAttendableAppointments,
                 loadingVisits: false,
             })
         });
@@ -46,13 +56,13 @@ export class SecondaryVisitTab extends React.Component {
 
 
 
-    viewVisitInfo = () => {
+    viewVisitInfo = (index) => {
         this.props.navigation.navigate(
             'FollowupVisitRoot',
             {
                 userId: this.props.route.params.userId,
                 patientName: '',
-                visitInfo: this.state.visits[0],
+                visitInfo: this.state.visits[index],
                 readonly: true,
                 appointmentId: null,
             },
@@ -60,7 +70,8 @@ export class SecondaryVisitTab extends React.Component {
     }
 
 
-    attendAnAppointment = (appointment) => {
+    attendAnAppointment = (index) => {
+        const appointment = this.state.attendableAppointments[index];
         if (!appointment || !appointment.isScheduled || appointment.hasVisitHappened) return;
         this.props.navigation.navigate(
             'FollowupVisitRoot',
@@ -82,13 +93,11 @@ export class SecondaryVisitTab extends React.Component {
                         <ScreenLayout>
                             <VisitList
                                 visits={this.state.visits}
+                                appointments={this.state.attendableAppointments}
                                 refreshing={this.state.loadingVisits}
                                 onRefresh={this.loadVisits}
-                            />
-                            <FAB
-                                style={styles.fab}
-                                icon={'note-plus'}
-                                onPress={() => this.attendAnAppointment(this.getAttendableAppointments()[0])}
+                                viewVisitInfo={this.viewVisitInfo}
+                                attendAnAppointment={this.attendAnAppointment}
                             />
                             <StartSecondaryVisitDialog
                                 visible={this.state.newVisitDialogOpen}
@@ -107,33 +116,90 @@ const StartSecondaryVisitDialog = (props) => {
         onDismiss={props.onDismiss}
     />;
 }
-const styles = StyleSheet.create({
-    fab: {
-        position: 'absolute',
-        margin: 24,
-        left: 0,
-        bottom: 0,
-    },
-})
 
 
 const VisitList = (props) => {
+    const appointmentItems = props.appointments.map((appointment, index) => {
+        return (
+            <AppointmentCard
+                key={`AppointmentCard_${appointment.id}`}
+                appointment={appointment}
+                index={index}
+                attendAnAppointment={props.attendAnAppointment}
+            />
+        )
+    })
+
+    const indexOffset = appointmentItems.length;
+    const visitItems = props.visits.map((visit, index) => {
+        return (
+            <AttendedVisitCard
+                key={`AttendedVisitCard_${visit.id}`}
+                visitInfo={visit}
+                index={index}
+                viewVisitInfo={props.viewVisitInfo}
+            />
+        )
+    });
+
+    const ListSection = ({listItems, refreshing, subheaderTitle, emptyListMessage}) => {
+        return (
+            <List.Section>
+                <ConditionalCollapsibleRender key={`LIST_HEADER`} hidden={refreshing}>
+                    <List.Subheader style={{}}>{subheaderTitle}</List.Subheader>
+                    <EmptyList
+                        hidden={refreshing || (listItems.length > 0)}
+                        message={emptyListMessage}
+                    />
+                </ConditionalCollapsibleRender>
+                {listItems}
+            </List.Section>
+        )
+    }
     return (
         <ItemListContainer
             refreshing={props.refreshing}
             onRefresh={props.onRefresh}
+            emptyListMessageEnabled={false}
         >
             {
-                props.visits.map(visit => {
-                    return (
-                        <View>
-                            <Text>
-                                {'Id: ' + visit.id}
-                            </Text>
-                        </View>
-                    )
-                })
+                [
+                    <ListSection key={`AppointmentsSection`}
+                                 listItems={appointmentItems}
+                                 refreshing={props.refreshing}
+                                 subheaderTitle={'ویزیت‌های آتی'}
+                                 emptyListMessage={'ویزیتی برای آینده مقرر نشده'}
+                    />,
+                    <ListSection key={`VisitsSection`}
+                                 listItems={visitItems}
+                                 refreshing={props.refreshing}
+                                 subheaderTitle={'ویزیت‌های پیشین'}
+                                 emptyListMessage={'بیمار تاکنون ویزیت نشده‌است'}
+                    />,
+                ]
             }
         </ItemListContainer>
     )
 }
+
+
+const AttendedVisitCard = (props) => {
+    return (
+        <VisitCardWrapper>
+            <AttendedVisitInfoCard {...props}/>
+        </VisitCardWrapper>
+    )
+}
+const VisitCardWrapper = (props) => {
+    return (
+        <View>
+            {props.children}
+        </View>
+    )
+}
+
+
+
+const styles = StyleSheet.create({
+});
+

@@ -82,7 +82,7 @@ export class TreatmentRecommendationStage extends React.Component {
                             {({ handleChange, handleBlur, values, touched, errors, validateField, isValid }) => (
                                 <DefaultTextInput
                                     label={"Stop using warfarin for"}
-                                    placeholder={"Number of days"}
+                                    placeholder={this.readonly ? "" : "Number of days"}
                                     value={values.recommendedDaysWithoutWarfarin}
                                     onChangeText={(event) => {
                                         handleChange('recommendedDaysWithoutWarfarin')(event);

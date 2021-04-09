@@ -7,7 +7,7 @@ import {useTheme} from "react-native-paper";
 import {ConditionalRender} from "../../../doctor/view/patients/visit/first/forms/Layout";
 import {hasValue} from "../../domain/util/Util";
 
-export const ItemListContainer = ({loading, style, refreshing, onRefresh, refreshControlStyle, ...props}) => {
+export const ItemListContainer = ({loading, style, refreshing, onRefresh, refreshControlStyle, emptyListMessageEnabled=true, ...props}) => {
     const theme = useTheme();
 
     return (
@@ -23,7 +23,7 @@ export const ItemListContainer = ({loading, style, refreshing, onRefresh, refres
             }
         >
             <EmptyList
-                hidden={hasValue(props.children) && (props.children.length > 0)}
+                hidden={(!emptyListMessageEnabled) || (refreshing || loading) || ( hasValue(props.children) && (props.children.length > 0) )}
                 message={'رکوردی یافت نشد'}
             />
             {props.children}

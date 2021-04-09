@@ -95,7 +95,7 @@ export class InrInfoStage extends React.Component {
                                 <ConditionalCollapsibleRender hidden={this.state.latestInrAtHome}>
                                     <Layout.InputTitle title={'Test Location'} style={{}}/>
                                     <DefaultTextInput
-                                        placeholder={"Eg. Farabi Lab"}
+                                        placeholder={readonly ? "" : "Eg. Farabi Lab"}
                                         value={values.testLocation}
                                         textContentType={'location'}
                                         onChangeText={handleChange('testLocation')}
