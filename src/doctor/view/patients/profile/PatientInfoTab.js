@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {StyleSheet, Text, View} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Button, Card, List, Surface, useTheme, withTheme} from "react-native-paper";
+import {Button, Card, List, Surface, TouchableRipple, useTheme, withTheme, IconButton} from "react-native-paper";
 import {PatientProfileContext} from "./ContextProvider";
 import {ConditionalCollapsibleRender, IntraSectionInvisibleDivider} from "../visit/first/forms/Layout";
 import {calcAge, e2p, getFormattedJalaliDate, hasValue} from "../../../../root/domain/util/Util";
@@ -78,7 +78,7 @@ const InfoSection = (props) => {
     }
     const theme = useTheme();
 
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
     return (
         <ListContainer index={props.index}>
             <List.Section>
@@ -92,10 +92,10 @@ const InfoSection = (props) => {
                     }}
                 >
                     <List.Subheader style={{}} key={`LIST_HEADER`}>{props.sectionTitle}</List.Subheader>
-                    <MaterialCommunityIcons
-                        name={collapsed ? "up" : "down"}
-                        size={20}
+                    <IconButton
+                        icon={collapsed ? "chevron-double-down" : "chevron-double-up"}
                         color={theme.colors.placeholder}
+                        size={22}
                         onPress={() => setCollapsed(!collapsed)}
                     />
                 </View>
