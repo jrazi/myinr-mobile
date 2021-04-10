@@ -171,13 +171,17 @@ const ContactInfoCard = (props) => {
 }
 
 const MedicalHistoryCard = (props) => {
+    const theme = useTheme();
     const allConditions = Object.values(getReasonsForWarfarin());
     const items = allConditions.map(condition => {
         const hasCondition = Patient.hasMedicalCondition(props.patientInfo, condition.name);
         return {
             id: condition.id,
             name: condition.name,
-            value: hasCondition ? 'Y' : 'N',
+            value: hasCondition ?
+                <MaterialCommunityIcons name="checkbox-marked-outline" size={24} color={theme.colors.placeholder}/> :
+                <MaterialCommunityIcons name="checkbox-blank-outline" size={24} color={theme.colors.placeholder}/>,
+            showPureValue: true,
         }
     })
     return <InfoCard
@@ -199,21 +203,21 @@ const VisitsInfoCard = (props) => {
                 name: 'وضعیت ویزیت اول',
                 value: firstVisitStatus,
             },
-            {
-                id: 'VISIT_COUNT',
-                name: 'تعداد ویزیت‌ها',
-                value: '',
-            },
-            {
-                id: 'LATEST_VISIT',
-                name: 'آخرین ویزیت',
-                value: '',
-            },
-            {
-                id: 'NEXT_VISIT_DATE',
-                name: 'تاریخ ویزیت بعدی',
-                value: '',
-            },
+            // {
+            //     id: 'VISIT_COUNT',
+            //     name: 'تعداد ویزیت‌ها',
+            //     value: '',
+            // },
+            // {
+            //     id: 'LATEST_VISIT',
+            //     name: 'آخرین ویزیت',
+            //     value: '',
+            // },
+            // {
+            //     id: 'NEXT_VISIT_DATE',
+            //     name: 'تاریخ ویزیت بعدی',
+            //     value: '',
+            // },
         ]}
     />
 }
@@ -240,7 +244,12 @@ const InfoCardDetails = (props) => {
     const theme = useTheme();
 
     const itemNames = props.items.map(item => item.name);
-    const itemValues = props.items.map(item => item.disableDigitConversion ? getDisplayableValue(item.value) : getDisplayableFarsiValue(item.value));
+    const itemValues = props.items.map(item =>
+        item.showPureValue ? item.value :
+            item.disableDigitConversion ?
+            getDisplayableValue(item.value) :
+            getDisplayableFarsiValue(item.value)
+    );
 
     const TableColumn = ({list}) => (
         <View>
