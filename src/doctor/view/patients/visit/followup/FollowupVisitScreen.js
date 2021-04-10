@@ -1,7 +1,9 @@
 import React from "react";
 import {StyleSheet, View, I18nManager} from "react-native";
-import {
+import  {
     Text,
+    Divider,
+    Menu,
     ProgressBar,
     Badge,
     Appbar,
@@ -14,17 +16,14 @@ import {
     withTheme, useTheme
 } from "react-native-paper";
 import {
-    CustomContentCustomActionScreenHeader,
+    CustomContentCustomActionScreenHeader, MORE_ICON, ScreenHeaderWithProvidedActions,
     ScreenLayout
 } from "../../../../../root/view/screen/Layout";
-import {doctorDao} from "../../../../data/dao/DoctorDao";
 import {stages} from "./FollowupVisitMetadata";
 import {firstNonEmpty} from "../../../../../root/domain/util/Util";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {firstVisitDao} from "../../../../data/dao/FirstVisitDao";
 import {ConditionalRender} from "../first/forms/Layout";
 import {LoadingScreen} from "../../../../../root/view/loading/Loading";
-import {FollowupVisit} from "../../../../domain/visit/FollowupVisit";
 import FollowupVisitStageNavigator from "./FollowupVisitStageNavigator";
 import {doctorVisitDao} from "../../../../data/dao/DoctorVisitDao";
 
@@ -35,8 +34,16 @@ class FollowupVisitScreen extends React.Component {
             currentStage: 0,
             loaded: false,
             finishVisitDialogOpen: false,
+            cancelVisitDialogOpen: false,
             savingVisitInfo: false,
         }
+    }
+
+    openCancelVisitDialog = () => {
+        this.setState({
+            finishVisitDialogOpen: false,
+            cancelVisitDialogOpen: true,
+        });
     }
 
     async componentDidMount() {
@@ -80,23 +87,50 @@ class FollowupVisitScreen extends React.Component {
         await doctorVisitDao.saveFollowupVisit(userId, appointmentId, this.props.route.params.visitInfo)
     }
 
+    getScreenHeader() {
+        const theme = this.props.theme;
+        return this.props.route.params.readonly ?
+            (_props) => (
+                <CustomContentCustomActionScreenHeader
+                    iconName={"arrow-right"}
+                    style={{elevation: 0}}
+                    onActionPress={this.onExit}
+                    reverse
+                >
+                    {_props.children}
+                </CustomContentCustomActionScreenHeader>
+            )
+            : (_props) => (
+                <ScreenHeaderWithProvidedActions
+                    actionItems = {[
+                        <Appbar.Action key={'MORE_ACTION'} icon={'arrow-right'} size={28} onPress={this.openCancelVisitDialog} color={theme.colors.placeholder}/>,
+                        <Appbar.Action key={'SAVE_ACTION'} icon={'check-bold'} size={28} onPress={() => this.setState({finishVisitDialogOpen: true})} color={theme.colors.placeholder}/>,
+                    ]}
+                    style={{
+                        elevation: 0,
+                    }}
+                    reverse
+                >
+                    {_props.children}
+                </ScreenHeaderWithProvidedActions>
+            );
+    }
+
     render() {
         const theme = this.props.theme;
+        const ScreenHeaderElement = this.getScreenHeader();
+
         return (
             <LoadingScreen loaded={this.state.loaded}>
                 <ScreenLayout>
-                    <CustomContentCustomActionScreenHeader
-                        iconName={this.props.route.params.readonly ? "arrow-right" : "check-bold"}
-                        style={{elevation: 0}}
-                        onActionPress={() => this.props.route.params.readonly ? this.onExit() : this.setState({finishVisitDialogOpen: true})}
-                        reverse
+                    <ScreenHeaderElement
                     >
                         <View style={{flex: 1, alignItems: 'flex-end'}}>
                             <View style={{width: '50%', }}>
                                 <StageProgressBar currentStage={this.state.currentStage}/>
                             </View>
                         </View>
-                    </CustomContentCustomActionScreenHeader>
+                    </ScreenHeaderElement>
                     <View
                         style={{
                             flex: 1,
@@ -119,6 +153,12 @@ class FollowupVisitScreen extends React.Component {
                         loading={this.state.savingVisitInfo}
                         onDismiss={() => this.setState({finishVisitDialogOpen: false})}
                         onFinish={this.onFinish}
+                    />
+                    <CancelVisitDialog
+                        visible={this.state.cancelVisitDialogOpen}
+                        loading={false}
+                        onDismiss={() => this.setState({cancelVisitDialogOpen: false})}
+                        onCancel={this.onExit}
                     />
                 </ScreenLayout>
             </LoadingScreen>
@@ -160,6 +200,19 @@ const StageProgressBar = (props) => {
 }
 
 
+const CancelVisitDialog = (props) => {
+    return (
+        <Portal>
+            <Dialog visible={props.visible} onDismiss={props.onDismiss} style={{paddingBottom: 5}} dismissable={false}>
+                <DialogMessage>آیا میخواهید ویزیت را لغو کنید؟</DialogMessage>
+                <Dialog.Actions style={{alignItems: 'center', justifyContent: 'space-around',}}>
+                    <Button style={{}} labelStyle={{padding: 5}} mode="text" loading={props.loading} onPress={props.onCancel} >لغو ویزیت</Button>
+                    <Button disabled={false} style={{}} labelStyle={{padding: 5}} mode="text" onPress={props.onDismiss} >بازگشت</Button>
+                </Dialog.Actions>
+            </Dialog>
+        </Portal>
+    )
+}
 const FinishVisitDialog = (props) => {
     return (
         <Portal>

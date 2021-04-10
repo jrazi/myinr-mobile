@@ -1,8 +1,10 @@
 import React from "react";
 import {Appbar, useTheme} from "react-native-paper";
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, View, Platform} from "react-native";
 import {useNavigation} from '@react-navigation/native';
 import {firstNonEmpty, hasValue, noop} from "../../domain/util/Util";
+
+export const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
 
 export const ScreenLayout = (props) => {
     const styles = StyleSheet.create({
@@ -28,6 +30,36 @@ export const ScreenHeader = ({style, title, navigation, reverse, contentStyle, .
         <CustomContentScreenHeader style={style} navigation={navigation} reverse={reverse}>
             <Appbar.Content color={useTheme().colors.primary} title={title} style={_contentStyle}/>
         </CustomContentScreenHeader>
+    );
+}
+
+export const ScreenHeaderWithProvidedActions = (props) => {
+    const theme = useTheme();
+    return (
+        <Appbar.Header
+            style={{
+                paddingVertical: 40,
+                paddingHorizontal: 10,
+                borderBottomWidth: 0,
+                ...props.style,
+            }}
+            theme={theme.mostlyWhiteTheme}
+        >
+            {
+                props.reverse ? [
+                        props.actionItems,
+                        <React.Fragment key={'header-children'}>
+                            {props.children}
+                        </React.Fragment>
+                    ] :
+                    [
+                        <React.Fragment key={'header-children'}>
+                            {props.children}
+                        </React.Fragment>,
+                        props.actionItems,
+                    ]
+            }
+        </Appbar.Header>
     );
 }
 
