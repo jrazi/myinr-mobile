@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {StyleSheet, Text, View} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Button, Card, List, Surface, useTheme, withTheme} from "react-native-paper";
@@ -12,6 +12,7 @@ import {ItemListContainer} from "../../../../root/view/list/ItemList";
 import {getDisplayableFarsiValue, getDisplayableValue} from "../../../../root/domain/util/DisplayUtil";
 import {getReasonsForWarfarin} from "../../../../root/data/dao/StaticDomainNameTable";
 import Patient from "../../../../root/domain/Patient";
+import Collapsible from "react-native-collapsible";
 
 class PatientInfoTab extends React.Component {
     constructor(props) {
@@ -75,12 +76,32 @@ const InfoSection = (props) => {
             {props.children}
         </Surface>
     }
+    const theme = useTheme();
 
+    const [collapsed, setCollapsed] = useState(false);
     return (
         <ListContainer index={props.index}>
             <List.Section>
-                <List.Subheader style={{}} key={`LIST_HEADER`}>{props.sectionTitle}</List.Subheader>
-                {props.children}
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                    }}
+                >
+                    <List.Subheader style={{}} key={`LIST_HEADER`}>{props.sectionTitle}</List.Subheader>
+                    <MaterialCommunityIcons
+                        name={collapsed ? "up" : "down"}
+                        size={20}
+                        color={theme.colors.placeholder}
+                        onPress={() => setCollapsed(!collapsed)}
+                    />
+                </View>
+                <Collapsible collapsed={collapsed}>
+                    {props.children}
+                </Collapsible>
             </List.Section>
         </ListContainer>
     )
@@ -91,6 +112,11 @@ const PersonalInfoCard = (props) => {
     return <InfoCard
         patientInfo={props.patientInfo}
         items={[
+            {
+                id: 'ID',
+                name: 'شناسه',
+                value: props.patientInfo.userId,
+            },
             {
                 id: 'NAME',
                 name: 'نام',
@@ -107,14 +133,14 @@ const PersonalInfoCard = (props) => {
                 value: props.patientInfo.birthDate,
             },
             {
-                id: 'LOCATION',
-                name: 'مکان زندگی',
-                value: props.patientInfo.address,
-            },
-            {
                 id: 'NATIONAL_ID',
                 name: 'کد ملی',
                 value: props.patientInfo.nationalId,
+            },
+            {
+                id: 'LOCATION',
+                name: 'مکان زندگی',
+                value: props.patientInfo.address,
             },
         ]}
     />
@@ -161,13 +187,17 @@ const MedicalHistoryCard = (props) => {
 }
 
 const VisitsInfoCard = (props) => {
+    const firstVisitStatus = !props.patientInfo.firstVisitStatus.started ? 'شروع نشده'
+            : !props.patientInfo.firstVisitStatus.flags.isEnded ? 'در انتظار تایید'
+            : 'اتمام یافته';
+
     return <InfoCard
         patientInfo={props.patientInfo}
         items={[
             {
                 id: 'FIRST_VISIT_STATE',
                 name: 'وضعیت ویزیت اول',
-                value: props.patientInfo.fullName,
+                value: firstVisitStatus,
             },
             {
                 id: 'VISIT_COUNT',
