@@ -8,6 +8,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import React from "react";
 import {StyleSheet, View} from "react-native";
 import {IntraSectionInvisibleDivider} from "../../visit/first/forms/Layout";
+import {getDateDifferenceDescribedInFarsi} from "../../../../../root/domain/util/DateUtil";
 
 export const AttendedVisitInfoCard = (props) => {
     const theme = useTheme();
@@ -22,8 +23,8 @@ export const AttendedVisitInfoCard = (props) => {
         </Surface>
     }
     let timePastVisit = '';
-    if (hasValue(props.visitInfo.visitDate) && hasValue(props.visitInfo.visitDate.jalali.asString || null)) {
-        timePastVisit = howMuchTimePast(props.visitInfo.visitDate.jalali.asString);
+    if (hasValue(props.visitInfo.visitDate) && hasValue(props.visitInfo.visitDate.timestamp)) {
+        timePastVisit = getDateDifferenceDescribedInFarsi(Date.now(), props.visitInfo.visitDate.timestamp, true);
     }
 
 

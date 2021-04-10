@@ -45,6 +45,7 @@ export function timePastInFarsi(year, month, day) {
     month = Number(month);
     day = Number(day);
 
+
     if (year == 0 && month == 0 && day == 0) return 'امروز';
 
     if (year >= 1 || day == 0 || month >= 3) omitDay = true;
