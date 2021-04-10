@@ -1,0 +1,280 @@
+import React from "react";
+import {StyleSheet, Text, View} from "react-native";
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {Button, Card, List, Surface, useTheme, withTheme} from "react-native-paper";
+import {PatientProfileContext} from "./ContextProvider";
+import {ConditionalCollapsibleRender, IntraSectionInvisibleDivider} from "../visit/first/forms/Layout";
+import {calcAge, e2p, getFormattedJalaliDate, hasValue} from "../../../../root/domain/util/Util";
+import {getDateDifferenceDescribedInFarsi} from "../../../../root/domain/util/DateUtil";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {InfoItem} from "../../common/cards/DefaultCard";
+import {ItemListContainer} from "../../../../root/view/list/ItemList";
+import {getDisplayableFarsiValue, getDisplayableValue} from "../../../../root/domain/util/DisplayUtil";
+import {getReasonsForWarfarin} from "../../../../root/data/dao/StaticDomainNameTable";
+import Patient from "../../../../root/domain/Patient";
+
+class PatientInfoTab extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {}
+    }
+
+    static contextType = PatientProfileContext;
+
+    componentDidMount = async () => {
+    }
+
+    render() {
+        return (
+            <PatientProfileContext.Consumer>
+                {
+                    value => (
+                        <PatientInfoView
+                            patientInfo={this.context.patient}
+                            refreshing={false}
+                            onRefresh={() => {}}
+                        />
+                    )
+                }
+            </PatientProfileContext.Consumer>
+        );
+    }
+}
+
+export default withTheme(PatientInfoTab);
+
+const PatientInfoView = (props) => {
+    return (
+        <ItemListContainer
+            refreshing={props.refreshing}
+            onRefresh={props.onRefresh}
+            emptyListMessageEnabled={false}
+        >
+            <InfoSection index={0} sectionTitle={'مشخصات فردی'}>
+                <PersonalInfoCard patientInfo={props.patientInfo}/>
+            </InfoSection>
+            <InfoSection index={1} sectionTitle={'اطلاعات تماس'}>
+                <ContactInfoCard patientInfo={props.patientInfo}/>
+            </InfoSection>
+            <InfoSection index={2} sectionTitle={'سوابق پزشکی'}>
+                <MedicalHistoryCard patientInfo={props.patientInfo}/>
+            </InfoSection>
+            <InfoSection index={3} sectionTitle={'ویزیت‌ها'}>
+                <VisitsInfoCard patientInfo={props.patientInfo}/>
+            </InfoSection>
+        </ItemListContainer>
+    )
+}
+const InfoSection = (props) => {
+    const ListContainer = ({index, style, ...props}) => {
+        if (index % 2 == 0) {
+            return <View style={[{}, style]}>
+                {props.children}
+            </View>
+        } else return <Surface style={[{elevation: 0,}, style]}>
+            {props.children}
+        </Surface>
+    }
+
+    return (
+        <ListContainer index={props.index}>
+            <List.Section>
+                <List.Subheader style={{}} key={`LIST_HEADER`}>{props.sectionTitle}</List.Subheader>
+                {props.children}
+            </List.Section>
+        </ListContainer>
+    )
+
+}
+
+const PersonalInfoCard = (props) => {
+    return <InfoCard
+        patientInfo={props.patientInfo}
+        items={[
+            {
+                id: 'NAME',
+                name: 'نام',
+                value: props.patientInfo.fullName,
+            },
+            {
+                id: 'AGE',
+                name: 'سن',
+                value: calcAge(props.patientInfo.birthDate),
+            },
+            {
+                id: 'BIRTH_DATE',
+                name: 'تاریخ تولد',
+                value: props.patientInfo.birthDate,
+            },
+            {
+                id: 'LOCATION',
+                name: 'مکان زندگی',
+                value: props.patientInfo.address,
+            },
+            {
+                id: 'NATIONAL_ID',
+                name: 'کد ملی',
+                value: props.patientInfo.nationalId,
+            },
+        ]}
+    />
+}
+
+const ContactInfoCard = (props) => {
+    return <InfoCard
+        patientInfo={props.patientInfo}
+        items={[
+            {
+                id: 'MOBILE',
+                name: 'تلفن همراه',
+                value: props.patientInfo.mobile,
+            },
+            {
+                id: 'EMERGENCY_PHONE',
+                name: 'تماس اضطراری',
+                value: props.patientInfo.emergencyPhone,
+            },
+            {
+                id: 'EMAIL',
+                name: 'ایمیل',
+                value: props.patientInfo.email,
+                disableDigitConversion: true,
+            },
+        ]}
+    />
+}
+
+const MedicalHistoryCard = (props) => {
+    const allConditions = Object.values(getReasonsForWarfarin());
+    const items = allConditions.map(condition => {
+        const hasCondition = Patient.hasMedicalCondition(props.patientInfo, condition.name);
+        return {
+            id: condition.id,
+            name: condition.name,
+            value: hasCondition ? 'Y' : 'N',
+        }
+    })
+    return <InfoCard
+        patientInfo={props.patientInfo}
+        items={items}
+    />
+}
+
+const VisitsInfoCard = (props) => {
+    return <InfoCard
+        patientInfo={props.patientInfo}
+        items={[
+            {
+                id: 'FIRST_VISIT_STATE',
+                name: 'وضعیت ویزیت اول',
+                value: props.patientInfo.fullName,
+            },
+            {
+                id: 'VISIT_COUNT',
+                name: 'تعداد ویزیت‌ها',
+                value: '',
+            },
+            {
+                id: 'LATEST_VISIT',
+                name: 'آخرین ویزیت',
+                value: '',
+            },
+            {
+                id: 'NEXT_VISIT_DATE',
+                name: 'تاریخ ویزیت بعدی',
+                value: '',
+            },
+        ]}
+    />
+}
+export const InfoCard = (props) => {
+    return (
+        <View
+         style={[styles.patientInfoCardContainer]}
+        >
+            <View style={{
+                paddingVertical: 10,
+            }}>
+                <Card.Content>
+                    <View>
+                        <InfoCardDetails items={props.items}/>
+                    </View>
+                </Card.Content>
+                <IntraSectionInvisibleDivider none borderWidth={0.1} style={{marginHorizontal: 20, marginTop: 10,}}/>
+            </View>
+        </View>
+    );
+}
+
+const InfoCardDetails = (props) => {
+    const theme = useTheme();
+
+    const itemNames = props.items.map(item => item.name);
+    const itemValues = props.items.map(item => item.disableDigitConversion ? getDisplayableValue(item.value) : getDisplayableFarsiValue(item.value));
+
+    const TableColumn = ({list}) => (
+        <View>
+            {
+                list.map((item, index) => (
+                    <InfoItem
+                        title={item}
+                        key={`II_${props.items[index].id}`}
+                        wrapperStyle={{
+                            flexBasis: '50%',
+                            justifyContent: 'flex-start',
+                            paddingVertical: 10,
+                        }}
+                    />
+                ))
+            }
+        </View>
+    );
+
+    return (
+        <Row>
+            <TableColumn list={itemNames}/>
+            <TableColumn list={itemValues}/>
+        </Row>
+    )
+}
+
+const Row = (props) => {
+    return (
+        <View
+            style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingVertical: 10,
+                paddingHorizontal: 10,
+            }}
+        >
+            {props.children}
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // backgroundColor: 'white',
+    },
+
+    fab: {
+        position: 'absolute',
+        margin: 24,
+        left: 0,
+        bottom: 0,
+    },
+
+    visitListContainer: {
+
+    },
+    patientInfoCardContainer: {
+    },
+    patientInfoCard: {
+    },
+    patientCardDetails: {
+    }
+});
+

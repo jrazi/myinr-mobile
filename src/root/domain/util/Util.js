@@ -84,7 +84,7 @@ export function calcTimePast(oldDate, referenceDate=null) {
 }
 
 export function calcAge(birthDate) {
-    if (!hasValue(birthDate)) return null;
+    if (!hasValue(birthDate || null)) return null;
     return calculateAge(jalaliToGeorgian(birthDate));
 }
 

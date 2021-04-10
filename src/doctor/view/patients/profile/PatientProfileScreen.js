@@ -9,6 +9,7 @@ import {FirstVisitTab} from "./FirstVisitTab";
 import {SecondaryVisitTab} from "./SecondaryVisitTab";
 import {LoadingScreen} from "../../../../root/view/loading/Loading";
 import {PatientProfileContext} from "./ContextProvider";
+import PatientInfoTab from "./PatientInfoTab";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -114,7 +115,7 @@ class PatientProfileScreen extends React.Component {
                     >
                         <Tab.Screen
                             name="PatientInfo"
-                            component={NoData}
+                            component={PatientInfoTab}
                             options={{
                                 tabBarLabel: 'مشخصات',
                             }}
