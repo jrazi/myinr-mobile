@@ -55,7 +55,7 @@ export class HabitsStage extends React.Component {
                             <ChipBox
                                 items={habitItems}
                                 onChange={(id, value) => {this.modifyHabitsList(id, value)}}
-                                disableAll={this.props.readonly}
+                                disableAll={this.props.route.params.readonly}
                                 key={`HABIT_CHIPS_${this.state.loaded}`}
                             />
                         </Layout.ItemsBox>

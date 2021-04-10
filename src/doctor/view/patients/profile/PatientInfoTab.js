@@ -81,28 +81,38 @@ const InfoSection = (props) => {
     const [collapsed, setCollapsed] = useState(true);
     return (
         <ListContainer index={props.index}>
-            <List.Section>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        paddingHorizontal: 10,
-                        paddingVertical: 5,
-                    }}
-                >
-                    <List.Subheader style={{}} key={`LIST_HEADER`}>{props.sectionTitle}</List.Subheader>
-                    <IconButton
-                        icon={collapsed ? "chevron-double-down" : "chevron-double-up"}
-                        color={theme.colors.placeholder}
-                        size={22}
-                        onPress={() => setCollapsed(!collapsed)}
-                    />
-                </View>
-                <Collapsible collapsed={collapsed}>
-                    {props.children}
-                </Collapsible>
-            </List.Section>
+            <TouchableRipple
+                style={{
+                }}
+                rippleColor="rgba(0, 0, 0, .1)"
+                delayPressIn={ 0 }
+
+                onPress={() => setCollapsed(!collapsed)}
+            >
+                <List.Section>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                paddingHorizontal: 10,
+                                paddingVertical: 5,
+
+                            }}
+                        >
+                            <List.Subheader style={{fontSize: 16,}} key={`LIST_HEADER`}>{props.sectionTitle}</List.Subheader>
+                            <IconButton
+                                icon={collapsed ? "chevron-double-down" : "chevron-double-up"}
+                                color={theme.colors.placeholder}
+                                size={28}
+                            />
+                        </View>
+                    <Collapsible collapsed={collapsed}>
+                        {props.children}
+                    </Collapsible>
+                </List.Section>
+            </TouchableRipple>
+
         </ListContainer>
     )
 

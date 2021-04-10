@@ -56,7 +56,7 @@ export class BleedingTypesStage extends React.Component {
                             <CheckboxGroup
                                 items={bleedingItems}
                                 onChange={(id, value) => {this.modifyBleedingTypeList(id, value)}}
-                                disableAll={this.props.readonly}
+                                disableAll={this.props.route.params.readonly}
                                 key={`BLEEDING_TYPE_CHIPS_${this.state.loaded}`}
                             />
                         </Layout.ItemsBox>

@@ -69,7 +69,7 @@ export class ElectrocardiographyStage extends React.Component {
                             <RadioChipBox
                                 items={ecgItems}
                                 onChange={(id, value) => {this.changeECGChipBoxValue(id, value)}}
-                                disableAll={this.props.readonly}
+                                disableAll={this.props.route.params.readonly}
                                 key={`ECG_CHIPS${this.state.loaded}`}
                             />
                         </Layout.ItemsBox>
@@ -85,7 +85,7 @@ export class ElectrocardiographyStage extends React.Component {
                             <RadioChipBox
                                 items={avrBlockItems}
                                 onChange={(id, value) => {this.changeAvrBlockChipBoxValue(id, value)}}
-                                disableAll={this.props.readonly}
+                                disableAll={this.props.route.params.readonly}
                                 key={`AVR_BLOCK_CHIPS${this.state.loaded}`}
                             />
                         </Layout.ItemsBox>

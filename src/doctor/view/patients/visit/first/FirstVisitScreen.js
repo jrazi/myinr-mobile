@@ -97,7 +97,7 @@ class FirstVisitScreen extends React.Component {
                         reverse
                     >
                         <View style={{flex: 1, alignItems: 'flex-end'}}>
-                            <View style={{width: '50%', }}>
+                            <View style={{width: '50%',}}>
                                 <StageProgressBar currentStage={this.state.currentStage}/>
                             </View>
                         </View>
@@ -137,7 +137,7 @@ const StageProgressBar = (props) => {
                     marginHorizontal: 3,
                     opacity: props.currentStage == i ? 1.0 : 0.3,
                 }}
-                size={16}
+                size={14}
                 name={"circle"}
                 color={props.currentStage == i ? theme.colors.primary : theme.colors.placeholder}
                 key={i}
