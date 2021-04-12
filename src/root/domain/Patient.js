@@ -26,6 +26,12 @@ export default class Patient {
         return conditionsAsString.substring(1);
     }
 
-    static isNewPatient = patient => !patient.firstVisitStatus.started ||  !(patient.firstVisitStatus.flags || {}).isEnded;
+    static isNewPatient = patient => {
+        return !patient.firstVisitStatus.started;
+    }
+
+    static isRegularPatient = patient => {
+        return patient.firstVisitStatus.started;
+    }
 
 }

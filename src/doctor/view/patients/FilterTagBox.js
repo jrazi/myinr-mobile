@@ -8,9 +8,11 @@ import {ScrollView} from "react-native";
 export class FilterTagBox extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
-    }
+        this.state = {
 
+        }
+    }
+    
     render() {
         const chipRows = [];
         this.props.filters.forEach((filterRow, index) => {
@@ -40,6 +42,7 @@ const ChipRow = (props) => {
     return (
         <ScrollView
             horizontal={true}
+            showsHorizontalScrollIndicator={false}
             style={{
                 width: '100%',
             }}

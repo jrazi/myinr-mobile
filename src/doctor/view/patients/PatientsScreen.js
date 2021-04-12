@@ -16,7 +16,7 @@ import {
     firstNonEmpty,
     hasValue,
     jalaliTimePastInFarsi, noop,
-    normalizeDictForDisplay, removeWhiteSpace
+    normalizeDictForDisplay, removeWhiteSpace, sleep
 } from "../../../root/domain/util/Util";
 import {
     DefaultMaterialIcon,
@@ -65,7 +65,8 @@ class PatientsScreen extends React.Component {
     }
 
     refresh = () => {
-        this.setState({loading: true}, () => {
+        this.setState({loading: true}, async () => {
+            await sleep(0.3);
             doctorDao.withRefresh()
                 .getPatientsList()
                 .then(patients => {
@@ -134,7 +135,7 @@ class PatientsScreen extends React.Component {
         const medicalConditionFilterEnabled = filters.VISITED && enabledMedicalConditionFilters.length > 0;
 
         let filteredList = patients
-            .filter(p => !visitFilterEnabled || (filters.VISITED && !Patient.isNewPatient(p)) || (filters.NOT_VISITED && Patient.isNewPatient(p)))
+            .filter(p => !visitFilterEnabled || (filters.VISITED && Patient.isRegularPatient(p)) || (filters.NOT_VISITED && Patient.isNewPatient(p)))
             .filter(p => !medicalConditionFilterEnabled || Patient.hasOneOfTheseMedicalConditions(p, enabledMedicalConditionFilters.map(id => (reasonsForWarfarin[id] || {name: null}).name)));
 
         return filteredList;

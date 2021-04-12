@@ -1,5 +1,5 @@
 import {getReasonsForWarfarin} from "../../../root/data/dao/StaticDomainNameTable";
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {FilterTagBox} from "./FilterTagBox";
 
 const reasonsForWarfarin = getReasonsForWarfarin();
@@ -29,7 +29,7 @@ export const PatientsListFilterBox = (props) => {
     ];
 
     const [rowsVisibility, setRowsVisibility] = useState([true, false]);
-
+    const [counter, setCounter] = useState(0);
 
     const searchCriteria = useRef({
         VISITED: false,
@@ -52,9 +52,13 @@ export const PatientsListFilterBox = (props) => {
             searchCriteria.current.NOT_VISITED = true;
         }
         setRowsVisibility([true, searchCriteria.current.VISITED])
-
-        props.onNewQuery(searchCriteria.current);
+        setCounter(prev => prev + 1)
     }
+
+    useEffect(() => {
+        if (counter == 0) return;
+        props.onNewQuery(searchCriteria.current);
+    }, [counter])
 
     return (
         <FilterTagBox filters={filterRows} onChange={onChange} rowsVisibility={rowsVisibility}/>
