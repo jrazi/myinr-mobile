@@ -13,6 +13,7 @@ import {getDisplayableFarsiValue, getDisplayableValue} from "../../../../root/do
 import {getReasonsForWarfarin} from "../../../../root/data/dao/StaticDomainNameTable";
 import Patient from "../../../../root/domain/Patient";
 import Collapsible from "react-native-collapsible";
+import {debugBorderRed} from "../../../../root/view/styles/borders";
 
 class PatientInfoTab extends React.Component {
     constructor(props) {
@@ -80,24 +81,30 @@ const InfoSection = (props) => {
 
     const [collapsed, setCollapsed] = useState(true);
     return (
-        <ListContainer index={props.index}>
-            <TouchableRipple
-                style={{
-                }}
-                rippleColor="rgba(0, 0, 0, .1)"
-                delayPressIn={ 0 }
+        <ListContainer index={props.index} >
+                <List.Section
+                    style={{
+                        paddingHorizontal: 0,
+                        paddingVertical: 0,
+                        marginHorizontal: 0,
+                        marginVertical: 0,
+                    }}
+                >
+                    <TouchableRipple
+                        style={{
+                        }}
+                        rippleColor="rgba(0, 0, 0, .1)"
+                        delayPressIn={ 0 }
 
-                onPress={() => setCollapsed(!collapsed)}
-            >
-                <List.Section>
-                        <View
+                        onPress={() => setCollapsed(!collapsed)}
+                    >
+                    <View
                             style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
-                                paddingHorizontal: 10,
-                                paddingVertical: 5,
-
+                                paddingHorizontal: 15,
+                                paddingVertical: 15,
                             }}
                         >
                             <List.Subheader style={{fontSize: 16,}} key={`LIST_HEADER`}>{props.sectionTitle}</List.Subheader>
@@ -107,12 +114,11 @@ const InfoSection = (props) => {
                                 size={28}
                             />
                         </View>
+                    </TouchableRipple>
                     <Collapsible collapsed={collapsed}>
                         {props.children}
                     </Collapsible>
                 </List.Section>
-            </TouchableRipple>
-
         </ListContainer>
     )
 
@@ -149,7 +155,7 @@ const PersonalInfoCard = (props) => {
             },
             {
                 id: 'LOCATION',
-                name: 'مکان زندگی',
+                name: 'محل زندگی',
                 value: props.patientInfo.address,
             },
         ]}
