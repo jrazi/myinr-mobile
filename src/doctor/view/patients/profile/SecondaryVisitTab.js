@@ -25,8 +25,14 @@ export class SecondaryVisitTab extends React.Component {
         }
     }
 
+    static contextType = PatientProfileContext;
+
     componentDidMount() {
-        this.loadVisits();
+        this.setState({
+            visits: this.context.patient.visits || []
+        }, () => {
+            this.loadVisits();
+        })
     }
 
     loadVisits =  () => {
@@ -75,7 +81,7 @@ export class SecondaryVisitTab extends React.Component {
                 userId: this.props.route.params.userId,
                 patientName: '',
                 readonly: false,
-                visitInfo: FollowupVisit.createNew(),
+                visitInfo: FollowupVisit.createNew(this.context.patient.medicationHistory),
                 appointmentId: appointment.id,
             },
         );

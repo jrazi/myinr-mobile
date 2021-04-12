@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {StyleSheet, Text, View} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Button, Card, List, Surface, TouchableRipple, useTheme, withTheme, IconButton} from "react-native-paper";
@@ -201,10 +201,14 @@ const MedicalHistoryCard = (props) => {
 }
 
 const VisitsInfoCard = (props) => {
+    const context = useContext(PatientProfileContext);
+
     const firstVisitStatus = !props.patientInfo.firstVisitStatus.started ? 'شروع نشده'
             : !props.patientInfo.firstVisitStatus.flags.isEnded ? 'در انتظار تایید'
             : 'اتمام یافته';
 
+    const visitCount = context.patient.visitStatus.visitCount;
+    const lastVisitDate = visitCount == 0 ? 'ویزیت نشده' : context.patient.visitStatus.lastVisitDate.jalali.asString;
     return <InfoCard
         patientInfo={props.patientInfo}
         items={[
@@ -213,16 +217,16 @@ const VisitsInfoCard = (props) => {
                 name: 'وضعیت ویزیت اول',
                 value: firstVisitStatus,
             },
-            // {
-            //     id: 'VISIT_COUNT',
-            //     name: 'تعداد ویزیت‌ها',
-            //     value: '',
-            // },
-            // {
-            //     id: 'LATEST_VISIT',
-            //     name: 'آخرین ویزیت',
-            //     value: '',
-            // },
+            {
+                id: 'VISIT_COUNT',
+                name: 'تعداد ویزیت‌ها',
+                value: visitCount,
+            },
+            {
+                id: 'LATEST_VISIT',
+                name: 'آخرین ویزیت',
+                value: lastVisitDate,
+            },
             // {
             //     id: 'NEXT_VISIT_DATE',
             //     name: 'تاریخ ویزیت بعدی',

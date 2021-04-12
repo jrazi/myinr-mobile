@@ -20,8 +20,8 @@ class DoctorDao {
         return patientsList;
     }
 
-    getPatientInfo = async (patientUserId) => {
-        const patient = await serverGateway.fetchPatientData(patientUserId);
+    getPatientInfo = async (patientUserId, {includeMedicationHistory=false, includeVisits=false}) => {
+        const patient = await serverGateway.fetchPatientData(patientUserId, {includeMedicationHistory, includeVisits});
         return patient;
     }
 

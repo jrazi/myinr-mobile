@@ -31,8 +31,10 @@ class WebServiceGateway {
             .then(data => data.patients);
     }
 
-    fetchPatientData(patientUserId) {
-        let url = `${API_PATH}/doctor/patient/${patientUserId}`;
+    fetchPatientData(patientUserId, {includeMedicationHistory=false, includeVisits=false}) {
+        let url = `${API_PATH}/doctor/patient/${patientUserId}?`;
+        let params = {includeMedicationHistory: includeMedicationHistory, includeVisits: includeVisits};
+        url += new URLSearchParams(params).toString();
 
         return this.apiService.fetchFromProtectedEndpoint(url, {timeout: DEFAULT_TIMEOUT*2})
             .then(data => data.patient);

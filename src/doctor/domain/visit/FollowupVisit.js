@@ -3,7 +3,7 @@ import {firstNonEmpty, getFormFormattedJalaliDate, hasValue, jalaliYMDToGeorgian
 export class FollowupVisit {
 
 
-    static createNew() {
+    static createNew(medicationHistory=[]) {
 
         function sampleDate() {
             return {
@@ -52,7 +52,7 @@ export class FollowupVisit {
             procedurePreparing: "",
             recommendedDaysWithoutWarfarin: "",
             reportComment: "",
-            medicationHistory: [],
+            medicationHistory: medicationHistory || [],
             recommendedDosage: FollowupVisit.createRecommendedDosageForNextWeek(),
         }
 

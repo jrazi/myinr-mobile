@@ -10,6 +10,7 @@ import {SecondaryVisitTab} from "./SecondaryVisitTab";
 import {LoadingScreen} from "../../../../root/view/loading/Loading";
 import {PatientProfileContext} from "./ContextProvider";
 import PatientInfoTab from "./PatientInfoTab";
+import {doctorVisitDao} from "../../../data/dao/DoctorVisitDao";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -20,6 +21,7 @@ class PatientProfileScreen extends React.Component {
             patient: {},
             loaded: false,
             firstVisit: {},
+            visits: [],
         }
         this.patientInfoLoaded = false;
         this.visitInfoLoaded = false;
@@ -40,8 +42,8 @@ class PatientProfileScreen extends React.Component {
     refresh = () => {
         this.patientInfoLoaded = false;
         this.visitInfoLoaded = false;
-        this.setState({loaded: false}, () => {
-            doctorDao.getPatientInfo(this.props.route.params.userId)
+        this.setState({loaded: false}, async () => {
+            doctorDao.getPatientInfo(this.props.route.params.userId, {includeVisits: true, includeMedicationHistory: true})
                 .then(patient => {
                     this.setState({patient: patient});
                     this.patientInfoLoaded = true;
@@ -80,7 +82,7 @@ class PatientProfileScreen extends React.Component {
         if (!this.state.loaded) return <LoadingScreen loaded={this.state.loaded}/>;
         return (
             <PatientProfileContext.Provider
-                value={{patient: this.state.patient, firstVisit: this.state.firstVisit, endFirstVisit: this.endFirstVisit,  visits: []}}
+                value={{patient: this.state.patient, firstVisit: this.state.firstVisit, endFirstVisit: this.endFirstVisit}}
             >
                 <ScreenLayout>
                     <ScreenHeader

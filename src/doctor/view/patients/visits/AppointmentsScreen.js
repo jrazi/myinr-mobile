@@ -53,7 +53,7 @@ export default class AppointmentsScreen extends React.Component {
                 userId: appointment.patientUserId,
                 patientName: appointment.patient.fullName,
                 readonly: false,
-                visitInfo: FollowupVisit.createNew(),
+                visitInfo: FollowupVisit.createNew(appointment.patient.medicationHistory),
                 appointmentId: appointment.id,
             },
         );
