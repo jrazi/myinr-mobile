@@ -2,55 +2,50 @@ import {e2p, hasValue} from "./Util";
 import * as jd from 'jalali-date';
 let moment = require('moment');
 require('moment-precise-range-plugin');
+require('moment-timezone');
 
 export function isDateWithinToday(date) {
     if (!hasValue(date)) return false;
 
-    const now = new Date();
-    const toCompareDate = new Date(date);
-
-    now.setUTCHours(0, 0, 0, 0);
-    toCompareDate.setUTCHours(0, 0, 0, 0);
-
-    return (now >= toCompareDate) && (now <= toCompareDate);
+    const today = moment.tz('Asia/Tehran').startOf('day').utc();
+    const toCompareDate = moment(date).tz('Asia/Tehran').startOf('day').utc();
+    return moment(today).isSame(toCompareDate);
 }
 
 export function isDateWithinThisWeek(date) {
     if (!hasValue(date)) return false;
 
-    const now = new Date();
-    const toCompareDate = new Date(date);
-
-    now.setUTCHours(0, 0, 0, 0);
-    toCompareDate.setUTCHours(0, 0, 0, 0);
+    const now = moment.tz('Asia/Tehran').startOf('day').utc().unix();
+    const toCompareDate = moment(date).tz('Asia/Tehran').startOf('day').utc().unix();
 
     const diff = toCompareDate - now;
-    if (diff < 0 || diff > 7*24*3600*1000) {
+    if (diff < 0 || diff > 7*24*3600) {
         return false;
     }
 
-    const nowJDate = new jd.default(now);
-    const toCompareJDate = new jd.default(toCompareDate);
+    const nowJDate = new jd.default(new Date(now*1000));
+    const toCompareJDate = new jd.default(new Date(toCompareDate*1000));
 
-    return nowJDate.getDay() <= toCompareJDate.getDay();
+    const nowDayOfWeek = (nowJDate.getDay() + 1) % 7;
+    const toCompareDayOfWeek = (toCompareJDate.getDay() + 1) % 7;
+
+    return nowDayOfWeek <= toCompareDayOfWeek;
 }
 
 export function isDateWithinThisMonth(date) {
     if (!hasValue(date)) return false;
 
-    const now = new Date();
-    const toCompareDate = new Date(date);
+    const now = moment.tz('Asia/Tehran').startOf('day').utc().unix();
+    const toCompareDate = moment(date).tz('Asia/Tehran').startOf('day').utc().unix();
 
-    now.setUTCHours(0, 0, 0, 0);
-    toCompareDate.setUTCHours(0, 0, 0, 0);
 
     const diff = toCompareDate - now;
-    if (diff < 0 || diff > 31*24*3600*1000) {
+    if (diff < 0 || diff > 31*24*3600) {
         return false;
     }
 
-    const nowJDate = new jd.default(now);
-    const toCompareJDate = new jd.default(toCompareDate);
+    const nowJDate = new jd.default(new Date(now*1000));
+    const toCompareJDate = new jd.default(new Date(toCompareDate*1000));
 
     return nowJDate.getMonth() == toCompareJDate.getMonth();
 }

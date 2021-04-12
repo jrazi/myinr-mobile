@@ -17,10 +17,18 @@ class AppointmentListStore {
     }
 
     changeAppointments(appointments) {
+        this.reset();
         this.appointments = appointments || [];
         this.todayAppointments = this.filterToday();
         this.thisWeekAppointments = this.filterThisWeek();
         this.thisMonthAppointments = this.filterThisMonth();
+    }
+
+    reset() {
+        this.appointments = [];
+        this.todayAppointments = null;
+        this.thisWeekAppointments = null;
+        this.thisMonthAppointments = null;
     }
 
     filterByType(type) {
