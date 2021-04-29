@@ -2,7 +2,7 @@ import {Button, Card, Surface, useTheme} from "react-native-paper";
 import React from "react";
 import {StyleSheet, View} from "react-native";
 import {IntraSectionInvisibleDivider} from "../../patients/visit/first/forms/Layout";
-import {e2p, getFormattedJalaliDate} from "../../../../root/domain/util/Util";
+import {e2p, firstNonEmpty, getFormattedJalaliDate} from "../../../../root/domain/util/Util";
 import {InfoItem, Row} from "../../common/cards/DefaultCard";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -50,18 +50,7 @@ export const IncomingMessageCard = (props) => {
                             paddingHorizontal: 20,
                         }}
                     >
-                        <Button
-                            color={theme.colors.actionColors.secondary}
-                            compact
-                            mode="contained"
-                            onPress={() => {}}
-                            labelStyle={{fontSize: 13}}
-                            contentStyle={{
-                                // width: 70,
-                            }}
-                        >
-                            {'تله‌ویزیت'}
-                        </Button>
+                        <MessageCardButton isNew={firstNonEmpty(props.isNew, true)}/>
                     </View>
 
                 </View>
@@ -112,6 +101,43 @@ export const MessageInfoRows = (props) => {
         </Row>,
     ]);
 }
+
+export const MessageCardButton = (props) => {
+    const theme = useTheme();
+
+    if (props.isNew) {
+        return (
+            <Button
+                color={theme.colors.actionColors.secondary}
+                compact
+                mode="contained"
+                onPress={() => {}}
+                labelStyle={{fontSize: 13}}
+                contentStyle={{
+                    // width: 70,
+                }}
+            >
+                {'تله‌ویزیت'}
+            </Button>
+        )
+    }
+    else return (
+        <Button
+            color={theme.colors.actionColors.primary}
+            compact
+            mode="contained"
+            onPress={() => {}}
+            labelStyle={{fontSize: 13}}
+            contentStyle={{
+                // width: 70,
+            }}
+        >
+            {'مشاهده'}
+        </Button>
+    )
+}
+
+
 export const styles = StyleSheet.create({
     container: {
         flex: 1,

@@ -66,7 +66,7 @@ const ControlHeader = (props) => {
 }
 
 const MessageList = (props) => {
-    const appointmentItems = props.messages.map((message, index) => {
+    const messageItems = props.messages.map((message, index) => {
         return (
             <IncomingMessageCard
                 key={`IncomingMessageCard_${message.id}`}
@@ -82,7 +82,7 @@ const MessageList = (props) => {
             onRefresh={props.onRefresh}
         >
             {
-                appointmentItems
+                messageItems
             }
         </ItemListContainer>
     )

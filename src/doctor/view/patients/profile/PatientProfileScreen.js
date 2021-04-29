@@ -11,6 +11,7 @@ import {LoadingScreen} from "../../../../root/view/loading/Loading";
 import {PatientProfileContext} from "./ContextProvider";
 import PatientInfoTab from "./PatientInfoTab";
 import {doctorVisitDao} from "../../../data/dao/DoctorVisitDao";
+import {PatientTeleVisitTab} from "./PatientTeleVisitTab";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -143,6 +144,16 @@ class PatientProfileScreen extends React.Component {
                             component={SecondaryVisitTab}
                             options={{
                                 tabBarLabel: 'ویزیت‌ها',
+                            }}
+                            initialParams={{
+                                userId: this.props.route.params.userId,
+                            }}
+                        />
+                        <Tab.Screen
+                            name="PatientTeleVisitTab"
+                            component={PatientTeleVisitTab}
+                            options={{
+                                tabBarLabel: 'تله‌ویزیت',
                             }}
                             initialParams={{
                                 userId: this.props.route.params.userId,

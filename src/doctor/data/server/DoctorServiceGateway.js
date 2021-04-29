@@ -121,13 +121,13 @@ class DoctorWebServiceGateway {
 
     }
 
-    getIncomingMessages = ({onlyNew=false}={}) => {
+    getIncomingMessages = ({onlyNew=false, groupByNew=false, patientUserId=null}={}) => {
         let url = `${API_PATH}/message/incoming?`;
-        let params = {onlyNew: onlyNew};
+        let params = {onlyNew: onlyNew, patientUserId: patientUserId, groupByNew: groupByNew};
         url += new URLSearchParams(params).toString();
 
         return this.apiService.fetchFromProtectedEndpoint(url, {
-            timeout: DEFAULT_TIMEOUT,
+            timeout: DEFAULT_TIMEOUT*2,
         })
             .then(data => data.messages);
 

@@ -6,6 +6,10 @@ export class DoctorMessageDao {
     }
 
 
+    getIncomingMessagesFromPatient = (patientUserId) => {
+        return doctorService.getIncomingMessages({groupByNew: true, patientUserId: patientUserId});
+    }
+
     getIncomingMessages = ({onlyNew=false}={}) => {
         return doctorService.getIncomingMessages({onlyNew: onlyNew})
             .then(messages => messages);
