@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react";
-import {FilterTagBox} from "../../FilterTagBox";
+import {FilterTagBox} from "../../patients/FilterTagBox";
 
 
 export const AppointmentListFilter = (props) => {

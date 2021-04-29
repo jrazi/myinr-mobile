@@ -111,6 +111,39 @@ class DoctorWebServiceGateway {
 
     }
 
+    getAllAttendableAppointments = () => {
+        let url = `${API_PATH}/appointment`;
+
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            timeout: DEFAULT_TIMEOUT * 2,
+        })
+            .then(data => data.appointments);
+
+    }
+
+    getIncomingMessages = ({onlyNew=false}={}) => {
+        let url = `${API_PATH}/message/incoming?`;
+        let params = {onlyNew: onlyNew};
+        url += new URLSearchParams(params).toString();
+
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            timeout: DEFAULT_TIMEOUT,
+        })
+            .then(data => data.messages);
+
+    }
+
+    getOutgoingMessages = () => {
+        let url = `${API_PATH}/message/outgoing`;
+
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            timeout: DEFAULT_TIMEOUT,
+        })
+            .then(data => data.messages);
+
+    }
+
+
 }
 
 export const doctorService = new DoctorWebServiceGateway();

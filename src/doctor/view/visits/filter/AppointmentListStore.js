@@ -1,5 +1,5 @@
-import {hasValue} from "../../../../../root/domain/util/Util";
-import {isDateWithinThisMonth, isDateWithinThisWeek, isDateWithinToday} from "../../../../../root/domain/util/DateUtil";
+import {hasValue} from "../../../../root/domain/util/Util";
+import {isDateWithinThisMonth, isDateWithinThisWeek, isDateWithinToday} from "../../../../root/domain/util/DateUtil";
 
 export const AppointmentFilterType = {
     'TODAY': 'TODAY',

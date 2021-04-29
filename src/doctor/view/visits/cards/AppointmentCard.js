@@ -1,8 +1,8 @@
 import {Button, Card, Surface, useTheme} from "react-native-paper";
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import {IntraSectionInvisibleDivider} from "../../visit/first/forms/Layout";
-import {AppointmentInfoRows} from "../../../common/cards/Appointment";
+import {IntraSectionInvisibleDivider} from "../../patients/visit/first/forms/Layout";
+import {AppointmentInfoRows} from "../../common/cards/Appointment";
 
 export const AppointmentCard = (props) => {
     const theme = useTheme();

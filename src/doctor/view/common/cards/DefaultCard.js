@@ -1,8 +1,11 @@
 import {StyleSheet, View} from "react-native";
 import {Text} from "react-native-paper";
 import React from "react";
+import {ConditionalRender} from "../../patients/visit/first/forms/Layout";
+import {hasValue} from "../../../../root/domain/util/Util";
 
 export const InfoItem = (props) => {
+    const hasIcon = hasValue(props.customIcon);
     return (
         <View
             style={{
@@ -13,17 +16,17 @@ export const InfoItem = (props) => {
         >
             <View
                 style={{
-                    paddingHorizontal: 4,
+                    paddingHorizontal: hasIcon ? 4 : 0,
                 }}
             >
                 {props.customIcon}
             </View>
             <View
                 style={{
-                    paddingHorizontal: 4,
+                    paddingHorizontal: hasIcon ? 4 : 0,
                 }}
             >
-                <Text>{props.title}</Text>
+                <Text {...props.textProps}>{props.title}</Text>
             </View>
         </View>
     )

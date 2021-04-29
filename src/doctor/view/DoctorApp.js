@@ -1,13 +1,14 @@
 import React from 'react';
 import {BottomNavigation, useTheme, withTheme} from "react-native-paper";
 import HomeScreen from "./HomeScreen";
-import AppointmentsScreen from "./patients/visits/AppointmentsScreen";
+import AppointmentsScreen from "./visits/AppointmentsScreen";
 import ProfileScreen from "./ProfileScreen";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {rootDao} from "../../root/data/dao/RootDao";
 import {UserRole} from "../../root/domain/Role";
 import PatientsScreen from "./patients/PatientsScreen";
+import TeleVisitScreen from "./televisit/TeleVisitScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -60,6 +61,16 @@ class DoctorApp extends React.Component {
                         tabBarLabel: 'ویزیت‌ها',
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="clock-outline" color={color} size={26} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="TeleVisitScreen"
+                    component={TeleVisitScreen}
+                    options={{
+                        tabBarLabel: 'تله‌ویزیت',
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons name="message-text-outline" color={color} size={26} />
                         ),
                     }}
                 />
