@@ -20,7 +20,9 @@ export class DoctorMessageDao {
             .then(messages => messages);
     }
 
-
+    sendMessageToPatient = (patientUserId, message) => {
+        return null;
+    }
 }
 
 export const doctorMessageDao = new DoctorMessageDao();

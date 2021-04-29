@@ -32,6 +32,16 @@ export default class TeleVisitScreen extends React.Component {
                 messagesToDisplay: incomingMessages,
                 loadingMessages: false,
             })
+            // this.props.navigation.navigate(
+            //     'TeleVisitSessionScreen',
+            //     {
+            //         userId: null,
+            //         patientMessage: {},
+            //         physicianMessage: {},
+            //         readonly: false,
+            //     },
+            // );
+
         });
     }
 
@@ -44,6 +54,7 @@ export default class TeleVisitScreen extends React.Component {
                     messages={this.state.messagesToDisplay}
                     refreshing={this.state.loadingMessages}
                     onRefresh={this.loadMessages}
+                    navigation={this.props.navigation}
                 />
             </ScreenLayout>
         );
@@ -72,6 +83,7 @@ const MessageList = (props) => {
                 key={`IncomingMessageCard_${message.id}`}
                 message={message}
                 index={index}
+                navigation={props.navigation}
             />
         )
     })

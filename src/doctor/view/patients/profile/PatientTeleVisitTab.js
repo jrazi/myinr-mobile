@@ -2,11 +2,8 @@ import React from "react";
 import {ScrollView, StyleSheet, View} from "react-native";
 
 import {PatientProfileContext} from "./ContextProvider";
-import {doctorVisitDao} from "../../../data/dao/DoctorVisitDao";
-import {FollowupVisit} from "../../../domain/visit/FollowupVisit";
 import {ScreenLayout} from "../../../../root/view/screen/Layout";
 import {doctorMessageDao} from "../../../data/dao/DoctorMessageDao";
-import {AppointmentCard} from "./cards/AppointmentCard";
 import {List} from "react-native-paper";
 import {ConditionalCollapsibleRender} from "../visit/first/forms/Layout";
 import {EmptyList} from "../../../../root/view/list/EmptyListMessage";
@@ -55,6 +52,7 @@ export class PatientTeleVisitTab extends React.Component {
                                 previousMessages={this.state.messagesFromPatient.previous}
                                 refreshing={this.state.loadingMessages}
                                 onRefresh={this.loadMessages}
+                                navigation={this.props.navigation}
                             />
                         </ScreenLayout>
                     )}}
@@ -71,6 +69,7 @@ const MessageList = (props) => {
                 message={message}
                 index={index}
                 isNew={true}
+                navigation={props.navigation}
             />
         )
     })
@@ -82,6 +81,7 @@ const MessageList = (props) => {
                 message={message}
                 index={index}
                 isNew={false}
+                navigation={props.navigation}
             />
         )
     });

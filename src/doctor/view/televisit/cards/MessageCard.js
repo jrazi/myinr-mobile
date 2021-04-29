@@ -50,7 +50,7 @@ export const IncomingMessageCard = (props) => {
                             paddingHorizontal: 20,
                         }}
                     >
-                        <MessageCardButton isNew={firstNonEmpty(props.isNew, true)}/>
+                        <MessageCardButton isNew={firstNonEmpty(props.isNew, true)} navigation={props.navigation}/>
                     </View>
 
                 </View>
@@ -105,13 +105,25 @@ export const MessageInfoRows = (props) => {
 export const MessageCardButton = (props) => {
     const theme = useTheme();
 
+    const navigateToTeleVisit = () => {
+        props.navigation.navigate(
+            'TeleVisitSessionScreen',
+            {
+                userId: null,
+                patientMessage: {},
+                physicianMessage: {},
+                readonly: props.isNew === false,
+            },
+        );
+    }
+
     if (props.isNew) {
         return (
             <Button
                 color={theme.colors.actionColors.secondary}
                 compact
                 mode="contained"
-                onPress={() => {}}
+                onPress={() => navigateToTeleVisit()}
                 labelStyle={{fontSize: 13}}
                 contentStyle={{
                     // width: 70,
@@ -126,7 +138,7 @@ export const MessageCardButton = (props) => {
             color={theme.colors.actionColors.primary}
             compact
             mode="contained"
-            onPress={() => {}}
+            onPress={() => navigateToTeleVisit()}
             labelStyle={{fontSize: 13}}
             contentStyle={{
                 // width: 70,
