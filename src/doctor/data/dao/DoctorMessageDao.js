@@ -6,6 +6,10 @@ export class DoctorMessageDao {
     }
 
 
+    getTeleVisitSessionInfo = (messageId) => {
+        return doctorService.getSingleIncomingMessage(messageId);
+    }
+
     getIncomingMessagesFromPatient = (patientUserId) => {
         return doctorService.getIncomingMessages({groupByNew: true, patientUserId: patientUserId});
     }

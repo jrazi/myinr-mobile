@@ -133,6 +133,17 @@ class DoctorWebServiceGateway {
 
     }
 
+    getSingleIncomingMessage = (messageId) => {
+        let url = `${API_PATH}/message/incoming/${messageId}`;
+
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            timeout: DEFAULT_TIMEOUT*2,
+        })
+            .then(data => data);
+
+    }
+
+
     getOutgoingMessages = () => {
         let url = `${API_PATH}/message/outgoing`;
 

@@ -50,7 +50,7 @@ export const IncomingMessageCard = (props) => {
                             paddingHorizontal: 20,
                         }}
                     >
-                        <MessageCardButton isNew={firstNonEmpty(props.isNew, true)} navigation={props.navigation}/>
+                        <MessageCardButton isNew={firstNonEmpty(props.isNew, true)} navigation={props.navigation} messageId={props.message.id}/>
                     </View>
 
                 </View>
@@ -110,8 +110,7 @@ export const MessageCardButton = (props) => {
             'TeleVisitSessionScreen',
             {
                 userId: null,
-                patientMessage: {},
-                physicianMessage: {},
+                messageId: props.messageId,
                 readonly: props.isNew === false,
             },
         );

@@ -22,6 +22,14 @@ class TeleVisitSessionStageNavigator extends React.Component {
         }
     }
 
+    teleVisitData() {
+        return {
+            physicianMessage: this.props.physicianMessage,
+            patientMessage: this.props.patientMessage,
+            lastVisit: this.props.lastVisit,
+            lastWarfarinDosage: this.props.lastWarfarinDosage,
+        }
+    }
     stages() {
         return get_stages(this.props.route.params.readonly);
     }
@@ -56,7 +64,7 @@ class TeleVisitSessionStageNavigator extends React.Component {
         this.state.routes[0].title = buttonTitles.next;
         this.state.routes[1].title = buttonTitles.prev;
 
-        this.props.navigation.navigate(this.props.route.name, {screen: `TeleVisit_Stage:${this.props.currentStage}`, patientMessage: this.props.patientMessage, physicianMessage: this.props.physicianMessage});
+        this.props.navigation.navigate(this.props.route.name, {screen: `TeleVisit_Stage:${this.props.currentStage}`, ...this.teleVisitData()});
         this.setState({routes: this.state.routes})
     }
 
@@ -73,7 +81,10 @@ class TeleVisitSessionStageNavigator extends React.Component {
 
         this.props.onNewStage(nextCurrentStage);
 
-        this.props.navigation.navigate(`TeleVisit_Stage:${nextCurrentStage}`, {patientMessage: this.props.patientMessage, physicianMessage: this.props.physicianMessage});
+        this.props.navigation.navigate(
+            `TeleVisit_Stage:${nextCurrentStage}`,
+            this.teleVisitData(),
+        );
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -83,9 +94,10 @@ class TeleVisitSessionStageNavigator extends React.Component {
         const theme = this.props.theme;
         const renderScene = ({ route, jumpTo }) => {
             return <StageNavStack
-                visitInfo={this.props.visitInfo}
                 patientMessage={this.props.patientMessage}
                 physicianMessage={this.props.physicianMessage}
+                lastVisit={this.props.lastVisit}
+                lastWarfarinDosage={this.props.lastWarfarinDosage}
                 readonly={this.props.route.params.readonly}
                 userId={this.props.userId}
                 currentStage={this.props.currentStage}
@@ -129,6 +141,8 @@ const StageNavStack = (props) => {
                             initialParams={{
                                 physicianMessage: props.physicianMessage,
                                 patientMessage: props.patientMessage,
+                                lastVisit: props.lastVisit,
+                                lastWarfarinDosage: props.lastWarfarinDosage,
                                 userId: props.userId,
                                 readonly: props.readonly,
                             }}

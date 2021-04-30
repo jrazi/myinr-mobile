@@ -12,6 +12,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {doctorMessageDao} from "../../../data/dao/DoctorMessageDao";
 import TeleVisitSessionStageNavigator from "./TeleVisitSessionStageNavigator";
 import {get_stages} from "./TeleVisitSessionMetadata";
+import {PhysicianMessage} from "../../../domain/visit/PhysicianMessage";
 
 class TeleVisitSessionScreen extends React.Component {
     constructor(props) {
@@ -23,6 +24,10 @@ class TeleVisitSessionScreen extends React.Component {
             cancelVisitDialogOpen: false,
             savingVisitInfo: false,
         }
+        this.physicianMessage = PhysicianMessage.createNew();
+        this.patientMessage = {};
+        this.lastVisit = {};
+        this.lastWarfarinDosage = [];
     }
 
     openCancelVisitDialog = () => {
@@ -32,13 +37,21 @@ class TeleVisitSessionScreen extends React.Component {
         });
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         // await I18nManager.forceRTL(false);
-        this.setState({
-            loaded: true
-        })
+        this.loadTeleVisitInfo();
     }
 
+    loadTeleVisitInfo = () => {
+        this.setState({loaded: false}, async () => {
+            const data = await doctorMessageDao.getTeleVisitSessionInfo(this.props.route.params.messageId);
+            this.patientMessage = data.message;
+            this.lastVisit = data.lastVisit;
+            this.lastWarfarinDosage = data.lastWarfarinDosage;
+            this.setState({loaded: true});
+        })
+
+    }
 
     onNewStage = (stageIndex) => {
         this.setState({currentStage: stageIndex}, () => {
@@ -69,7 +82,7 @@ class TeleVisitSessionScreen extends React.Component {
 
         if (this.props.route.params.readonly) return;
 
-        await doctorMessageDao.sendMessageToPatient(userId, this.props.route.params.physicianMessage);
+        await doctorMessageDao.sendMessageToPatient(userId, this.physicianMessage);
     }
 
     getScreenHeader() {
@@ -124,8 +137,10 @@ class TeleVisitSessionScreen extends React.Component {
                     >
                         <ConditionalRender hidden={!this.state.loaded}>
                             <TeleVisitSessionStageNavigator
-                                physicianMessage={this.props.route.params.physicianMessage}
-                                patientMessage={this.props.route.params.patientMessage}
+                                physicianMessage={this.physicianMessage}
+                                patientMessage={this.patientMessage}
+                                lastVisit={this.lastVisit}
+                                lastWarfarinDosage={this.lastWarfarinDosage}
                                 navigation={this.props.navigation}
                                 route={this.props.route}
                                 userId={this.props.route.params.userId}
