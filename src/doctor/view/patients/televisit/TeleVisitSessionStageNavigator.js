@@ -24,10 +24,9 @@ class TeleVisitSessionStageNavigator extends React.Component {
 
     teleVisitData() {
         return {
+            patientMedicalInfo: this.props.patientMedicalInfo,
+            patientInfo: this.props.patientInfo,
             physicianMessage: this.props.physicianMessage,
-            patientMessage: this.props.patientMessage,
-            lastVisit: this.props.lastVisit,
-            lastWarfarinDosage: this.props.lastWarfarinDosage,
         }
     }
     stages() {
@@ -91,13 +90,11 @@ class TeleVisitSessionStageNavigator extends React.Component {
     }
 
     render() {
+        const teleVisitData = this.teleVisitData();
         const theme = this.props.theme;
         const renderScene = ({ route, jumpTo }) => {
             return <StageNavStack
-                patientMessage={this.props.patientMessage}
-                physicianMessage={this.props.physicianMessage}
-                lastVisit={this.props.lastVisit}
-                lastWarfarinDosage={this.props.lastWarfarinDosage}
+                teleVisitData={teleVisitData}
                 readonly={this.props.route.params.readonly}
                 userId={this.props.userId}
                 currentStage={this.props.currentStage}
@@ -139,10 +136,7 @@ const StageNavStack = (props) => {
                             component={stage}
                             options={{ headerShown: false , headerTitle: props => null }}
                             initialParams={{
-                                physicianMessage: props.physicianMessage,
-                                patientMessage: props.patientMessage,
-                                lastVisit: props.lastVisit,
-                                lastWarfarinDosage: props.lastWarfarinDosage,
+                                ...props.teleVisitData,
                                 userId: props.userId,
                                 readonly: props.readonly,
                             }}

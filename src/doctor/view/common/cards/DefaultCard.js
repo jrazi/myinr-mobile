@@ -3,16 +3,20 @@ import {Text} from "react-native-paper";
 import React from "react";
 import {ConditionalRender} from "../../patients/visit/first/forms/Layout";
 import {hasValue} from "../../../../root/domain/util/Util";
+import {debugBorderRed} from "../../../../root/view/styles/borders";
 
 export const InfoItem = (props) => {
     const hasIcon = hasValue(props.customIcon);
     return (
         <View
-            style={{
+            style={[
+                {
                 flexDirection: 'row',
                 alignItems: 'center',
-                ...props.wrapperStyle
-            }}
+
+                },
+                props.wrapperStyle
+            ]}
         >
             <View
                 style={{
@@ -24,6 +28,8 @@ export const InfoItem = (props) => {
             <View
                 style={{
                     paddingHorizontal: hasIcon ? 4 : 0,
+                    width: 120,
+                    ...debugBorderRed,
                 }}
             >
                 <Text {...props.textProps}>{props.title}</Text>

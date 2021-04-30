@@ -50,7 +50,7 @@ export default class DoctorAppNavigator extends React.Component {
                     name={'TeleVisitSessionScreen'}
                     component={TeleVisitSessionScreen}
                     options={{ headerShown: false , headerTitle: props => null }}
-                    initialParams={{ userId: null, readonly: false, messageId: null, }}
+                    initialParams={{patientUserId: null, readonly: false,  }}
                 />
                 <Stack.Screen
                     name={'SettingsScreen'}

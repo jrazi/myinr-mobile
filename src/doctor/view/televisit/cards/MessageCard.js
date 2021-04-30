@@ -128,7 +128,7 @@ export const MessageCardButton = (props) => {
                     // width: 70,
                 }}
             >
-                {'تله‌ویزیت'}
+                {'جزئیات'}
             </Button>
         )
     }
@@ -143,7 +143,7 @@ export const MessageCardButton = (props) => {
                 // width: 70,
             }}
         >
-            {'مشاهده'}
+            {'جزئیات'}
         </Button>
     )
 }

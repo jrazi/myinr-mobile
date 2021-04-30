@@ -4,13 +4,13 @@ import {ScrollView, StyleSheet, View} from "react-native";
 import {PatientProfileContext} from "./ContextProvider";
 import {ScreenLayout} from "../../../../root/view/screen/Layout";
 import {doctorMessageDao} from "../../../data/dao/DoctorMessageDao";
-import {List} from "react-native-paper";
-import {ConditionalCollapsibleRender} from "../visit/first/forms/Layout";
+import {FAB, List, withTheme} from "react-native-paper";
+import {ConditionalCollapsibleRender, ConditionalRender} from "../visit/first/forms/Layout";
 import {EmptyList} from "../../../../root/view/list/EmptyListMessage";
 import {ItemListContainer} from "../../../../root/view/list/ItemList";
 import {IncomingMessageCard} from "../../televisit/cards/MessageCard";
 
-export class PatientTeleVisitTab extends React.Component {
+export class _PatientTeleVisitTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,7 +41,19 @@ export class PatientTeleVisitTab extends React.Component {
         });
     }
 
+
+     startTeleVisitSession = () => {
+        this.props.navigation.navigate(
+            'TeleVisitSessionScreen',
+            {
+                patientUserId: this.context.patient.userId,
+            },
+        );
+    }
+
     render() {
+        const theme = this.props.theme;
+
         return (
             <PatientProfileContext.Consumer>
                 {(value) => {
@@ -54,12 +66,27 @@ export class PatientTeleVisitTab extends React.Component {
                                 onRefresh={this.loadMessages}
                                 navigation={this.props.navigation}
                             />
+                            <View style={styles.fabContainer}>
+                                <ConditionalRender hidden={false}>
+                                    <View style={styles.fabWrapper}>
+                                        <FAB
+                                            style={[styles.fab, {
+                                                backgroundColor: theme.colors.actionColors.primary,
+                                            }]}
+                                            icon={'send'}
+                                            onPress={this.startTeleVisitSession}
+                                        />
+                                    </View>
+                                </ConditionalRender>
+                            </View>
                         </ScreenLayout>
                     )}}
             </PatientProfileContext.Consumer>
         )
     }
 }
+
+export const PatientTeleVisitTab = withTheme(_PatientTeleVisitTab);
 
 const MessageList = (props) => {
     const newMessageItems = props.newMessages.map((message, index) => {
@@ -125,4 +152,19 @@ const MessageList = (props) => {
         </ItemListContainer>
     )
 }
+
+const styles = StyleSheet.create({
+    fabContainer: {
+        position: 'absolute',
+        margin: 24,
+        left: 0,
+        bottom: 0,
+    },
+    fabWrapper: {
+        paddingTop: 15,
+        alignItems: 'center',
+    },
+    fab: {
+    },
+})
 

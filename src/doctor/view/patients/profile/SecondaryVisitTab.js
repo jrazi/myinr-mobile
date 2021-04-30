@@ -31,7 +31,7 @@ export class SecondaryVisitTab extends React.Component {
         this.setState({
             visits: this.context.patient.visits || []
         }, () => {
-            this.loadVisits();
+            // this.loadVisits();
         })
     }
 

@@ -25,9 +25,8 @@ class TeleVisitSessionScreen extends React.Component {
             savingVisitInfo: false,
         }
         this.physicianMessage = PhysicianMessage.createNew();
-        this.patientMessage = {};
-        this.lastVisit = {};
-        this.lastWarfarinDosage = [];
+        this.patientMedicalInfo = {};
+        this.patientInfo = {};
     }
 
     openCancelVisitDialog = () => {
@@ -44,10 +43,9 @@ class TeleVisitSessionScreen extends React.Component {
 
     loadTeleVisitInfo = () => {
         this.setState({loaded: false}, async () => {
-            const data = await doctorMessageDao.getTeleVisitSessionInfo(this.props.route.params.messageId);
-            this.patientMessage = data.message;
-            this.lastVisit = data.lastVisit;
-            this.lastWarfarinDosage = data.lastWarfarinDosage;
+            this.patientMedicalInfo = await doctorMessageDao.getPatientMedicalInfo(this.props.route.params.patientUserId);
+            this.patientInfo = this.patientMedicalInfo.patientInfo;
+
             this.setState({loaded: true});
         })
 
@@ -137,13 +135,12 @@ class TeleVisitSessionScreen extends React.Component {
                     >
                         <ConditionalRender hidden={!this.state.loaded}>
                             <TeleVisitSessionStageNavigator
+                                patientMedicalInfo={this.patientMedicalInfo}
+                                patientInfo={this.patientInfo}
                                 physicianMessage={this.physicianMessage}
-                                patientMessage={this.patientMessage}
-                                lastVisit={this.lastVisit}
-                                lastWarfarinDosage={this.lastWarfarinDosage}
                                 navigation={this.props.navigation}
                                 route={this.props.route}
-                                userId={this.props.route.params.userId}
+                                userId={this.props.route.params.patientUserId}
                                 onNewStage={this.onNewStage}
                                 currentStage={this.state.currentStage}
                             />

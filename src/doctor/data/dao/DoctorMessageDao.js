@@ -10,6 +10,10 @@ export class DoctorMessageDao {
         return doctorService.getSingleIncomingMessage(messageId);
     }
 
+    getPatientMedicalInfo = (patientUserId) => {
+        return doctorService.getPatientMedicalInfo(patientUserId);
+    }
+
     getIncomingMessagesFromPatient = (patientUserId) => {
         return doctorService.getIncomingMessages({groupByNew: true, patientUserId: patientUserId});
     }

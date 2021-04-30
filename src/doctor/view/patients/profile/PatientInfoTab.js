@@ -125,7 +125,7 @@ const InfoSection = (props) => {
 }
 
 const PersonalInfoCard = (props) => {
-    return <InfoCard
+    return <PatientDetailedInfoCard
         patientInfo={props.patientInfo}
         items={[
             {
@@ -163,7 +163,7 @@ const PersonalInfoCard = (props) => {
 }
 
 const ContactInfoCard = (props) => {
-    return <InfoCard
+    return <PatientDetailedInfoCard
         patientInfo={props.patientInfo}
         items={[
             {
@@ -200,7 +200,7 @@ const MedicalHistoryCard = (props) => {
             showPureValue: true,
         }
     })
-    return <InfoCard
+    return <PatientDetailedInfoCard
         patientInfo={props.patientInfo}
         items={items}
     />
@@ -215,7 +215,7 @@ const VisitsInfoCard = (props) => {
 
     const visitCount = context.patient.visitStatus.visitCount;
     const lastVisitDate = visitCount == 0 ? 'ویزیت نشده' : context.patient.visitStatus.lastVisitDate.jalali.asString;
-    return <InfoCard
+    return <PatientDetailedInfoCard
         patientInfo={props.patientInfo}
         items={[
             {
@@ -241,7 +241,7 @@ const VisitsInfoCard = (props) => {
         ]}
     />
 }
-export const InfoCard = (props) => {
+export const PatientDetailedInfoCard = (props) => {
     return (
         <View
          style={[styles.patientInfoCardContainer]}
@@ -251,7 +251,12 @@ export const InfoCard = (props) => {
             }}>
                 <Card.Content>
                     <View>
-                        <InfoCardDetails items={props.items}/>
+                        <PatientInfoCardDetails
+                            items={props.items} rowProps={props.rowProps}
+                            nonFarsiCard={props.nonFarsiCard} textProps={props.textProps}
+                            columnStyle={props.columnStyle}
+                            textWrapperStyle={props.textWrapperStyle}
+                        />
                     </View>
                 </Card.Content>
                 <IntraSectionInvisibleDivider none borderWidth={0.1} style={{marginHorizontal: 20, marginTop: 10,}}/>
@@ -260,19 +265,21 @@ export const InfoCard = (props) => {
     );
 }
 
-const InfoCardDetails = (props) => {
+const PatientInfoCardDetails = (props) => {
     const theme = useTheme();
 
     const itemNames = props.items.map(item => item.name);
     const itemValues = props.items.map(item =>
         item.showPureValue ? item.value :
-            item.disableDigitConversion ?
-            getDisplayableValue(item.value) :
+            props.nonFarsiCard ? getDisplayableValue(item.value, 'N/A') :
+            item.disableDigitConversion ? getDisplayableValue(item.value) :
             getDisplayableFarsiValue(item.value)
     );
 
-    const TableColumn = ({list}) => (
-        <View>
+    const TableColumn = ({list, reverse}) => (
+        <View
+            style={props.columnStyle}
+        >
             {
                 list.map((item, index) => (
                     <InfoItem
@@ -280,9 +287,12 @@ const InfoCardDetails = (props) => {
                         key={`II_${props.items[index].id}`}
                         wrapperStyle={{
                             flexBasis: '50%',
-                            justifyContent: 'flex-start',
+                            justifyContent: reverse ? 'flex-end' : 'flex-start',
                             paddingVertical: 10,
+                            flexDirection: reverse ? 'row-reverse' : 'row',
+                            ...props.textWrapperStyle
                         }}
+                        textProps={props.textProps}
                     />
                 ))
             }
@@ -290,9 +300,9 @@ const InfoCardDetails = (props) => {
     );
 
     return (
-        <Row>
-            <TableColumn list={itemNames}/>
-            <TableColumn list={itemValues}/>
+        <Row {...props.rowProps}>
+            <TableColumn list={itemNames} reverse={(props.rowProps || {}).reverse}/>
+            <TableColumn list={itemValues} reverse={(props.rowProps || {}).reverse}/>
         </Row>
     )
 }
@@ -301,7 +311,7 @@ const Row = (props) => {
     return (
         <View
             style={{
-                flexDirection: 'row',
+                flexDirection: props.reverse ? 'row-reverse' : 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 paddingVertical: 10,

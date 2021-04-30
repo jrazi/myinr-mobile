@@ -154,6 +154,16 @@ class DoctorWebServiceGateway {
 
     }
 
+    getPatientMedicalInfo = (patientUserId) => {
+        let url = `${API_PATH}/patient/${patientUserId}/medical`;
+
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            timeout: DEFAULT_TIMEOUT*2,
+        })
+            .then(data => data.medicalInfo);
+
+    }
+
 
 }
 
