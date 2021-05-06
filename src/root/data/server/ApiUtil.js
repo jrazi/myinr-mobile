@@ -1,7 +1,7 @@
 import {hasValue} from "../../domain/util/Util";
 
-const REMOTE_SERVER = "http://37.152.185.234:3000";
-const LOCAL_SERVER = "http://192.168.0.102:3000";
+const REMOTE_SERVER = "https://myinr-pilot.com";
+const LOCAL_SERVER = "http://192.168.0.100:3000";
 
 export const SERVER_ADDRESS = __DEV__ ?  LOCAL_SERVER : REMOTE_SERVER;
 export const API_PATH = `${SERVER_ADDRESS}/api/v1`;

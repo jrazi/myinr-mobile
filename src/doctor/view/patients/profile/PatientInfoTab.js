@@ -248,6 +248,7 @@ export const PatientDetailedInfoCard = (props) => {
         >
             <View style={{
                 paddingVertical: 10,
+                ...props.containerStyle,
             }}>
                 <Card.Content>
                     <View>
@@ -287,7 +288,7 @@ const PatientInfoCardDetails = (props) => {
                         key={`II_${props.items[index].id}`}
                         wrapperStyle={{
                             flexBasis: '50%',
-                            justifyContent: reverse ? 'flex-end' : 'flex-start',
+                            justifyContent: reverse ? 'flex-start' : 'flex-start',
                             paddingVertical: 10,
                             flexDirection: reverse ? 'row-reverse' : 'row',
                             ...props.textWrapperStyle
@@ -316,6 +317,7 @@ const Row = (props) => {
                 alignItems: 'center',
                 paddingVertical: 10,
                 paddingHorizontal: 10,
+                ...props.style,
             }}
         >
             {props.children}

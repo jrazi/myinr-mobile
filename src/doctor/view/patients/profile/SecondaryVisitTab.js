@@ -29,7 +29,8 @@ export class SecondaryVisitTab extends React.Component {
 
     componentDidMount() {
         this.setState({
-            visits: this.context.patient.visits || []
+            visits: this.context.patient.visits || [],
+            loadingVisits: false,
         }, () => {
             // this.loadVisits();
         })

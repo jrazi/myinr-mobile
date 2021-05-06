@@ -11,9 +11,8 @@ export const InfoItem = (props) => {
         <View
             style={[
                 {
-                flexDirection: 'row',
-                alignItems: 'center',
-
+                    flexDirection: 'row',
+                    alignItems: 'center',
                 },
                 props.wrapperStyle
             ]}
@@ -28,8 +27,6 @@ export const InfoItem = (props) => {
             <View
                 style={{
                     paddingHorizontal: hasIcon ? 4 : 0,
-                    width: 120,
-                    ...debugBorderRed,
                 }}
             >
                 <Text {...props.textProps}>{props.title}</Text>

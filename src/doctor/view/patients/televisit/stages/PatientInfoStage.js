@@ -31,11 +31,7 @@ export class PatientInfoStage extends React.Component {
             <Layout.VisitScreen
             >
                 <Layout.ScreenTitle title={'Patient Profile Summary'}/>
-                <Layout.FormSection>
-                    <PatientMedicalInfoCard patientMedicalInfo={this.patientMedicalInfo} patientInfo={this.patientInfo}/>
-                    <Layout.InputArea>
-                    </Layout.InputArea>
-                </Layout.FormSection>
+                <PatientMedicalInfoCard patientMedicalInfo={this.patientMedicalInfo} patientInfo={this.patientInfo}/>
                 <IntraSectionInvisibleDivider/>
             </Layout.VisitScreen>
 
@@ -53,14 +49,29 @@ const PatientMedicalInfoCard = (props) => {
 
     let medicalConditionList = Patient.getMedicalConditionsListAsString(props.patientInfo);
 
+    const restOfMedicalConditionItems = props.patientInfo.medicalCondition.slice(1)
+        .map((condition, index) => {
+            return {
+                id: `MEDICAL_CONDITIONS_${index}`,
+                name: '',
+                value: condition.name,
+            }
+        });
+
     return <PatientDetailedInfoCard
         patientInfo={props.patientInfo}
         nonFarsiCard
         rowProps={{
             reverse: true,
+            style: {
+                // paddingLeft: 10,
+            }
+        }}
+        containerStyle={{
+            paddingVertical: 0,
         }}
         textProps={{
-            // numberOfLines: 1,
+            numberOfLines: 1,
             // ellipsizeMode: 'tail',
         }}
         columnStyle={{
@@ -89,11 +100,12 @@ const PatientMedicalInfoCard = (props) => {
                 name: 'Last Visit Date',
                 value: lastVisitDate,
             },
-            {
-                id: 'MEDICAL_CONDITIONS',
-                name: 'Medical Conditions',
-                value: medicalConditionList,
-            },
+            // {
+            //     id: 'MEDICAL_CONDITIONS',
+            //     name: 'Medical Conditions',
+            //     value: medicalConditionList,
+            // },
+            // ...restOfMedicalConditionItems,
             {
                 id: 'INR_TARGET_RANGE',
                 name: 'INR Target Range',
