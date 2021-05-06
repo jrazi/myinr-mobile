@@ -40,6 +40,7 @@
     "react-native-flash-message": "^0.1.23",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-indicators": "^0.17.0",
+    "react-native-input-spinner": "^1.7.10",
     "react-native-paper": "^4.5.0",
     "react-native-reanimated": "~1.13.0",
     "react-native-restart": "0.0.20",

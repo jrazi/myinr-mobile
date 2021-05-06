@@ -2,6 +2,7 @@ import React from 'react';
 
 import {View} from "react-native";
 import {PatientInfoStage} from "./stages/PatientInfoStage";
+import {InstructionStage} from "./stages/InstructionStage";
 
 
 export function get_stages(readonly=false) {
@@ -17,7 +18,7 @@ const patient_message_stages = [
 ]
 
 const physician_message_stages = [
-    (props) => <View {...props}/>,
+    (props) => <InstructionStage {...props}/>,
     (props) => <View {...props}/>,
 ]
 

@@ -317,6 +317,44 @@ const StaticDomainNameTable = {
         name: 'Refer to ER',
         groupId: 10,
     },
+
+    87: {
+        id: 87,
+        name: 'فراموش کردن مصرف دارو در روزهای قبل',
+        groupId: 11,
+    },
+    88: {
+        id: 88,
+        name: 'قطع مصرف دارو',
+        groupId: 11,
+    },
+    89: {
+        id: 89,
+        name: 'افزایش مصرف دارو بیش از روال گذشته',
+        groupId: 12,
+    },
+
+    90: {
+        id: 90,
+        name: 'Refer to ER ASAP',
+        groupId: 13,
+    },
+    91: {
+        id: 91,
+        name: "You'll be contacted today",
+        groupId: 13,
+    },
+    92: {
+        id: 92,
+        name: 'Repeat you INR test in a different lab',
+        groupId: 13,
+    },
+    93: {
+        id: 93,
+        name: 'Keep up the same warfarin dosage',
+        groupId: 13,
+    },
+
 }
 
 export function getReasonsForWarfarin() {
@@ -360,6 +398,18 @@ export function getTreatmentRecommendationOptions() {
 
     Object.values(StaticDomainNameTable)
         .filter(item => item.groupId === 10)
+        .map(item => {return {id: item.id, name: new String(item.name).toString(), groupId: item.groupId}})
+        .sort((a, b) => a.id - b.id)
+        .forEach(item => dict[item.id] = item);
+
+    return dict;
+}
+
+export function getTeleVisitInstructionOptions() {
+    let dict = {};
+
+    Object.values(StaticDomainNameTable)
+        .filter(item => item.groupId === 13)
         .map(item => {return {id: item.id, name: new String(item.name).toString(), groupId: item.groupId}})
         .sort((a, b) => a.id - b.id)
         .forEach(item => dict[item.id] = item);
