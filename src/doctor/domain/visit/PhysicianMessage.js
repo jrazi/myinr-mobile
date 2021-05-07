@@ -46,6 +46,7 @@ export class PhysicianMessage {
             messageTime: sampleTime(),
             physicianInstructions: [],
             nextInrCheckDate: sampleDate(),
+            nextVisitDate: null,
             visitDate: sampleDate(),
             visitFlag: true,
             recommendedDaysWithoutWarfarin: null,

@@ -209,7 +209,7 @@ export const DefaultTextInput = (props) => {
                     backgroundColor: theme.colors.surface,
                     fontSize: 14,
                     paddingHorizontal: 0,
-                    textAlign: 'left',
+                    textAlign: props.alignReverse ? 'right' : 'left',
                     ...props.style
                 }}
                 multiline={props.multiline}
