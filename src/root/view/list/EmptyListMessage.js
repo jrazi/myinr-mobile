@@ -6,7 +6,7 @@ import React from "react";
 export const EmptyList = (props) => {
     return (
         <ConditionalRender hidden={props.hidden}>
-            <View style={{paddingTop: 20, alignItems: 'center'}}>
+            <View style={{paddingTop: 20, alignItems: 'center', ...props.style}}>
                 <Caption style={{paddingVertical: 10,fontSize: 16}}>
                     {props.message}
                 </Caption>
