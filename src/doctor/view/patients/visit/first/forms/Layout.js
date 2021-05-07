@@ -95,7 +95,7 @@ export const InputTitle = (props) => {
             <Text style={[{fontSize: 16, color: theme.colors.primary}, props.titleStyle]}>{props.title}</Text>
             {
                 !hasValue(props.description) || removeWhiteSpace(props.description) == "" ? null :
-                    <Caption style={styles.inputTitleDescription}>{props.description}</Caption>
+                    <Caption style={[styles.inputTitleDescription, props.descriptionStyle]}>{props.description}</Caption>
             }
         </View>
     )

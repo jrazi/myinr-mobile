@@ -17,6 +17,7 @@ import {PhysicianMessage} from "../../../domain/visit/PhysicianMessage";
 import * as Layout from "../visit/first/forms/Layout";
 import {LoadingScreen} from "../../../../root/view/loading/Loading";
 import {doctorMessageDao} from "../../../data/dao/DoctorMessageDao";
+import {getDisplayableValue} from "../../../../root/domain/util/DisplayUtil";
 
 class ReceivedMessageScreen extends React.Component {
     constructor(props) {
@@ -42,7 +43,7 @@ class ReceivedMessageScreen extends React.Component {
         this.props.navigation.navigate(
             'TeleVisitSessionScreen',
             {
-                patientUserId: this.props.route.params.patientInfo.patientUserId,
+                patientUserId: this.props.route.params.message.patientUserId,
             },
         );
     }
@@ -105,6 +106,7 @@ const PatientMessageView = (props) => {
             <PatientInrReport
                 message={props.message}
                 patientInfo={props.patientInfo}
+                lastInrTest={props.message.inr.lastInrTest}
             />
             <IntraSectionInvisibleDivider sm/>
             <LatestDosageReport
@@ -142,19 +144,68 @@ const PatientComment = (props) => {
 }
 
 const PatientInrReport = (props) => {
+    const hasLastInrTest = hasValue(props.lastInrTest.lastInrValue || null);
+
+    const TableRow = ({children}) => (
+        <Row
+            rowReverse={false}
+            justifyBetween
+            style={{
+                paddingVertical: 10,
+                paddingLeft: 15,
+            }}
+        >
+            {children}
+        </Row>
+    );
+    const TableCell = ({text, style}) => (
+        <View
+            style={{
+                width: '40%',
+                justifyContent: 'center',
+                ...style
+            }}
+        >
+            <Text>{text}</Text>
+        </View>
+    );
+
     const NoInrMessage = ({visible}) => (
         <ConditionalRender hidden={!visible}>
+            <IntraSectionInvisibleDivider xs/>
             <View style={{alignItems: 'center'}}>
                 <Text>{'آی‌ان‌آر بیمار در این پیام گزارش نشده‌است.'}</Text>
             </View>
         </ConditionalRender>
     );
 
+    const lastInrTestDate = hasValue(props.lastInrTest.dateOfLastInrTest.timestamp) ? getFormattedJalaliDate(props.lastInrTest.dateOfLastInrTest.timestamp) : null;
+
+    const lastInrTestPlace = props.lastInrTest.hasUsedPortableDevice ? 'Self-Test' : props.lastInrTest.lastInrTestLabInfo;
     return (
         <View>
-            <InputTitle title={'آی‌ان‌آر'} titleStyle={{textAlign: 'left'}}/>
+            <InputTitle
+                title={'گزارش INR'}
+                description={'گزارش بیمار از آخرین تست INR خود'}
+                titleStyle={{textAlign: 'left'}}
+                descriptionStyle={{textAlign: 'left'}}
+            />
             <IntraSectionInvisibleDivider xs/>
-            <NoInrMessage visible={true}/>
+            <NoInrMessage visible={!hasLastInrTest}/>
+            <ConditionalRender hidden={!hasLastInrTest}>
+                <TableRow>
+                    <TableCell text={'مقدار INR'}/>
+                    <TableCell text={getDisplayableValue(props.lastInrTest.lastInrValue)}/>
+                </TableRow>
+                <TableRow>
+                    <TableCell text={'تاریخ تست'}/>
+                    <TableCell text={getDisplayableValue(lastInrTestDate)}/>
+                </TableRow>
+                <TableRow>
+                    <TableCell text={'مکان تست'}/>
+                    <TableCell text={getDisplayableValue(lastInrTestPlace)}/>
+                </TableRow>
+            </ConditionalRender>
         </View>
     )
 }
