@@ -7,6 +7,7 @@ import FirstVisitScreen from "./patients/visit/first/FirstVisitScreen";
 import SettingsScreen from "./SettingsScreen";
 import FollowupVisitScreen from "./patients/visit/followup/FollowupVisitScreen";
 import TeleVisitSessionScreen from "./patients/televisit/TeleVisitSessionScreen";
+import ReceivedMessageScreen from "./patients/message/ReceivedMessageScreen";
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,12 @@ export default class DoctorAppNavigator extends React.Component {
                     component={TeleVisitSessionScreen}
                     options={{ headerShown: false , headerTitle: props => null }}
                     initialParams={{patientUserId: null, readonly: false,  }}
+                />
+                <Stack.Screen
+                    name={'ReceivedMessageScreen'}
+                    component={ReceivedMessageScreen}
+                    options={{ headerShown: false , headerTitle: props => null }}
+                    initialParams={{message: null, patientInfo: null, patientMedicalInfo: null}}
                 />
                 <Stack.Screen
                     name={'SettingsScreen'}

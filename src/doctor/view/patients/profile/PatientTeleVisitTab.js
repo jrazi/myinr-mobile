@@ -41,7 +41,6 @@ export class _PatientTeleVisitTab extends React.Component {
         });
     }
 
-
      startTeleVisitSession = () => {
         this.props.navigation.navigate(
             'TeleVisitSessionScreen',
