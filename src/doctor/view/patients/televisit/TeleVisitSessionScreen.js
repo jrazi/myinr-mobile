@@ -7,12 +7,13 @@ import {Appbar, Button, Dialog, Portal, Subheading, useTheme, withTheme} from "r
 import {LoadingScreen} from "../../../../root/view/loading/Loading";
 import {View} from "react-native";
 import {ConditionalRender} from "../visit/first/forms/Layout";
-import {firstNonEmpty} from "../../../../root/domain/util/Util";
+import {firstNonEmpty, sleep} from "../../../../root/domain/util/Util";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {doctorMessageDao} from "../../../data/dao/DoctorMessageDao";
 import TeleVisitSessionStageNavigator from "./TeleVisitSessionStageNavigator";
 import {get_stages} from "./TeleVisitSessionMetadata";
 import {PhysicianMessage} from "../../../domain/visit/PhysicianMessage";
+import {showMessage} from "react-native-flash-message";
 
 class TeleVisitSessionScreen extends React.Component {
     constructor(props) {
@@ -67,7 +68,7 @@ class TeleVisitSessionScreen extends React.Component {
                     this.setState({savingVisitInfo: false, finishVisitDialogOpen: false}, () => {
                         this.props.navigation.reset({
                             index: 0,
-                            routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.userId}}],
+                            routes: [{name: 'DoctorApp'}, {name: 'PatientProfileScreen', params: {userId: this.props.route.params.patientUserId}}],
                         })
                     });
                 })
@@ -81,6 +82,12 @@ class TeleVisitSessionScreen extends React.Component {
         if (this.props.route.params.readonly) return;
 
         await doctorMessageDao.sendMessageToPatient(userId, this.physicianMessage);
+        showMessage({
+            message: 'ویزیت انجام شد',
+            description: null,
+            type: "success",
+        });
+        await sleep(0.5);
     }
 
     getScreenHeader() {

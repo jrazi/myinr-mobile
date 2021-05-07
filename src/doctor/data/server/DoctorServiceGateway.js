@@ -154,6 +154,19 @@ class DoctorWebServiceGateway {
 
     }
 
+    sendMessageToPatient = (patientUserId, physicianMessage) => {
+        let url = `${API_PATH}/message/outgoing`;
+
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            timeout: DEFAULT_TIMEOUT*2,
+            method: 'POST',
+            body: {message: physicianMessage},
+        })
+            .then(data => data);
+
+    }
+
+
     getPatientMedicalInfo = (patientUserId) => {
         let url = `${API_PATH}/patient/${patientUserId}/medical`;
 
