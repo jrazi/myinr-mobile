@@ -147,7 +147,7 @@ export const MessageCard = (props) => {
 
     const isFromPatient = props.message.meta.fromPatient || false;
 
-    const title = isFromPatient ? 'من' : 'دکتر' + ' ' + physicianInfo.fullName;
+    const title = isFromPatient ? '' : 'دکتر' + ' ' + physicianInfo.fullName;
 
     const PhysicianAvatar = (_props) => (
         <Avatar.Icon
@@ -227,33 +227,3 @@ export const MessageCard = (props) => {
     );
 }
 
-
-const MessageCardButton = (props) => {
-    const theme = useTheme();
-
-    const navigateToTeleVisit = () => {
-        props.navigation.navigate(
-            'ReceivedMessageScreen',
-            {
-                message: props.message,
-                patientInfo: props.message.patientInfo,
-                patientMedicalInfo: null,
-            },
-        );
-    }
-
-    return (
-        <Button
-            color={theme.colors.actionColors.primary}
-            compact
-            mode="contained"
-            onPress={() => navigateToTeleVisit()}
-            labelStyle={{fontSize: 13}}
-            contentStyle={{
-                // width: 70,
-            }}
-        >
-            {'جزئیات'}
-        </Button>
-    )
-}
