@@ -1,10 +1,22 @@
 import React from "react";
 import {ScreenLayout, TitleOnlyScreenHeader} from "../../root/view/screen/Layout";
-import {Surface, useTheme} from "react-native-paper";
-import {ConditionalCollapsibleRender} from "../../doctor/view/patients/visit/first/forms/Layout";
-import {IncomingMessageCard} from "../../doctor/view/televisit/cards/MessageCard";
+import {Avatar, Button, Card, Surface, Text, useTheme} from "react-native-paper";
+import {
+    ConditionalCollapsibleRender,
+    IntraSectionInvisibleDivider
+} from "../../doctor/view/patients/visit/first/forms/Layout";
+import {
+    IncomingMessageCard,
+    MessageInfoRows,
+    styles
+} from "../../doctor/view/televisit/cards/MessageCard";
 import {ItemListContainer} from "../../root/view/list/ItemList";
 import {patientDao} from "../data/dao/PatientDao";
+import {MessageListFilter} from "./filter/MessageListFilter";
+import {MessageListFilterType, messageListStore} from "./store/MessageListStore";
+import {View} from "react-native";
+import {rootDao} from "../../root/data/dao/RootDao";
+import {e2p, getFormattedJalaliDate} from "../../root/domain/util/Util";
 
 export default class MessageListScreen extends React.Component {
     constructor(props) {
@@ -12,25 +24,50 @@ export default class MessageListScreen extends React.Component {
         this.user = {};
         this.state = {
             loadingMessages: true,
-            displayingIncomingMessages: true,
-            displayingOutgoingMessages: false,
+            loadingUser: true,
             messagesToDisplay: [],
+            messageListFilterType: MessageListFilterType.ALL,
         }
+        this.messageStore = messageListStore;
+        this.user = null;
     }
 
     componentDidMount() {
-        this.loadMessages();
+        rootDao.getUser().then(user => {
+            this.user = user;
+            this.setState({loadingUser: false});
+            this.loadMessages();
+        });
     }
 
     loadMessages =  () => {
         this.setState({loadingMessages: true}, async () => {
-            const incomingMessages = await patientDao.getIncomingMessages();
-            incomingMessages.forEach(m => m.patientInfo = {fullName: 'something', patientUserId: 'other thing'});
+            const messages = await patientDao.getAllMessages({merge: true});
+
+            this.messageStore.changeMessages(messages);
+            messages.forEach(m => m.patientInfo = {fullName: 'something', patientUserId: 'other thing'});
+
+            const messagesToDisplay = this.messageStore.filterByType(this.state.messageListFilterType);
+
             this.setState({
-                messagesToDisplay: incomingMessages,
+                messagesToDisplay: messagesToDisplay,
                 loadingMessages: false,
             })
 
+        });
+    }
+
+    filterMessages = (type) => {
+        this.setState({loadingMessages: true, messageListFilterType: type}, async () => {
+            setTimeout(() => {
+                const messagesToDisplay = this.messageStore.filterByType(this.state.messageListFilterType);
+
+                this.setState({
+                    messagesToDisplay: messagesToDisplay,
+                    loadingMessages: false,
+                })
+
+            }, 1000)
         });
     }
 
@@ -38,39 +75,30 @@ export default class MessageListScreen extends React.Component {
         return (
             <ScreenLayout>
                 <ControlHeader
+                    filterAllMessages={() => this.filterMessages(MessageListFilterType.ALL)}
+                    filterMyMessages={() => this.filterMessages(MessageListFilterType.MY_MESSAGES)}
+                    filterPhysicianMessages={() => this.filterMessages(MessageListFilterType.PHYSICIAN_MESSAGES)}
                 />
                 <MessageList
                     messages={this.state.messagesToDisplay}
-                    refreshing={this.state.loadingMessages}
+                    refreshing={this.state.loadingMessages || this.state.loadingUser}
                     onRefresh={this.loadMessages}
                     navigation={this.props.navigation}
+                    patientInfo={this.user}
                 />
             </ScreenLayout>
         );
     }
 }
 
-const ControlHeader = (props) => {
-    const theme = useTheme();
-
-    return (
-        <Surface style={{elevation: 4}}>
-            <TitleOnlyScreenHeader
-                title="پیام‌ها"
-                style={{elevation: 0}}
-            />
-            <ConditionalCollapsibleRender hidden={false}>
-            </ConditionalCollapsibleRender>
-        </Surface>
-    )
-}
 
 const MessageList = (props) => {
     const messageItems = props.messages.map((message, index) => {
         return (
-            <IncomingMessageCard
-                key={`IncomingMessageCard_${message.id}`}
+            <MessageCard
+                key={`MessageCard_${message.id}`}
                 message={message}
+                patientInfo={props.patientInfo}
                 index={index}
                 navigation={props.navigation}
             />
@@ -86,5 +114,146 @@ const MessageList = (props) => {
                 messageItems
             }
         </ItemListContainer>
+    )
+}
+
+const ControlHeader = (props) => {
+    const theme = useTheme();
+
+    return (
+        <Surface style={{elevation: 4}}>
+            <TitleOnlyScreenHeader
+                title="پیام‌ها"
+                style={{elevation: 0}}
+            />
+            <ConditionalCollapsibleRender hidden={false}>
+                <MessageListFilter
+                    filterAllMessages={props.filterAllMessages}
+                    filterMyMessages={props.filterMyMessages}
+                    filterPhysicianMessages={props.filterPhysicianMessages}
+                />
+            </ConditionalCollapsibleRender>
+        </Surface>
+    )
+}
+
+
+
+export const MessageCard = (props) => {
+    const theme = useTheme();
+
+    const patientInfo = props.patientInfo || {};
+    const physicianInfo = props.patientInfo.physician || {};
+
+    const isFromPatient = props.message.meta.fromPatient || false;
+
+    const title = isFromPatient ? 'من' : 'دکتر' + ' ' + physicianInfo.fullName;
+
+    const PhysicianAvatar = (_props) => (
+        <Avatar.Icon
+            size={40}
+            icon={'message-reply-text'}
+            style={{backgroundColor: theme.colors.accent}}
+        />
+    );
+
+    const PatientAvatar = (_props) => (
+        <Avatar.Icon
+            size={40}
+            icon={'message-text'}
+            style={{backgroundColor: theme.colors.accent}}
+        />
+    );
+
+    const avatar = isFromPatient ? <PatientAvatar/> : <PhysicianAvatar/>;
+
+    const CardContainer = ({index, style, ...props}) => {
+        if (index % 2 == 0) {
+            return <View style={[{}, style]}>
+                {props.children}
+            </View>
+        } else return <Surface style={[{elevation: 0,}, style]}>
+            {props.children}
+        </Surface>
+    }
+
+
+    return (
+        <CardContainer index={props.index}
+                       style={[{
+                           // elevation: 4,
+                       }, styles.cardContainer]}
+        >
+            <View style={{
+                // paddingBottom: 10,
+                paddingVertical: 10,
+            }}>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Card.Title
+                        title={' ' + title}
+                        subtitle={''}
+                        style={{
+                            flexGrow: 0,
+                            width: '90%',
+                        }}
+                        left={
+                            () => (
+                                <View
+                                    style={{
+                                        // paddingRight: 20,
+                                    }}
+                                >
+                                    {avatar}
+                                </View>
+                            )
+                        }
+                    />
+
+                </View>
+                <Card.Content>
+                    <View>
+                        <MessageInfoRows message={props.message}/>
+                    </View>
+                </Card.Content>
+                <IntraSectionInvisibleDivider none borderWidth={0.1} style={{marginHorizontal: 20, marginTop: 10,}}/>
+            </View>
+        </CardContainer>
+    );
+}
+
+
+const MessageCardButton = (props) => {
+    const theme = useTheme();
+
+    const navigateToTeleVisit = () => {
+        props.navigation.navigate(
+            'ReceivedMessageScreen',
+            {
+                message: props.message,
+                patientInfo: props.message.patientInfo,
+                patientMedicalInfo: null,
+            },
+        );
+    }
+
+    return (
+        <Button
+            color={theme.colors.actionColors.primary}
+            compact
+            mode="contained"
+            onPress={() => navigateToTeleVisit()}
+            labelStyle={{fontSize: 13}}
+            contentStyle={{
+                // width: 70,
+            }}
+        >
+            {'جزئیات'}
+        </Button>
     )
 }

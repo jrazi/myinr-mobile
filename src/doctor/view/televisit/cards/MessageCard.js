@@ -71,12 +71,12 @@ export const MessageInfoRows = (props) => {
     let messageTime = props.message.messageTime.asString || 'نامشخص';
     messageTime = e2p(messageTime);
 
-    let patientComment = props.message.patientComment || "بدون توضیحات";
+    let comment = props.message.patientComment || props.message.physicianComment || "بدون توضیحات";
 
     return ([
         <Row key={'comment_row'}>
             <InfoItem
-                title={patientComment}
+                title={comment}
                 wrapperStyle={{
                     width: '100%',
                 }}

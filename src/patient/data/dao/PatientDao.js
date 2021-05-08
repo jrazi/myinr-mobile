@@ -14,6 +14,10 @@ export class PatientDao {
         else return null;
     }
 
+    getAllMessages = ({merge=true}={}) => {
+        return patientServerGateway.getAllMessages({merge: merge});
+    }
+
     getIncomingMessages = ({onlyNew=false, groupByNew=false}={}) => {
         return patientServerGateway.getIncomingMessages({onlyNew: onlyNew, groupByNew: groupByNew});
     }
