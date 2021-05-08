@@ -2,6 +2,7 @@ import RootRepository from "../repository/RootRepository";
 import {Locale} from "../../domain/Locale";
 import {serverGateway} from "../server/ServerGateway";
 import {AsyncStorage} from "react-native";
+import {TokenService} from "../server/TokenService";
 
 class RootDao {
 
@@ -17,6 +18,7 @@ class RootDao {
     }
 
     async getUser() {
+        console.log('root is going to get user', this.user);
         if (!this.tempTimeToUpdate() && this.user != null) return this.user;
 
         let user = await this.rootRepository.getUser();
@@ -29,6 +31,8 @@ class RootDao {
         if (userMeta == null) return null;
 
         try {
+            console.log('root is going to get user from server', userMeta);
+
             user = await serverGateway.fetchUserInfo(userMeta.userId);
             await this.saveUser(user);
         } catch (err) {
@@ -96,8 +100,10 @@ class RootDao {
 
     async logout() {
         await AsyncStorage.clear();
-        this.user = null;
+        this.rootRepository = new RootRepository();
         this.tempLastUpdate = new Date('2018-01-01').getTime()/1000;
+        this.user = null;
+        TokenService.getInstance().flush();
     }
 }
 

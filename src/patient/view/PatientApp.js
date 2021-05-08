@@ -8,6 +8,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {rootDao} from "../../root/data/dao/RootDao";
 import {UserRole} from "../../root/domain/Role";
+import MessageListScreen from "./MessageListScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -42,20 +43,10 @@ class PatientApp extends React.Component {
                 lazy={false}
             >
                 <Tab.Screen
-                    name="patient/home"
-                    component={HomeScreen}
+                    name="patient/messages"
+                    component={MessageListScreen}
                     options={{
-                        tabBarLabel: 'خانه',
-                        tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons name="home-outline" color={color} size={26} />
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="patient/reports"
-                    component={ReportsScreen}
-                    options={{
-                        tabBarLabel: 'گزارشات',
+                        tabBarLabel: 'پیام‌ها',
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="clipboard-pulse-outline" color={color} size={26} />
                         ),

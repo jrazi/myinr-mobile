@@ -6,6 +6,7 @@ import {LoadingScreen} from "./loading/Loading";
 import LoginScreen from "../../login/view/LoginScreen";
 import DoctorAppNavigator from "../../doctor/view/DoctorAppNavigator";
 import PatientApp from "../../patient/view/PatientApp";
+import RootDao from "../data/repository/RootRepository";
 
 export default class RootEntry extends React.Component {
     constructor(props) {
@@ -28,7 +29,7 @@ export default class RootEntry extends React.Component {
 
     refresh = () => {
         this.setState({loaded: false}, () => {
-            rootDao.getUser().then(user => {
+            new RootDao().getUser().then(user => {
                 this.setState({
                     role: user == null ? null : user.userInfo.role,
                     loaded: true,

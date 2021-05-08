@@ -1,5 +1,7 @@
 import {rootDao} from "../../../root/data/dao/RootDao";
 import {UserRole} from "../../../root/domain/Role";
+import {DEFAULT_TIMEOUT} from "../../../root/data/server/util";
+import {patientServerGateway} from "../server/PatientServerGateway";
 
 export class PatientDao {
 
@@ -12,14 +14,25 @@ export class PatientDao {
         else return null;
     }
 
-    async getUserMetaData() {
-        let metadata = await rootDao.getUserMetaData();
-        return metadata;
+    getIncomingMessages = ({onlyNew=false, groupByNew=false}={}) => {
+        return patientServerGateway.getIncomingMessages({onlyNew: onlyNew, groupByNew: groupByNew});
     }
 
-    async saveUser(user) {
-        return await rootDao.saveUser(user);
+
+    getOutgoingMessages = () => {
+        return patientServerGateway.getOutgoingMessages();
     }
+
+    sendMessageToPhysician = (patientMessage) => {
+        return patientServerGateway.sendMessageToPhysician(patientMessage);
+    }
+
+
+    getPatientMedicalInfo = () => {
+        return patientServerGateway.getPatientMedicalInfo();
+
+    }
+
 }
 
 export const patientDao = new PatientDao();

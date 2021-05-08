@@ -15,6 +15,10 @@ export class TokenService {
         this.accessToken = null;
     }
 
+    flush() {
+        this.accessToken = null;
+    }
+
     async getAccessToken({force=false, returnNull=false}={}) {
         if (this.accessToken != null && !force)
             return this.accessToken;
