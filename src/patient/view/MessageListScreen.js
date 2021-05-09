@@ -1,24 +1,23 @@
 import React from "react";
 import {ScreenLayout, TitleOnlyScreenHeader} from "../../root/view/screen/Layout";
-import {Avatar, Button, Card, Surface, Text, TouchableRipple, useTheme} from "react-native-paper";
+import {Avatar, Button, Card, FAB, Surface, Text, TouchableRipple, useTheme, withTheme} from "react-native-paper";
 import {
-    ConditionalCollapsibleRender,
+    ConditionalCollapsibleRender, ConditionalRender,
     IntraSectionInvisibleDivider
 } from "../../doctor/view/patients/visit/first/forms/Layout";
 import {
     IncomingMessageCard,
     MessageInfoRows,
-    styles
 } from "../../doctor/view/televisit/cards/MessageCard";
 import {ItemListContainer} from "../../root/view/list/ItemList";
 import {patientDao} from "../data/dao/PatientDao";
 import {MessageListFilter} from "./filter/MessageListFilter";
 import {MessageListFilterType, messageListStore} from "./store/MessageListStore";
-import {View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import {rootDao} from "../../root/data/dao/RootDao";
-import {e2p, getFormattedJalaliDate} from "../../root/domain/util/Util";
+import {showMessage} from "react-native-flash-message";
 
-export default class MessageListScreen extends React.Component {
+class MessageListScreen extends React.Component {
     constructor(props) {
         super(props);
         this.user = {};
@@ -45,7 +44,6 @@ export default class MessageListScreen extends React.Component {
             const messages = await patientDao.getAllMessages({merge: true}).catch(e => this.setState({loadingMessages: false}));
 
             this.messageStore.changeMessages(messages);
-            messages.forEach(m => m.patientInfo = {fullName: 'something', patientUserId: 'other thing'});
 
             const messagesToDisplay = this.messageStore.filterByType(this.state.messageListFilterType);
 
@@ -71,6 +69,14 @@ export default class MessageListScreen extends React.Component {
         });
     }
 
+    navigateToMessageForm = () => {
+        showMessage({
+            message: 'این بخش غیرفعال است',
+            description: null,
+            type: "warning",
+        });
+    }
+
     render() {
         return (
             <ScreenLayout>
@@ -86,11 +92,27 @@ export default class MessageListScreen extends React.Component {
                     navigation={this.props.navigation}
                     patientInfo={this.user}
                 />
+                <View style={styles.fabContainer}>
+                    <ConditionalRender hidden={false}>
+                        <View style={styles.fabWrapper}>
+                            <FAB
+                                style={[styles.fab, {
+                                    backgroundColor: this.props.theme.colors.actionColors.confirm,
+                                }]}
+                                icon={'message-text'}
+                                label={'ارسال پیام'}
+                                onPress={this.navigateToMessageForm}
+
+                            />
+                        </View>
+                    </ConditionalRender>
+                </View>
             </ScreenLayout>
         );
     }
 }
 
+export default withTheme(MessageListScreen);
 
 const MessageList = (props) => {
     const messageItems = props.messages.map((message, index) => {
@@ -245,3 +267,23 @@ export const MessageCard = (props) => {
     );
 }
 
+const styles = StyleSheet.create({
+    fabContainer: {
+        position: 'absolute',
+        margin: 24,
+        left: 0,
+        bottom: 0,
+    },
+    fabWrapper: {
+        paddingTop: 15,
+        alignItems: 'center',
+    },
+    fab: {
+    },
+    container: {
+        flex: 1,
+        // backgroundColor: 'white',
+    },
+
+    cardContainer: {},
+})
