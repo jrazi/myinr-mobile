@@ -178,9 +178,9 @@ export const MessageCard = (props) => {
     }
 
     const navigateToMessage = () => {
-        if (props.message.fromPatient) return;
+        const route = props.message.meta.fromPatient ? 'MessageFromPatientScreen' : 'MessageFromPhysicianScreen';
         props.navigation.navigate(
-            'MessageFromPhysicianScreen',
+            route,
             {
                 message: props.message,
             },
