@@ -7,6 +7,7 @@ import LoginScreen from "../../login/view/LoginScreen";
 import DoctorAppNavigator from "../../doctor/view/DoctorAppNavigator";
 import PatientApp from "../../patient/view/PatientApp";
 import RootDao from "../data/repository/RootRepository";
+import PatientAppNavigator from "../../patient/view/PatientAppNavigator";
 
 export default class RootEntry extends React.Component {
     constructor(props) {
@@ -45,7 +46,7 @@ export default class RootEntry extends React.Component {
                 {
                     this.state.role == null ? <LoginScreen navigation={this.props.navigation}/>
                         : this.state.role == UserRole.DOCTOR ? <DoctorAppNavigator navigation={this.props.navigation}/>
-                        : this.state.role == UserRole.PATIENT ? <PatientApp navigation={this.props.navigation}/>
+                        : this.state.role == UserRole.PATIENT ? <PatientAppNavigator navigation={this.props.navigation}/>
                             : <LoginScreen navigation={this.props.navigation}/>
                 }
             </LoadingScreen>

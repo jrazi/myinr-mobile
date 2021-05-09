@@ -48,7 +48,7 @@ class PatientApp extends React.Component {
                     options={{
                         tabBarLabel: 'پیام‌ها',
                         tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons name="clipboard-pulse-outline" color={color} size={26} />
+                            <MaterialCommunityIcons name="message-text-outline" color={color} size={26} />
                         ),
                     }}
                 />

@@ -1,6 +1,6 @@
 import React from "react";
 import {ScreenLayout, TitleOnlyScreenHeader} from "../../root/view/screen/Layout";
-import {Avatar, Button, Card, Surface, Text, useTheme} from "react-native-paper";
+import {Avatar, Button, Card, Surface, Text, TouchableRipple, useTheme} from "react-native-paper";
 import {
     ConditionalCollapsibleRender,
     IntraSectionInvisibleDivider
@@ -42,7 +42,7 @@ export default class MessageListScreen extends React.Component {
 
     loadMessages =  () => {
         this.setState({loadingMessages: true}, async () => {
-            const messages = await patientDao.getAllMessages({merge: true});
+            const messages = await patientDao.getAllMessages({merge: true}).catch(e => this.setState({loadingMessages: false}));
 
             this.messageStore.changeMessages(messages);
             messages.forEach(m => m.patientInfo = {fullName: 'something', patientUserId: 'other thing'});
@@ -177,52 +177,70 @@ export const MessageCard = (props) => {
         </Surface>
     }
 
+    const navigateToMessage = () => {
+        if (props.message.fromPatient) return;
+        props.navigation.navigate(
+            'MessageFromPhysicianScreen',
+            {
+                message: props.message,
+            },
+        );
+    }
 
     return (
-        <CardContainer index={props.index}
-                       style={[{
-                           // elevation: 4,
-                       }, styles.cardContainer]}
+        <CardContainer
+            index={props.index}
+            style={[
+                {
+                },
+               styles.cardContainer
+            ]}
         >
-            <View style={{
-                // paddingBottom: 10,
-                paddingVertical: 10,
-            }}>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Card.Title
-                        title={' ' + title}
-                        subtitle={''}
+            <TouchableRipple
+                onPress={navigateToMessage}
+                rippleColor="rgba(0, 0, 0, .1)"
+                delayPressIn={ 100 }
+            >
+                <View style={{
+                    // paddingBottom: 10,
+                    paddingVertical: 10,
+                }}>
+                    <View
                         style={{
-                            flexGrow: 0,
-                            width: '90%',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
                         }}
-                        left={
-                            () => (
-                                <View
-                                    style={{
-                                        // paddingRight: 20,
-                                    }}
-                                >
-                                    {avatar}
-                                </View>
-                            )
-                        }
-                    />
+                    >
+                        <Card.Title
+                            title={' ' + title}
+                            subtitle={''}
+                            style={{
+                                flexGrow: 0,
+                                width: '90%',
+                            }}
+                            left={
+                                () => (
+                                    <View
+                                        style={{
+                                            // paddingRight: 20,
+                                        }}
+                                    >
+                                        {avatar}
+                                    </View>
+                                )
+                            }
+                        />
 
-                </View>
-                <Card.Content>
-                    <View>
-                        <MessageInfoRows message={props.message}/>
                     </View>
-                </Card.Content>
-                <IntraSectionInvisibleDivider none borderWidth={0.1} style={{marginHorizontal: 20, marginTop: 10,}}/>
-            </View>
+                    <Card.Content>
+                        <View>
+                            <MessageInfoRows message={props.message}/>
+                        </View>
+                    </Card.Content>
+                    <IntraSectionInvisibleDivider none borderWidth={0.1} style={{marginHorizontal: 20, marginTop: 10,}}/>
+                </View>
+            </TouchableRipple>
         </CardContainer>
     );
 }
