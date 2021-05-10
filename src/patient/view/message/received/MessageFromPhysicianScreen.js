@@ -77,7 +77,7 @@ const PhysicianInstructions = (props) => {
     const theme = useTheme();
 
     const hasMainInstructions = (props.message.physicianInstructions.length > 0);
-    const hasDaysWithoutWarfarinRecommended = props.message.physicianInstructions.recommendedDaysWithoutWarfarin > 0;
+    const hasDaysWithoutWarfarinRecommended = Number(props.message.recommendedDaysWithoutWarfarin) > 0;
     const hasNextInrCheckDate = (props.message.nextInrCheckDate.jalali.asString || null) != null;
 
     const hasInstruction = hasMainInstructions || hasDaysWithoutWarfarinRecommended || hasNextInrCheckDate;
@@ -117,7 +117,7 @@ const PhysicianInstructions = (props) => {
         instructions.push(
             <Instruction
                 key={'ins_stop_warfarin'}
-                instructionText={'مصرف وارفارین را برای' + ' ' + props.message.physicianInstructions.recommendedDaysWithoutWarfarin + ' ' + 'روز متوقف کنید.'}
+                instructionText={'مصرف وارفارین را برای' + ' ' + e2p(props.message.recommendedDaysWithoutWarfarin) + ' ' + 'روز متوقف کنید.'}
             />
         );
 
