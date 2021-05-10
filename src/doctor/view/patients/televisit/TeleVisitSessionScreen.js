@@ -77,9 +77,7 @@ class TeleVisitSessionScreen extends React.Component {
     }
 
     saveVisit = async () => {
-        const userId = this.props.route.params.userId;
-
-        if (this.props.route.params.readonly) return;
+        const userId = this.props.route.params.patientUserId;
 
         await doctorMessageDao.sendMessageToPatient(userId, this.physicianMessage);
         showMessage({

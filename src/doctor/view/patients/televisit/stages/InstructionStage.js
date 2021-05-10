@@ -4,7 +4,12 @@ import ListUtil from "../../../../../root/domain/util/ListUtil";
 import {getTeleVisitInstructionOptions} from "../../../../../root/data/dao/StaticDomainNameTable";
 import * as Layout from "../../visit/first/forms/Layout";
 import {ChipBox, DefaultSwitchRow, DefaultTextInput} from "../../visit/first/forms/ContextSpecificComponents";
-import {ConditionalCollapsibleRender, IntraSectionInvisibleDivider, Row} from "../../visit/first/forms/Layout";
+import {
+    ConditionalCollapsibleRender,
+    ConditionalRender,
+    IntraSectionInvisibleDivider,
+    Row
+} from "../../visit/first/forms/Layout";
 import {View} from "react-native";
 import InputSpinner from "react-native-input-spinner";
 import {Text, withTheme} from "react-native-paper";
@@ -154,7 +159,7 @@ class _InstructionStage extends React.Component {
                             onFlip={this.toggleHasNewPrescription}
                             disabled={false}
                         />
-                        <ConditionalCollapsibleRender hidden={!this.state.hasNewPrescription}>
+                        <ConditionalRender hidden={!this.state.hasNewPrescription}>
                             <Layout.FormSection>
                                 <WeeklyDosagePicker
                                     onDoseUpdate={this.onDosageUpdate}
@@ -165,7 +170,7 @@ class _InstructionStage extends React.Component {
                                     // key={'weekly_dosage_' + this.state.hasNewPrescription}
                                 />
                             </Layout.FormSection>
-                        </ConditionalCollapsibleRender>
+                        </ConditionalRender>
 
                         {/*<Formik*/}
                         {/*    initialValues={{*/}

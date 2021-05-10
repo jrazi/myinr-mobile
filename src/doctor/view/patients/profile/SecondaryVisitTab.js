@@ -28,11 +28,14 @@ export class SecondaryVisitTab extends React.Component {
     static contextType = PatientProfileContext;
 
     componentDidMount() {
+        const visits = this.context.patient.visits || [];
+        const sortedVisits = (visits || []).sort((a, b) => Number(b.visitDate.timestamp || 0) - Number(a.visitDate.timestamp || 0));
+
         this.setState({
-            visits: this.context.patient.visits || [],
+            visits: sortedVisits,
             loadingVisits: false,
         }, () => {
-            // this.loadVisits();
+            this.loadVisits();
         })
     }
 
@@ -45,8 +48,8 @@ export class SecondaryVisitTab extends React.Component {
             const sortedVisits = (visits || []).sort((a, b) => Number(b.visitDate.timestamp || 0) - Number(a.visitDate.timestamp || 0));
 
             const sortedAttendableAppointments = appointments
-                .filter(appointment => appointment.isScheduled && !appointment.hasVisitHappened)
-                .sort((a, b) => Number(a.scheduledVisitDate.timestamp) - Number(b.scheduledVisitDate.timestamp))
+                .filter(appointment => appointment.isScheduled && !appointment.expired && !appointment.hasVisitHappened)
+                .sort((b, a) => Number(a.scheduledVisitDate.timestamp) - Number(b.scheduledVisitDate.timestamp))
 
             this.setState({
                 visits: sortedVisits,
@@ -60,12 +63,14 @@ export class SecondaryVisitTab extends React.Component {
 
 
     viewVisitInfo = (index) => {
+        const visit = this.state.visits[index];
+        visit.medicationHistory = this.context.patient.medicationHistory || [];
         this.props.navigation.navigate(
             'FollowupVisitRoot',
             {
                 userId: this.props.route.params.userId,
                 patientName: '',
-                visitInfo: this.state.visits[index],
+                visitInfo: visit,
                 readonly: true,
                 appointmentId: null,
             },

@@ -30,6 +30,7 @@ class MessageFromPatientScreen extends React.Component {
             <LoadingScreen loaded={this.state.loaded}>
                 <ScreenLayout>
                     <ControlHeader
+                        physicianName={((this.props.route.params.patientInfo || {}).physician || {}).lastName}
                     />
                     <PatientMessageView
                         message={this.props.route.params.message}
@@ -46,11 +47,11 @@ export default withTheme(MessageFromPatientScreen);
 
 const ControlHeader = (props) => {
     const theme = useTheme();
-
+    const headerTitle = hasValue(props.physicianName) ? "پیام به دکتر" + ' ' + props.physicianName : 'پیام به پزشک';
     return (
         <Surface style={{elevation: 4}}>
             <ScreenHeader
-                title="پیام ارسالی به پزشک"
+                title={headerTitle}
                 style={{elevation: 0}}
             />
         </Surface>

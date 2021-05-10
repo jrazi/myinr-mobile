@@ -205,6 +205,7 @@ export const MessageCard = (props) => {
             route,
             {
                 message: props.message,
+                patientInfo: patientInfo,
             },
         );
     }

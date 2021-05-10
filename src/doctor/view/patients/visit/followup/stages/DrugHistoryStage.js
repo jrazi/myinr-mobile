@@ -29,6 +29,7 @@ class DrugHistoryStage extends React.Component {
 
     refreshRecords = () => {
         this.setState({loaded: false}, () => {
+            this.visitInfo = this.props.route.params.visitInfo;
             this.state.medicationHistory = this.visitInfo.medicationHistory;
             this.setState({loaded: true});
         })

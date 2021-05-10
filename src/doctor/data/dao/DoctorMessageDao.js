@@ -29,7 +29,8 @@ export class DoctorMessageDao {
     }
 
     sendMessageToPatient = (patientUserId, message) => {
-        return null;
+        return doctorService.sendMessageToPatient(patientUserId, message)
+            .then(messages => messages);
     }
 }
 
