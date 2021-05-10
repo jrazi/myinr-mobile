@@ -9,6 +9,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import {rootDao} from "../../root/data/dao/RootDao";
 import {UserRole} from "../../root/domain/Role";
 import MessageListScreen from "./MessageListScreen";
+import AppointmentsScreen from "./AppointmentsScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -53,10 +54,10 @@ class PatientApp extends React.Component {
                     }}
                 />
                 <Tab.Screen
-                    name="patient/doctor"
-                    component={MyDoctorScreen}
+                    name="patient/visits"
+                    component={AppointmentsScreen}
                     options={{
-                        tabBarLabel: 'پزشک من',
+                        tabBarLabel: 'ویزیت‌ها',
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="stethoscope" color={color} size={26} />
                         ),

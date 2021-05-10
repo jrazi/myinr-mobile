@@ -37,6 +37,10 @@ export class PatientDao {
 
     }
 
+    getAppointments = () => {
+        return patientServerGateway.getAppointments();
+    }
+
 }
 
 export const patientDao = new PatientDao();

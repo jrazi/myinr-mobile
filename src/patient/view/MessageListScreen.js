@@ -65,7 +65,7 @@ class MessageListScreen extends React.Component {
                     loadingMessages: false,
                 })
 
-            }, 1000)
+            }, 700)
         });
     }
 

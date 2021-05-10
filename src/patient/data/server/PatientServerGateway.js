@@ -78,6 +78,17 @@ class PatientServerGateway {
 
     }
 
+    getAppointments = () => {
+        let url = `${API_PATH}/appointment`;
+
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            timeout: DEFAULT_TIMEOUT,
+        })
+            .then(data => data.appointments);
+
+    }
+
+
 }
 
 export const patientServerGateway = new PatientServerGateway();

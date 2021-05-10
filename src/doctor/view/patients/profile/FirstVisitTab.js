@@ -128,7 +128,6 @@ export const FirstVisitTab = withTheme(_FirstVisitTab);
 const FirstVisitInfo = (props) => {
     const {startDate, lastEditDate, endDate} = props.firstVisit.local;
 
-    console.log('FirstVisitTab: first visit local key', props.firstVisit.local);
     return (
         <View style={{paddingTop: 10,}}>
             {/*<Title>مشخصات ویزیت اول</Title>*/}
