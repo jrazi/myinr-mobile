@@ -173,14 +173,13 @@ const _DosageCard = (props) => {
                 marginVertical: 10,
                 paddingVertical: 10,
                 paddingHorizontal: 10,
-                width: '45%',
+                width: '47%',
             }}
         >
             <View
                 style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    // paddingVertical: 5,
                 }}
             >
                     <Card.Title
@@ -188,8 +187,6 @@ const _DosageCard = (props) => {
                         subtitle={e2p(dosageDate) || ''}
                         style={{
                             flex: 1,
-                            // flexGrow: 0,
-                            // width: '60%',
                         }}
                         titleStyle={{
                             fontSize: 18,
