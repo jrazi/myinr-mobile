@@ -1,8 +1,5 @@
 import React from 'react';
 import {BottomNavigation, useTheme, withTheme} from "react-native-paper";
-import HomeScreen from "./HomeScreen";
-import ReportsScreen from "./ReportsScreen";
-import MyDoctorScreen from "./MyDoctorScreen";
 import ProfileScreen from "./ProfileScreen";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";

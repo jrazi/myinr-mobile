@@ -70,11 +70,18 @@ class MessageListScreen extends React.Component {
     }
 
     navigateToMessageForm = () => {
-        showMessage({
-            message: 'این بخش غیرفعال است',
-            description: null,
-            type: "warning",
-        });
+        this.props.navigation.navigate(
+            'NewMessageNavigator',
+            {
+                patientInfo: this.user,
+            },
+        );
+        //
+        // showMessage({
+        //     message: 'این بخش غیرفعال است',
+        //     description: null,
+        //     type: "warning",
+        // });
     }
 
     render() {
