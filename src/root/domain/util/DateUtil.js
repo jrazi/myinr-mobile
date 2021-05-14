@@ -4,6 +4,49 @@ let moment = require('moment');
 require('moment-precise-range-plugin');
 require('moment-timezone');
 
+export const DAYS_OF_WEEK = {
+    PERSIAN: [
+        {
+            no: 0,
+            fa: 'شنبه',
+        },
+        {
+            no: 1,
+            fa: 'یک‌شنبه',
+        },
+        {
+            no: 2,
+            fa: 'دوشنبه',
+        },
+        {
+            no: 3,
+            fa: 'سه‌شنبه',
+        },
+        {
+            no: 4,
+            fa: 'چهارشنبه',
+        },
+        {
+            no: 5,
+            fa: 'پنج‌شنبه',
+        },
+        {
+            no: 6,
+            fa: 'جمعه',
+        },
+    ]
+}
+
+export function getPersianDayOfWeek(date) {
+    if (!hasValue(date)) return null;
+
+    const jDate = new jd.default(new Date(date));
+
+    const dayOfWeek = (jDate.getDay() + 1) % 7;
+
+    return DAYS_OF_WEEK.PERSIAN[dayOfWeek];
+}
+
 export function isDateWithinToday(date) {
     if (!hasValue(date)) return false;
 
@@ -101,6 +144,9 @@ export function getDateDifferenceDescribedByCalendarUnits(start, end) {
 export function getDateDifferenceInTimestamp(d1, d2) {
     return (new Date(d1).getTime() || 0) - (new Date(d2).getTime() || 0);
 }
+
+
+
 //
 // iff is "-PT244H38M31.449S" Object {
 //     "days": 10,
