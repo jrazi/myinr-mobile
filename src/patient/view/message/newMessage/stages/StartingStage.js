@@ -53,7 +53,7 @@ class StartingStage extends React.Component {
             <LoadingScreen loaded={this.state.loaded}>
                 <VisitScreen>
                     <View>
-                        <SectionDescriptionText>{'لطفا مشخص کنید که چه محتوایی را میخواهید در این پیام ارسال کنید.'}</SectionDescriptionText>
+                        <SectionDescriptionText>{'لطفا مشخص کنید که چه محتوایی را میخواهید در این پیام ارسال کنید. در صورتی که قصد دارید فقط یک پیام متنی به پزشک ارسال کنید هیچ‌کدام از گزینه‌ها را انتخاب نکنید.'}</SectionDescriptionText>
                     </View>
                     <IntraSectionInvisibleDivider xs/>
                     <View>
