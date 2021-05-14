@@ -6,16 +6,35 @@ import {LoadingScreen} from "../../../../root/view/loading/Loading";
 import {ScreenHeader, ScreenLayout} from "../../../../root/view/screen/Layout";
 import {Button, Surface, useTheme, withTheme} from "react-native-paper";
 import {View} from "react-native";
+import MessageText from "./stages/MessageText";
+import InrReport from "./stages/InrReport";
+import {hasValue} from "../../../../root/domain/util/Util";
 
 
 const STAGES = {
     STARTING: {
         stackRoute: 'NewMessageStartingStage',
         order: 0,
+        next: 'MESSAGE',
+        prev: null,
+    },
+    INR_INFO: {
+        stackRoute: 'NewMessageInrInfo',
+        order: 2,
+        next: 'DOSAGE_REPORT',
+        prev: 'MESSAGE',
+    },
+    MESSAGE: {
+        stackRoute: 'NewMessageTextMessage',
+        order: 1,
+        next: 'INR_INFO',
+        prev: 'STARTING',
     },
     DOSAGE_REPORT: {
         stackRoute: 'NewMessageDosageChangeReport',
         order: 3,
+        next: null,
+        prev: 'INR_INFO',
     },
 }
 
@@ -24,10 +43,64 @@ class NewMessageNavigator extends React.Component {
         super(props);
         this.state = {
             loaded: true,
+            stageEnableStatus: {
+                STARTING: true,
+                INR_INFO: true,
+                MESSAGE: true,
+                DOSAGE_REPORT: true,
+            },
+            currentStage: 'STARTING',
         }
     }
 
     componentDidMount() {
+        this.navigateToStage(this.state.currentStage);
+    }
+
+    onSendMessageRequest = () => {
+
+    }
+
+    sendMessage = () => {
+
+    }
+
+    goToNextStage = (currentStageId=null) => {
+        let stage = currentStageId ? STAGES[currentStageId] : STAGES[this.state.currentStage];
+        if (!stage.next) {
+            this.onSendMessageRequest();
+            return;
+        }
+
+        else if (!this.isStageEnabled(stage.next))
+            this.goToNextStage(stage.next);
+
+        else this.navigateToStage(stage.next);
+    }
+
+    goToPrevStage = (currentStageId=null) => {
+        let stage = currentStageId ? STAGES[currentStageId] : STAGES[this.state.currentStage];
+        if (!stage.prev) return;
+        else if (!this.isStageEnabled(stage.prev))
+            this.goToPrevStage(stage.prev);
+
+        else this.navigateToStage(stage.prev);
+    }
+
+    navigateToStage(stageId) {
+        this.setState({
+            currentStage: stageId,
+        }, () => {
+            this.props.navigation.navigate(STAGES[stageId].stackRoute);
+        })
+    }
+
+    isStageEnabled(stageId) {
+        return this.state.stageEnableStatus[stageId];
+    }
+
+    getStageObject() {
+        return STAGES[this.state.currentStage];
     }
 
     render() {
@@ -43,7 +116,10 @@ class NewMessageNavigator extends React.Component {
                     >
                         <NewMessageStageNavigator/>
                         <BottomActionBox
-                            navigation={this.props.navigation}
+                            onNext={() => this.goToNextStage()}
+                            onPrevious={() => this.goToPrevStage()}
+                            prevEnabled={hasValue(this.getStageObject().prev)}
+                            nextIsFinish={!hasValue(this.getStageObject().next)}
                         />
                     </View>
                 </ScreenLayout>
@@ -59,6 +135,9 @@ const BottomActionBox = (props) => {
 
     return (
         <Surface
+            style={{
+                elevation: 0,
+            }}
         >
             <View
                 style={{
@@ -69,11 +148,13 @@ const BottomActionBox = (props) => {
             >
                 <ActionButton
                     title={'قبلی'}
-                    onPress={() => props.navigation.navigate('NewMessageDosageChangeReport')}
+                    onPress={props.onPrevious}
+                    disabled={!props.prevEnabled}
                 />
                 <ActionButton
-                    title={'بعدی'}
-                    onPress={() => props.navigation.navigate('NewMessageDosageChangeReport')}
+                    title={props.nextIsFinish ? 'ارسال' : 'بعدی'}
+                    onPress={props.onNext}
+                    color={props.nextIsFinish ? theme.colors.actionColors.remove : null}
                 />
             </View>
         </Surface>
@@ -85,13 +166,14 @@ const ActionButton = (props) => {
 
     return (
         <Button
-            color={theme.colors.actionColors.primary}
+            color={props.color || theme.colors.actionColors.primary}
             mode="contained"
             onPress={props.onPress}
             labelStyle={{fontSize: 14}}
             style={{
                 marginHorizontal: 30,
             }}
+            disabled={props.disabled}
         >
             {props.title}
         </Button>
@@ -108,6 +190,16 @@ const NewMessageStageNavigator = (props) => (
         <Stack.Screen
             name={STAGES.STARTING.stackRoute}
             component={StartingStage}
+            options={{ headerShown: false , headerTitle: props => null }}
+        />
+        <Stack.Screen
+            name={STAGES.MESSAGE.stackRoute}
+            component={MessageText}
+            options={{ headerShown: false , headerTitle: props => null }}
+        />
+        <Stack.Screen
+            name={STAGES.INR_INFO.stackRoute}
+            component={InrReport}
             options={{ headerShown: false , headerTitle: props => null }}
         />
         <Stack.Screen
