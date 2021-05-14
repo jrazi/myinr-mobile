@@ -10,6 +10,7 @@ import {rootDao} from "../../root/data/dao/RootDao";
 import {UserRole} from "../../root/domain/Role";
 import MessageListScreen from "./MessageListScreen";
 import AppointmentsScreen from "./AppointmentsScreen";
+import WarfarinScreen from "./WarfarinScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -43,6 +44,16 @@ class PatientApp extends React.Component {
                 inactiveColor={theme.colors.backdrop}
                 lazy={false}
             >
+                <Tab.Screen
+                    name="patient/warfarin"
+                    component={WarfarinScreen}
+                    options={{
+                        tabBarLabel: 'وارفارین',
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons name="pill" color={color} size={26} />
+                        ),
+                    }}
+                />
                 <Tab.Screen
                     name="patient/messages"
                     component={MessageListScreen}
