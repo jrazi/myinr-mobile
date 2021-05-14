@@ -143,7 +143,7 @@ export const TitleOnlyScreenHeader = (props) => {
             }}
             theme={theme.mostlyWhiteTheme}
         >
-            <Appbar.Content color={theme.colors.primary} title={props.title} style={props.contentStyle}/>
+            <Appbar.Content color={theme.colors.primary} title={props.title} style={props.contentStyle} subtitle={props.subtitle}/>
         </Appbar.Header>
     );
 }

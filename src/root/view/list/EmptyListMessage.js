@@ -7,7 +7,7 @@ export const EmptyList = (props) => {
     return (
         <ConditionalRender hidden={props.hidden}>
             <View style={{paddingTop: 20, alignItems: 'center', ...props.style}}>
-                <Caption style={{paddingVertical: 10,fontSize: 16}}>
+                <Caption style={{paddingVertical: 10,fontSize: 16, textAlign: 'center',}}>
                     {props.message}
                 </Caption>
             </View>
