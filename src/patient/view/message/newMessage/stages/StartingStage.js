@@ -11,6 +11,8 @@ import {
 import {ChipBox} from "../../../../../doctor/view/patients/visit/first/forms/ContextSpecificComponents";
 import {DescriptionText, SectionDescriptionText} from "../common/MessageStageLayout";
 import {STAGES} from "../NewMessageNavigator";
+import {StageActivationContext} from "../MessageContext";
+import {noop} from "../../../../../root/domain/util/Util";
 
 const STAGE_DESCRIPTION = {
     [STAGES.INR_INFO.id]: 'گزارش آی‌ان‌آر',
@@ -22,7 +24,7 @@ class StartingStage extends React.Component {
         super(props);
         this.user = {};
         this.state = {
-            loaded: true,
+            loaded: false,
         }
         this.optionalStages = {
             [STAGES.INR_INFO.id]: false,
@@ -30,11 +32,22 @@ class StartingStage extends React.Component {
         }
     }
 
+    static contextType = StageActivationContext;
+
+
     componentDidMount = async () => {
+        this.optionalStages = {
+            [STAGES.INR_INFO.id]: this.context.stageEnableStatus[STAGES.INR_INFO.id] || false,
+            [STAGES.DOSAGE_REPORT.id]: this.context.stageEnableStatus[STAGES.DOSAGE_REPORT.id] || false,
+        }
+
+        this.setState({loaded: true});
     }
 
     changeOptionalStageStatus = (id, value) => {
         this.optionalStages[id] = value;
+
+        (this.context.changeEnableStatus || noop)(id, value);
     }
 
     getOptionalStageList() {
@@ -50,7 +63,6 @@ class StartingStage extends React.Component {
 
     render() {
         return (
-            <LoadingScreen loaded={this.state.loaded}>
                 <VisitScreen>
                     <View>
                         <SectionDescriptionText>{'لطفا مشخص کنید که چه محتوایی را میخواهید در این پیام ارسال کنید. در صورتی که قصد دارید فقط یک پیام متنی به پزشک ارسال کنید هیچ‌کدام از گزینه‌ها را انتخاب نکنید.'}</SectionDescriptionText>
@@ -64,10 +76,10 @@ class StartingStage extends React.Component {
                             itemBoxStyle={{
                                 flexDirection: 'row',
                             }}
+                            key={'chip_' + this.state.loaded}
                         />
                     </View>
                 </VisitScreen>
-            </LoadingScreen>
         );
     }
 }

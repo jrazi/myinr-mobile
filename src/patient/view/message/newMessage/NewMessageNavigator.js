@@ -10,6 +10,7 @@ import MessageText from "./stages/MessageText";
 import InrReport from "./stages/InrReport";
 import {hasValue} from "../../../../root/domain/util/Util";
 import color from "color";
+import {StageActivationContext} from "./MessageContext";
 
 
 export const STAGES = {
@@ -50,9 +51,9 @@ class NewMessageNavigator extends React.Component {
             loaded: true,
             stageEnableStatus: {
                 STARTING: true,
-                INR_INFO: true,
+                INR_INFO: false,
                 MESSAGE: true,
-                DOSAGE_REPORT: true,
+                DOSAGE_REPORT: false,
             },
             currentStage: 'STARTING',
         }
@@ -108,26 +109,44 @@ class NewMessageNavigator extends React.Component {
         return STAGES[this.state.currentStage];
     }
 
+    getEnabledNext(current=null) {
+        const stage = current ? STAGES[current] : this.getStageObject();
+        if (!hasValue(stage.next))
+            return null;
+
+        else if (!this.isStageEnabled(stage.next))
+            this.getEnabledNext(stage.next);
+
+        else return stage.next;
+    }
+
+    changeStageEnableStatus = (stageId, newStatus) => {
+        this.state.stageEnableStatus[stageId] = newStatus || false;
+        this.setState({stageEnableStatus: this.state.stageEnableStatus});
+    }
+
     render() {
         return (
             <LoadingScreen loaded={this.state.loaded}>
-                <ScreenLayout>
-                    <ControlHeader
-                    />
-                    <View
-                        style={{
-                            flex: 1,
-                        }}
-                    >
-                        <NewMessageStageNavigator/>
-                        <BottomActionBox
-                            onNext={() => this.goToNextStage()}
-                            onPrevious={() => this.goToPrevStage()}
-                            prevEnabled={hasValue(this.getStageObject().prev)}
-                            nextIsFinish={!hasValue(this.getStageObject().next)}
+                <StageActivationContext.Provider value={{stageEnableStatus: this.state.stageEnableStatus, changeEnableStatus: this.changeStageEnableStatus}}>
+                    <ScreenLayout>
+                        <ControlHeader
                         />
-                    </View>
-                </ScreenLayout>
+                        <View
+                            style={{
+                                flex: 1,
+                            }}
+                        >
+                            <NewMessageStageNavigator/>
+                            <BottomActionBox
+                                onNext={() => this.goToNextStage()}
+                                onPrevious={() => this.goToPrevStage()}
+                                prevEnabled={hasValue(this.getStageObject().prev)}
+                                nextIsFinish={!hasValue(this.getEnabledNext())}
+                            />
+                        </View>
+                    </ScreenLayout>
+                </StageActivationContext.Provider>
             </LoadingScreen>
         );
     }
