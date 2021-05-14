@@ -58,6 +58,9 @@ const defaultFonts = configureFonts({
     }
 );
 
+
+const utilityGrey = '#44515d';
+
 const actionColors = {
     primary: Colors.DEFAULT_RED,
     primaryBlue: '#303F9F',
@@ -67,6 +70,7 @@ const actionColors = {
     remove: Colors.DEFAULT_RED,
     removeRed: '#c62828',
     help: '#673ab7',
+    utilityAction: utilityGrey,
 }
 
 export const lightTheme = {
@@ -102,8 +106,8 @@ const blueGrey = {
 }
 
 const darkThemePrimary = color('#03045e').alpha(0.2).string();
-const darkReallyDisabled = color('#FFFFFF').alpha(0.30).string();
-const darkDisabled = color('#FFFFFF').alpha(0.38).string();
+const darkReallyDisabled = color('#ffffff').alpha(0.30).string();
+const darkDisabled = color('#ffffff').alpha(0.38).string();
 const darkMediumEmphasis = color('#FFFFFF').alpha(0.6).string();
 const darkHighEmphasis = color('#FFFFFF').alpha(0.87).string();
 

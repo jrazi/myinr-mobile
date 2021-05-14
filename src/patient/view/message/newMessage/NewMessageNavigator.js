@@ -9,6 +9,7 @@ import {View} from "react-native";
 import MessageText from "./stages/MessageText";
 import InrReport from "./stages/InrReport";
 import {hasValue} from "../../../../root/domain/util/Util";
+import color from "color";
 
 
 const STAGES = {
@@ -133,6 +134,7 @@ export default withTheme(NewMessageNavigator);
 const BottomActionBox = (props) => {
     const theme = useTheme();
 
+    const prevButtonColor = null;
     return (
         <Surface
             style={{
@@ -150,11 +152,12 @@ const BottomActionBox = (props) => {
                     title={'قبلی'}
                     onPress={props.onPrevious}
                     disabled={!props.prevEnabled}
+                    color={prevButtonColor}
                 />
                 <ActionButton
                     title={props.nextIsFinish ? 'ارسال' : 'بعدی'}
                     onPress={props.onNext}
-                    color={props.nextIsFinish ? theme.colors.actionColors.remove : null}
+                    color={props.nextIsFinish ? theme.colors.actionColors.secondary : null}
                 />
             </View>
         </Surface>
