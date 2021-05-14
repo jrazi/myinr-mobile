@@ -115,7 +115,7 @@ class NewMessageNavigator extends React.Component {
             return null;
 
         else if (!this.isStageEnabled(stage.next))
-            this.getEnabledNext(stage.next);
+            return this.getEnabledNext(stage.next);
 
         else return stage.next;
     }
