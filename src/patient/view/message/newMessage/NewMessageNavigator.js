@@ -10,7 +10,8 @@ import MessageText from "./stages/MessageText";
 import InrReport from "./stages/InrReport";
 import {hasValue} from "../../../../root/domain/util/Util";
 import color from "color";
-import {StageActivationContext} from "./MessageContext";
+import {PatientMessageContext, StageActivationContext} from "./MessageContext";
+import {PatientMessage} from "../../../../root/domain/PatientMessage";
 
 
 export const STAGES = {
@@ -57,6 +58,7 @@ class NewMessageNavigator extends React.Component {
             },
             currentStage: 'STARTING',
         }
+        this.patientMessage = PatientMessage.createNew();
     }
 
     componentDidMount() {
@@ -128,25 +130,27 @@ class NewMessageNavigator extends React.Component {
     render() {
         return (
             <LoadingScreen loaded={this.state.loaded}>
+                <PatientMessageContext.Provider value={{patientMessage: this.patientMessage,}}>
                 <StageActivationContext.Provider value={{stageEnableStatus: this.state.stageEnableStatus, changeEnableStatus: this.changeStageEnableStatus}}>
-                    <ScreenLayout>
-                        <ControlHeader
-                        />
-                        <View
-                            style={{
-                                flex: 1,
-                            }}
-                        >
-                            <NewMessageStageNavigator/>
-                            <BottomActionBox
-                                onNext={() => this.goToNextStage()}
-                                onPrevious={() => this.goToPrevStage()}
-                                prevEnabled={hasValue(this.getStageObject().prev)}
-                                nextIsFinish={!hasValue(this.getEnabledNext())}
+                        <ScreenLayout>
+                            <ControlHeader
                             />
-                        </View>
-                    </ScreenLayout>
+                            <View
+                                style={{
+                                    flex: 1,
+                                }}
+                            >
+                                <NewMessageStageNavigator/>
+                                <BottomActionBox
+                                    onNext={() => this.goToNextStage()}
+                                    onPrevious={() => this.goToPrevStage()}
+                                    prevEnabled={hasValue(this.getStageObject().prev)}
+                                    nextIsFinish={!hasValue(this.getEnabledNext())}
+                                />
+                            </View>
+                        </ScreenLayout>
                 </StageActivationContext.Provider>
+                </PatientMessageContext.Provider>
             </LoadingScreen>
         );
     }
