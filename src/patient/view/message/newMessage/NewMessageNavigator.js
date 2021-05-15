@@ -8,42 +8,13 @@ import {Button, Surface, useTheme, withTheme} from "react-native-paper";
 import {View} from "react-native";
 import MessageText from "./stages/MessageText";
 import InrReport from "./stages/InrReport";
-import {hasValue} from "../../../../root/domain/util/Util";
-import color from "color";
+import {hasValue, sleep} from "../../../../root/domain/util/Util";
 import {PatientMessageContext, StageActivationContext} from "./MessageContext";
 import {PatientMessage} from "../../../../root/domain/PatientMessage";
+import {patientDao} from "../../../data/dao/PatientDao";
+import {showMessage} from "react-native-flash-message";
+import {STAGES} from "./StageMetadata";
 
-
-export const STAGES = {
-    STARTING: {
-        id: 'STARTING',
-        stackRoute: 'NewMessageStartingStage',
-        order: 0,
-        next: 'MESSAGE',
-        prev: null,
-    },
-    INR_INFO: {
-        id: 'INR_INFO',
-        stackRoute: 'NewMessageInrInfo',
-        order: 2,
-        next: 'DOSAGE_REPORT',
-        prev: 'MESSAGE',
-    },
-    MESSAGE: {
-        id: 'MESSAGE',
-        stackRoute: 'NewMessageTextMessage',
-        order: 1,
-        next: 'INR_INFO',
-        prev: 'STARTING',
-    },
-    DOSAGE_REPORT: {
-        id: 'DOSAGE_REPORT',
-        stackRoute: 'NewMessageDosageChangeReport',
-        order: 3,
-        next: null,
-        prev: 'INR_INFO',
-    },
-}
 
 class NewMessageNavigator extends React.Component {
     constructor(props) {
@@ -57,6 +28,7 @@ class NewMessageNavigator extends React.Component {
                 DOSAGE_REPORT: false,
             },
             currentStage: 'STARTING',
+            isSendDoubleCheckOpen: false,
         }
         this.patientMessage = PatientMessage.createNew();
     }
@@ -69,8 +41,23 @@ class NewMessageNavigator extends React.Component {
 
     }
 
-    sendMessage = () => {
+    sendMessage = async () => {
+        await patientDao.sendMessageToPhysician(this.patientMessage);
 
+        showMessage({
+            message: 'پیام ارسال شد',
+            description: null,
+            type: "success",
+        });
+        await sleep(0.5);
+
+        this.setState({
+            isSendDoubleCheckOpen: false,
+        }, () => {
+            this.props.navigation.navigate(
+                'PatientApp'
+            );
+        })
     }
 
     goToNextStage = (currentStageId=null) => {

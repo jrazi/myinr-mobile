@@ -1,46 +1,13 @@
 import React from "react";
 import {rootDao} from "../../root/data/dao/RootDao";
 import {ScreenLayout, TitleOnlyScreenHeader} from "../../root/view/screen/Layout";
-import {Avatar, Card, Surface, Text, useTheme} from "react-native-paper";
-import {e2p, getFormattedJalaliDate, hasValue, noop} from "../../root/domain/util/Util";
-import {StyleSheet, View, ScrollView, RefreshControl} from "react-native";
+import {Card, Surface, useTheme} from "react-native-paper";
+import {e2p, getFormattedJalaliDate, noop} from "../../root/domain/util/Util";
+import {RefreshControl, ScrollView, StyleSheet, View} from "react-native";
 import {EmptyList} from "../../root/view/list/EmptyListMessage";
 import {getPersianDayOfWeek} from "../../root/domain/util/DateUtil";
-let moment = require('moment');
-require('moment-precise-range-plugin');
-require('moment-timezone');
+import {assignDatesToDosageRecords} from "./util";
 
-
-function assignDatesToDosageRecords(records) {
-
-    const now = Date.now();
-
-    const todayDayOfWeek = getPersianDayOfWeek(now);
-
-    const indexOfMatchingDayOfWeek = records.findIndex(record => todayDayOfWeek.no == getPersianDayOfWeek(record.dosageDate.timestamp).no);
-
-    if (indexOfMatchingDayOfWeek < 0) return records;
-
-    let recordsStartingFromToday = [];
-
-    let currentDosageDate = moment(now);
-
-    for (let i = indexOfMatchingDayOfWeek; i < indexOfMatchingDayOfWeek + records.length; i++) {
-        const index = i % (records.length);
-        const record = records[index];
-
-        const _date = currentDosageDate.toDate();
-
-        record.dosageDate.timestamp = _date.getTime();
-        record.dosageDate.iso = _date.toISOString();
-
-        currentDosageDate.add(1, 'd');
-
-        recordsStartingFromToday.push(record)
-    }
-
-    return recordsStartingFromToday;
-}
 
 export default class WarfarinScreen extends React.Component {
     constructor(props) {

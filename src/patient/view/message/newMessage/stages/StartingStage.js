@@ -10,9 +10,9 @@ import {
 } from "../../../../../doctor/view/patients/visit/first/forms/Layout";
 import {ChipBox} from "../../../../../doctor/view/patients/visit/first/forms/ContextSpecificComponents";
 import {DescriptionText, SectionDescriptionText} from "../common/MessageStageLayout";
-import {STAGES} from "../NewMessageNavigator";
 import {StageActivationContext} from "../MessageContext";
 import {noop} from "../../../../../root/domain/util/Util";
+import {STAGES} from "../StageMetadata";
 
 const STAGE_DESCRIPTION = {
     [STAGES.INR_INFO.id]: 'گزارش آی‌ان‌آر',
