@@ -36,7 +36,7 @@ class DosageChangeReport extends React.Component {
     }
 
     render() {
-        const dosageData = !this.state.loaded ? [] : this.patientMessage.lastWarfarinDosage.map(dosageInfo => dosageInfo.dosagePH);
+        const dosageData = !this.state.loaded ? [] : this.patientMessage.lastWarfarinDosage.map(dosageInfo => dosageInfo.dosagePA);
 
         return (
             <VisitScreen>

@@ -61,7 +61,10 @@ class PatientServerGateway {
         return this.apiService.fetchFromProtectedEndpoint(url, {
             timeout: DEFAULT_TIMEOUT*2,
             method: 'POST',
-            body: {message: patientMessage},
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({message: patientMessage}),
         })
             .then(data => data);
 

@@ -73,7 +73,7 @@ class MessageListScreen extends React.Component {
         this.props.navigation.navigate(
             'NewMessageNavigator',
             {
-                patientInfo: this.user,
+                patientInfo: JSON.parse(JSON.stringify(this.user)),
             },
         );
         //

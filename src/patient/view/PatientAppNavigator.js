@@ -41,7 +41,7 @@ export default class PatientAppNavigator extends React.Component {
                     name={'NewMessageNavigator'}
                     component={NewMessageNavigator}
                     options={{ headerShown: false , headerTitle: props => null }}
-                    initialParams={{ patientInfo: null, physicianInfo: null, patientMedicalInfo: null }}
+                    initialParams={{ patientInfo: null, }}
                 />
             </Stack.Navigator>
         );

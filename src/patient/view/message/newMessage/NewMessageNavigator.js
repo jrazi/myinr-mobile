@@ -4,7 +4,7 @@ import StartingStage from "./stages/StartingStage";
 import DosageChangeReport from "./stages/DosageChangeReport";
 import {LoadingScreen} from "../../../../root/view/loading/Loading";
 import {ScreenHeader, ScreenLayout} from "../../../../root/view/screen/Layout";
-import {Button, Surface, useTheme, withTheme} from "react-native-paper";
+import {Button, Dialog, Portal, Subheading, Surface, useTheme, withTheme} from "react-native-paper";
 import {View} from "react-native";
 import MessageText from "./stages/MessageText";
 import InrReport from "./stages/InrReport";
@@ -14,6 +14,7 @@ import {PatientMessage} from "../../../../root/domain/PatientMessage";
 import {patientDao} from "../../../data/dao/PatientDao";
 import {showMessage} from "react-native-flash-message";
 import {STAGES} from "./StageMetadata";
+import {assignDatesToDosageRecords} from "../../util";
 
 
 class NewMessageNavigator extends React.Component {
@@ -29,34 +30,52 @@ class NewMessageNavigator extends React.Component {
             },
             currentStage: 'STARTING',
             isSendDoubleCheckOpen: false,
+            isSendingMessage: false,
         }
         this.patientMessage = PatientMessage.createNew();
     }
 
     componentDidMount() {
+        if (hasValue(this.props.route.params.patientInfo)) {
+            let lastWarfarinDosage = this.props.route.params.patientInfo.latestWarfarinDosage || this.patientMessage.lastWarfarinDosage;
+            lastWarfarinDosage = assignDatesToDosageRecords(lastWarfarinDosage);
+            this.patientMessage.lastWarfarinDosage = lastWarfarinDosage;
+        }
         this.navigateToStage(this.state.currentStage);
     }
 
     onSendMessageRequest = () => {
-
+        this.setState({isSendDoubleCheckOpen: true})
     }
 
-    sendMessage = async () => {
-        await patientDao.sendMessageToPhysician(this.patientMessage);
+    sendMessage = () => {
+        this.setState({isSendingMessage: true}, () => {
+            patientDao.sendMessageToPhysician(this.patientMessage)
+                .then(async res => {
+                    showMessage({
+                        message: 'پیام ارسال شد',
+                        description: null,
+                        type: "success",
+                    });
+                    await sleep(0.5);
 
-        showMessage({
-            message: 'پیام ارسال شد',
-            description: null,
-            type: "success",
-        });
-        await sleep(0.5);
+                    this.setState({
+                        isSendDoubleCheckOpen: false,
+                        isSendingMessage: false,
+                    }, () => {
+                        this.props.navigation.navigate(
+                            'PatientApp'
+                        );
+                    })
+                })
+                .catch(err => {
+                    this.setState({
+                        isSendDoubleCheckOpen: false,
+                        isSendingMessage: false,
+                    }, () => {}
+                    )
+                })
 
-        this.setState({
-            isSendDoubleCheckOpen: false,
-        }, () => {
-            this.props.navigation.navigate(
-                'PatientApp'
-            );
         })
     }
 
@@ -133,9 +152,16 @@ class NewMessageNavigator extends React.Component {
                                     onPrevious={() => this.goToPrevStage()}
                                     prevEnabled={hasValue(this.getStageObject().prev)}
                                     nextIsFinish={!hasValue(this.getEnabledNext())}
+                                    isSendingMessage={this.state.isSendingMessage}
                                 />
                             </View>
                         </ScreenLayout>
+                        <SendMessageDoubleCheckDialog
+                            visible={this.state.isSendDoubleCheckOpen}
+                            loading={this.state.isSendingMessage}
+                            onDismiss={() => this.setState({isSendDoubleCheckOpen: false})}
+                            onSend={this.sendMessage}
+                        />
                 </StageActivationContext.Provider>
                 </PatientMessageContext.Provider>
             </LoadingScreen>
@@ -165,12 +191,13 @@ const BottomActionBox = (props) => {
                 <ActionButton
                     title={'قبلی'}
                     onPress={props.onPrevious}
-                    disabled={!props.prevEnabled}
+                    disabled={!props.prevEnabled || props.isSendingMessage}
                     color={prevButtonColor}
                 />
                 <ActionButton
                     title={props.nextIsFinish ? 'ارسال' : 'بعدی'}
                     onPress={props.onNext}
+                    disabled={props.isSendingMessage}
                     color={props.nextIsFinish ? theme.colors.actionColors.secondary : null}
                 />
             </View>
@@ -239,4 +266,25 @@ const ControlHeader = (props) => {
         </Surface>
     )
 }
+
+const SendMessageDoubleCheckDialog = (props) => {
+    return (
+        <Portal>
+            <Dialog visible={props.visible} onDismiss={props.onDismiss} style={{paddingBottom: 5}} dismissable={false}>
+                <DialogMessage>آیا میخواهید پیام را ارسال کنید؟</DialogMessage>
+                <Dialog.Actions style={{alignItems: 'center', justifyContent: 'space-around',}}>
+                    <Button style={{}} labelStyle={{padding: 5}} mode="text" loading={props.loading} onPress={props.onSend} >ارسال پیام</Button>
+                    <Button disabled={false} style={{}} labelStyle={{padding: 5}} mode="text" onPress={props.onDismiss} >بازگشت</Button>
+                </Dialog.Actions>
+            </Dialog>
+        </Portal>
+    )
+}
+
+const DialogMessage = (props) => {return (
+    <Dialog.Content color={useTheme().colors.placeholder} style={{paddingTop: 20}}>
+        <Subheading style={{textAlign: 'center'}}>{props.children}</Subheading>
+    </Dialog.Content>
+)}
+
 
