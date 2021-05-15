@@ -79,10 +79,10 @@ export const ScreenTitle = (props) => {
 export const SectionTitle = (props) => {
     return (
         <View style={styles.sectionTitle}>
-            <Title>{props.title}</Title>
+            <Title style={props.titleStyle}>{props.title}</Title>
             {
                 !hasValue(props.description) || removeWhiteSpace(props.description) == "" ? null :
-                    <Caption>{props.description}</Caption>
+                    <Caption style={props.captionStyle}>{props.description}</Caption>
             }
         </View>
     )
@@ -105,7 +105,7 @@ export const InputOutlineLabel = (props) => {
     const theme = useTheme();
     return (
         <View style={[props.style]}>
-            <Text style={{color: theme.colors.primary}}>{props.title}</Text>
+            <Text style={{color: theme.colors.primary, ...props.textStyle}}>{props.title}</Text>
         </View>
     )
 }

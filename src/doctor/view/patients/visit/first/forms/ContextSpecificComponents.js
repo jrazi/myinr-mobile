@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import * as Layout from "./Layout";
-import {IntraSectionDivider, LayoutStyles} from "./Layout";
+import {ConditionalRender, IntraSectionDivider, LayoutStyles} from "./Layout";
 import {Badge, Chip, Switch, TextInput, useTheme, Text} from "react-native-paper";
 import {View} from "react-native";
 import color from 'color';
@@ -178,7 +178,7 @@ export const DefaultDateInput = (props) => {
                     fontSize: 14,
                     flexGrow: 0,
                     paddingHorizontal: 0,
-                    textAlign: 'left',
+                    textAlign: props.alignReverse ? 'right' : 'left',
 
                     ...props.style
                 }}
@@ -193,7 +193,9 @@ export const DefaultTextInput = (props) => {
     const theme = useTheme();
     return (
         <View>
-            <Layout.InputOutlineLabel title={props.label}/>
+            <ConditionalRender hidden={(props.label || null) == null}>
+                <Layout.InputOutlineLabel title={props.label} textStyle={props.textStyle} style={props.labelContainerStyle}/>
+            </ConditionalRender>
             <TextInput
                 value={props.value}
                 placeholder={props.placeholder}
