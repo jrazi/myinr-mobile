@@ -36,7 +36,7 @@ class DosageChangeReport extends React.Component {
     }
 
     render() {
-        const dosageData = !this.state.loaded ? [] : this.patientMessage.lastWarfarinDosage.map(dosageInfo => dosageInfo.dosagePA);
+        const dosageData = !this.state.loaded ? [] : this.patientMessage.lastWarfarinDosage.map(dosageInfo => dosageInfo.dosagePA || 0);
 
         return (
             <VisitScreen>
@@ -48,8 +48,8 @@ class DosageChangeReport extends React.Component {
                     <WeeklyDosagePicker
                         onDoseUpdate={this.onDosageUpdate}
                         initialData={dosageData}
-                        startingDate={null}
-                        increment={1}
+                        startingDate={new Date()}
+                        increment={-1}
                         disabled={false}
                         key={'dosage_picker_' + this.state.loaded}
                         // key={'weekly_dosage_' + this.state.hasNewPrescription}

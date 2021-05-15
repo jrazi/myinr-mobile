@@ -36,11 +36,11 @@ class NewMessageNavigator extends React.Component {
     }
 
     componentDidMount() {
-        if (hasValue(this.props.route.params.patientInfo)) {
-            let lastWarfarinDosage = this.props.route.params.patientInfo.latestWarfarinDosage || this.patientMessage.lastWarfarinDosage;
-            lastWarfarinDosage = assignDatesToDosageRecords(lastWarfarinDosage);
-            this.patientMessage.lastWarfarinDosage = lastWarfarinDosage;
-        }
+        // if (hasValue(this.props.route.params.patientInfo)) {
+        //     let lastWarfarinDosage = this.props.route.params.patientInfo.latestWarfarinDosage || this.patientMessage.lastWarfarinDosage;
+        //     lastWarfarinDosage = assignDatesToDosageRecords(lastWarfarinDosage);
+        //     this.patientMessage.lastWarfarinDosage = lastWarfarinDosage;
+        // }
         this.navigateToStage(this.state.currentStage);
     }
 

@@ -47,7 +47,7 @@ export class PatientMessage {
             hasInrInfo: false,
             hasWarfarinDosage: false,
 
-            lastWarfarinDosage: PhysicianMessage.createRecommendedDosageForNextWeek(),
+            lastWarfarinDosage: PatientMessage.createLast7DaysDosage(),
 
             patientComment: "",
 
@@ -89,4 +89,26 @@ export class PatientMessage {
         }
 
     }
+
+    static createLast7DaysDosage() {
+        const startingDate = new Date();
+        const recommendedDosage = [];
+        for (let i = 0; i < 7; i++) {
+            const date = new Date(startingDate);
+            date.setDate(startingDate.getDate() - i)
+            recommendedDosage.push({
+                id: null,
+                dosagePH: 0,
+                dosagePA: null,
+                dosageDate: {
+                    timestamp: date.getTime(),
+                    jalali: {
+                        asString: getFormFormattedJalaliDate(date),
+                    }
+                }
+            })
+        }
+        return recommendedDosage;
+    }
+
 }
