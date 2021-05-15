@@ -4,8 +4,14 @@ import {ScreenHeader, ScreenLayout} from "../../../../../root/view/screen/Layout
 import {Surface, Text, useTheme, withTheme} from "react-native-paper";
 import {View} from "react-native";
 import {PatientMessageContext} from "../MessageContext";
-import {IntraSectionInvisibleDivider, VisitScreen} from "../../../../../doctor/view/patients/visit/first/forms/Layout";
+import {
+    ConditionalRender,
+    IntraSectionInvisibleDivider,
+    VisitScreen
+} from "../../../../../doctor/view/patients/visit/first/forms/Layout";
 import {SectionDescriptionText} from "../common/MessageStageLayout";
+import * as Layout from "../../../../../doctor/view/patients/visit/first/forms/Layout";
+import {WeeklyDosagePicker} from "../../../../../doctor/view/patients/visit/first/forms/WeeklyDosagePicker";
 
 class DosageChangeReport extends React.Component {
     constructor(props) {
@@ -25,15 +31,30 @@ class DosageChangeReport extends React.Component {
     }
 
 
+    onDosageUpdate = (index, dose) => {
+        this.patientMessage.lastWarfarinDosage[index].dosagePA = dose;
+    }
+
     render() {
+        const dosageData = !this.state.loaded ? [] : this.patientMessage.lastWarfarinDosage.map(dosageInfo => dosageInfo.dosagePH);
+
         return (
             <VisitScreen>
                 <View>
-                    <SectionDescriptionText>{'Dosage Change'}</SectionDescriptionText>
+                    <SectionDescriptionText>{'در صورتی که میزان مصرف اخیر وارفارین شما با تجویز پزشک مغایرت دارد، لطفا دوز مصرفی خود را مشخص کنید.'}</SectionDescriptionText>
                 </View>
                 <IntraSectionInvisibleDivider xs/>
-                <View>
-                </View>
+                <Layout.FormSection>
+                    <WeeklyDosagePicker
+                        onDoseUpdate={this.onDosageUpdate}
+                        initialData={dosageData}
+                        startingDate={null}
+                        increment={1}
+                        disabled={false}
+                        key={'dosage_picker_' + this.state.loaded}
+                        // key={'weekly_dosage_' + this.state.hasNewPrescription}
+                    />
+                </Layout.FormSection>
             </VisitScreen>
         );
     }
