@@ -6,6 +6,7 @@ import {withTheme} from "react-native-paper";
 import UnderConstruction from "../../root/view/screen/UnderConstruction";
 import SecretaryProfileScreen from "./profile/SecretaryProfileScreen";
 import {createMaterialBottomTabNavigator} from "@react-navigation/material-bottom-tabs";
+import SecretaryPatientsScreen from "./patients/SecretaryPatientsScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -41,7 +42,7 @@ class SecretaryApp extends React.Component {
             >
                 <Tab.Screen
                     name="secretary/patients"
-                    component={UnderConstruction}
+                    component={SecretaryPatientsScreen}
                     options={{
                         tabBarLabel: 'بیماران',
                         tabBarIcon: ({ color }) => (
