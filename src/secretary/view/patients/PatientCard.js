@@ -73,8 +73,9 @@ const PatientCardDetails = (props) => {
                 wrapperStyle={{
                     paddingLeft: 40,
                 }}
-                title={Patient.getMedicalConditionsListAsString(props.patientInfo) || '-'}
-                customIcon={<MaterialCommunityIcons name="clipboard-list-outline" size={20} color={theme.colors.placeholder}/>}
+                title={Patient.getMedicalConditionsListAsString(props.patientInfo) || '---'}
+                customIcon={<MaterialCommunityIcons name="clipboard-text-outline" size={20} color={theme.colors.placeholder}/>}
+
             />
         </Row>,
         <Row key={'second'}>
