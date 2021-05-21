@@ -1,7 +1,7 @@
 import {createStackNavigator} from "@react-navigation/stack";
 import React from "react";
-import UnderConstruction from "../../root/view/screen/UnderConstruction";
 import SecretaryApp from "./SecretaryApp";
+import SecretaryPatientInfoScreen from "./patientInfo/SecretaryPatientInfoScreen";
 
 
 const Stack = createStackNavigator();
@@ -26,9 +26,9 @@ export default class SecretaryAppNavigator extends React.Component {
                 />
                 <Stack.Screen
                     name={'PatientInfoScreen'}
-                    component={UnderConstruction}
+                    component={SecretaryPatientInfoScreen}
                     options={{ headerShown: false , headerTitle: props => null }}
-                    initialParams={{ message: null, patientInfo: null, physicianInfo: null, patientMedicalInfo: null }}
+                    initialParams={{ patientInfo: null }}
                 />
             </Stack.Navigator>
         );

@@ -65,6 +65,15 @@ export default class SecretaryPatientsScreen extends React.Component {
         });
     }
 
+    navigateToPatientInfoScreen = (patientInfo) => {
+        this.props.navigation.navigate(
+            'PatientInfoScreen',
+            {
+                patientInfo: patientInfo,
+            },
+        );
+    }
+
     render() {
         return (
             <ScreenLayout>
@@ -74,6 +83,7 @@ export default class SecretaryPatientsScreen extends React.Component {
                     patients={this.state.patientsToDisplay}
                     refreshing={this.state.loadingPatients}
                     onRefresh={this.loadPatientList}
+                    onPatientCardPress={this.navigateToPatientInfoScreen}
                 />
             </ScreenLayout>
         );
@@ -87,7 +97,7 @@ const PatientList = (props) => {
                 key={`PatientCard_${patient.userId}`}
                 patientInfo={patient}
                 index={index}
-                onPress={noop}
+                onPress={() => props.onPatientCardPress(patient)}
             />
         )
     })
