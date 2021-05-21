@@ -30,6 +30,8 @@ export const Wrapper = (props) => {return (
 export const Header = (props) => {
     const theme = useTheme();
     let navigation = useNavigation();
+    let captionList = props.captionList || [props.caption || null];
+
     return (
     <Surface style={styles.appBarHeader}>
         <View style={styles.appBarHeaderWrapper}>
@@ -53,7 +55,9 @@ export const Header = (props) => {
                     }}
                 >
                     <Title>{props.title}</Title>
-                    <Caption>{props.caption}</Caption>
+                    {
+                        captionList.map((caption, index) => <Caption key={index + caption}>{caption}</Caption>)
+                    }
                 </View>
             </View>
         </View>
@@ -133,6 +137,7 @@ export const Screen = (props) => {
                 avatar={<SimpleLineIcons style={{}} name={props.gender == 'F' ? 'user-female' : 'user'} size={40} color={theme.colors.surface}/>}
                 title={props.title}
                 caption={props.caption}
+                captionList={props.captionList}
             />
             <Options>
                 {

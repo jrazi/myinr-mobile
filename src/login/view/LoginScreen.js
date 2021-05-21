@@ -34,6 +34,18 @@ class LoginScreen extends React.Component {
                     routes: [{name: 'DOCTOR'}],
                 });
             }
+            else if (user.userInfo.role == UserRole.SECRETARY) {
+                this.props.navigation.reset({
+                    index: 0,
+                    routes: [{name: 'SECRETARY'}],
+                });
+            }
+            else if (user.userInfo.role == UserRole.ADMIN) {
+                this.props.navigation.reset({
+                    index: 0,
+                    routes: [{name: 'ADMIN'}],
+                });
+            }
         });
     }
 

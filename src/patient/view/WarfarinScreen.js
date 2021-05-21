@@ -20,11 +20,17 @@ export default class WarfarinScreen extends React.Component {
     }
 
     componentDidMount() {
-        rootDao.getUser().then(user => {
-            this.user = JSON.parse(JSON.stringify(user));
-            this.user.latestWarfarinDosage = assignDatesToDosageRecords(this.user.latestWarfarinDosage);
-            this.setState({loading: false});
-        });
+        this.refresh();
+    }
+
+    refresh = () => {
+        this.setState({loading: true}, () => {
+            rootDao.getUser().then(user => {
+                this.user = JSON.parse(JSON.stringify(user));
+                this.user.latestWarfarinDosage = assignDatesToDosageRecords(this.user.latestWarfarinDosage);
+                this.setState({loading: false});
+            });
+        })
     }
 
     render() {
@@ -36,6 +42,7 @@ export default class WarfarinScreen extends React.Component {
                     lastWarfarinDosage={(this.user || {}).latestWarfarinDosage || []}
                     navigation={this.props.navigation}
                     refreshing={this.state.loading}
+                    onRefresh={this.refresh}
                 />
             </ScreenLayout>
         );
@@ -86,7 +93,7 @@ const NextWeekPrescriptionInfo = (props) => {
             refreshControl={
                 <RefreshControl
                     refreshing={props.refreshing}
-                    onRefresh={noop}
+                    onRefresh={props.onRefresh}
                     colors={[theme.colors.primary]}
                     progressBackgroundColor={theme.colors.surface}
                 />

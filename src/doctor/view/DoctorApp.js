@@ -25,7 +25,7 @@ class DoctorApp extends React.Component {
         this.setState({loaded: false}, () => {
             rootDao.getUser().then(user => {
                 if (user == null) this.props.navigation.navigate('LOGIN');
-                else if (user.userInfo.role == UserRole.PATIENT) this.props.navigation.navigate('LOGIN');
+                else if (user.userInfo.role != UserRole.DOCTOR) this.props.navigation.navigate('LOGIN');
                 else this.user = user;
                 this.setState({loaded: true});
             });
