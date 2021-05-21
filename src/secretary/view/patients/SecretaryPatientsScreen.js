@@ -3,7 +3,7 @@ import {rootDao} from "../../../root/data/dao/RootDao";
 import {patientDao} from "../../../patient/data/dao/PatientDao";
 import {ScreenLayout, TitleOnlyScreenHeader} from "../../../root/view/screen/Layout";
 import {ItemListContainer} from "../../../root/view/list/ItemList";
-import {Card, Surface, useTheme} from "react-native-paper";
+import {Card, FAB, Surface, useTheme, withTheme} from "react-native-paper";
 import {
     ConditionalCollapsibleRender,
     IntraSectionInvisibleDivider
@@ -15,7 +15,7 @@ import {PatientInfoCard} from "./PatientCard";
 import {noop} from "../../../root/domain/util/Util";
 
 
-export default class SecretaryPatientsScreen extends React.Component {
+class SecretaryPatientsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.user = {};
@@ -74,6 +74,9 @@ export default class SecretaryPatientsScreen extends React.Component {
         );
     }
 
+    navigateToPatientInsertScreen = () => {
+    }
+
     render() {
         return (
             <ScreenLayout>
@@ -85,10 +88,25 @@ export default class SecretaryPatientsScreen extends React.Component {
                     onRefresh={this.loadPatientList}
                     onPatientCardPress={this.navigateToPatientInfoScreen}
                 />
+                <View style={styles.fabContainer}>
+                    <ConditionalCollapsibleRender hidden={this.state.loadingPatients}>
+                        <View style={styles.fabWrapper}>
+                            <FAB
+                                style={[styles.fab, {
+                                    backgroundColor: this.props.theme.colors.actionColors.primary,
+                                }]}
+                                icon={'plus'}
+                                onPress={this.navigateToPatientInsertScreen}
+                            />
+                        </View>
+                    </ConditionalCollapsibleRender>
+                </View>
             </ScreenLayout>
         );
     }
 }
+
+export default withTheme(SecretaryPatientsScreen);
 
 const PatientList = (props) => {
     const patientCards = props.patients.map((patient, index) => {
@@ -110,6 +128,7 @@ const PatientList = (props) => {
             {
                 patientCards
             }
+            <IntraSectionInvisibleDivider l/>
         </ItemListContainer>
     )
 }
@@ -127,80 +146,6 @@ const ControlHeader = (props) => {
             </ConditionalCollapsibleRender>
         </Surface>
     )
-}
-
-const PatientCard = (props) => {
-    const theme = useTheme();
-
-    const CardContainer = ({index, style, ...props}) => {
-        if (index % 2 == 0) {
-            return <View style={[{}, style]}>
-                {props.children}
-            </View>
-        } else return <Surface style={[{elevation: 0,}, style]}>
-            {props.children}
-        </Surface>
-    }
-
-    const FutureVisitIcon = (_props) => (
-        <MaterialCommunityIcons name="calendar-clock" size={24} color={theme.colors.actionColors.primary}/>
-    );
-
-    const AttendedVisitIcon = (_props) => (
-        <MaterialCommunityIcons name="calendar-check" size={24} color={theme.colors.actionColors.confirm}/>
-    );
-
-    const ExpiredVisitIcon = (_props) => (
-        <MaterialCommunityIcons name="calendar-remove" size={24} color={theme.colors.actionColors.remove}/>
-    );
-
-    const visitIcon = props.patient.hasVisitHappened ? <AttendedVisitIcon/> : props.patient.expired ? <ExpiredVisitIcon/> : <FutureVisitIcon/>;
-
-    return (
-        <CardContainer index={props.index}
-                       style={[{
-                           // elevation: 4,
-                       }, styles.patientCardContainer]}
-        >
-            <View style={{
-                // paddingBottom: 10,
-                paddingVertical: 10,
-            }}>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Card.Title
-                        title={'دکتر' + ' ' + props.physicianInfo.fullName}
-                        subtitle={''}
-                        style={{
-                            flexGrow: 0,
-                            width: '60%',
-                        }}
-                    />
-
-                    <View
-                        style={{
-                            paddingHorizontal: 25,
-                        }}
-                    >
-                        {visitIcon}
-                    </View>
-
-                </View>
-
-                <Card.Content>
-                    <View>
-                        <AppointmentInfoRows patient={props.patient}/>
-                    </View>
-                </Card.Content>
-                <IntraSectionInvisibleDivider none borderWidth={0.1} style={{marginHorizontal: 20, marginTop: 10,}}/>
-            </View>
-        </CardContainer>
-    );
 }
 
 
