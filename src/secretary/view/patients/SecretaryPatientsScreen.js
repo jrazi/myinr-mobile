@@ -211,6 +211,20 @@ export const styles = StyleSheet.create({
     },
 
     patientCardContainer: {},
+
+    fabContainer: {
+        position: 'absolute',
+        margin: 24,
+        left: 0,
+        bottom: 0,
+    },
+    fabWrapper: {
+        paddingTop: 15,
+        alignItems: 'center',
+    },
+    fab: {
+    },
+
 });
 
 

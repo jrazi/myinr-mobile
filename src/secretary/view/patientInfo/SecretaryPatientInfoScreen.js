@@ -1,8 +1,8 @@
 import React from "react";
-import {LoadingScreen} from "../../../root/view/loading/Loading";
 import {ScreenHeader, ScreenLayout} from "../../../root/view/screen/Layout";
-import {Surface, useTheme, withTheme} from "react-native-paper";
+import {FAB, Surface, useTheme, withTheme} from "react-native-paper";
 import * as Layout from "../../../doctor/view/patients/visit/first/forms/Layout";
+import {View, StyleSheet} from "react-native";
 
 class SecretaryPatientInfoScreen extends React.Component {
     constructor(props) {
@@ -16,17 +16,31 @@ class SecretaryPatientInfoScreen extends React.Component {
     componentDidMount = async () => {
     }
 
+    navigateToPatientEditScreen = () => {
+
+    }
+
     render() {
         return (
-            <LoadingScreen loaded={this.state.loaded}>
                 <ScreenLayout>
                     <ControlHeader
                     />
                     <PatientInfoView
                         patientInfo={this.props.route.params.patientInfo}
                     />
+                    <View style={styles.fabContainer}>
+                        <View style={styles.fabWrapper}>
+                            <FAB
+                                style={[styles.fab, {
+                                    backgroundColor: this.props.theme.colors.actionColors.primary,
+                                }]}
+                                icon={'circle-edit-outline'}
+                                // label={'ویرایش'}
+                                onPress={this.navigateToPatientEditScreen}
+                            />
+                        </View>
+                    </View>
                 </ScreenLayout>
-            </LoadingScreen>
         );
     }
 }
@@ -53,3 +67,18 @@ const PatientInfoView = (props) => {
         </Layout.VisitScreen>
     )
 }
+
+const styles = StyleSheet.create({
+    fabContainer: {
+        position: 'absolute',
+        margin: 24,
+        left: 0,
+        bottom: 0,
+    },
+    fabWrapper: {
+        paddingTop: 15,
+        alignItems: 'center',
+    },
+    fab: {
+    },
+})

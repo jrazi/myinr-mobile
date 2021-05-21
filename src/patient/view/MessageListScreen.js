@@ -76,12 +76,6 @@ class MessageListScreen extends React.Component {
                 patientInfo: JSON.parse(JSON.stringify(this.user)),
             },
         );
-        //
-        // showMessage({
-        //     message: 'این بخش غیرفعال است',
-        //     description: null,
-        //     type: "warning",
-        // });
     }
 
     render() {
