@@ -13,7 +13,7 @@ import {
     withTheme, List,
     RadioButton, Text, TouchableRipple
 } from "react-native-paper";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {StyleSheet, View} from "react-native";
 import {Formik} from "formik";
 import * as Yup from "yup";
@@ -85,14 +85,14 @@ class PatientUpsertScreen extends React.Component {
                                 lastName: Validators.NAME.required(REQUIRED_DEFAULT_MESSAGE_FA),
                                 nationalId: Validators.NATIONAL_ID.required(REQUIRED_DEFAULT_MESSAGE_FA),
                                 fatherName: Validators.NAME.notRequired(),
-                                gender: null,
+                                gender: Validators.NOTHING.required('لطفا جنسیت بیمار را انتخاب نمایید.'),
                                 birthDate: null,
                                 birthPlace: Validators.NAME.notRequired(),
                                 phone: Validators.PHONE.notRequired(),
                                 mobile: Validators.PHONE.notRequired(),
                                 emergencyPhone: Validators.PHONE.notRequired(),
                                 email: Validators.EMAIl.notRequired(),
-                                physicianId: null,
+                                physicianId: Validators.NOTHING.required('لطفا یک پزشک را انتخاب نمایید.'),
                                 address: null,
                             })}
                             // innerRef={this.props.containerRef}
@@ -282,8 +282,8 @@ const SelectInputRow = ({formikProps, name, label, options, ...props}) => {
     const index = (options || []).findIndex(option => option.id == formikProps.values[name]);
     const [selectedIndex, setSelectedIndex] = useState(index);
     const onChange = (index) => {
-        setSelectedIndex(index);
         formikProps.setFieldValue(name, (options[index] || {}).id);
+        setSelectedIndex(index);
     }
 
     return (
@@ -305,26 +305,32 @@ const SelectInputRow = ({formikProps, name, label, options, ...props}) => {
                     paddingHorizontal: 0,
                 }}
             />
+            <HelperText type="error" visible={true} style={{color: theme.colors.actionColors.remove}}>
+                {(selectedIndex != null && selectedIndex >=0 ) ? null : formikProps.errors[name]}
+            </HelperText>
         </View>
     )
 }
 
 const PortalSelectInputRow = ({formikProps, name, label, options, ...props}) => {
     const theme = useTheme();
-    console.log('select row index, options', options, formikProps.values[name]);
 
-    const index = (options || []).findIndex(option => option.id == formikProps.values[name]);
-    const [selectedIndex, setSelectedIndex] = useState(index);
 
+    const [selectedIndex, setSelectedIndex] = useState(null);
     const [selectPickerVisible, setSelectPickerVisible] = useState(false);
+
+    useEffect(() => {
+        const index = (options || []).findIndex(option => option.id == formikProps.values[name]);
+        setSelectedIndex(index);
+    }, [options.length]);
 
     const dismissModal = () => {
         setSelectPickerVisible(false);
     }
 
     const onChange = (index) => {
-        setSelectedIndex(index);
         formikProps.setFieldValue(name, (options[index] || {}).id);
+        setSelectedIndex(index);
         dismissModal();
     }
 
@@ -362,6 +368,9 @@ const PortalSelectInputRow = ({formikProps, name, label, options, ...props}) => 
                 }}
                 dense={true}
             />
+            <HelperText type="error" visible={true} style={{color: theme.colors.actionColors.remove}}>
+                {(selectedIndex != null && selectedIndex >=0 ) ? null : formikProps.errors[name]}
+            </HelperText>
             <Portal>
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', }}>
                     <Modal
