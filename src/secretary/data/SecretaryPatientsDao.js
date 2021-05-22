@@ -27,6 +27,11 @@ export class SecretaryPatientsDao {
         return secretaryServerGateway.upsertPatient(patientInfo);
     }
 
+    getPhysiciansList = () => {
+        return secretaryServerGateway.getPhysiciansList();
+    }
+
+
 }
 
 export const secretaryPatientsDao = new SecretaryPatientsDao();

@@ -46,6 +46,16 @@ class SecretaryServerGateway {
 
     }
 
+    getPhysiciansList = () => {
+        let url = `${API_PATH}/physician`;
+
+        return this.apiService.fetchFromProtectedEndpoint(url, {
+            timeout: DEFAULT_TIMEOUT,
+        })
+            .then(data => data.physicians);
+
+    }
+
 
 }
 

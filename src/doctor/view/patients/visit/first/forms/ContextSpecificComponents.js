@@ -4,7 +4,7 @@ import {ConditionalRender, IntraSectionDivider, LayoutStyles} from "./Layout";
 import {Badge, Chip, Switch, TextInput, useTheme, Text} from "react-native-paper";
 import {View} from "react-native";
 import color from 'color';
-import {firstNonEmpty, getFormFormattedJalaliDate} from "../../../../../../root/domain/util/Util";
+import {e2p, firstNonEmpty, getFormFormattedJalaliDate} from "../../../../../../root/domain/util/Util";
 import {DefaultDatePicker} from "./JalaliDatePicker";
 import {debugBorderBlue, debugBorderRed} from "../../../../../../root/view/styles/borders";
 
@@ -162,7 +162,7 @@ export const DefaultDateInput = (props) => {
                 props.label ? <Layout.InputOutlineLabel title={props.label}/> : null
             }
             <TextInput
-                value={dateValue}
+                value={props.farsiDigits ? e2p(dateValue) : dateValue}
                 disabled={props.disabled}
                 placeholder={props.placeholder}
                 onChangeText={props.onChangeText}

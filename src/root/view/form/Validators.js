@@ -1,8 +1,6 @@
 import * as Yup from "yup";
 
 
-export const NAME = null;
-
 export const USERNAME = {
     EN: Yup.string()
         .nullable()
@@ -70,5 +68,28 @@ export const NOTHING = Yup.string()
     .nullable()
     .notRequired();
 
-export const NATIONAL_CODE = null;
-export const PASSWORD_REPEAT = null;
+export const NAME = Yup.string()
+    .nullable()
+    .min(3, "باید حداقل ۲ کاراکتر داشته‌باشد.")
+    .max(32, 'نمی‌تواند بیشتر از ۳۲ کاراکتر داشته‌باشد.');
+
+export const EMAIl = Yup.string()
+    .nullable()
+    .email('آدرس ایمیل صحیح نیست.')
+    .min(3, "باید حداقل ۲ کاراکتر داشته‌باشد.")
+    .max(32, 'نمی‌تواند بیشتر از ۳۲ کاراکتر داشته‌باشد.');
+
+export const PHONE = Yup.string()
+    .nullable()
+    .matches(/^\d{7,14}$/, 'شماره صحیح نیست.')
+    .min(3, "باید حداقل ۲ کاراکتر داشته‌باشد.")
+    .max(32, 'نمی‌تواند بیشتر از ۳۲ کاراکتر داشته‌باشد.');
+
+export const NATIONAL_ID = Yup.string()
+    .nullable()
+    .matches(/^\d{7,14}$/, 'کدملی صحیح نیست.')
+    .min(3, "باید حداقل ۲ کاراکتر داشته‌باشد.")
+    .max(32, 'نمی‌تواند بیشتر از ۳۲ کاراکتر داشته‌باشد.');
+
+
+export const REQUIRED_DEFAULT_MESSAGE_FA = 'این فیلد نمی‌تواند خالی باشد.';

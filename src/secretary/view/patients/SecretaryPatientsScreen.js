@@ -75,6 +75,13 @@ class SecretaryPatientsScreen extends React.Component {
     }
 
     navigateToPatientInsertScreen = () => {
+        this.props.navigation.navigate(
+            'PatientUpsertScreen',
+            {
+                patientInfo: null,
+                isForEditingPatient: false,
+            },
+        );
     }
 
     render() {
